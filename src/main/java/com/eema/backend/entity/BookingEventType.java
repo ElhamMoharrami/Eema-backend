@@ -1,0 +1,19 @@
+package com.eema.backend.entity;
+
+/**
+ * Booking event type enum.
+ */
+public enum BookingEventType {
+    BOOKING_CREATED,
+    PAYMENT_CREATED,
+    PAYMENT_SUCCEEDED,
+    PAYMENT_FAILED,
+    PAYMENT_CANCELLED,
+    BOOKING_CONFIRMED,
+    CANCELLATION_REQUESTED,
+    REFUND_INITIATED,
+    REFUND_COMPLETED,
+    WEBHOOK_RECEIVED,
+    EMAIL_SENT,
+    OWNER_PAYOUT_RELEASED
+}

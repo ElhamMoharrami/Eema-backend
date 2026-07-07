@@ -1,0 +1,76 @@
+package com.eema.backend.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "bookings")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Booking {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "venue_id")
+    private UUID venueId;
+
+    @Column(name = "scout_id")
+    private UUID scoutId;
+
+    @Column(name = "mollie_payment_id", unique = true)
+    private String molliePaymentId;
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
+
+    @Column(name = "booking_amount_eur")
+    private BigDecimal bookingAmountEur;
+
+    @Column(name = "service_fee_eur")
+    private BigDecimal serviceFeeEur;
+
+    @Column(name = "eeema_commission_eur")
+    private BigDecimal eeemaCommissionEur;
+
+    @Column(name = "owner_payout_eur")
+    private BigDecimal ownerPayoutEur;
+
+    @Column(name = "shoot_date")
+    private LocalDate shootDate;
+
+    private String rawBrief;
+
+    @Convert(converter = JsonbConverter.class)
+    @Column(name = "scout_contact", columnDefinition = "jsonb")
+    private String scoutContact;
+
+    @Convert(converter = JsonbConverter.class)
+    @Column(name = "owner_contact", columnDefinition = "jsonb")
+    private String ownerContact;
+
+    private boolean calaVerified;
+
+    @jakarta.persistence.CreationTimestamp
+    private OffsetDateTime createdAt;
+
+    @Column(name = "paid_at")
+    private OffsetDateTime paidAt;
+
+    @Column(name = "confirmed_at")
+    private OffsetDateTime confirmedAt;
+
+    @Column(name = "cancelled_at")
+    private OffsetDateTime cancelledAt;
+}
