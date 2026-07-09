@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+
 
 @Entity
 @Table(name = "booking_events")
@@ -33,6 +35,6 @@ public class BookingEvent {
 
     private String createdBy;
 
-    @jakarta.persistence.CreationTimestamp
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 }

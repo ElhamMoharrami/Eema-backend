@@ -3,10 +3,9 @@ package com.eema.backend.security;
 import com.eema.backend.entity.User;
 import com.eema.backend.entity.UserRole;
 import com.eema.backend.config.AppProperties;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,12 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
-
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Date;
+import java.util.UUID;
 /**
  * Service for handling JWT operations.
  */
@@ -33,23 +37,33 @@ public class JwtService {
     @PostConstruct
     public void init() {
         String secret = appProperties.getJwt().getSecret();
+
+        System.out.println("JWT secret value: " + secret);
+        System.out.println("JWT secret chars: " + secret.length());
+        System.out.println("JWT secret bytes: " +
+                secret.getBytes(StandardCharsets.UTF_8).length);
+
         if (secret == null || secret.isEmpty()) {
             throw new IllegalStateException("JWT secret must be configured");
         }
-        // Decode base64 secret if needed, otherwise use raw bytes
+
         byte[] keyBytes;
+
         try {
-            // Try to decode as base64 first
             keyBytes = Base64.getDecoder().decode(secret);
+            System.out.println("Decoded Base64 bytes: " + keyBytes.length);
         } catch (IllegalArgumentException e) {
-            // If not valid base64, use raw bytes
             keyBytes = secret.getBytes();
+            System.out.println("Raw bytes: " + keyBytes.length);
         }
 
-        // Ensure key is at least 256 bits (32 bytes)
         if (keyBytes.length < 32) {
-            throw new IllegalStateException("JWT secret must be at least 256 bits (32 bytes)");
+            throw new IllegalStateException(
+                    "JWT secret must be at least 256 bits (32 bytes). Current length: "
+                            + keyBytes.length
+            );
         }
+
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -64,13 +78,13 @@ public class JwtService {
         java.util.Date now = new java.util.Date();
         java.util.Date expiryDate = new java.util.Date(now.getTime() + expirationMillis);
 
-        return io.jsonwebtoken.Jwts.builder()
-                .setSubject(user.getId().toString())
+        return Jwts.builder()
+                .subject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole().name())
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -94,11 +108,11 @@ public class JwtService {
      * @throws io.jsonwebtoken.JwtException if token is invalid
      */
     public io.jsonwebtoken.Claims validateToken(String token) {
-        return io.jsonwebtoken.Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+        return Jwts.parser()
+                .verifyWith(secretKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     /**
@@ -108,11 +122,11 @@ public class JwtService {
      * @return user ID as UUID
      */
     public java.util.UUID extractUserId(String token) {
-        String userIdStr = io.jsonwebtoken.Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+        String userIdStr = Jwts.parser()
+                .verifyWith(secretKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody()
+                .parseSignedClaims(token)
+                .getPayload()
                 .getSubject();
         return java.util.UUID.fromString(userIdStr);
     }
@@ -124,11 +138,11 @@ public class JwtService {
      * @return email address
      */
     public String extractEmail(String token) {
-        return io.jsonwebtoken.Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+        return Jwts.parser()
+                .verifyWith(secretKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody()
+                .parseSignedClaims(token)
+                .getPayload()
                 .get("email", String.class);
     }
 
@@ -139,12 +153,12 @@ public class JwtService {
      * @return user role
      */
     public UserRole extractRole(String token) {
-        String roleStr = io.jsonwebtoken.Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+        String role = Jwts.parser()
+                .verifyWith(secretKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody()
+                .parseSignedClaims(token)
+                .getPayload()
                 .get("role", String.class);
-        return UserRole.valueOf(roleStr);
+        return UserRole.valueOf(role);
     }
 }

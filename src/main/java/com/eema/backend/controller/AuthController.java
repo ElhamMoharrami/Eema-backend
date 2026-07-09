@@ -11,17 +11,15 @@ import com.eema.backend.repository.UserRepository;
 import com.eema.backend.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.GetMapping;
-import org.springframework.web.bind.PostMapping;
-import org.springframework.web.bind.RequestBody;
-import org.springframework.web.bind.RequestMapping;
-import org.springframework.web.bind.RestController;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 /**
  * Controller for authentication endpoints.
  */

@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+
 @Entity
 @Table(name = "bookings")
 @Data
@@ -62,7 +65,7 @@ public class Booking {
 
     private boolean calaVerified;
 
-    @jakarta.persistence.CreationTimestamp
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
     @Column(name = "paid_at")

@@ -32,7 +32,7 @@ server:
 
 app:
   jwt:
-    secret: your-jwt-secret-change-this
+    secret: tjeiMgh/atru5Mg8siRlg5U6uEabZER2OCGy2I9SIEE=
     access-token-expiry-minutes: 15
     refresh-token-expiry-days: 7
   storage:

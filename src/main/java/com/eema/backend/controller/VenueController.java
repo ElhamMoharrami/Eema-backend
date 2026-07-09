@@ -2,6 +2,7 @@ package com.eema.backend.controller;
 
 import com.eema.backend.dto.request.CreateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
+import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.User;
 import com.eema.backend.entity.UserRole;
 import com.eema.backend.repository.UserRepository;
@@ -55,11 +56,8 @@ public class VenueController {
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new IllegalStateException("User not found with email: " + email));
 
-        // The @PreAuthorize already ensures the user has OWNER role, but we can double-check if needed.
-        // We'll trust the annotation.
-
         UUID ownerId = user.getId();
-        VenueDto venue = venueService.createVenue(request, ownerId);
+        VenueDto venue = venueService.createVenue(ownerId, request);
         return ResponseEntity.status(201).body(venue);
     }
 

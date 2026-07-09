@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -41,6 +40,7 @@ public class User {
     private String mollieAccount;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean active = true;
 
     @CreationTimestamp

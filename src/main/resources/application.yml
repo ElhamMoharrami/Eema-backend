@@ -42,7 +42,7 @@ logging:
 
 app:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: fRGDyDVTthYtZ+rNvijhiAWox290QmZuouDlUC0sNddnF803lbJud6r308dHQHNDZazfxUvpu66muD4TOox49w==
     access-token-expiry-minutes: 15
     refresh-token-expiry-days: 7
   storage:

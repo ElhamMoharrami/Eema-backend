@@ -4,184 +4,156 @@ import com.eema.backend.dto.request.CreateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.User;
+import com.eema.backend.entity.UserRole;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.VenueStatus;
 import com.eema.backend.exception.ForbiddenException;
-import com.eema.backend.exception.NotFoundException;
-import com.eema.backend.mapper.UserMapper;
-import com.eema.backend.repository.UserRepository;
+import com.eema.backend.mapper.VenueMapper;
 import com.eema.backend.repository.VenueRepository;
-import com.eema.backend.config.AppProperties;
-import jakarta.transaction.Transactional;
+import com.eema.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Service for managing venues.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class VenueService {
 
     private final VenueRepository venueRepository;
     private final UserRepository userRepository;
-    private final AppProperties appProperties;
-    private final UserMapper userMapper;
+    private final VenueMapper venueMapper;
 
     /**
-     * Get all active venues, optionally filtered by tag.
+     * Creates a new venue.
      *
-     * @param tagFilter tag to filter by (can be null or blank)
-     * @return list of venue DTOs
+     * @param userId the ID of the user creating the venue
+     * @param request the venue creation request
+     * @return the created venue DTO
      */
-    public List<VenueListDto> getAllActiveVenues(String tagFilter) {
-        List<Venue> venues;
-        if (tagFilter == null || tagFilter.isBlank()) {
-            venues = venueRepository.findByStatus(VenueStatus.ACTIVE);
-        } else {
-            venues = venueRepository.findByStatusAndTagsContaining(VenueStatus.ACTIVE, tagFilter);
-        }
-        return venues.stream()
-                .map(this::toVenueListDto)
-                .collect(Collectors.toList());
-    }
+    @Transactional
+    public VenueDto createVenue(UUID userId, CreateVenueRequest request) {
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-    /**
-     * Get a venue by its ID.
-     *
-     * @param id venue ID
-     * @return venue DTO
-     * @throws NotFoundException if venue not found
-     */
-    public VenueDto getVenueById(UUID id) {
-        Venue venue = venueRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Venue not found with id: " + id));
-        return toVenueDto(venue);
-    }
-
-    /**
-     * Create a new venue for the given owner.
-     *
-     * @param request venue creation request
-     * @param ownerId owner's user ID
-     * @return created venue DTO
-     * @throws ForbiddenException if the user is not an owner
-     * @throws NotFoundException if the owner user not found
-     */
-    public VenueDto createVenue(CreateVenueRequest request, UUID ownerId) {
-        User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new NotFoundException("Owner not found with id: " + ownerId));
-
-        if (!owner.getRole().equals(User.Role.OWNER)) {
+        if (!owner.getRole().equals(UserRole.OWNER)) {
             throw new ForbiddenException("Only users with OWNER role can create venues");
         }
 
-        Venue venue = Venue.builder()
-                .owner(owner)
-                .name(request.name())
-                .neighbourhood(request.neighbourhood())
-                .sizeM2(request.sizeM2())
-                .dayRateEur(request.dayRateEur())
-                .tags(request.tags())
-                .description(request.description())
-                .clipUrl(request.clipUrl())
-                .status(VenueStatus.PENDING)
-                .build();
-
+        Venue venue = venueMapper.toEntity(request);
+        venue.setOwner(owner);
         Venue savedVenue = venueRepository.save(venue);
-        return toVenueDto(savedVenue);
+        return venueMapper.toDto(savedVenue);
     }
 
     /**
-     * Get all venues owned by a specific user.
+     * Gets all venues.
      *
-     * @param ownerId owner's user ID
-     * @return list of venue DTOs owned by the user
+     * @return list of venue DTOs
      */
-    public List<VenueDto> getVenuesByOwner(UUID ownerId) {
-        List<Venue> venues = venueRepository.findByOwnerId(ownerId);
-        return venues.stream()
-                .map(this::toVenueDto)
+    @Transactional(readOnly = true)
+    public List<VenueDto> getAllVenues() {
+        return venueRepository.findAll().stream()
+                .map(venueMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Add photos to a venue (append to existing photoPaths).
+     * Gets a venue by its ID.
      *
-     * @param venueId venue ID
-     * @param ownerId owner's user ID (for ownership check)
-     * @param paths list of photo paths to add
-     * @return updated venue DTO
-     * @throws NotFoundException if venue not found or not owned by the user
+     * @param id the venue ID
+     * @return the venue DTO
      */
-    public VenueDto updateVenuePhotos(UUID venueId, UUID ownerId, List<String> paths) {
-        Venue venue = venueRepository.findByIdAndOwnerId(venueId, ownerId)
-                .orElseThrow(() -> new NotFoundException("Venue not found with id: " + venueId + " or not owned by user: " + ownerId));
+    @Transactional(readOnly = true)
+    public VenueDto getVenueById(UUID id) {
+        Venue venue = venueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+        return venueMapper.toDto(venue);
+    }
 
-        venue.getPhotoPaths().addAll(paths);
+    /**
+     * Updates a venue.
+     *
+     * @param id the venue ID
+     * @param request the venue update request
+     * @return the updated venue DTO
+     */
+    @Transactional
+    public VenueDto updateVenue(UUID id, CreateVenueRequest request) {
+        Venue venue = venueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+
+        // Only owner can update venue
+        User currentUser = userRepository.findById(venue.getOwner().getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!currentUser.getRole().equals(UserRole.OWNER)) {
+            throw new ForbiddenException("Only the venue owner can update the venue");
+        }
+
+        venueMapper.updateEntityFromDto(request, venue);
         Venue updatedVenue = venueRepository.save(venue);
-        return toVenueDto(updatedVenue);
+        return venueMapper.toDto(updatedVenue);
     }
 
     /**
-     * Convert Venue entity to VenueDto.
-     */
-    private VenueDto toVenueDto(Venue venue) {
-        return new VenueDto(
-                venue.getId(),
-                venue.getOwner(),
-                venue.getName(),
-                venue.getNeighbourhood(),
-                venue.getSizeM2(),
-                venue.getDayRateEur(),
-                venue.getTags(),
-                venue.getPhotoPaths(),
-                venue.getClipUrl(),
-                venue.getDescription(),
-                venue.getStatus(),
-                venue.getCreatedAt(),
-                venue.getUpdatedAt()
-        );
-    }
-
-    /**
-     * Convert Venue entity to VenueListDto.
-     */
-    private VenueListDto toVenueListDto(Venue venue) {
-        String firstPhotoUrl = null;
-        if (venue.getPhotoPaths() != null && !venue.getPhotoPaths().isEmpty()) {
-            firstPhotoUrl = buildPhotoUrl(venue.getPhotoPaths().get(0));
-        }
-        return new VenueListDto(
-                venue.getId(),
-                venue.getName(),
-                venue.getNeighbourhood(),
-                venue.getSizeM2(),
-                venue.getDayRateEur(),
-                venue.getTags(),
-                firstPhotoUrl,
-                venue.getStatus()
-        );
-    }
-
-    /**
-     * Build a photo URL from a path.
+     * Deletes a venue.
      *
-     * @param path photo path (relative to upload directory)
-     * @return full URL to the photo
+     * @param id the venue ID
      */
-    private String buildPhotoUrl(String path) {
-        // Remove leading slash if present to avoid double slash
-        if (path.startsWith("/")) {
-            path = path.substring(1);
+    @Transactional
+    public void deleteVenue(UUID id) {
+        Venue venue = venueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+
+        // Only owner can delete venue
+        User currentUser = userRepository.findById(venue.getOwner().getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!currentUser.getRole().equals(UserRole.OWNER)) {
+            throw new ForbiddenException("Only the venue owner can delete the venue");
         }
-        return appProperties.getStorage().getFileUrlPrefix() + path;
+
+        venueRepository.delete(venue);
+    }
+
+    /**
+     * Gets venues by owner ID.
+     *
+     * @param ownerId the owner ID
+     * @return list of venue DTOs
+     */
+    @Transactional(readOnly = true)
+    public List<VenueDto> getVenuesByOwner(UUID ownerId) {
+        return venueRepository.findByOwnerId(ownerId).stream()
+                .map(venueMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all active venues, optionally filtered by tag.
+     *
+     * @param tag the tag to filter by (can be null or empty for all active venues)
+     * @return list of venue list DTOs
+     */
+    @Transactional(readOnly = true)
+    public List<VenueListDto> getAllActiveVenues(String tag) {
+        List<Venue> venues;
+        if (tag == null || tag.isBlank()) {
+            venues = venueRepository.findByStatus(VenueStatus.ACTIVE);
+        } else {
+            venues = venueRepository.findByStatusAndTagsContaining(VenueStatus.ACTIVE, tag);
+        }
+        return venues.stream()
+                .map(venueMapper::toListDto)
+                .collect(Collectors.toList());
     }
 }

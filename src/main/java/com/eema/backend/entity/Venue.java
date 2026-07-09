@@ -15,7 +15,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+/**
+ * Venue entity representing a venue in the system.
+ */
 @Entity
 @Table(name = "venues")
 @Data
@@ -47,10 +52,12 @@ public class Venue {
 
     @Type(value = ListArrayType.class)
     @Column(columnDefinition = "text[]")
+    @Builder.Default
     private List<String> tags = new ArrayList<>();
 
     @Type(value = ListArrayType.class)
     @Column(columnDefinition = "text[]")
+    @Builder.Default
     private List<String> photoPaths = new ArrayList<>();
 
     private String clipUrl;
@@ -59,9 +66,9 @@ public class Venue {
     @Enumerated(EnumType.STRING)
     private VenueStatus status;
 
-    @jakarta.persistence.CreationTimestamp
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
-    @jakarta.persistence.UpdateTimestamp
+    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 }

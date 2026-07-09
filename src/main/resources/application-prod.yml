@@ -1,5 +1,4 @@
 spring:
-  profiles: prod
   main:
     allow-bean-definition-overriding: true
   jpa:

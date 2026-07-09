@@ -1,31 +1,23 @@
 package com.eema.backend.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateVenueRequest {
-    @NotBlank @Size(min = 2, max = 120)
-    private String name;
-
-    @NotBlank
-    private String neighbourhood;
-
-    @NotNull @Min(1) @Max(9999)
-    private Integer sizeM2;
-
-    @NotNull @DecimalMin("0.01")
-    private java.math.BigDecimal dayRateEur;
-
-    @NotNull
-    private List<String> tags;
-
-    private String description;
-
-    private String clipUrl;
-}
+/**
+ * Request DTO for creating a venue.
+ */
+public record CreateVenueRequest(
+        @NotBlank @Size(min = 2, max = 120) String name,
+        @NotBlank String neighbourhood,
+        @NotNull @Min(1) @Max(9999) Integer sizeM2,
+        @NotNull @DecimalMin("0.01") BigDecimal dayRateEur,
+        @NotNull List<String> tags,
+        String description,
+        String clipUrl
+) {}
