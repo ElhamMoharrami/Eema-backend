@@ -1,14 +1,12 @@
 package com.eema.backend.entity;
 
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -50,20 +48,22 @@ public class Venue {
     @Column(name = "day_rate_eur", nullable = false)
     private BigDecimal dayRateEur;
 
-    @Type(value = ListArrayType.class)
-    @Column(columnDefinition = "text[]")
+    @Column(name = "tags", columnDefinition = "text[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
     @Builder.Default
-    private List<String> tags = new ArrayList<>();
+    private String[] tags = new String[0];
 
-    @Type(value = ListArrayType.class)
-    @Column(columnDefinition = "text[]")
+    @Column(name = "photo_paths", columnDefinition = "text[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
     @Builder.Default
-    private List<String> photoPaths = new ArrayList<>();
+    private String[] photoPaths = new String[0];
 
     private String clipUrl;
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "venue_status")
     private VenueStatus status;
 
     @CreationTimestamp

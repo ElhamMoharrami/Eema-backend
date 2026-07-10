@@ -20,8 +20,7 @@ INSERT INTO users (id, email, password_hash, role, full_name)
 VALUES (
     '00000000-0000-0000-0000-000000000002',
     'scout@eema-dev.local',
-    '$2a$10$92IXUNpkjO0r-dev.local',
-    '$2a$10$92$0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.',
+    '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.',
     'SCOUT',
     'Dev Scout'
 ) ON CONFLICT DO NOTHING;

@@ -150,7 +150,7 @@ public class VenueService {
         if (tag == null || tag.isBlank()) {
             venues = venueRepository.findByStatus(VenueStatus.ACTIVE);
         } else {
-            venues = venueRepository.findByStatusAndTagsContaining(VenueStatus.ACTIVE, tag);
+            venues = venueRepository.findByStatusAndTagsContaining(VenueStatus.ACTIVE.name(), tag);
         }
         return venues.stream()
                 .map(venueMapper::toListDto)

@@ -87,6 +87,12 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
+        <!-- Database-specific Flyway support (required by Flyway 10+ for PostgreSQL) -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
         <!-- Hibernate 6 -->
 
         <dependency>

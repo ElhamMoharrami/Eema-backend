@@ -8,6 +8,7 @@ import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.VenueStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,13 +26,13 @@ public class VenueMapper {
     public VenueDto toDto(Venue venue) {
         return new VenueDto(
                 venue.getId(),
-                venue.getOwner(),
+                venue.getOwner() == null ? null : UserMapper.toDto(venue.getOwner()),
                 venue.getName(),
                 venue.getNeighbourhood(),
                 venue.getSizeM2(),
                 venue.getDayRateEur(),
-                venue.getTags(),
-                venue.getPhotoPaths(),
+                venue.getTags() == null ? List.of() : Arrays.asList(venue.getTags()),
+                venue.getPhotoPaths() == null ? List.of() : Arrays.asList(venue.getPhotoPaths()),
                 venue.getClipUrl(),
                 venue.getDescription(),
                 venue.getStatus(),
@@ -48,8 +49,8 @@ public class VenueMapper {
      */
     public VenueListDto toListDto(Venue venue) {
         String firstPhotoUrl = null;
-        if (venue.getPhotoPaths() != null && !venue.getPhotoPaths().isEmpty()) {
-            firstPhotoUrl = venue.getPhotoPaths().get(0);
+        if (venue.getPhotoPaths() != null && venue.getPhotoPaths().length > 0) {
+            firstPhotoUrl = venue.getPhotoPaths()[0];
         }
         return new VenueListDto(
                 venue.getId(),
@@ -57,7 +58,7 @@ public class VenueMapper {
                 venue.getNeighbourhood(),
                 venue.getSizeM2(),
                 venue.getDayRateEur(),
-                venue.getTags(),
+                venue.getTags() == null ? List.of() : Arrays.asList(venue.getTags()),
                 firstPhotoUrl,
                 venue.getStatus()
         );
@@ -75,7 +76,7 @@ public class VenueMapper {
                 .neighbourhood(request.neighbourhood())
                 .sizeM2(request.sizeM2())
                 .dayRateEur(request.dayRateEur())
-                .tags(request.tags())
+                .tags(request.tags() == null ? new String[0] : request.tags().toArray(String[]::new))
                 .description(request.description())
                 .clipUrl(request.clipUrl())
                 .status(VenueStatus.ACTIVE) // Default status
@@ -93,7 +94,7 @@ public class VenueMapper {
         venue.setNeighbourhood(request.neighbourhood());
         venue.setSizeM2(request.sizeM2());
         venue.setDayRateEur(request.dayRateEur());
-        venue.setTags(request.tags());
+        venue.setTags(request.tags() == null ? new String[0] : request.tags().toArray(String[]::new));
         venue.setDescription(request.description());
         venue.setClipUrl(request.clipUrl());
         // Note: status, owner, createdAt, updatedAt are not updated via this method

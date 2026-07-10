@@ -24,11 +24,11 @@ public interface VenueRepository extends JpaRepository<Venue, UUID> {
     @Query(value = """
     SELECT *
     FROM venues v
-    WHERE v.status = :status
+    WHERE v.status = CAST(:status AS venue_status)
     AND :tag = ANY(v.tags)
     """, nativeQuery = true)
     List<Venue> findByStatusAndTagsContaining(
-            @Param("status") VenueStatus status,
+            @Param("status") String status,
             @Param("tag") String tag
     );
 
