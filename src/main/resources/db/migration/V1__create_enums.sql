@@ -1,38 +1,41 @@
 -- Eema V1 — Enum types
--- All application state machines are defined here as PostgreSQL enums.
--- Adding values to enums requires ALTER TYPE — plan carefully.
 
 CREATE TYPE venue_status AS ENUM (
-    'pending',    -- submitted by owner, awaiting admin approval
-    'active',     -- approved and visible in search
-    'suspended'   -- hidden by admin
+    'DRAFT',
+    'PENDING',
+    'ACTIVE',
+    'SUSPENDED'
 );
+
 
 CREATE TYPE user_role AS ENUM (
-    'SCOUT',   -- searches and books venues
-    'OWNER',   -- lists venues
-    'ADMIN'    -- platform administrator
+    'SCOUT',
+    'OWNER',
+    'ADMIN'
 );
+
 
 CREATE TYPE booking_status AS ENUM (
-    'pending',    -- checkout created, payment not yet confirmed
-    'paid',       -- payment confirmed by Mollie webhook
-    'confirmed',  -- shoot confirmed by both parties
-    'cancelled',  -- cancelled before shoot
-    'refunded'    -- payment returned to scout
+    'PENDING',
+    'PAYMENT_PENDING',
+    'PAID',
+    'CONFIRMED',
+    'CANCELLED',
+    'REFUNDED'
 );
 
+
 CREATE TYPE booking_event_type AS ENUM (
-    'booking_created',
-    'payment_created',
-    'payment_succeeded',
-    'payment_failed',
-    'payment_cancelled',
-    'booking_confirmed',
-    'cancellation_requested',
-    'refund_initiated',
-    'refund_completed',
-    'webhook_received',
-    'email_sent',
-    'owner_payout_released'
+    'BOOKING_CREATED',
+    'PAYMENT_CREATED',
+    'PAYMENT_SUCCEEDED',
+    'PAYMENT_FAILED',
+    'PAYMENT_CANCELLED',
+    'BOOKING_CONFIRMED',
+    'CANCELLATION_REQUESTED',
+    'REFUND_INITIATED',
+    'REFUND_COMPLETED',
+    'WEBHOOK_RECEIVED',
+    'EMAIL_SENT',
+    'OWNER_PAYOUT_RELEASED'
 );

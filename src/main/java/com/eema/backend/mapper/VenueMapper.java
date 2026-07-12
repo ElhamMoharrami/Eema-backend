@@ -3,9 +3,8 @@ package com.eema.backend.mapper;
 import com.eema.backend.dto.request.CreateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
-import com.eema.backend.entity.User;
 import com.eema.backend.entity.Venue;
-import com.eema.backend.entity.VenueStatus;
+import com.eema.backend.entity.enums.VenueStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

@@ -1,11 +1,9 @@
 package com.eema.backend.security;
 
-import com.eema.backend.dto.response.UserDto;
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.UserRole;
+import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.mapper.UserMapper;
 import com.eema.backend.repository.UserRepository;
-import com.eema.backend.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

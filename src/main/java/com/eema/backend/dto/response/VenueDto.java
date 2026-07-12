@@ -1,6 +1,6 @@
 package com.eema.backend.dto.response;
 
-import com.eema.backend.entity.VenueStatus;
+import com.eema.backend.entity.enums.VenueStatus;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;

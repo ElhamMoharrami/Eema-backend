@@ -1,4 +1,4 @@
-package com.eema.backend.entity;
+package com.eema.backend.entity.enums;
 
 /**
  * User role enum matching database enum.

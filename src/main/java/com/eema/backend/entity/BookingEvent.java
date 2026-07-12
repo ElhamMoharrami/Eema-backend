@@ -1,44 +1,64 @@
 package com.eema.backend.entity;
 
+import com.eema.backend.entity.enums.BookingEventType;
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
-import org.hibernate.annotations.CreationTimestamp;
-
 
 @Entity
-@Table(name = "booking_events")
-@Data
-@Builder
-@NoArgsConstructor
+@Table(
+        name = "booking_events",
+        indexes = {
+                @Index(
+                        name = "idx_booking_events_booking_created",
+                        columnList = "booking_id, created_at"
+                ),
+                @Index(
+                        name = "idx_booking_events_type",
+                        columnList = "event_type"
+                )
+        }
+)
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class BookingEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "booking_id")
+    @Column(name = "booking_id", nullable = false, updatable = false)
     private UUID bookingId;
 
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "event_type", columnDefinition = "booking_event_type")
+    @Column(
+            name = "event_type",
+            columnDefinition = "booking_event_type",
+            nullable = false,
+            updatable = false
+    )
     private BookingEventType eventType;
 
     @Convert(converter = JsonbConverter.class)
-    @Column(columnDefinition = "jsonb")
-    private String payload;
+    @Column(columnDefinition = "jsonb", updatable = false)
+    private BookingEventPayload payload;
 
-    private String createdBy;
+    @Column(name = "actor_id", updatable = false)
+    private UUID actorId;
+
+    @Column(name = "actor_name", nullable = false, updatable = false)
+    private String actorName;
 
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 }

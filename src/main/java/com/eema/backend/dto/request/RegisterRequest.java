@@ -1,6 +1,6 @@
 package com.eema.backend.dto.request;
 
-import com.eema.backend.entity.UserRole;
+import com.eema.backend.entity.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

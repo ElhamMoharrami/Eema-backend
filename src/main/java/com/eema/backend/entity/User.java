@@ -1,10 +1,8 @@
 package com.eema.backend.entity;
 
+import com.eema.backend.entity.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,15 +10,18 @@ import org.hibernate.type.SqlTypes;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * User entity representing a user in the system.
- */
 @Entity
-@Table(name = "users")
-@Data
-@Builder
-@NoArgsConstructor
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_users_email", columnList = "email")
+        }
+)
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -39,16 +40,26 @@ public class User {
     private UserRole role;
 
     private String fullName;
+
+    // Store in E.164 format
     private String phone;
+
+    // Rename to the actual Mollie identifier being stored
     private String mollieAccount;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false)
     private boolean active = true;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean emailVerified = false;
+
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private OffsetDateTime updatedAt;
 }

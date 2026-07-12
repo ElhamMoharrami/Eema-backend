@@ -1,6 +1,6 @@
 package com.eema.backend.dto.response;
 
-import com.eema.backend.entity.BookingStatus;
+import com.eema.backend.entity.enums.BookingStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

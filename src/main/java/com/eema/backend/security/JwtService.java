@@ -1,11 +1,10 @@
 package com.eema.backend.security;
 
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.UserRole;
+import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.config.AppProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Date;
-import java.util.UUID;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Date;
-import java.util.UUID;
+
 /**
  * Service for handling JWT operations.
  */

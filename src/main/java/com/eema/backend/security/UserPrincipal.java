@@ -1,7 +1,6 @@
 package com.eema.backend.security;
 
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

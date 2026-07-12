@@ -1,6 +1,6 @@
 package com.eema.backend.dto.response;
 
-import com.eema.backend.entity.UserRole;
+import com.eema.backend.entity.enums.UserRole;
 
 import java.util.UUID;
 

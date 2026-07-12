@@ -4,7 +4,6 @@ import com.eema.backend.dto.request.CreateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.UserRole;
 import com.eema.backend.repository.UserRepository;
 import com.eema.backend.service.VenueService;
 import jakarta.validation.Valid;

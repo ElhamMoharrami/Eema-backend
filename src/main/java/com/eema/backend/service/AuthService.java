@@ -4,10 +4,9 @@ import com.eema.backend.dto.request.RegisterRequest;
 import com.eema.backend.dto.request.LoginRequest;
 import com.eema.backend.dto.request.RefreshRequest;
 import com.eema.backend.dto.response.AuthResponse;
-import com.eema.backend.dto.response.UserDto;
 import com.eema.backend.entity.RefreshToken;
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.UserRole;
+import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.exception.BadRequestException;
 import com.eema.backend.exception.ConflictException;
 import com.eema.backend.exception.ForbiddenException;
@@ -26,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 
 /**
  * Service for authentication operations.

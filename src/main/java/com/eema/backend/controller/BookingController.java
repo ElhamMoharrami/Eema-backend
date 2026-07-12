@@ -2,7 +2,7 @@ package com.eema.backend.controller;
 
 import com.eema.backend.dto.response.BookingDto;
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.UserRole;
+import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.repository.UserRepository;
 import com.eema.backend.service.BookingService;
 import lombok.RequiredArgsConstructor;
