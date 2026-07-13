@@ -1,9 +1,13 @@
 package com.eema.backend.config;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 /**
@@ -16,6 +20,7 @@ public class AppProperties {
     private final JwtProperties jwt = new JwtProperties();
     private final StorageProperties storage = new StorageProperties();
     private final CorsProperties cors = new CorsProperties();
+    @Setter
     private String adminEmailAllowlist;
 
     public JwtProperties getJwt() {
@@ -34,16 +39,17 @@ public class AppProperties {
         return adminEmailAllowlist;
     }
 
-    public void setAdminEmailAllowlist(String adminEmailAllowlist) {
-        this.adminEmailAllowlist = adminEmailAllowlist;
-    }
-
     /**
      * JWT properties.
      */
     public static class JwtProperties {
+        @NotBlank
         private String secret;
+
+        @Positive
         private int accessTokenExpiryMinutes;
+
+        @Positive
         private int refreshTokenExpiryDays;
 
         public String getSecret() {
@@ -75,7 +81,10 @@ public class AppProperties {
      * Storage properties.
      */
     public static class StorageProperties {
+        @NotBlank
         private String uploadDir;
+
+        @NotBlank
         private String fileUrlPrefix;
 
         public String getUploadDir() {
@@ -99,9 +108,10 @@ public class AppProperties {
      * CORS properties.
      */
     public static class CorsProperties {
-        private java.util.List<String> allowedOrigins;
+        @NotEmpty
+        private List<String> allowedOrigins;
 
-        public java.util.List<String> getAllowedOrigins() {
+        public List<String> getAllowedOrigins() {
             return allowedOrigins;
         }
 
@@ -109,6 +119,4 @@ public class AppProperties {
             this.allowedOrigins = allowedOrigins;
         }
     }
-
-
 }

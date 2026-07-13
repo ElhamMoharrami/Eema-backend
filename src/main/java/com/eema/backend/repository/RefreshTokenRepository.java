@@ -34,5 +34,5 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID
      *
      * @param cutoff the cutoff date/time
      */
-    void deleteAllByExpiresAtBeforeAndRevokedFalse(OffsetDateTime cutoff);
+    void deleteAllByExpiresAtBefore(OffsetDateTime cutoff);
 }

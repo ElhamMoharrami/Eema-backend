@@ -1,9 +1,10 @@
 package com.eema.backend.service;
 
-import com.eema.backend.dto.request.RegisterRequest;
 import com.eema.backend.dto.request.LoginRequest;
 import com.eema.backend.dto.request.RefreshRequest;
+import com.eema.backend.dto.request.RegisterRequest;
 import com.eema.backend.dto.response.AuthResponse;
+import com.eema.backend.dto.response.UserDto;
 import com.eema.backend.entity.RefreshToken;
 import com.eema.backend.entity.User;
 import com.eema.backend.entity.enums.UserRole;
@@ -18,13 +19,13 @@ import com.eema.backend.security.JwtService;
 import com.eema.backend.config.AppProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
+import java.util.Locale;
 
 /**
  * Service for authentication operations.
@@ -56,8 +57,11 @@ public class AuthService {
             throw new BadRequestException("ADMIN role cannot be registered through this endpoint");
         }
 
+        // Normalize email
+        String normalizedEmail = normalizeEmail(request.email());
+
         // Check email uniqueness (case-insensitive)
-        if (userRepository.existsByEmailIgnoreCase(request.email())) {
+        if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {
             throw new ConflictException("Email already in use: " + request.email());
         }
 
@@ -66,38 +70,17 @@ public class AuthService {
 
         // Create and save user
         User user = User.builder()
-                .email(request.email())
+                .email(normalizedEmail)
                 .passwordHash(hashedPassword)
                 .role(request.role())
                 .fullName(request.fullName())
                 .active(true)
                 .build();
 
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
-        // Generate tokens
-        String accessToken = jwtService.generateAccessToken(savedUser);
-        String rawRefreshToken = jwtService.generateRefreshToken();
-        String refreshTokenHash = hashRefreshToken(rawRefreshToken);
-
-        // Save refresh token
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(savedUser)
-                .tokenHash(refreshTokenHash)
-                .expiresAt(OffsetDateTime.now().plusDays(appProperties.getJwt().getRefreshTokenExpiryDays()))
-                .revoked(false)
-                .build();
-
-        RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken);
-
-        // Return response
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(rawRefreshToken)
-                .tokenType("Bearer")
-                .expiresIn(appProperties.getJwt().getAccessTokenExpiryMinutes() * 60L)
-                .user(userMapper.toDto(savedUser))
-                .build();
+        // Generate and save tokens
+        return createAuthentication(user);
     }
 
     /**
@@ -109,8 +92,11 @@ public class AuthService {
      * @throws ForbiddenException if user is inactive
      */
     public AuthResponse login(LoginRequest request) {
+        // Normalize email
+        String normalizedEmail = normalizeEmail(request.email());
+
         // Find user by email (case-insensitive)
-        User user = userRepository.findByEmailIgnoreCase(request.email())
+        User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
                 .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
 
         // Verify password
@@ -123,29 +109,8 @@ public class AuthService {
             throw new ForbiddenException("Account is inactive");
         }
 
-        // Generate tokens
-        String accessToken = jwtService.generateAccessToken(user);
-        String rawRefreshToken = jwtService.generateRefreshToken();
-        String refreshTokenHash = hashRefreshToken(rawRefreshToken);
-
-        // Save refresh token
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(user)
-                .tokenHash(refreshTokenHash)
-                .expiresAt(OffsetDateTime.now().plusDays(appProperties.getJwt().getRefreshTokenExpiryDays()))
-                .revoked(false)
-                .build();
-
-        RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken);
-
-        // Return response
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(rawRefreshToken)
-                .tokenType("Bearer")
-                .expiresIn(appProperties.getJwt().getAccessTokenExpiryMinutes() * 60L)
-                .user(userMapper.toDto(user))
-                .build();
+        // Generate and save tokens
+        return createAuthentication(user);
     }
 
     /**
@@ -154,20 +119,20 @@ public class AuthService {
      * @param request refresh token request
      * @return authentication response with new tokens
      * @throws UnauthorizedException if refresh token is invalid
+     * @throws ForbiddenException if user is inactive
      */
     public AuthResponse refresh(RefreshRequest request) {
         // Hash the incoming token
-        String tokenHash = hashRefreshToken(request.refreshToken());
+        String tokenHash = jwtService.hashRefreshToken(request.refreshToken());
 
         // Find refresh token by hash
         RefreshToken refreshToken = refreshTokenRepository.findByTokenHash(tokenHash)
                 .orElseThrow(() -> new UnauthorizedException("Invalid refresh token"));
 
-        // Validate token is not revoked and not expired
+        // Validate token is not revoked and expiration
         if (refreshToken.isRevoked()) {
             throw new UnauthorizedException("Refresh token has been revoked");
         }
-
         if (refreshToken.getExpiresAt().isBefore(OffsetDateTime.now())) {
             throw new UnauthorizedException("Refresh token has expired");
         }
@@ -175,24 +140,39 @@ public class AuthService {
         // Get the user
         User user = refreshToken.getUser();
 
+        // Check if user is active
+        if (!user.isActive()) {
+            throw new ForbiddenException("Account is inactive");
+        }
+
         // Revoke the old refresh token
         refreshToken.setRevoked(true);
         refreshTokenRepository.save(refreshToken);
 
-        // Generate new tokens
+        // Generate and save new tokens
+        return createAuthentication(user);
+    }
+
+    /**
+     * Create authentication response with tokens for the given user.
+     *
+     * @param user the user to generate tokens for
+     * @return authentication response with tokens
+     */
+    private AuthResponse createAuthentication(User user) {
+        // Generate tokens
         String accessToken = jwtService.generateAccessToken(user);
         String rawRefreshToken = jwtService.generateRefreshToken();
-        String newRefreshTokenHash = hashRefreshToken(rawRefreshToken);
+        String refreshTokenHash = jwtService.hashRefreshToken(rawRefreshToken);
 
-        // Save new refresh token
+        // Save refresh token
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .user(user)
-                .tokenHash(newRefreshTokenHash)
+                .tokenHash(refreshTokenHash)
                 .expiresAt(OffsetDateTime.now().plusDays(appProperties.getJwt().getRefreshTokenExpiryDays()))
                 .revoked(false)
                 .build();
-
-        RefreshToken savedNewRefreshToken = refreshTokenRepository.save(newRefreshToken);
+        refreshTokenRepository.save(newRefreshToken);
 
         // Return response
         return AuthResponse.builder()
@@ -205,24 +185,30 @@ public class AuthService {
     }
 
     /**
-     * Hash a refresh token using SHA-256.
+     * Get current user information from authentication.
      *
-     * @param token raw token to hash
-     * @return hexadecimal string representation of the hash
+     * @param authentication the current authentication
+     * @return user data for the currently authenticated user
+     * @throws IllegalStateException if user is not found
      */
-    private String hashRefreshToken(String token) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 algorithm not available", e);
+    public UserDto getCurrentUser(Authentication authentication) {
+        String email = authentication.getName();
+        String normalizedEmail = normalizeEmail(email);
+        User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
+                .orElseThrow(() -> new IllegalStateException("User not found: " + email));
+        return userMapper.toDto(user);
+    }
+
+    /**
+     * Normalize email address by trimming and converting to lowercase.
+     *
+     * @param email the email to normalize
+     * @return normalized email
+     */
+    private String normalizeEmail(String email) {
+        if (email == null) {
+            return null;
         }
+        return email.trim().toLowerCase(Locale.ROOT);
     }
 }

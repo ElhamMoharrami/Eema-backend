@@ -5,21 +5,19 @@ import com.eema.backend.dto.request.RefreshRequest;
 import com.eema.backend.dto.request.RegisterRequest;
 import com.eema.backend.dto.response.AuthResponse;
 import com.eema.backend.dto.response.UserDto;
-import com.eema.backend.entity.User;
-import com.eema.backend.mapper.UserMapper;
-import com.eema.backend.repository.UserRepository;
 import com.eema.backend.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 /**
  * Controller for authentication endpoints.
  */
@@ -30,8 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     /**
      * Register a new user.
@@ -42,7 +38,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         AuthResponse response = authService.register(request);
-        return ResponseEntity.status(201).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     /**
@@ -72,23 +68,12 @@ public class AuthController {
     /**
      * Get current user information.
      *
+     * @param authentication the current authentication
      * @return user data for the currently authenticated user
      */
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).build();
-        }
-
-        // Get the email from the authentication object (set by JwtAuthenticationFilter)
-        String email = authentication.getName();
-
-        // Find the user by email
-        User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new IllegalStateException("User not found: " + email));
-
-        // Return the user DTO
-        return ResponseEntity.ok(userMapper.toDto(user));
+    public ResponseEntity<UserDto> getCurrentUser(Authentication authentication) {
+        UserDto userDto = authService.getCurrentUser(authentication);
+        return ResponseEntity.ok(userDto);
     }
 }

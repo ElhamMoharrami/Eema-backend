@@ -5,12 +5,14 @@ import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.config.AppProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Claims;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.nio.charset.StandardCharsets;
@@ -20,21 +22,17 @@ import java.nio.charset.StandardCharsets;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class JwtService {
 
     private final AppProperties appProperties;
 
     private SecretKey secretKey;
 
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
     @PostConstruct
     public void init() {
         String secret = appProperties.getJwt().getSecret();
-
-        System.out.println("JWT secret value: " + secret);
-        System.out.println("JWT secret chars: " + secret.length());
-        System.out.println("JWT secret bytes: " +
-                secret.getBytes(StandardCharsets.UTF_8).length);
 
         if (secret == null || secret.isEmpty()) {
             throw new IllegalStateException("JWT secret must be configured");
@@ -44,10 +42,8 @@ public class JwtService {
 
         try {
             keyBytes = Base64.getDecoder().decode(secret);
-            System.out.println("Decoded Base64 bytes: " + keyBytes.length);
         } catch (IllegalArgumentException e) {
-            keyBytes = secret.getBytes();
-            System.out.println("Raw bytes: " + keyBytes.length);
+            throw new IllegalStateException("Invalid JWT secret", e);
         }
 
         if (keyBytes.length < 32) {
@@ -58,6 +54,14 @@ public class JwtService {
         }
 
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private io.jsonwebtoken.Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     /**
@@ -78,6 +82,7 @@ public class JwtService {
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey)
+                .issuer("eema")
                 .compact();
     }
 
@@ -88,7 +93,7 @@ public class JwtService {
      */
     public String generateRefreshToken() {
         byte[] randomBytes = new byte[32];
-        new SecureRandom().nextBytes(randomBytes);
+        SECURE_RANDOM.nextBytes(randomBytes);
         return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 
@@ -100,12 +105,8 @@ public class JwtService {
      * @throws io.jsonwebtoken.ExpiredJwtException if token is expired
      * @throws io.jsonwebtoken.JwtException if token is invalid
      */
-    public io.jsonwebtoken.Claims validateToken(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+    public Claims validateToken(String token) {
+        return parseClaims(token);
     }
 
     /**
@@ -115,12 +116,8 @@ public class JwtService {
      * @return user ID as UUID
      */
     public java.util.UUID extractUserId(String token) {
-        String userIdStr = Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+        Claims claims = parseClaims(token);
+        String userIdStr = claims.getSubject();
         return java.util.UUID.fromString(userIdStr);
     }
 
@@ -131,12 +128,8 @@ public class JwtService {
      * @return email address
      */
     public String extractEmail(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("email", String.class);
+        Claims claims = parseClaims(token);
+        return claims.get("email", String.class);
     }
 
     /**
@@ -146,12 +139,32 @@ public class JwtService {
      * @return user role
      */
     public UserRole extractRole(String token) {
-        String role = Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("role", String.class);
+        Claims claims = parseClaims(token);
+        String role = claims.get("role", String.class);
         return UserRole.valueOf(role);
+    }
+
+    /**
+     * Hash a refresh token using SHA-256.
+     *
+     * @param token raw token to hash
+     * @return hexadecimal string representation of the hash string
+     */
+    public String hashRefreshToken(String token) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 algorithm not available", e);
+        }
     }
 }
