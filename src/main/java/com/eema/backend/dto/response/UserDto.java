@@ -11,6 +11,9 @@ public record UserDto(
         UUID id,
         String email,
         UserRole role,
-        String fullName
+        String fullName,
+        String phone,
+        boolean active,
+        boolean emailVerified
 ) {
 }

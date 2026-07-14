@@ -45,8 +45,6 @@ CREATE TABLE bookings
 
     owner_contact         JSONB,
 
-    cala_verified         BOOLEAN        NOT NULL DEFAULT FALSE,
-
     created_at            TIMESTAMPTZ    NOT NULL DEFAULT NOW(),
 
     paid_at               TIMESTAMPTZ,

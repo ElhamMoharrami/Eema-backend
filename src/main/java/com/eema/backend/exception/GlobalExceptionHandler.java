@@ -1,145 +1,375 @@
 package com.eema.backend.exception;
 
-import com.eema.backend.exception.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Global exception handler for the application.
- */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponse> handleBadRequestException(
-            BadRequestException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                Instant.now(),
-                400,
-                "Bad Request",
-                ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    private String getPath(WebRequest request) {
+        return request.getDescription(false)
+                .replace("uri=", "");
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponse> handleUnauthorizedException(
-            UnauthorizedException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    private ErrorResponse buildErrorResponse(
+            HttpStatus status,
+            String error,
+            String message,
+            WebRequest request
+    ) {
+        return new ErrorResponse(
                 Instant.now(),
-                401,
-                "Unauthorized",
-                ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
+                status.value(),
+                error,
+                message,
+                getPath(request)
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ErrorResponse> handleForbiddenException(
-            ForbiddenException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                Instant.now(),
-                403,
-                "Forbidden",
-                ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-    }
+    private ValidationErrorResponse buildValidationResponse(
+            BindingResult bindingResult,
+            WebRequest request
+    ) {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException(
-            NotFoundException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                Instant.now(),
-                404,
-                "Not Found",
-                ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
+        Map<String, String> errors = new LinkedHashMap<>();
 
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ErrorResponse> handleConflictException(
-            ConflictException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                Instant.now(),
-                409,
-                "Conflict",
-                ex.getMessage(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
-    }
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            errors.putIfAbsent(
+                    error.getField(),
+                    error.getDefaultMessage()
+            );
+        }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        ErrorResponse errorResponse = new ErrorResponse(
+        return new ValidationErrorResponse(
                 Instant.now(),
-                400,
+                HttpStatus.BAD_REQUEST.value(),
                 "Validation Error",
                 "Validation failed",
-                request.getDescription(false).replace("uri=", "")
+                getPath(request),
+                errors
         );
-
-        // Add validation errors to the response (could extend ErrorResponse or create a new class)
-        // For simplicity, we'll return a custom response with the errors
-        return ResponseEntity.badRequest().body(errors);
     }
+
+
+    private Map<String, String> extractConstraintErrors(
+            ConstraintViolationException ex
+    ) {
+
+        Map<String, String> errors = new LinkedHashMap<>();
+
+        ex.getConstraintViolations()
+                .forEach(violation -> {
+
+                    String path =
+                            violation.getPropertyPath().toString();
+
+                    String field =
+                            path.contains(".")
+                                    ? path.substring(path.lastIndexOf('.') + 1)
+                                    : path;
+
+                    errors.putIfAbsent(
+                            field,
+                            violation.getMessage()
+                    );
+                });
+
+        return errors;
+    }
+
+
+    private <T> ResponseEntity<T> response(
+            HttpStatus status,
+            T body
+    ) {
+        return ResponseEntity
+                .status(status)
+                .body(body);
+    }
+
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(
+            BadRequestException ex,
+            WebRequest request
+    ) {
+
+        log.warn("Bad request: {}", ex.getMessage());
+
+        return response(
+                HttpStatus.BAD_REQUEST,
+                buildErrorResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Bad Request",
+                        ex.getMessage(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(
+            UnauthorizedException ex,
+            WebRequest request
+    ) {
+
+        log.warn("Unauthorized: {}", ex.getMessage());
+
+        return response(
+                HttpStatus.UNAUTHORIZED,
+                buildErrorResponse(
+                        HttpStatus.UNAUTHORIZED,
+                        "Unauthorized",
+                        ex.getMessage(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbidden(
+            ForbiddenException ex,
+            WebRequest request
+    ) {
+
+        log.warn("Forbidden: {}", ex.getMessage());
+
+        return response(
+                HttpStatus.FORBIDDEN,
+                buildErrorResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Forbidden",
+                        ex.getMessage(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(
+            NotFoundException ex,
+            WebRequest request
+    ) {
+
+        log.warn("Not found: {}", ex.getMessage());
+
+        return response(
+                HttpStatus.NOT_FOUND,
+                buildErrorResponse(
+                        HttpStatus.NOT_FOUND,
+                        "Not Found",
+                        ex.getMessage(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflict(
+            ConflictException ex,
+            WebRequest request
+    ) {
+
+        log.warn("Conflict: {}", ex.getMessage());
+
+        return response(
+                HttpStatus.CONFLICT,
+                buildErrorResponse(
+                        HttpStatus.CONFLICT,
+                        "Conflict",
+                        ex.getMessage(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationErrorResponse> handleValidation(
+            MethodArgumentNotValidException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.BAD_REQUEST,
+                buildValidationResponse(
+                        ex.getBindingResult(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ValidationErrorResponse> handleBind(
+            BindException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.BAD_REQUEST,
+                buildValidationResponse(
+                        ex.getBindingResult(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ValidationErrorResponse> handleConstraintViolation(
+            ConstraintViolationException ex,
+            WebRequest request
+    ) {
+
+        ValidationErrorResponse response =
+                new ValidationErrorResponse(
+                        Instant.now(),
+                        400,
+                        "Validation Error",
+                        "Validation failed",
+                        getPath(request),
+                        extractConstraintErrors(ex)
+                );
+
+        return ResponseEntity
+                .badRequest()
+                .body(response);
+    }
+
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameter(
-            MissingServletRequestParameterException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                Instant.now(),
-                400,
-                "Bad Request",
-                "Missing required parameter: " + ex.getParameterName(),
-                request.getDescription(false).replace("uri=", "")
+    public ResponseEntity<ErrorResponse> handleMissingParameter(
+            MissingServletRequestParameterException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.BAD_REQUEST,
+                buildErrorResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Bad Request",
+                        "Missing parameter: " + ex.getParameterName(),
+                        request
+                )
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(
-            Exception ex, WebRequest request) {
-        // Log the actual error for debugging
-        log.error("Unexpected error occurred", ex);
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                Instant.now(),
-                500,
-                "Internal Server Error",
-                "An unexpected error occurred",
-                request.getDescription(false).replace("uri=", "")
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidJson(
+            HttpMessageNotReadableException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.BAD_REQUEST,
+                buildErrorResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Bad Request",
+                        "Malformed JSON request",
+                        request
+                )
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.BAD_REQUEST,
+                buildErrorResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Bad Request",
+                        "Invalid value for parameter: " + ex.getName(),
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthentication(
+            AuthenticationException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.UNAUTHORIZED,
+                buildErrorResponse(
+                        HttpStatus.UNAUTHORIZED,
+                        "Unauthorized",
+                        "Authentication failed",
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(
+            AccessDeniedException ex,
+            WebRequest request
+    ) {
+
+        return response(
+                HttpStatus.FORBIDDEN,
+                buildErrorResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Forbidden",
+                        "Access denied",
+                        request
+                )
+        );
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnexpected(
+            Exception ex,
+            WebRequest request
+    ) {
+
+        log.error(
+                "Unexpected application error",
+                ex
+        );
+
+        return response(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                buildErrorResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Internal Server Error",
+                        "An unexpected error occurred",
+                        request
+                )
+        );
     }
 }
