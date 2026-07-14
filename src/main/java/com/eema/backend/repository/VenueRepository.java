@@ -21,14 +21,15 @@ public interface VenueRepository extends JpaRepository<Venue, UUID> {
     List<Venue> findByStatus(VenueStatus status);
 
     @Query(value = """
-    SELECT *
-    FROM venues v
-    WHERE v.status = CAST(:status AS venue_status)
-    AND :tag = ANY(v.tags)
-    """, nativeQuery = true)
-    List<Venue> findByStatusAndTagsContaining(
+            SELECT *
+            FROM venues v
+            WHERE v.status = CAST(:status AS venue_status)
+            AND (:tag IS NULL OR :tag = ANY(v.tags))
+            """, nativeQuery = true)
+    Page<Venue> findByStatusAndTag(
             @Param("status") String status,
-            @Param("tag") String tag
+            @Param("tag") String tag,
+            Pageable pageable
     );
 
     List<Venue> findByOwnerId(UUID ownerId);

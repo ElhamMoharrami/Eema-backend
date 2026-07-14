@@ -16,12 +16,20 @@ public class UserMapper {
      * @param user the user entity
      * @return user DTO
      */
-    public static UserDto toDto(User user) {
+    public UserDto toDto(User user) {
+
+        if (user == null) {
+            return null;
+        }
+
         return new UserDto(
                 user.getId(),
                 user.getEmail(),
                 user.getRole(),
-                user.getFullName()
+                user.getFullName(),
+                user.getPhone(),
+                user.isActive(),
+                user.isEmailVerified()
         );
     }
 }

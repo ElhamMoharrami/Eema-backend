@@ -4,34 +4,41 @@ import com.eema.backend.dto.request.CreateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.Venue;
-import com.eema.backend.entity.enums.VenueStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Mapper for converting between Venue entity and VenueDto.
+ * Mapper for converting between Venue entity and DTOs.
  */
 @Component
 public class VenueMapper {
 
+    private final UserMapper userMapper;
+
+    public VenueMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+
     /**
      * Convert Venue entity to VenueDto.
-     *
-     * @param venue the venue entity
-     * @return venue DTO
      */
     public VenueDto toDto(Venue venue) {
+
+        if (venue == null) {
+            return null;
+        }
+
         return new VenueDto(
                 venue.getId(),
-                venue.getOwner() == null ? null : UserMapper.toDto(venue.getOwner()),
+                userMapper.toDto(venue.getOwner()),
                 venue.getName(),
                 venue.getNeighbourhood(),
                 venue.getSizeM2(),
                 venue.getDayRateEur(),
-                venue.getTags() == null ? List.of() : Arrays.asList(venue.getTags()),
-                venue.getPhotoPaths() == null ? List.of() : Arrays.asList(venue.getPhotoPaths()),
+                safeList(venue.getTags()),
+                safeList(venue.getPhotoPaths()),
                 venue.getClipUrl(),
                 venue.getDescription(),
                 venue.getStatus(),
@@ -40,62 +47,94 @@ public class VenueMapper {
         );
     }
 
+
     /**
-     * Convert Venue entity to VenueListDto.
-     *
-     * @param venue the venue entity
-     * @return venue list DTO
+     * Convert Venue entity to list response DTO.
      */
     public VenueListDto toListDto(Venue venue) {
-        String firstPhotoUrl = null;
-        if (venue.getPhotoPaths() != null && venue.getPhotoPaths().length > 0) {
-            firstPhotoUrl = venue.getPhotoPaths()[0];
+
+        if (venue == null) {
+            return null;
         }
+
+        String firstPhotoUrl =
+                safeList(venue.getPhotoPaths())
+                        .stream()
+                        .findFirst()
+                        .orElse(null);
+
+
         return new VenueListDto(
                 venue.getId(),
                 venue.getName(),
                 venue.getNeighbourhood(),
                 venue.getSizeM2(),
                 venue.getDayRateEur(),
-                venue.getTags() == null ? List.of() : Arrays.asList(venue.getTags()),
+                safeList(venue.getTags()),
                 firstPhotoUrl,
                 venue.getStatus()
         );
     }
 
+
     /**
      * Convert CreateVenueRequest to Venue entity.
-     *
-     * @param request the venue creation request
-     * @return venue entity
      */
     public Venue toEntity(CreateVenueRequest request) {
+
+        if (request == null) {
+            return null;
+        }
+
+
         return Venue.builder()
                 .name(request.name())
                 .neighbourhood(request.neighbourhood())
                 .sizeM2(request.sizeM2())
                 .dayRateEur(request.dayRateEur())
-                .tags(request.tags() == null ? new String[0] : request.tags().toArray(String[]::new))
+                .tags(
+                        request.tags() == null
+                                ? List.of()
+                                : request.tags()
+                )
                 .description(request.description())
                 .clipUrl(request.clipUrl())
-                .status(VenueStatus.ACTIVE) // Default status
                 .build();
     }
 
+
     /**
-     * Update Venue entity with data from CreateVenueRequest.
-     *
-     * @param request the venue update request
-     * @param venue   the venue entity to update
+     * Update existing Venue entity.
      */
-    public void updateEntityFromDto(CreateVenueRequest request, Venue venue) {
+    public void updateEntityFromDto(
+            CreateVenueRequest request,
+            Venue venue
+    ) {
+
+        if (request == null || venue == null) {
+            return;
+        }
+
+
         venue.setName(request.name());
         venue.setNeighbourhood(request.neighbourhood());
         venue.setSizeM2(request.sizeM2());
         venue.setDayRateEur(request.dayRateEur());
-        venue.setTags(request.tags() == null ? new String[0] : request.tags().toArray(String[]::new));
+
+        venue.setTags(
+                request.tags() == null
+                        ? List.of()
+                        : request.tags()
+        );
+
         venue.setDescription(request.description());
         venue.setClipUrl(request.clipUrl());
-        // Note: status, owner, createdAt, updatedAt are not updated via this method
+    }
+
+
+    private List<String> safeList(List<String> values) {
+        return values == null
+                ? List.of()
+                : List.copyOf(values);
     }
 }

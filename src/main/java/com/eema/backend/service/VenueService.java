@@ -8,11 +8,14 @@ import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.VenueStatus;
 import com.eema.backend.exception.ForbiddenException;
+import com.eema.backend.exception.NotFoundException;
 import com.eema.backend.mapper.VenueMapper;
 import com.eema.backend.repository.VenueRepository;
 import com.eema.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +45,7 @@ public class VenueService {
     @Transactional
     public VenueDto createVenue(UUID userId, CreateVenueRequest request) {
         User owner = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         if (!owner.getRole().equals(UserRole.OWNER)) {
             throw new ForbiddenException("Only users with OWNER role can create venues");
@@ -75,7 +78,7 @@ public class VenueService {
     @Transactional(readOnly = true)
     public VenueDto getVenueById(UUID id) {
         Venue venue = venueRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
         return venueMapper.toDto(venue);
     }
 
@@ -89,11 +92,11 @@ public class VenueService {
     @Transactional
     public VenueDto updateVenue(UUID id, CreateVenueRequest request) {
         Venue venue = venueRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
 
         // Only owner can update venue
         User currentUser = userRepository.findById(venue.getOwner().getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         if (!currentUser.getRole().equals(UserRole.OWNER)) {
             throw new ForbiddenException("Only the venue owner can update the venue");
@@ -112,11 +115,11 @@ public class VenueService {
     @Transactional
     public void deleteVenue(UUID id) {
         Venue venue = venueRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
 
         // Only owner can delete venue
         User currentUser = userRepository.findById(venue.getOwner().getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         if (!currentUser.getRole().equals(UserRole.OWNER)) {
             throw new ForbiddenException("Only the venue owner can delete the venue");
@@ -150,7 +153,8 @@ public class VenueService {
         if (tag == null || tag.isBlank()) {
             venues = venueRepository.findByStatus(VenueStatus.ACTIVE);
         } else {
-            venues = venueRepository.findByStatusAndTagsContaining(VenueStatus.ACTIVE.name(), tag);
+            Page<Venue> page = venueRepository.findByStatusAndTag(VenueStatus.ACTIVE.name(), tag, Pageable.unpaged());
+            venues = page.getContent();
         }
         return venues.stream()
                 .map(venueMapper::toListDto)

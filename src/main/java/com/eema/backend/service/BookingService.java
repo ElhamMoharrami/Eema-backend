@@ -5,6 +5,7 @@ import com.eema.backend.dto.request.ScoutContactDto;
 import com.eema.backend.dto.response.BookingDto;
 import com.eema.backend.entity.Booking;
 import com.eema.backend.entity.BookingEvent;
+import com.eema.backend.entity.BookingEventPayload;
 import com.eema.backend.entity.enums.BookingEventType;
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.User;
@@ -24,8 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -59,26 +64,12 @@ public class BookingService {
             throw new NotFoundException("Venue is not active");
         }
 
-        // Calculate amounts
-        BigDecimal bookingAmount = venue.getDayRateEur();
-        BigDecimal serviceFee = bookingAmount.multiply(new BigDecimal("0.04"))
-                .max(new BigDecimal("5.00"))
-                .min(new BigDecimal("20.00"));
-        BigDecimal eeemaCommission = serviceFee;
-        BigDecimal ownerPayout = bookingAmount.subtract(eeemaCommission);
-
         // Load scout user
         User scout = userRepository.findById(scoutId)
                 .orElseThrow(() -> new NotFoundException("Scout not found with id: " + scoutId));
 
         // Build scout contact JSON (from request + user data)
         ScoutContactDto scoutContactDto = request.scoutContact();
-        // We can also add the scout's email from the user entity if needed, but the request already has email.
-        // However, we might want to override with the user's email? The requirement says:
-        // "Load scout user. Build scoutContact JSON from the request + user data."
-        // We'll use the request data, but we can also include the user's ID or name if needed.
-        // For simplicity, we'll use the request data as is, but we can also add the user's ID.
-        // Let's create a map that includes the request fields and the scout's user ID.
         var scoutContactMap = new java.util.HashMap<String, Object>();
         scoutContactMap.put("name", scoutContactDto.name());
         scoutContactMap.put("email", scoutContactDto.email());
@@ -110,21 +101,37 @@ public class BookingService {
             throw new RuntimeException("Error serializing owner contact", e);
         }
 
+        // Compute financial fields
+        BigDecimal venuePriceEur = venue.getDayRateEur(); // price the scout pays for the venue
+        // TODO: Determine if totalPaidEur should include mollieFeeEur (scout bears Mollie fee) or not.
+        BigDecimal totalPaidEur = venuePriceEur; // amount paid by scout (same as venue price initially)
+        // TODO: Commission percentage should be configurable (e.g., via app.properties)
+        BigDecimal commissionPercentage = new BigDecimal("5.00"); // placeholder commission percentage
+        BigDecimal commissionEur = venuePriceEur.multiply(commissionPercentage)
+                .divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP); // platform commission
+        // TODO: Mollie fee will be set by webhook; determine who bears the fee (scout or owner) for payout calculation.
+        BigDecimal mollieFeeEur = BigDecimal.ZERO; // placeholder, will be updated later by Mollie webhook
+        // TODO: Determine if ownerPayoutEur should subtract mollieFeeEur (if owner bears fee) or not (if scout bears fee).
+        BigDecimal ownerPayoutEur = venuePriceEur.subtract(commissionEur).subtract(mollieFeeEur); // amount to owner after platform commission and mollie fee
+
         // Create and save booking
         Booking booking = Booking.builder()
                 .venueId(venue.getId())
                 .scoutId(scoutId)
                 .molliePaymentId(null) // Will be set later by payment service
                 .status(BookingStatus.PENDING)
-                .bookingAmountEur(bookingAmount)
-                .serviceFeeEur(serviceFee)
-                .eeemaCommissionEur(eeemaCommission)
-                .ownerPayoutEur(ownerPayout)
+                .venuePriceEur(venuePriceEur)
+                .totalPaidEur(totalPaidEur)
+                .commissionPercentage(commissionPercentage)
+                .commissionEur(commissionEur)
+                .mollieFeeEur(mollieFeeEur)
+                .ownerPayoutEur(ownerPayoutEur)
                 .shootDate(request.shootDate())
+                .startTime(LocalTime.of(9, 0)) // default start time
+                .endTime(LocalTime.of(17, 0)) // default end time (ensure start < end)
                 .rawBrief(request.rawBrief())
                 .scoutContact(scoutContactJson)
                 .ownerContact(ownerContactJson)
-                .calaVerified(false)
                 .build();
 
         Booking savedBooking = bookingRepository.save(booking);
@@ -146,7 +153,7 @@ public class BookingService {
         List<Booking> bookings;
         switch (role) {
             case SCOUT:
-                bookings = bookingRepository.findByScoutId(userId);
+                bookings = bookingRepository.findByScoutIdOrderByCreatedAtDesc(userId);
                 break;
             case OWNER:
                 // Get all venue IDs owned by the user, then find bookings for those venues
@@ -182,7 +189,7 @@ public class BookingService {
      */
     public void updateBookingStatus(UUID bookingId, BookingStatus newStatus, String createdBy, Map<String, Object> payload) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found with id: " + bookingId));
+                .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
 
         booking.setStatus(newStatus);
         // Set the appropriate timestamp based on the status
@@ -197,7 +204,7 @@ public class BookingService {
         bookingRepository.save(booking);
 
         // Append event
-        appendEvent(bookingId, getEventTypeForStatus(newStatus), createdBy, payload);
+        appendEvent(bookingId, getEventTypeForStatus(newStatus, bookingId, createdBy), createdBy, payload);
     }
 
     /**
@@ -206,7 +213,7 @@ public class BookingService {
      *
      * @param bookingId booking ID
      * @param type      event type
-     * @param createdBy who created the event
+     * @param createdBy who created the event (as string representation of user ID)
      * @param payload   event payload (will be serialized to JSON)
      */
     public void appendEvent(UUID bookingId, BookingEventType type, String createdBy, Object payload) {
@@ -217,28 +224,50 @@ public class BookingService {
             throw new RuntimeException("Error serializing event payload", e);
         }
 
+        // Convert createdBy string to UUID for actorId, use the string as actorName (temporary)
+        UUID actorId = UUID.fromString(createdBy);
         BookingEvent event = BookingEvent.builder()
                 .bookingId(bookingId)
                 .eventType(type)
-                .payload(payloadJson)
-                .createdBy(createdBy)
+                .payload(BookingEventPayload.builder().data((Map<String, Object>) payload).build())
+                .actorId(actorId)
+                .actorName(createdBy)
                 .build();
 
         bookingEventRepository.save(event);
     }
 
     /**
-     * Determine the event type based on the booking status.
+     * Determine the event type based on the booking status and who triggered the change.
      * This is used when updating the status to generate an appropriate event.
      *
      * @param status the booking status
+     * @param bookingId the booking ID
+     * @param createdBy the user ID (as string) who triggered the change
      * @return the corresponding event type
      */
-    private BookingEventType getEventTypeForStatus(BookingStatus status) {
+    private BookingEventType getEventTypeForStatus(BookingStatus status, UUID bookingId, String createdBy) {
         return switch (status) {
             case PAID -> BookingEventType.PAYMENT_SUCCEEDED;
-            case CONFIRMED -> BookingEventType.BOOKING_CONFIRMED;
-            case CANCELLED -> BookingEventType.CANCELLATION_REQUESTED;
+            case CONFIRMED -> BookingEventType.OWNER_CONFIRMED;
+            case CANCELLED -> {
+                // Determine if the cancellation was initiated by the scout or owner
+                Booking booking = bookingRepository.findById(bookingId)
+                        .orElseThrow(() -> new NotFoundException("Booking not found: " + bookingId));
+                Venue venue = venueRepository.findById(booking.getVenueId())
+                        .orElseThrow(() -> new NotFoundException("Venue not found for booking: " + bookingId));
+                UUID userId = UUID.fromString(createdBy);
+
+                if (userId.equals(booking.getScoutId())) {
+                    yield BookingEventType.SCOUT_CANCELLED;
+                } else if (userId.equals(venue.getOwner().getId())) {
+                    yield BookingEventType.OWNER_CANCELLED;
+                } else {
+                    // Neither scout nor owner triggered the change - default to SCOUT_CANCELLED
+                    // This could happen for system-triggered cancellations
+                    yield BookingEventType.SCOUT_CANCELLED;
+                }
+            }
             default -> BookingEventType.BOOKING_CREATED; // fallback, though not expected
         };
     }
@@ -251,17 +280,20 @@ public class BookingService {
                 booking.getId(),
                 booking.getVenueId(),
                 booking.getScoutId(),
-                booking.getMolliePaymentId(),
                 booking.getStatus(),
-                booking.getBookingAmountEur(),
-                booking.getServiceFeeEur(),
-                booking.getEeemaCommissionEur(),
-                booking.getOwnerPayoutEur(),
                 booking.getShootDate(),
+                booking.getStartTime(),
+                booking.getEndTime(),
                 booking.getRawBrief(),
+                booking.getVenuePriceEur(),
+                booking.getCommissionPercentage(),
+                booking.getCommissionEur(),
+                booking.getMollieFeeEur(),
+                booking.getOwnerPayoutEur(),
+                booking.getTotalPaidEur(),
+                booking.getMolliePaymentId(),
                 booking.getScoutContact(),
                 booking.getOwnerContact(),
-                booking.isCalaVerified(),
                 booking.getCreatedAt(),
                 booking.getPaidAt(),
                 booking.getConfirmedAt(),
