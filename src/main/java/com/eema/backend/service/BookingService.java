@@ -12,6 +12,7 @@ import com.eema.backend.entity.User;
 import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.VenueStatus;
+import com.eema.backend.exception.ForbiddenException;
 import com.eema.backend.exception.NotFoundException;
 import com.eema.backend.repository.BookingEventRepository;
 import com.eema.backend.repository.BookingRepository;
@@ -22,6 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,10 +35,11 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Service for managing bookings.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -157,7 +162,7 @@ public class BookingService {
                 break;
             case OWNER:
                 // Get all venue IDs owned by the user, then find bookings for those venues
-                List<UUID> venueIds = venueRepository.findByOwnerId(userId)
+                var venueIds = venueRepository.findByOwnerId(userId)
                         .stream()
                         .map(Venue::getId)
                         .collect(Collectors.toList());
@@ -184,12 +189,47 @@ public class BookingService {
      *
      * @param bookingId booking ID
      * @param newStatus new status to set
-     * @param createdBy who is making the change (user ID)
+     * @param createdBy who is making the change (user ID as string) – ignored; authenticated user is used
      * @param payload   additional data for the event
      */
     public void updateBookingStatus(UUID bookingId, BookingStatus newStatus, String createdBy, Map<String, Object> payload) {
+        // Obtain authentication and ensure user is authenticated and not anonymous
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+            throw new ForbiddenException("Authentication required");
+        }
+        String email = auth.getName();
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new NotFoundException("User not found with email: " + email));
+
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
+
+        // Authorization checks
+        boolean allowed = false;
+        if (user.getRole() == UserRole.ADMIN) {
+            allowed = true;
+        } else if (user.getRole() == UserRole.SCOUT) {
+            // Scouts can only update their own bookings
+            if (booking.getScoutId().equals(user.getId())) {
+                allowed = true;
+            }
+        } else if (user.getRole() == UserRole.OWNER) {
+            // Venue owners can only update bookings for their venues
+            Venue venue = venueRepository.findById(booking.getVenueId())
+                    .orElseThrow(() -> new NotFoundException("Venue not found for booking: " + bookingId));
+            if (venue.getOwner().getId().equals(user.getId())) {
+                allowed = true;
+            }
+        }
+        // Other roles (if any) not allowed by default
+
+        if (!allowed) {
+            throw new ForbiddenException("User not authorized to update booking status");
+        }
+
+        // Use authenticated user for event data
+        String userIdStr = user.getId().toString();
 
         booking.setStatus(newStatus);
         // Set the appropriate timestamp based on the status
@@ -203,8 +243,8 @@ public class BookingService {
         }
         bookingRepository.save(booking);
 
-        // Append event
-        appendEvent(bookingId, getEventTypeForStatus(newStatus, bookingId, createdBy), createdBy, payload);
+        // Append event using authenticated user
+        appendEvent(bookingId, getEventTypeForStatus(newStatus, bookingId, userIdStr), userIdStr, payload);
     }
 
     /**

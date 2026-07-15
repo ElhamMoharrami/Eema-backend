@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +82,33 @@ public class VenueService {
     public VenueDto getVenueById(UUID id) {
         Venue venue = venueRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Venue not found"));
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuthenticated = auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+        User user = null;
+        if (isAuthenticated) {
+            String email = auth.getName();
+            user = userRepository.findByEmailIgnoreCase(email)
+                    .orElseThrow(() -> new IllegalStateException("User not found with email: " + email));
+        }
+
+        boolean allow = false;
+        if (isAuthenticated && user != null) {
+            if (user.getRole() == UserRole.ADMIN) {
+                allow = true;
+            } else if (user.getRole() == UserRole.OWNER && venue.getOwner().getId().equals(user.getId())) {
+                allow = true;
+            }
+        }
+        // If not admin or owner, only allow if venue is active (public)
+        if (!allow && venue.getStatus() == VenueStatus.ACTIVE) {
+            allow = true;
+        }
+
+        if (!allow) {
+            throw new ForbiddenException("Access denied to venue");
+        }
+
         return venueMapper.toDto(venue);
     }
 
@@ -94,12 +124,23 @@ public class VenueService {
         Venue venue = venueRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Venue not found"));
 
-        // Only owner can update venue
-        User currentUser = userRepository.findById(venue.getOwner().getId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+            throw new ForbiddenException("Authentication required");
+        }
+        String email = auth.getName();
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new IllegalStateException("User not found with email: " + email));
 
-        if (!currentUser.getRole().equals(UserRole.OWNER)) {
-            throw new ForbiddenException("Only the venue owner can update the venue");
+        boolean allow = false;
+        if (user.getRole() == UserRole.ADMIN) {
+            allow = true;
+        } else if (user.getRole() == UserRole.OWNER && venue.getOwner().getId().equals(user.getId())) {
+            allow = true;
+        }
+
+        if (!allow) {
+            throw new ForbiddenException("Only the venue owner or admin can update the venue");
         }
 
         venueMapper.updateEntityFromDto(request, venue);
@@ -117,12 +158,23 @@ public class VenueService {
         Venue venue = venueRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Venue not found"));
 
-        // Only owner can delete venue
-        User currentUser = userRepository.findById(venue.getOwner().getId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+            throw new ForbiddenException("Authentication required");
+        }
+        String email = auth.getName();
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new IllegalStateException("User not found with email: " + email));
 
-        if (!currentUser.getRole().equals(UserRole.OWNER)) {
-            throw new ForbiddenException("Only the venue owner can delete the venue");
+        boolean allow = false;
+        if (user.getRole() == UserRole.ADMIN) {
+            allow = true;
+        } else if (user.getRole() == UserRole.OWNER && venue.getOwner().getId().equals(user.getId())) {
+            allow = true;
+        }
+
+        if (!allow) {
+            throw new ForbiddenException("Only the venue owner or admin can delete the venue");
         }
 
         venueRepository.delete(venue);
@@ -153,7 +205,7 @@ public class VenueService {
         if (tag == null || tag.isBlank()) {
             venues = venueRepository.findByStatus(VenueStatus.ACTIVE);
         } else {
-            Page<Venue> page = venueRepository.findByStatusAndTag(VenueStatus.ACTIVE.name(), tag, Pageable.unpaged());
+            var page = venueRepository.findByStatusAndTag(VenueStatus.ACTIVE.name(), tag, Pageable.unpaged());
             venues = page.getContent();
         }
         return venues.stream()
