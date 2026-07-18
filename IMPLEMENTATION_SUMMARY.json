@@ -1,0 +1,28 @@
+{
+  "updated_files": [
+    {
+      "path": "/src/main/java/com/eema/backend/config/AppProperties.java",
+      "changes": "Added ResendProperties static inner class with apiKey field and getter/setter, and added getResend() method to AppProperties class."
+    },
+    {
+      "path": "/src/main/java/com/eema/backend/service/EmailService.java",
+      "changes": "Created new EmailService class that uses Resend Java SDK to send emails. Implements two methods: sendBookingConfirmationToScout and sendBookingNotificationToOwner. Includes proper error handling and logging."
+    },
+    {
+      "path": "/src/main/java/com/eema/backend/service/WebhookService.java",
+      "changes": "Updated to inject UserRepository and VenueRepository. Added sendPaymentEmails method that gathers required data and calls the two EmailService methods after payment verification. Updated constructor to include new dependencies. Kept legacy email service call for compatibility."
+    },
+    {
+      "path": "/src/test/java/com/eema/backend/service/EmailServiceTest.java",
+      "changes": "Created unit tests for EmailService covering success and failure scenarios for both email sending methods using Mockito to mock Resend API calls."
+    }
+  ],
+  "summary": "Implemented EmailService using Resend API for sending booking confirmation and notification emails. Integrated with WebhookService to send emails after successful payment verification. Added proper error handling to trigger webhook retries on email failures. Updated AppProperties to include Resend configuration. Created comprehensive unit tests.",
+  "key_points": [
+    "EmailService uses Resend Java SDK with API key from AppProperties",
+    "WebhookService gathers data from User and Venue repositories to populate email templates",
+    "Email failures throw exceptions causing WebhookService to return HTTP 500 (via controller exception handling",
+    "Templates include scout email (venue details, owner contact, Calendly link) and owner email (scout contact, confirmation deadline)",
+    "Unit tests verify both success and failure email sending scenarios"
+  ]
+}

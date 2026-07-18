@@ -15,7 +15,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Service for handling JWT operations.
@@ -56,12 +57,12 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private io.jsonwebtoken.Claims parseClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
+    private Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
@@ -72,15 +73,15 @@ public class JwtService {
      */
     public String generateAccessToken(User user) {
         long expirationMillis = appProperties.getJwt().getAccessTokenExpiryMinutes() * 60 * 1000L;
-        java.util.Date now = new java.util.Date();
-        java.util.Date expiryDate = new java.util.Date(now.getTime() + expirationMillis);
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expirationMillis);
 
         return Jwts.builder()
-                .subject(user.getId().toString())
+                .setSubject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole().name())
-                .issuedAt(now)
-                .expiration(expiryDate)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
                 .signWith(secretKey)
                 .issuer("eema")
                 .compact();
@@ -115,10 +116,10 @@ public class JwtService {
      * @param token the JWT token
      * @return user ID as UUID
      */
-    public java.util.UUID extractUserId(String token) {
+    public UUID extractUserId(String token) {
         Claims claims = parseClaims(token);
         String userIdStr = claims.getSubject();
-        return java.util.UUID.fromString(userIdStr);
+        return UUID.fromString(userIdStr);
     }
 
     /**
@@ -153,7 +154,7 @@ public class JwtService {
     public String hashRefreshToken(String token) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
+            byte[] hashBytes = digest.digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashBytes) {
                 String hex = Integer.toHexString(0xff & b);
