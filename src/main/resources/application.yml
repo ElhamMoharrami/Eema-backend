@@ -39,6 +39,12 @@ logging:
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    # Log the request/response details from RestTemplate
+    org.springframework.web.client.RestTemplate: DEBUG
+    # Log our own service at INFO (or DEBUG if you want more)
+    com.eema.backend.service.ai: INFO
+    # Optional: see the raw HTTP wire traffic (requires spring-boot-starter-logging)
+    org.apache.http.wire: DEBUG
 
 app:
   jwt:
@@ -52,4 +58,4 @@ app:
     allowedOrigins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
   adminEmailAllowlist: ${ADMIN_EMAIL_ALLOWLIST:}
   gemini:
-    api-key: ${GEMINI_API_KEY:}
+    api-key: "${GEMINI_API_KEY:#{null}}"   # allows overriding via env var, fails fast if missing

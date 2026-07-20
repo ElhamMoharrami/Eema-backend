@@ -1,5 +1,7 @@
 package com.eema.backend.service.ai;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -13,6 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class GeminiClient {
+
+    private static final Logger log = LoggerFactory.getLogger(GeminiClient.class);
 
     private final String apiKey;
     private final RestTemplate restTemplate;
@@ -45,6 +49,12 @@ public class GeminiClient {
                 GENERATION_CONFIG
         );
 
+        // Log the request payload if debug logging is enabled
+        if (log.isDebugEnabled()) {
+            log.debug("Gemini request prompt (len={}): {}", prompt.length(),
+                    prompt.length() > 500 ? prompt.substring(0, 500) + "..." : prompt);
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<GeminiRequest> entity = new HttpEntity<>(request, headers);
@@ -64,6 +74,15 @@ public class GeminiClient {
                 );
 
                 if (response.getStatusCode().is2xxSuccessful()) {
+                    // Log the response if debug logging is enabled
+                    if (log.isDebugEnabled()) {
+                        String responseBody = response.getBody();
+                        log.debug("Gemini response (len={}): {}",
+                                responseBody != null ? responseBody.length() : 0,
+                                responseBody != null && responseBody.length() < 500
+                                        ? responseBody
+                                        : responseBody.substring(0, 500) + "...");
+                    }
                     return response.getBody();
                 } else {
                     // If we get a non-2xx response that is not a retryable error, throw immediately

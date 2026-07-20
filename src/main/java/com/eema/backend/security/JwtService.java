@@ -83,7 +83,7 @@ public class JwtService {
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(secretKey)
-                .issuer("eema")
+                .setIssuer("eema")
                 .compact();
     }
 

@@ -1,6 +1,7 @@
 package com.eema.backend.service;
 
 import com.eema.backend.config.AppProperties;
+import com.resend.core.exception.ResendException;
 import com.resend.Resend;
 import com.resend.services.emails.model.SendEmailRequest;
 import com.resend.services.emails.model.SendEmailResponse;
@@ -29,22 +30,18 @@ public class EmailService {
      * @param venueDetails  details of the venue (name, address, etc.)
      * @param ownerContact  contact information of the venue owner
      * @param calendlyLink  link to schedule a call via Calendly
+     * @throws ResendException if sending fails
      */
-    public void sendBookingConfirmationToScout(String scoutEmail, String venueDetails, String ownerContact, String calendlyLink) {
-        try {
-            SendEmailRequest request = SendEmailRequest.builder()
-                    .from(fromEmail)
-                    .to(Collections.singletonList(scoutEmail))
-                    .subject("Your Eema booking is confirmed!")
-                    .html(buildScoutEmailHtml(venueDetails, ownerContact, calendlyLink))
-                    .build();
+    public void sendBookingConfirmationToScout(String scoutEmail, String venueDetails, String ownerContact, String calendlyLink) throws ResendException {
+        SendEmailRequest request = SendEmailRequest.builder()
+                .from(fromEmail)
+                .to(Collections.singletonList(scoutEmail))
+                .subject("Your Eema booking is confirmed!")
+                .html(buildScoutEmailHtml(venueDetails, ownerContact, calendlyLink))
+                .build();
 
-            SendEmailResponse response = resendClient.emails().send(request);
-            log.info("Booking confirmation email sent to scout: {}, emailId: {}", scoutEmail, response.getId());
-        } catch (Exception e) {
-            log.error("Failed to send booking confirmation email to scout {}", scoutEmail, e);
-            throw e; // rethrow to trigger 500 in webhook retry
-        }
+        SendEmailResponse response = resendClient.emails().send(request);
+        log.info("Booking confirmation email sent to scout: {}, emailId: {}", scoutEmail, response.getId());
     }
 
     /**
@@ -53,22 +50,18 @@ public class EmailService {
      * @param ownerEmail           the venue owner's email address
      * @param scoutContact         contact information of the scout
      * @param confirmationDeadline deadline for the owner to confirm (e.g., timestamp)
+     * @throws ResendException if sending fails
      */
-    public void sendBookingNotificationToOwner(String ownerEmail, String scoutContact, String confirmationDeadline) {
-        try {
-            SendEmailRequest request = SendEmailRequest.builder()
-                    .from(fromEmail)
-                    .to(Collections.singletonList(ownerEmail))
-                    .subject("New booking request for your venue")
-                    .html(buildOwnerEmailHtml(scoutContact, confirmationDeadline))
-                    .build();
+    public void sendBookingNotificationToOwner(String ownerEmail, String scoutContact, String confirmationDeadline) throws ResendException {
+        SendEmailRequest request = SendEmailRequest.builder()
+                .from(fromEmail)
+                .to(Collections.singletonList(ownerEmail))
+                .subject("New booking request for your venue")
+                .html(buildOwnerEmailHtml(scoutContact, confirmationDeadline))
+                .build();
 
-            SendEmailResponse response = resendClient.emails().send(request);
-            log.info("Booking notification email sent to owner: {}, emailId: {}", ownerEmail, response.getId());
-        } catch (Exception e) {
-            log.error("Failed to send booking notification email to owner {}", ownerEmail, e);
-            throw e; // rethrow to trigger 500 in webhook retry
-        }
+        SendEmailResponse response = resendClient.emails().send(request);
+        log.info("Booking notification email sent to owner: {}, emailId: {}", ownerEmail, response.getId());
     }
 
     private String buildScoutEmailHtml(String venueDetails, String ownerContact, String calendlyLink) {

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
+import com.eema.backend.entity.User;
+import com.eema.backend.entity.Venue;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +66,7 @@ public class WebhookService {
                           VenueRepository venueRepository,
                           ObjectMapper objectMapper,
                           EmailService emailService) {
-        this.restTemplate = restTemplate;
+        this.restTemplate = restController;
         this.appProperties = appProperties;
         this.bookingRepository = bookingRepository;
         this.bookingEventRepository = bookingEventRepository;
@@ -143,7 +145,7 @@ public class WebhookService {
      * @param booking the booking to update
      */
     @Transactional
-    public void processPaidBooking(com.eema.backend.entity.Booking booking) {
+    public void processPaidBooking(final com.eema.backend.entity.Booking booking) {
         // Idempotency check: if already paid, do nothing
         if (booking.getStatus() == com.eema.backend.entity.enums.BookingStatus.PAID) {
             log.info("Booking {} is already paid - skipping", booking.getId());
@@ -165,7 +167,7 @@ public class WebhookService {
         log.info("Created PAYMENT_SUCCEEDED event for booking {}", booking.getId());
 
         // Extract data needed for email sending
-        User scout = userRepository.findById(booking.getScotId())
+        User scout = userRepository.findById(booking.getScoutId())
                 .orElseThrow(() -> new IllegalStateException("Scout not found for booking " + booking.getId()));
         String scoutEmail = scout.getEmail();
 
@@ -175,16 +177,15 @@ public class WebhookService {
         String venueAddress = venue.getNeighbourhood(); // Use neighbourhood as address
         String venueDetails = String.format("%s, %s", venueName, venueAddress);
 
-        User owner = venue.getOwner();
-        String ownerEmail = owner.getEmail();
-        String ownerContact = owner.getFullName();
-        if (owner.getPhone() != null && !owner.getPhone().isBlank()) {
-            ownerContact = ownerContact + " (" + owner.getPhone() + ")";
-        }
+        final String ownerEmail = venue.getOwner().getEmail();
+        final String ownerName = venue.getOwner().getFullName();
+        final String ownerContact = (venue.getOwner().getPhone() != null && !venue.getOwner().getPhone().isBlank())
+                ? ownerName + " (" + venue.getOwner().getPhone() + ")"
+                                : ownerName;
 
         String calendlyLink = appProperties.getCalendly().getBaseUrl() + "/" + booking.getId();
 
-        String scoutContact = booking.getScotContact(); // JSON string from booking
+        String scoutContact = booking.getScoutContact(); // JSON string from booking
         String confirmationDeadline = LocalDateTime.now().plusHours(24).toString(); // 24 hours from now
 
         // Register transaction synchronization to send emails after commit
