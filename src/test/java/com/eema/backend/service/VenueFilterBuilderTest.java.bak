@@ -1,0 +1,297 @@
+package com.eema.backend.service;
+
+import com.eema.backend.entity.Venue;
+import com.eema.backend.entity.enums.VenueStatus;
+import com.eema.backend.service.ai.ParsedBrief;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import jakarta.persistence.TypedQuery;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class VenueFilterBuilderTest {
+
+    @Mock
+    private EntityManager entityManager;
+
+    @Mock
+    private CriteriaBuilder criteriaBuilder;
+
+    @Mock
+    private CriteriaQuery<Venue> criteriaQuery;
+
+    @Mock
+    private Root<Venue> root;
+
+    @Mock
+    private TypedQuery<Venue> typedQuery;
+
+    @InjectMocks
+    private VenueFilterBuilder venueFilterBuilder;
+
+    private Venue venue1;
+    private Venue venue2;
+    private Venue venue3;
+
+    @BeforeEach
+    void setUp() {
+        // Initialize mocks
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(Venue.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(Venue.class)).thenReturn(root);
+        when(entityManager.createQuery(criteriaQuery)).thenReturn(typedQuery);
+
+        // Create test venues
+        venue1 = Venue.builder()
+                .id(java.util.UUID.randomUUID())
+                .name("Venue One")
+                .neighbourhood("Central")
+                .sizeM2(100)
+                .dayRateEur(new BigDecimal("100.00"))
+                .tags(List.of("indoor", "central"))
+                .status(VenueStatus.ACTIVE)
+                .build();
+
+        venue2 = Venue.builder()
+                .id(java.util.UUID.randomUUID())
+                .name("Venue Two")
+                .neighbourhood("Suburb")
+                .sizeM2(200)
+                .dayRateEur(new BigDecimal("200.00"))
+                .tags(List.of("outdoor", "park"))
+                .status(VenueStatus.ACTIVE)
+                .build();
+
+        venue3 = Venue.builder()
+                .id(java.util.UUID.randomUUID())
+                .name("Venue Three")
+                .neighbourhood("Central")
+                .sizeM2(150)
+                .dayRateEur(new BigDecimal("150.00"))
+                .tags(List.of("indoor", "luxury"))
+                .status(VenueStatus.ACTIVE)
+                .build();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testFindCandidateVenues_withBudget_returnsVenuesWithinBudget() {
+        // Arrange
+        ParsedBrief brief = new ParsedBrief(
+                null, // aesthetic
+                null, // locationPreferences
+                null, // neighbourhood
+                null, // indoorOutdoor
+                null, // sizeM2
+                new BigDecimal("150.00"), // budgetPerDay
+                null, // requiredAmenities
+                null, // shootType
+                null, // numPeople
+                null, // lightingPreferences
+                null, // accessibility
+                null, // timingDatePreferences
+                null, // tags
+                0.9   // confidenceScore
+        );
+
+        // Mock the criteria building for budget
+        when(criteriaBuilder.lessThanOrEqualTo(
+                eq(root.get("dayRateEur")), eq(new BigDecimal("150.00"))))
+                .thenReturn(mock(Predicate.class));
+
+        when(criteriaBuilder.equal(root.get("status"), VenueStatus.ACTIVE))
+                .thenReturn(mock(Predicate.class));
+
+        // Mock the query to return venue1 and venue3 (both have dayRateEur <= 150)
+        List<Venue> expected = List.of(venue1, venue3);
+        when(typedQuery.getResultList()).thenReturn(expected);
+
+        // Act
+        List<Venue> result = venueFilterBuilder.findCandidateVenues(brief);
+
+        // Assert
+        assertEquals(2, result.size());
+        assertTrue(result.contains(venue1));
+        assertTrue(result.contains(venue3));
+        assertFalse(result.contains(venue2)); // venue2 has dayRateEur 200 > 150
+
+        // Verify that the query was set to limit 15
+        verify(typedQuery).setFirstResult(0);
+        verify(typedQuery).setMaxResults(15);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testFindCandidateVenues_withTags_returnsVenuesWithAllTags() {
+        // Arrange
+        ParsedBrief brief = new ParsedBrief(
+                null, // aesthetic
+                null, // locationPreferences
+                null, // neighbourhood
+                null, // indoorOutdoor
+                null, // sizeM2
+                null, // budgetPerDay
+                null, // requiredAmenities
+                null, // shootType
+                null, // numPeople
+                null, // lightingPreferences
+                null, // accessibility
+                null, // timingDatePreferences
+                List.of("indoor", "luxury"), // tags
+                0.9   // confidenceScore
+        );
+
+        // Mock the criteria building for tags
+        // We need to mock the chain: criteriaBuilder.function("array_contains", Boolean.class, root.get("tags"), criteriaBuilder.literal(tag))
+        // For each tag, we'll mock the criterion.
+
+        // Mock literacy
+        Expression<String> literalIndoor = mock(Expression.class);
+        Expression<String> literalLuxury = mock(Expression.class);
+        when(criteriaBuilder.literal("indoor")).thenReturn(literalIndoor);
+        when(criteriaBuilder.literal("luxury")).thenReturn(literalLuxury);
+
+        // Mock function calls
+        Expression<Boolean> containsIndoor = mock(Expression.class);
+        Expression<Boolean> containsLuxury = mock(Expression.class);
+        when(criteriaBuilder.function(eq("array_contains"), eq(Boolean.class), eq(root.get("tags")), eq(literalIndoor)))
+                .thenReturn(containsIndoor);
+        when(criteriaBuilder.function(eq("array_contains"), eq(Boolean.class), eq(root.get("tags")), eq(literalLuxury)))
+                .thenReturn(containsLuxury);
+
+        // Mock equality checks
+        when(criteriaBuilder.equal(eq(containsIndoor), eq(true))).thenReturn(mock(Predicate.class));
+        when(criteriaBuilder.equal(eq(containsLuxury), eq(true))).thenReturn(mock(Predicate.class));
+
+        // Mock status predicate
+        when(criteriaBuilder.equal(root.get("status"), VenueStatus.ACTIVE))
+                .thenReturn(mock(Predicate.class));
+
+        // Mock the query to return venue3 (which has both indoor and luxury tags)
+        List<Venue> expected = List.of(venue3);
+        when(typedQuery.getResultList()).thenReturn(expected);
+
+        // Act
+        List<Venue> result = venueFilterBuilder.findCandidateVenues(brief);
+
+        // Assert
+        assertEquals(1, result.size());
+        assertTrue(result.contains(venue3));
+        assertFalse(result.contains(venue1)); // venue1 has indoor but not luxury
+        assertFalse(result.contains(venue2)); // venue2 has neither
+
+        // Verify that the query was set to limit 15
+        verify(typedQuery).setFirstResult(0);
+        verify(typedQuery).setMaxResults(15);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testFindCandidateVenues_noFilters_returnsFirstFifteenOrdered() {
+        // Arrange
+        ParsedBrief brief = new ParsedBrief(
+                null, // aesthetic
+                null, // locationPreferences
+                null, // neighbourhood
+                null, // indoorOutdoor
+                null, // sizeM2
+                null, // budgetPerDay
+                null, // requiredAmenities
+                null, // shootType
+                null, // numPeople
+                null, // lightingPreferences
+                null, // accessibility
+                null, // timingDatePreferences
+                null, // tags
+                0.9   // confidenceScore
+        );
+
+        // Mock the status predicate (only active venues)
+        when(criteriaBuilder.equal(root.get("status"), VenueStatus.ACTIVE))
+                .thenReturn(mock(Predicate.class));
+
+        // Mock the ordering: we need to verify that the order by clauses are added
+        ArgumentCaptor<List<Order>> orderCaptor = ArgumentCaptor.forClass(List.class);
+
+        // When the query is executed, return all three venues (but limited to 15)
+        List<Venue> allVenues = List.of(venue1, venue2, venue3);
+        when(typedQuery.getResultList()).thenReturn(allVenues);
+
+        // Act
+        List<Venue> result = venueFilterBuilder.findCandidateVenues(brief);
+
+        // Assert
+        // We expect all three venues because there are less than 15
+        assertEquals(3, result.size());
+
+        // Verify that the query was set to limit 15
+        verify(typedQuery).setFirstResult(0);
+        verify(typedQuery).setMaxResults(15);
+
+        // Verify that the order by clauses are present (we can't easily check the order without more mocking)
+        // At least verify that orderBy was called on the criteriaQuery
+        verify(criteriaQuery).orderBy(orderCaptor.capture());
+        List<Order> orders = orderCaptor.getValue();
+        assertEquals(3, orders.size());
+        // Check the order: asc dayRateEur, desc sizeM2, asc name
+        // We can check the expressions if needed, but for simplicity we just check the size.
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testFindCandidateVenues_noMatchingVenues_returnsEmptyList() {
+        // Arrange
+        ParsedBrief brief = new ParsedBrief(
+                null, // aesthetic
+                null, // locationPreferences
+                null, // neighbourhood
+                null, // indoorOutdoor
+                null, // sizeM2
+                new BigDecimal("50.00"), // budgetPerDay (less than all venues)
+                null, // requiredAmenities
+                null, // shootType
+                null, // numPeople
+                null, // lightingPreferences
+                null, // accessibility
+                null, // timingDatePreferences
+                null, // tags
+                0.9   // confidenceScore
+        );
+
+        // Mock the criteria building
+        when(criteriaBuilder.lessThanOrEqualTo(
+                eq(root.get("dayRateEur")), eq(new BigDecimal("50.00"))))
+                .thenReturn(mock(Predicate.class));
+
+        when(criteriaBuilder.equal(root.get("status"), VenueStatus.ACTIVE))
+                .thenReturn(mock(Predicate.class));
+
+        // Mock the query to return an empty list
+        when(typedQuery.getResultList()).thenReturn(new ArrayList<>());
+
+        // Act
+        List<Venue> result = venueFilterBuilder.findCandidateVenues(brief);
+
+        // Assert
+        assertTrue(result.isEmpty());
+
+        // Verify limit
+        verify(typedQuery).setFirstResult(0);
+        verify(typedQuery).setMaxResults(15);
+    }
+}
