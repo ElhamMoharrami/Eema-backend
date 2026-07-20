@@ -17,10 +17,21 @@ public class EmailService {
     private final Resend resendClient;
     private final String fromEmail;
 
+    /**
+     * Constructor used in production.
+     */
     public EmailService(AppProperties appProperties) {
         String apiKey = appProperties.getResend().getApiKey();
         this.resendClient = new Resend(apiKey);
         this.fromEmail = appProperties.getResend().getFromEmail();
+    }
+
+    /**
+     * Constructor for testing, allows injecting a mock Resend client.
+     */
+    EmailService(AppProperties appProperties, Resend resendClient) {
+        this.fromEmail = appProperties.getResend().getFromEmail();
+        this.resendClient = resendClient;
     }
 
     /**
