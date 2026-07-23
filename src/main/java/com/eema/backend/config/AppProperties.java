@@ -110,6 +110,10 @@ public class AppProperties {
             this.uploadDir = uploadDir;
         }
 
+        public String getFileUrlPrefix() {
+            return fileUrlPrefix;
+        }
+
         public void setFileUrlPrefix(String fileUrlPrefix) {
             this.fileUrlPrefix = fileUrlPrefix;
         }

@@ -43,7 +43,7 @@ class EmailServiceTest {
         // Mock the Resend client's emails() method to return a mock Emails object
         when(mockResendClient.emails()).thenReturn(mockEmails);
 
-        // Create EmailService with the mocked Resend client
+        // Create EmailService with the mocked Resend client (using the test constructor)
         emailService = new EmailService(appProperties, mockResendClient);
     }
 
