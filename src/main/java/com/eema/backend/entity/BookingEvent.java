@@ -4,8 +4,6 @@ import com.eema.backend.entity.enums.BookingEventType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -39,13 +37,7 @@ public class BookingEvent {
     private UUID bookingId;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(
-            name = "event_type",
-            columnDefinition = "booking_event_type",
-            nullable = false,
-            updatable = false
-    )
+    @Column(name = "event_type", nullable = false, updatable = false)
     private BookingEventType eventType;
 
     @Convert(converter = JsonbConverter.class)

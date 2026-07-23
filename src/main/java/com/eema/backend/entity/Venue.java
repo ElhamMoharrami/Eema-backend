@@ -55,7 +55,6 @@ public class Venue {
     @Builder.Default
     private List<String> tags = new ArrayList<>();
 
-    @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "photo_paths", columnDefinition = "text[]")
     @Builder.Default
     private List<String> photoPaths = new ArrayList<>();
@@ -66,8 +65,7 @@ public class Venue {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(columnDefinition = "venue_status", nullable = false)
+    @Column(nullable = false)
     @Builder.Default
     private VenueStatus status = VenueStatus.DRAFT;
 

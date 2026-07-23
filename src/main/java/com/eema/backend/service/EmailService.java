@@ -8,6 +8,7 @@ import com.resend.services.emails.model.SendEmailResponse;
 import java.util.Collections;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class EmailService {
     /**
      * Constructor used in production.
      */
+    @Autowired
     public EmailService(AppProperties appProperties) {
         String apiKey = appProperties.getResend().getApiKey();
         this.resendClient = new Resend(apiKey);

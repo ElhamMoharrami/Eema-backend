@@ -15,7 +15,6 @@ import java.nio.file.*;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class StorageService {
 
     private final Path rootLocation;

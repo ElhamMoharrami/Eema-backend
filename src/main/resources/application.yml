@@ -2,16 +2,17 @@ spring:
   application:
     name: eema
   profiles:
-    active: dev
+    active: local
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/eema_db}
-    username: ${SPRING_DATASOURCE_USERNAME:eema_user}
-    password: ${SPRING_DATASOURCE_PASSWORD:eema_password}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/eema}
+    username: ${SPRING_DATASOURCE_USERNAME:eema}
+    password: ${SPRING_DATASOURCE_PASSWORD:eema}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true

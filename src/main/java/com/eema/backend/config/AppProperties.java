@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -14,6 +15,7 @@ import java.util.List;
  * Application properties configuration.
  */
 @ConfigurationProperties(prefix = "app")
+@Component
 @Validated
 public class AppProperties {
 
