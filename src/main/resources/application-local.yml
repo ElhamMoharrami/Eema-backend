@@ -51,6 +51,8 @@ app:
     from-email: bookings@eema.co
   sentry:
     dsn: your-sentry-dsn
+  commission:
+    percentage: 4.00  # Commission percentage (e.g., 4.00 for 4%)
 
 logging:
   level:

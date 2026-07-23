@@ -95,8 +95,8 @@ public class CheckoutController {
             venue.getDayRateEur()
         );
 
-        // 4. Calculate commission (5% platform fee)
-        BigDecimal commissionPercentage = new BigDecimal("5.00"); // 5%
+        // 4. Calculate commission (platform fee from configuration)
+        BigDecimal commissionPercentage = new BigDecimal(appProperties.getCommission().getPercentage());
         BigDecimal commissionEur = venue.getDayRateEur().multiply(commissionPercentage).divide(new BigDecimal("100"));
 
         // 5. Calculate owner payout (venue price - commission)

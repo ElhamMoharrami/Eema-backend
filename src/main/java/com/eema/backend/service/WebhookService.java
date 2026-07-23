@@ -28,16 +28,19 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.UUID;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -143,14 +146,36 @@ public class WebhookService {
      * This method is transactional.
      *
      * @param booking the booking to update
+     * @param payment the payment details from Mollie
      */
     @Transactional
-    public void processPaidBooking(final com.eema.backend.entity.Booking booking) {
+    public void processPaidBooking(final com.eema.backend.entity.Booking booking, final com.eema.backend.dto.response.MolliePaymentResponse payment) {
         // Idempotency check: if already paid, do nothing
         if (booking.getStatus() == com.eema.backend.entity.enums.BookingStatus.PAID) {
             log.info("Booking {} is already paid - skipping", booking.getId());
             return;
         }
+
+        // Update financial fields from Mollie payment
+        // Amount charged to customer (should include venue price + service fee)
+        BigDecimal amountPaid = new BigDecimal(payment.amount().value());
+        booking.setTotalPaidEur(amountPaid);
+
+        // For now, we'll set mollie fee to 0 and calculate based on our known fee structure
+        // In a more advanced implementation, we could extract the actual fee from Mollie webhook data
+        // or from the payment details if Mollie provides it
+        booking.setMollieFeeEur(BigDecimal.ZERO);
+
+        // Recalculate commission and payout based on the venue price (not the total paid)
+        // This assumes the venue price is the base amount before our service fee
+        BigDecimal venuePriceEur = booking.getVenuePriceEur(); // This was set when booking was created
+        BigDecimal commissionPercentage = booking.getCommissionPercentage(); // This was set when booking was created
+        BigDecimal commissionEur = venuePriceEur.multiply(commissionPercentage).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
+        booking.setCommissionEur(commissionEur);
+
+        // Owner payout = venue price - commission - mollie fee
+        BigDecimal ownerPayoutEur = venuePriceEur.subtract(commissionEur).subtract(booking.getMollieFeeEur());
+        booking.setOwnerPayoutEur(ownerPayoutEur);
 
         // Update booking
         booking.setStatus(com.eema.backend.entity.enums.BookingStatus.PAID);

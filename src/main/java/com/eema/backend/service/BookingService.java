@@ -110,8 +110,8 @@ public class BookingService {
         BigDecimal venuePriceEur = venue.getDayRateEur(); // price the scout pays for the venue
         // TODO: Determine if totalPaidEur should include mollieFeeEur (scout bears Mollie fee) or not.
         BigDecimal totalPaidEur = venuePriceEur; // amount paid by scout (same as venue price initially)
-        // TODO: Commission percentage should be configurable (e.g., via app.properties)
-        BigDecimal commissionPercentage = new BigDecimal("5.00"); // placeholder commission percentage
+        // Get commission percentage from configuration
+        BigDecimal commissionPercentage = new BigDecimal(appProperties.getCommission().getPercentage());
         BigDecimal commissionEur = venuePriceEur.multiply(commissionPercentage)
                 .divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP); // platform commission
         // TODO: Mollie fee will be set by webhook; determine who bears the fee (scout or owner) for payout calculation.

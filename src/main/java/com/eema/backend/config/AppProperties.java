@@ -217,4 +217,27 @@ public class AppProperties {
             this.baseUrl = baseUrl;
         }
     }
+
+    /**
+     * Commission properties.
+     */
+    @Validated
+    public static class CommissionProperties {
+        @NotBlank
+        private String percentage;  // Commission percentage as string (e.g., "4.00" for 4%)
+
+        public String getPercentage() {
+            return percentage;
+        }
+
+        public void setPercentage(String percentage) {
+            this.percentage = percentage;
+        }
+    }
+
+    private final CommissionProperties commission = new CommissionProperties();
+
+    public CommissionProperties getCommission() {
+        return commission;
+    }
 }

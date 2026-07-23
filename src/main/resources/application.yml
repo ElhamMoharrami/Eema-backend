@@ -59,3 +59,5 @@ app:
   adminEmailAllowlist: ${ADMIN_EMAIL_ALLOWLIST:}
   gemini:
     api-key: "${GEMINI_API_KEY:#{null}}"   # allows overriding via env var, fails fast if missing
+  commission:
+    percentage: ${COMMISSION_PERCENTAGE:4.00}  # Commission percentage (e.g., 4.00 for 4%)
