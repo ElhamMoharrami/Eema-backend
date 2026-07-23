@@ -61,3 +61,7 @@ app:
     api-key: "${GEMINI_API_KEY:#{null}}"   # allows overriding via env var, fails fast if missing
   commission:
     percentage: ${COMMISSION_PERCENTAGE:4.00}  # Commission percentage (e.g., 4.00 for 4%)
+  mollie:
+    api-key: "${MOLLIE_API_KEY:#{null}}"
+    webhook-secret: "${MOLLIE_WEBHOOK_SECRET:#{null}}"
+    redirect-url: "${MOLLIE_REDIRECT_URL:https://example.com}"

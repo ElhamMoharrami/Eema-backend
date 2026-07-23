@@ -136,7 +136,7 @@ public class WebhookService {
 
         // Process the booking update in a transaction
         bookingRepository.findById(bookingId).ifPresentOrElse(
-                this::processPaidBooking,
+                booking -> processPaidBooking(booking, payment),
                 () -> log.warn("Booking not found for id: {} (from payment {})", bookingId, paymentId)
         );
     }

@@ -1,5 +1,6 @@
 package com.eema.backend.controller;
 
+import com.eema.backend.config.AppProperties;
 import com.eema.backend.dto.request.CheckoutRequest;
 import com.eema.backend.dto.response.CheckoutResponse;
 import com.eema.backend.entity.Booking;
@@ -39,17 +40,20 @@ public class CheckoutController {
     private final BookingRepository bookingRepository;
     private final PaymentService paymentService;
     private final ObjectMapper objectMapper;
+    private final AppProperties appProperties;
 
     public CheckoutController(VenueRepository venueRepository,
                               UserRepository userRepository,
                               BookingRepository bookingRepository,
                               PaymentService paymentService,
-                              ObjectMapper objectMapper) {
+                              ObjectMapper objectMapper,
+                              AppProperties appProperties) {
         this.venueRepository = venueRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.paymentService = paymentService;
         this.objectMapper = objectMapper;
+        this.appProperties = appProperties;
     }
 
     /**
