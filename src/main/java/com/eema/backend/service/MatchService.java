@@ -38,17 +38,18 @@ public class MatchService {
 
         VenueListDto venue = toVenueListDto(venueDto);
 
-        QuoteItemDto dayRateItem = new QuoteItemDto(
-                "Day rate",
-                venue.dayRateEur(),
-                "Base rate for the venue"
+        QuoteItemDto hourlyRateItem = new QuoteItemDto(
+                "Hourly rate",
+                venue.hourlyRateEur(),
+                "Minimum booking: " + venue.minimumBookingMinutes() + " minutes"
         );
 
         MatchedVenueDto matchedVenue = new MatchedVenueDto(
                 venue,
                 DIRECT_MATCH_SCORE,
                 "Direct quote for the requested venue",
-                List.of(dayRateItem)
+                venue.fullDayRateEur() == null ? List.of(hourlyRateItem) : List.of(hourlyRateItem,
+                        new QuoteItemDto("Full-day rate", venue.fullDayRateEur(), "Cap on the hourly calculation"))
         );
 
         log.info("Direct quote generated for venueId={}", venue.id());
@@ -77,7 +78,9 @@ public class MatchService {
                 venue.name(),
                 venue.neighbourhood(),
                 venue.sizeM2(),
-                venue.dayRateEur(),
+                venue.hourlyRateEur(),
+                venue.minimumBookingMinutes(),
+                venue.fullDayRateEur(),
                 venue.tags(),
                 getPrimaryPhoto(venue),
                 venue.status()

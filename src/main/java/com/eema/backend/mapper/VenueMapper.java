@@ -37,7 +37,9 @@ public class VenueMapper {
                 venue.getName(),
                 venue.getNeighbourhood(),
                 venue.getSizeM2(),
-                venue.getDayRateEur(),
+                venue.getHourlyRateEur(),
+                venue.getMinimumBookingMinutes(),
+                venue.getFullDayRateEur(),
                 safeList(venue.getTags()),
                 safeList(venue.getPhotoPaths()),
                 venue.getClipUrl(),
@@ -71,7 +73,9 @@ public class VenueMapper {
                 venue.getName(),
                 venue.getNeighbourhood(),
                 venue.getSizeM2(),
-                venue.getDayRateEur(),
+                venue.getHourlyRateEur(),
+                venue.getMinimumBookingMinutes(),
+                venue.getFullDayRateEur(),
                 safeList(venue.getTags()),
                 firstPhotoUrl,
                 venue.getStatus()
@@ -93,7 +97,9 @@ public class VenueMapper {
                 .name(request.name())
                 .neighbourhood(request.neighbourhood())
                 .sizeM2(request.sizeM2())
-                .dayRateEur(request.dayRateEur())
+                .hourlyRateEur(request.hourlyRateEur())
+                .minimumBookingMinutes(request.minimumBookingMinutes())
+                .fullDayRateEur(request.fullDayRateEur())
                 .tags(
                         request.tags() == null
                                 ? List.of()
@@ -121,7 +127,9 @@ public class VenueMapper {
         venue.setName(request.name());
         venue.setNeighbourhood(request.neighbourhood());
         venue.setSizeM2(request.sizeM2());
-        venue.setDayRateEur(request.dayRateEur());
+        venue.setHourlyRateEur(request.hourlyRateEur());
+        venue.setMinimumBookingMinutes(request.minimumBookingMinutes());
+        venue.setFullDayRateEur(request.fullDayRateEur());
 
         venue.setTags(
                 request.tags() == null
@@ -141,4 +149,5 @@ public class VenueMapper {
                 ? List.of()
                 : List.copyOf(values);
     }
+
 }

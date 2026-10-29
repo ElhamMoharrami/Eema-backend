@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CheckoutResponse(
-    UUID bookingId,              // the booking that was created (in PENDING state)
+    UUID bookingId,
     String checkoutUrl,          // Mollie payment page URL — redirect to this
     String molliePaymentId,      // Mollie's payment ID
     BigDecimal totalAmount,      // EUR amount that will be charged

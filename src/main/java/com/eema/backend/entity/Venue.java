@@ -46,9 +46,17 @@ public class Venue {
     @Column(name = "size_m2", nullable = false)
     private int sizeM2;
 
-    @DecimalMin("0.00")
-    @Column(name = "day_rate_eur", precision = 10, scale = 2, nullable = false)
-    private BigDecimal dayRateEur;
+    @DecimalMin("0.01")
+    @Column(name = "hourly_rate_eur", precision = 10, scale = 2, nullable = false)
+    private BigDecimal hourlyRateEur;
+
+    @Positive
+    @Column(name = "minimum_booking_minutes", nullable = false)
+    private Integer minimumBookingMinutes;
+
+    @DecimalMin("0.01")
+    @Column(name = "full_day_rate_eur", precision = 10, scale = 2)
+    private BigDecimal fullDayRateEur;
 
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "tags", columnDefinition = "text[]")

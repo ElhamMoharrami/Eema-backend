@@ -25,6 +25,11 @@ public record BookingDto(
         String rawBrief,
 
         BigDecimal venuePriceEur,
+        BigDecimal hourlyRateEurSnapshot,
+        Integer minimumBookingMinutesSnapshot,
+        BigDecimal fullDayRateEurSnapshot,
+        Integer durationMinutes,
+        Integer billableMinutes,
         BigDecimal commissionPercentage,
         BigDecimal commissionEur,
         BigDecimal mollieFeeEur,

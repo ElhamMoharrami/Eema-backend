@@ -42,7 +42,7 @@ public class WebhookService {
         }
 
         if (!"paid".equalsIgnoreCase(payment.status())) {
-            log.info("Payment {} currently has status {}; no PAID transition needed", payment.id(), payment.status());
+            log.info("Payment {} currently has status {}; no booking transition needed", payment.id(), payment.status());
         }
         refundService.reconcileForPayment(payment.id());
     }

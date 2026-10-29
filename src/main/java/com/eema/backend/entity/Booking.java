@@ -79,6 +79,21 @@ public class Booking {
     )
     private BigDecimal venuePriceEur;
 
+    @Column(name = "hourly_rate_eur_snapshot", precision = 10, scale = 2, nullable = false)
+    private BigDecimal hourlyRateEurSnapshot;
+
+    @Column(name = "minimum_booking_minutes_snapshot", nullable = false)
+    private Integer minimumBookingMinutesSnapshot;
+
+    @Column(name = "full_day_rate_eur_snapshot", precision = 10, scale = 2)
+    private BigDecimal fullDayRateEurSnapshot;
+
+    @Column(name = "duration_minutes", nullable = false)
+    private Integer durationMinutes;
+
+    @Column(name = "billable_minutes", nullable = false)
+    private Integer billableMinutes;
+
     @Column(
             name = "commission_percentage",
             precision = 5,

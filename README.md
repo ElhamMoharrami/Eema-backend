@@ -98,7 +98,7 @@ Fee reconciliation additionally requires `MOLLIE_REPORTING_ACCESS_TOKEN` and `MO
 
 ### Transactional booking email
 
-Payment-received email is triggered only after the authoritative Mollie webhook causes a committed `PENDING` to `PAID` transition. It is disabled locally by default. To test with Resend, set:
+Payment-received email is triggered only after the authoritative Mollie webhook commits `AWAITING_PAYMENT` to `CONFIRMED`. It is disabled locally by default. To test with Resend, set:
 
 ```dotenv
 EMAIL_NOTIFICATIONS_ENABLED=true
@@ -113,7 +113,7 @@ Email links use `{APP_FRONTEND_BASE_URL}/bookings/{bookingId}`. The frontend mus
 
 ### Request-to-book workflow
 
-Scouts submit `POST /api/bookings` with `venueId`, `shootDate`, `startTime`, `endTime`, `rawBrief`, and `scoutContact`. Owners then use `POST /api/bookings/{id}/accept` or `/decline`. After acceptance, the requesting scout starts Mollie checkout with `POST /api/bookings/{id}/checkout` (no request body). The former `POST /api/checkout` create-and-pay contract is no longer available.
+Scouts submit `POST /api/bookings` with `venueId`, `shootDate`, `startTime`, `endTime`, `rawBrief`, and `scoutContact`. Owners then use `POST /api/bookings/{id}/accept` or `/decline`. After acceptance, the requesting scout starts Mollie checkout with `POST /api/bookings/{id}/checkout` (no request body).
 
 Accepted requests default to a 24-hour payment window. Configure it with `BOOKING_PAYMENT_WINDOW_HOURS`; `BOOKING_EXPIRATION_SCAN_DELAY_MS` controls how often expired approvals are released.
 

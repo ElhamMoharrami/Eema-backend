@@ -41,7 +41,8 @@ class VenueServiceTest {
         VenueMapper mapper = new VenueMapper(new UserMapper());
         service = new VenueService(venues, users, mapper, currentUser, new VenueMediaPolicy(properties), storage);
         venue = Venue.builder().id(venueId).owner(owner).name("Old Studio").neighbourhood("West")
-                .sizeM2(100).dayRateEur(new BigDecimal("500.00")).tags(List.of("old"))
+                .sizeM2(100).hourlyRateEur(new BigDecimal("100.00"))
+                .minimumBookingMinutes(240).fullDayRateEur(new BigDecimal("500.00")).tags(List.of("old"))
                 .description("Old description").timezone("Europe/Amsterdam")
                 .photoPaths(List.of(photo("11111111-1111-4111-8111-111111111111"),
                         photo("22222222-2222-4222-8222-222222222222"))).build();
@@ -61,7 +62,9 @@ class VenueServiceTest {
         assertEquals("Updated Studio", result.name());
         assertEquals("Centre", result.neighbourhood());
         assertEquals(250, result.sizeM2());
-        assertEquals(new BigDecimal("750.00"), result.dayRateEur());
+        assertEquals(new BigDecimal("175.00"), result.hourlyRateEur());
+        assertEquals(240, result.minimumBookingMinutes());
+        assertEquals(new BigDecimal("1200.00"), result.fullDayRateEur());
         assertEquals(List.of(primary, secondary), result.photoPaths());
         assertFalse(result.photoPaths().contains(photo("22222222-2222-4222-8222-222222222222")));
         assertEquals(primary, result.photoPaths().getFirst());
@@ -78,6 +81,36 @@ class VenueServiceTest {
                 User.builder().id(UUID.randomUUID()).role(UserRole.SCOUT).build());
         assertThrows(ForbiddenException.class, () -> service.updateVenue(venueId, request(List.of())));
         verify(venues, never()).save(any());
+    }
+
+    @Test
+    void ownerMayRemoveOptionalFullDayRate() {
+        when(currentUser.getCurrentUser()).thenReturn(owner);
+        UpdateVenueRequest withoutCap = new UpdateVenueRequest("Updated Studio", "Centre", 250,
+                new BigDecimal("175.00"), 240, null, List.of("daylight"), "Updated description",
+                "https://video.example.test/clip", "Europe/Paris", List.of());
+
+        var result = service.updateVenue(venueId, withoutCap);
+
+        assertNull(result.fullDayRateEur());
+    }
+
+    @Test
+    void venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap() {
+        try (var factory = jakarta.validation.Validation.buildDefaultValidatorFactory()) {
+            var validator = factory.getValidator();
+            UpdateVenueRequest valid = new UpdateVenueRequest("Updated Studio", "Centre", 250,
+                    new BigDecimal("175.00"), 240, null, List.of(), null, null,
+                    "Europe/Amsterdam", List.of());
+            assertTrue(validator.validate(valid).isEmpty());
+
+            UpdateVenueRequest invalid = new UpdateVenueRequest("Updated Studio", "Centre", 250,
+                    BigDecimal.ZERO, 0, BigDecimal.ZERO, List.of(), null, null,
+                    "Europe/Amsterdam", List.of());
+            assertEquals(3, validator.validate(invalid).stream()
+                    .filter(v -> java.util.Set.of("hourlyRateEur", "minimumBookingMinutes", "fullDayRateEur")
+                            .contains(v.getPropertyPath().toString())).count());
+        }
     }
 
     @Test
@@ -108,7 +141,8 @@ class VenueServiceTest {
     }
 
     private UpdateVenueRequest request(List<String> photos) {
-        return new UpdateVenueRequest("Updated Studio", "Centre", 250, new BigDecimal("750.00"),
+        return new UpdateVenueRequest("Updated Studio", "Centre", 250, new BigDecimal("175.00"), 240,
+                new BigDecimal("1200.00"),
                 List.of("daylight", "industrial"), "Updated description", "https://video.example.test/clip",
                 "Europe/Paris", photos);
     }

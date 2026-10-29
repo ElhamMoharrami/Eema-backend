@@ -10,7 +10,9 @@ public record VenueListDto(
         String name,
         String neighbourhood,
         int sizeM2,
-        BigDecimal dayRateEur,
+        BigDecimal hourlyRateEur,
+        Integer minimumBookingMinutes,
+        BigDecimal fullDayRateEur,
         List<String> tags,
         String firstPhotoUrl,
         VenueStatus status

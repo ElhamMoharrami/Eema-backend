@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
@@ -106,14 +105,4 @@ public class StorageService implements FileStorage {
         catch (IOException exception) { throw new IllegalStateException("Failed to delete stored upload", exception); }
     }
 
-    public void deleteAll() {
-        try {
-            Files.walk(rootLocation)
-                    .filter(path -> !path.equals(rootLocation))
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete files", e);
-        }
-    }
 }

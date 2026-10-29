@@ -55,13 +55,6 @@ public class VenueFilterBuilder {
                 predicates
         );
 
-        addBudgetFilter(
-                brief,
-                cb,
-                venue,
-                predicates
-        );
-
         addSizeFilter(
                 brief,
                 cb,
@@ -120,24 +113,6 @@ public class VenueFilterBuilder {
                 cb.equal(
                         venue.get("status"),
                         VenueStatus.ACTIVE
-                )
-        );
-    }
-
-    private void addBudgetFilter(
-            ParsedBrief brief,
-            CriteriaBuilder cb,
-            Root<Venue> venue,
-            List<Predicate> predicates
-    ) {
-        if (brief.budgetMaxEur() == null) {
-            return;
-        }
-
-        predicates.add(
-                cb.lessThanOrEqualTo(
-                        venue.get("dayRateEur"),
-                        brief.budgetMaxEur()
                 )
         );
     }
@@ -262,9 +237,7 @@ public class VenueFilterBuilder {
             Root<Venue> venue
     ) {
         return List.of(
-                cb.asc(
-                        venue.get("dayRateEur")
-                ),
+                cb.asc(venue.get("hourlyRateEur")),
                 cb.desc(
                         venue.get("sizeM2")
                 ),

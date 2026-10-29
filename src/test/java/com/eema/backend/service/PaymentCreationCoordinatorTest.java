@@ -25,8 +25,8 @@ class PaymentCreationCoordinatorTest {
     void concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent() {
         UUID id = UUID.randomUUID();
         UUID scoutId = UUID.randomUUID();
-        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.PENDING)
-                .venuePriceEur(new BigDecimal("100.00")).build();
+        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.AWAITING_PAYMENT)
+                .paymentExpiresAt(OffsetDateTime.now().plusHours(1)).venuePriceEur(new BigDecimal("100.00")).build();
         when(repository.findByIdForUpdate(id)).thenReturn(Optional.of(booking));
 
         PaymentCreationCoordinator.Claim first = coordinator.claim(id, scoutId);
@@ -47,8 +47,9 @@ class PaymentCreationCoordinatorTest {
     void refusesUnsafeRetryOutsideMollieReplayWindow() {
         UUID id = UUID.randomUUID();
         UUID scoutId = UUID.randomUUID();
-        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.PENDING)
+        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.AWAITING_PAYMENT)
                 .venuePriceEur(BigDecimal.TEN).paymentCreationStatus(PaymentCreationStatus.CREATING)
+                .paymentExpiresAt(OffsetDateTime.now().plusHours(1))
                 .paymentIdempotencyKey(UUID.randomUUID()).paymentCreationStartedAt(OffsetDateTime.now().minusHours(2)).build();
         when(repository.findByIdForUpdate(id)).thenReturn(Optional.of(booking));
         assertThrows(ConflictException.class, () -> coordinator.claim(id, scoutId));

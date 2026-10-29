@@ -52,11 +52,6 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookingForCurrentUser(id));
     }
 
-    @PostMapping("/{id}/confirm")
-    public ResponseEntity<BookingDto> confirmBooking(@PathVariable UUID id) {
-        return ResponseEntity.ok(bookingService.confirmBooking(id));
-    }
-
     @PostMapping("/{id}/accept")
     public ResponseEntity<BookingDto> acceptRequest(@PathVariable UUID id) {
         return ResponseEntity.ok(bookingService.acceptRequest(id));

@@ -32,7 +32,13 @@ public record CreateVenueRequest(
         @NotNull
         @DecimalMin("0.01")
         @DecimalMax("99999999.99")
-        BigDecimal dayRateEur,
+        BigDecimal hourlyRateEur,
+
+        @NotNull @Min(1) @Max(10080)
+        Integer minimumBookingMinutes,
+
+        @DecimalMin("0.01") @DecimalMax("99999999.99")
+        BigDecimal fullDayRateEur,
 
         @NotNull
         @Size(max = 20)

@@ -18,21 +18,17 @@ class BookingStateMachineTest {
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.UNAVAILABLE));
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.AWAITING_PAYMENT, BookingStatus.CONFIRMED));
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.AWAITING_PAYMENT, BookingStatus.EXPIRED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PENDING, BookingStatus.PAID));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PENDING, BookingStatus.CANCELLED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PAID, BookingStatus.CONFIRMED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PAID, BookingStatus.REFUNDED));
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.CONFIRMED, BookingStatus.REFUNDED));
     }
 
     @Test
     void rejectsUserSkippingPaymentAndTerminalMutations() {
         assertThrows(ConflictException.class,
-                () -> machine.requireTransition(BookingStatus.PENDING, BookingStatus.CONFIRMED));
+                () -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.CONFIRMED));
         assertThrows(ConflictException.class,
                 () -> machine.requireTransition(BookingStatus.CONFIRMED, BookingStatus.CANCELLED));
         assertThrows(ConflictException.class,
-                () -> machine.requireTransition(BookingStatus.CANCELLED, BookingStatus.PAID));
+                () -> machine.requireTransition(BookingStatus.CANCELLED, BookingStatus.CONFIRMED));
         assertThrows(ConflictException.class,
                 () -> machine.requireTransition(BookingStatus.UNAVAILABLE, BookingStatus.AWAITING_PAYMENT));
     }

@@ -9,10 +9,8 @@ class FlywayLocationTest {
     @Test
     void developmentSeedsAreNotInCommonProductionLocation() {
         ClassLoader loader = getClass().getClassLoader();
-        assertNull(loader.getResource("db/migration/common/V8__seed_dev_data.sql"));
-        assertNull(loader.getResource("db/migration/common/V11__seed_venues.sql"));
-        assertNotNull(loader.getResource("db/migration/dev/V8__seed_dev_data.sql"));
-        assertNotNull(loader.getResource("db/migration/dev/V11__seed_venues.sql"));
-        assertNotNull(loader.getResource("db/migration/common/V13__payment_refund_reconciliation.sql"));
+        assertNull(loader.getResource("db/migration/common/V100__development_seed.sql"));
+        assertNotNull(loader.getResource("db/migration/dev/V100__development_seed.sql"));
+        assertNotNull(loader.getResource("db/migration/common/V1__initial_schema.sql"));
     }
 }

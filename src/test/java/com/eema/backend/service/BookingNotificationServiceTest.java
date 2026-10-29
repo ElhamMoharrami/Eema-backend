@@ -38,7 +38,7 @@ class BookingNotificationServiceTest {
         AppProperties properties = new AppProperties(null, null, null, null, null, null, null,
                 "https://app.eema.test/", null);
         service = new BookingNotificationService(bookings, venues, email, properties);
-        Booking booking = Booking.builder().id(bookingId).venueId(UUID.randomUUID()).status(BookingStatus.PAID)
+        Booking booking = Booking.builder().id(bookingId).venueId(UUID.randomUUID()).status(BookingStatus.CONFIRMED)
                 .shootDate(LocalDate.of(2026, 8, 25)).startTime(LocalTime.of(9, 0)).endTime(LocalTime.of(17, 0))
                 .totalPaidEur(new BigDecimal("125.00"))
                 .scoutContact(new BookingContactSnapshot("Scout Name", "snapshot-scout@example.test", "+31 6 123"))
@@ -49,7 +49,7 @@ class BookingNotificationServiceTest {
     }
 
     @Test
-    void usesSnapshotRecipientsAndRendersPaidDetailsWithoutConfirmedWording() {
+    void usesSnapshotRecipientsAndRendersConfirmedDetails() {
         service.sendPaymentReceived(bookingId);
 
         ArgumentCaptor<String> recipient = ArgumentCaptor.forClass(String.class);
@@ -64,8 +64,8 @@ class BookingNotificationServiceTest {
         assertTrue(all.contains("25 August 2026"));
         assertTrue(all.contains("09:00–17:00"));
         assertTrue(all.contains("https://app.eema.test/bookings/" + bookingId));
-        assertTrue(all.contains("Status: PAID") || all.contains(">PAID<"));
-        assertFalse(all.toLowerCase().contains("booking is confirmed"));
+        assertTrue(all.contains("Status: CONFIRMED") || all.contains(">CONFIRMED<"));
+        assertTrue(all.toLowerCase().contains("booking is confirmed"));
         assertFalse(all.toLowerCase().contains("owner payout"));
     }
 
@@ -74,7 +74,7 @@ class BookingNotificationServiceTest {
         doThrow(new EmailService.EmailDeliveryException("failed", new RuntimeException()))
                 .when(email).send(eq("snapshot-scout@example.test"), eq("Payment received for your Eema booking"), anyString(), anyString());
         service.sendPaymentReceived(bookingId);
-        verify(email).send(eq("snapshot-owner@example.test"), eq("New paid booking for your Eema venue"), anyString(), anyString());
+        verify(email).send(eq("snapshot-owner@example.test"), eq("Confirmed booking for your Eema venue"), anyString(), anyString());
     }
 
     @Test

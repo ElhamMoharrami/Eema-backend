@@ -71,6 +71,7 @@ public class BookingService {
     private final CurrentUserService currentUserService;
     private final BookingStateMachine stateMachine;
     private final BookingFinancials financials;
+    private final BookingPriceCalculator priceCalculator;
     private final ApplicationEventPublisher eventPublisher;
     private final BookingAvailabilityValidator availabilityValidator;
     private final BookingWorkflowProperties workflowProperties;
@@ -104,7 +105,10 @@ public class BookingService {
         LocalTime bookingEnd = request.endTime();
         availabilityValidator.validate(venue, request.shootDate(), bookingStart, bookingEnd);
 
-        BigDecimal venuePriceEur = money(venue.getDayRateEur());
+        BookingPriceCalculator.PricingQuote quote = priceCalculator.calculate(
+                venue.getHourlyRateEur(), venue.getMinimumBookingMinutes(), venue.getFullDayRateEur(),
+                bookingStart, bookingEnd);
+        BigDecimal venuePriceEur = quote.finalPriceEur();
 
         BigDecimal commissionPercentage = validateCommissionPercentage(appProperties.commission().percentage());
 
@@ -131,6 +135,11 @@ public class BookingService {
         Booking booking = Booking.builder().venueId(venue.getId()).scoutId(scout.getId()).molliePaymentId(null).status(BookingStatus.REQUESTED)
 
                 .venuePriceEur(venuePriceEur).totalPaidEur(totalPaidEur).commissionPercentage(commissionPercentage).commissionEur(commissionEur).mollieFeeEur(mollieFeeEur).ownerPayoutEur(ownerPayoutEur)
+
+                .hourlyRateEurSnapshot(quote.hourlyRateEur())
+                .minimumBookingMinutesSnapshot(quote.minimumBookingMinutes())
+                .fullDayRateEurSnapshot(quote.fullDayRateEur())
+                .durationMinutes(quote.durationMinutes()).billableMinutes(quote.billableMinutes())
 
                 .shootDate(request.shootDate()).startTime(bookingStart).endTime(bookingEnd).rawBrief(request.rawBrief())
 
@@ -171,7 +180,10 @@ public class BookingService {
 
         User owner = venue.getOwner();
         if (owner == null) throw new NotFoundException("Venue owner not found");
-        BigDecimal venuePrice = money(venue.getDayRateEur());
+        BookingPriceCalculator.PricingQuote quote = priceCalculator.calculate(
+                venue.getHourlyRateEur(), venue.getMinimumBookingMinutes(), venue.getFullDayRateEur(),
+                startTime, endTime);
+        BigDecimal venuePrice = quote.finalPriceEur();
         BigDecimal percentage = validateCommissionPercentage(appProperties.commission().percentage());
         BigDecimal commission = calculateCommission(venuePrice, percentage);
         BigDecimal fee = money(BigDecimal.ZERO);
@@ -179,6 +191,10 @@ public class BookingService {
         Booking booking = Booking.builder().venueId(venueId).scoutId(scoutId).status(BookingStatus.AWAITING_PAYMENT)
                 .shootDate(date).startTime(startTime).endTime(endTime).rawBrief(brief)
                 .venuePriceEur(venuePrice).totalPaidEur(money(BigDecimal.ZERO)).commissionPercentage(percentage)
+                .hourlyRateEurSnapshot(quote.hourlyRateEur())
+                .minimumBookingMinutesSnapshot(quote.minimumBookingMinutes())
+                .fullDayRateEurSnapshot(quote.fullDayRateEur())
+                .durationMinutes(quote.durationMinutes()).billableMinutes(quote.billableMinutes())
                 .commissionEur(commission).mollieFeeEur(fee).ownerPayoutEur(calculateOwnerPayout(venuePrice, commission, fee))
                 .scoutContact(BookingContactSnapshot.builder().name(scout.getFullName() == null ? scout.getEmail() : scout.getFullName())
                         .email(scout.getEmail()).phone(scout.getPhone()).build())
@@ -222,17 +238,6 @@ public class BookingService {
     @Transactional(readOnly = true)
     public Optional<String> findRefundReference(String paymentId) {
         return bookingRepository.findByMolliePaymentId(paymentId).map(Booking::getMollieRefundId);
-    }
-
-    @Transactional
-    public BookingDto confirmBooking(UUID bookingId) {
-        User user = currentUserService.getCurrentUser();
-        Booking booking = bookingRepository.findByIdForUpdate(bookingId)
-                .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
-        authorizeOwnerOrAdmin(user, booking);
-        transition(booking, BookingStatus.CONFIRMED);
-        appendEvent(bookingId, BookingEventType.OWNER_CONFIRMED, user.getId(), actorName(user), actorTypeForUser(user), Map.of());
-        return toBookingDto(booking);
     }
 
     @Transactional(noRollbackFor = RequestDeadlineExpiredException.class)
@@ -349,30 +354,6 @@ public class BookingService {
     }
 
     // --------------------------------------------------
-    // USER STATUS CHANGES
-    // --------------------------------------------------
-
-    @Transactional
-    public void updateBookingStatusByUser(UUID bookingId, BookingStatus newStatus, Map<String, Object> payload) {
-
-        User user = currentUserService.getCurrentUser();
-
-        Booking booking = getBooking(bookingId);
-
-        authorizeUserUpdate(user, booking);
-
-        BookingEventType eventType = determineUserEventType(newStatus, user);
-
-        transition(booking, newStatus);
-
-        bookingRepository.save(booking);
-
-        appendEvent(booking.getId(), eventType, user.getId(), actorName(user), actorTypeForUser(user), safePayload(payload));
-
-        log.info("Booking status updated by user: bookingId={}, status={}, userId={}, role={}", bookingId, newStatus, user.getId(), user.getRole());
-    }
-
-    // --------------------------------------------------
     // MOLLIE PAYMENT
     // --------------------------------------------------
 
@@ -397,7 +378,7 @@ public class BookingService {
         /*
          * Mollie may deliver the same webhook multiple times.
          */
-        if (booking.getStatus() == BookingStatus.PAID || booking.getStatus() == BookingStatus.CONFIRMED
+        if (booking.getStatus() == BookingStatus.CONFIRMED
                 || booking.getStatus() == BookingStatus.REFUNDED) {
 
             log.info("Booking {} already has a completed payment state; duplicate Mollie webhook ignored", bookingId);
@@ -438,8 +419,7 @@ public class BookingService {
             return new PaidPaymentOutcome(bookingId, PaidPaymentResult.LATE_PAYMENT);
         }
 
-        boolean requestToBookPayment = booking.getStatus() == BookingStatus.AWAITING_PAYMENT;
-        if (!requestToBookPayment && booking.getStatus() != BookingStatus.PENDING) {
+        if (booking.getStatus() != BookingStatus.AWAITING_PAYMENT) {
             throw new ConflictException("Booking is not eligible for payment confirmation");
         }
 
@@ -447,7 +427,7 @@ public class BookingService {
         BigDecimal commissionEur = booking.getCommissionEur();
         BigDecimal ownerPayoutEur = booking.getOwnerPayoutEur();
 
-        transition(booking, requestToBookPayment ? BookingStatus.CONFIRMED : BookingStatus.PAID);
+        transition(booking, BookingStatus.CONFIRMED);
 
         bookingRepository.save(booking);
 
@@ -463,9 +443,7 @@ public class BookingService {
 
         appendEvent(booking.getId(), BookingEventType.PAYMENT_SUCCEEDED, null, "Mollie", ActorType.WEBHOOK, payload);
 
-        if (requestToBookPayment) {
-            appendEvent(booking.getId(), BookingEventType.BOOKING_CONFIRMED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
-        }
+        appendEvent(booking.getId(), BookingEventType.BOOKING_CONFIRMED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
 
         eventPublisher.publishEvent(new BookingPaidEvent(booking.getId()));
 
@@ -475,6 +453,7 @@ public class BookingService {
     }
 
     private void applyPaidFinancialSnapshot(Booking booking, BigDecimal paidAmount) {
+        if (booking.getPaidAt() == null) booking.setPaidAt(OffsetDateTime.now());
         booking.setTotalPaidEur(paidAmount);
         BigDecimal mollieFeeEur = money(BigDecimal.ZERO);
         booking.setMollieFeeEur(mollieFeeEur);
@@ -503,7 +482,7 @@ public class BookingService {
 
         Booking booking = bookingRepository.findByIdForUpdate(bookingId).orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
 
-        if (booking.getStatus() != BookingStatus.PAID && booking.getStatus() != BookingStatus.CONFIRMED) {
+        if (booking.getStatus() != BookingStatus.CONFIRMED) {
 
             throw new IllegalStateException("Cannot reconcile Mollie fee for unpaid booking");
         }
@@ -533,30 +512,8 @@ public class BookingService {
     }
 
     // --------------------------------------------------
-    // INTERNAL SYSTEM STATUS CHANGE
-    // --------------------------------------------------
-
-    @Transactional
-    public void updateBookingStatusFromSystem(UUID bookingId, BookingStatus newStatus, BookingEventType eventType, Map<String, Object> payload) {
-
-        Booking booking = getBooking(bookingId);
-
-        transition(booking, newStatus);
-
-        bookingRepository.save(booking);
-
-        appendEvent(bookingId, eventType, null, "SYSTEM", ActorType.SYSTEM, safePayload(payload));
-
-        log.info("Booking status updated by system: bookingId={}, status={}", bookingId, newStatus);
-    }
-
-    // --------------------------------------------------
     // AUTHORIZATION
     // --------------------------------------------------
-
-    private void authorizeUserUpdate(User user, Booking booking) {
-        authorizeAccess(user, booking);
-    }
 
     private void authorizeAccess(User user, Booking booking) {
 
@@ -612,8 +569,6 @@ public class BookingService {
 
         switch (newStatus) {
 
-            case PAID -> booking.setPaidAt(now);
-
             case CONFIRMED -> booking.setConfirmedAt(now);
 
             case CANCELLED -> booking.setCancelledAt(now);
@@ -626,46 +581,6 @@ public class BookingService {
                 // No timestamp required.
             }
         }
-    }
-
-    private BookingEventType determineUserEventType(BookingStatus status, User user) {
-
-        return switch (status) {
-
-            case CONFIRMED -> {
-
-                if (user.getRole() != UserRole.OWNER && user.getRole() != UserRole.ADMIN) {
-
-                    throw new ForbiddenException("Only the venue owner or admin can confirm a booking");
-                }
-
-                yield BookingEventType.OWNER_CONFIRMED;
-            }
-
-            case CANCELLED -> {
-
-                if (user.getRole() == UserRole.SCOUT) {
-
-                    yield BookingEventType.SCOUT_CANCELLED;
-                }
-
-                if (user.getRole() == UserRole.OWNER) {
-
-                    yield BookingEventType.OWNER_CANCELLED;
-                }
-
-                /*
-                 * If you add ADMIN_CANCELLED,
-                 * use it here instead.
-                 */
-                yield BookingEventType.SCOUT_CANCELLED;
-            }
-
-            case PAID, REQUESTED, AWAITING_PAYMENT, DECLINED, EXPIRED, UNAVAILABLE ->
-                    throw new ForbiddenException("Status cannot be set directly by a user");
-
-            default -> throw new IllegalArgumentException("Unsupported user-driven booking status: " + status);
-        };
     }
 
     // --------------------------------------------------
@@ -839,7 +754,10 @@ public class BookingService {
 
                 booking.getRawBrief(),
 
-                booking.getVenuePriceEur(), booking.getCommissionPercentage(), booking.getCommissionEur(), booking.getMollieFeeEur(), booking.isMollieFeeReconciled(), booking.getMollieFeeReconciledAt(), booking.getOwnerPayoutEur(), booking.getOwnerPayoutStatus(), booking.getTotalPaidEur(),
+                booking.getVenuePriceEur(), booking.getHourlyRateEurSnapshot(),
+                booking.getMinimumBookingMinutesSnapshot(), booking.getFullDayRateEurSnapshot(),
+                booking.getDurationMinutes(), booking.getBillableMinutes(),
+                booking.getCommissionPercentage(), booking.getCommissionEur(), booking.getMollieFeeEur(), booking.isMollieFeeReconciled(), booking.getMollieFeeReconciledAt(), booking.getOwnerPayoutEur(), booking.getOwnerPayoutStatus(), booking.getTotalPaidEur(),
 
                 booking.getMolliePaymentId(), booking.getPaymentCreationStatus(), booking.getRefundStatus(), booking.getMollieRefundId(), booking.getRefundAmountEur(), booking.getRefundRequestedAt(), booking.getRefundedAt(),
 

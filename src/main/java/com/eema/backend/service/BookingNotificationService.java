@@ -35,8 +35,8 @@ public class BookingNotificationService {
     @Transactional(readOnly = true)
     public void sendPaymentReceived(UUID bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElse(null);
-        if (booking == null || (booking.getStatus() != BookingStatus.PAID && booking.getStatus() != BookingStatus.CONFIRMED)) {
-            log.warn("Payment email skipped: booking missing or no longer paid, bookingId={}", bookingId);
+        if (booking == null || booking.getStatus() != BookingStatus.CONFIRMED) {
+            log.warn("Payment email skipped: booking missing or not confirmed, bookingId={}", bookingId);
             return;
         }
         String venueName = venueRepository.findById(booking.getVenueId()).map(Venue::getName).orElse("your selected venue");
@@ -217,13 +217,11 @@ public class BookingNotificationService {
 
     private void sendScout(Booking b, String venue, String url) {
         BookingContactSnapshot scout = b.getScoutContact();
-        boolean confirmed = b.getStatus() == BookingStatus.CONFIRMED;
-        String message = confirmed ? "Your payment has been received and your booking is confirmed."
-                : "Your payment has been received. Your booking is now paid and may still be awaiting venue confirmation.";
+        String message = "Your payment has been received and your booking is confirmed.";
         String text = "Hello %s,\n\n%s\n\n%s\n\nView booking: %s"
                 .formatted(value(scout.getName()), message, details(b, venue), url);
-        emailService.send(scout.getEmail(), confirmed ? "Your Eema booking is confirmed" : "Payment received for your Eema booking", text,
-                html(confirmed ? "Your booking is confirmed" : "Your payment has been received", scout.getName(),
+        emailService.send(scout.getEmail(), "Your Eema booking is confirmed", text,
+                html("Your booking is confirmed", scout.getName(),
                         message, detailsHtml(b, venue), "View booking", url));
     }
 
@@ -232,13 +230,11 @@ public class BookingNotificationService {
         BookingContactSnapshot scout = b.getScoutContact();
         String scoutDetails = "Scout: %s (%s%s)".formatted(value(scout.getName()), value(scout.getEmail()),
                 scout.getPhone() == null || scout.getPhone().isBlank() ? "" : ", " + scout.getPhone());
-        boolean confirmed = b.getStatus() == BookingStatus.CONFIRMED;
-        String message = confirmed ? "The scout has paid and the booking is confirmed. No further acceptance is required."
-                : "A new paid booking requires your review.";
+        String message = "The scout has paid and the booking is confirmed. No further acceptance is required.";
         String text = "Hello %s,\n\n%s\n\n%s\n%s\n\nView booking: %s"
                 .formatted(value(owner.getName()), message, details(b, venue), scoutDetails, url);
-        emailService.send(owner.getEmail(), confirmed ? "Confirmed booking for your Eema venue" : "New paid booking for your Eema venue", text,
-                html(confirmed ? "Booking confirmed" : "New paid booking", owner.getName(), message,
+        emailService.send(owner.getEmail(), "Confirmed booking for your Eema venue", text,
+                html("Booking confirmed", owner.getName(), message,
                         detailsHtml(b, venue) + "<p>" + esc(scoutDetails) + "</p>", "View booking", url));
     }
 

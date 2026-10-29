@@ -210,7 +210,7 @@ class AvailabilityInquiryServiceTest {
     private BookingDto bookingDto(UUID id) {
         return new BookingDto(id, venueId, scoutId, BookingStatus.AWAITING_PAYMENT,
                 futureDate, time(7), time(9), "Could this work?",
-                null, null, null, null, false, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, false, null, null, null, null,
                 null, null, null, null, null, null, null,
                 null, null,
                 null, null, null, null, null, null, null, null, null);

@@ -108,7 +108,9 @@ public class GeminiVenueRanker implements VenueRanker {
                 dto.name(),
                 dto.neighbourhood(),
                 dto.sizeM2(),
-                dto.dayRateEur(),
+                dto.hourlyRateEur(),
+                dto.minimumBookingMinutes(),
+                dto.fullDayRateEur(),
                 dto.tags(),
                 getPrimaryPhoto(dto),
                 dto.status()
@@ -165,7 +167,8 @@ public class GeminiVenueRanker implements VenueRanker {
                     - Only use facts provided in AVAILABLE VENUES.
                     - Never invent venue features.
                     - Treat must-have requirements as strict requirements.
-                    - Consider budget, size, location, aesthetic,
+                    - Do not judge budget because no booking duration is known.
+                    - Consider size, location, aesthetic,
                       lighting, amenities and nice-to-have features.
                     - Explain important strengths and mismatches.
                     - Rank only venues provided in AVAILABLE VENUES.
@@ -283,7 +286,9 @@ public class GeminiVenueRanker implements VenueRanker {
             String name,
             String neighbourhood,
             Integer sizeM2,
-            BigDecimal dayRateEur,
+            BigDecimal hourlyRateEur,
+            Integer minimumBookingMinutes,
+            BigDecimal fullDayRateEur,
             List<String> tags,
             String description
     ) {
@@ -296,7 +301,9 @@ public class GeminiVenueRanker implements VenueRanker {
                     venue.getName(),
                     venue.getNeighbourhood(),
                     venue.getSizeM2(),
-                    venue.getDayRateEur(),
+                    venue.getHourlyRateEur(),
+                    venue.getMinimumBookingMinutes(),
+                    venue.getFullDayRateEur(),
                     venue.getTags(),
                     venue.getDescription()
             );

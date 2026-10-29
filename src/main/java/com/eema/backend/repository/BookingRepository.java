@@ -27,19 +27,15 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     List<Booking> findByVenueIdIn(List<UUID> venueIds);
 
-    List<Booking> findByStatus(BookingStatus status);
-
     Optional<Booking> findByMolliePaymentId(String molliePaymentId);
 
-    @Query(value = "select * from bookings where mollie_fee_reconciled = false and mollie_payment_id is not null and status in ('PAID', 'CONFIRMED') order by paid_at", nativeQuery = true)
+    @Query(value = "select * from bookings where mollie_fee_reconciled = false and mollie_payment_id is not null and status = 'CONFIRMED' order by paid_at", nativeQuery = true)
     List<Booking> findPendingFeeReconciliation(Pageable pageable);
-
-    boolean existsByMolliePaymentId(String molliePaymentId);
 
     @Query(value = """
             select * from bookings
             where venue_id = :venueId and shoot_date = :date
-              and status in ('PENDING', 'AWAITING_PAYMENT', 'PAID', 'CONFIRMED')
+              and status in ('AWAITING_PAYMENT', 'CONFIRMED')
             order by start_time
             """, nativeQuery = true)
     List<Booking> findBlockingBookings(@Param("venueId") UUID venueId, @Param("date") LocalDate date);
@@ -54,7 +50,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query(value = """
             select count(*) from bookings
-            where status in ('PAID', 'CONFIRMED')
+            where status = 'CONFIRMED'
               and mollie_fee_reconciled = false and paid_at < :cutoff
             """, nativeQuery = true)
     long countOldUnreconciledMollieFees(@Param("cutoff") OffsetDateTime cutoff);

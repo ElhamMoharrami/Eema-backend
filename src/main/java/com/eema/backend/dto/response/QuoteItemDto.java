@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * Represents a line item in a quote.
  */
 public record QuoteItemDto(
-    String label,      // e.g., "Day rate", "Service fee", "Total"
+    String label,
     BigDecimal amount, // in EUR
     String note        // optional explanation
 ) {}

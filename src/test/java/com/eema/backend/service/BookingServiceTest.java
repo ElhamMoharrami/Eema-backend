@@ -57,6 +57,7 @@ class BookingServiceTest {
     @Mock CurrentUserService currentUserService;
     @Spy BookingStateMachine stateMachine = new BookingStateMachine();
     @Spy BookingFinancials financials = new BookingFinancials();
+    @Spy BookingPriceCalculator priceCalculator = new BookingPriceCalculator();
     @Mock ApplicationEventPublisher eventPublisher;
     @Mock BookingAvailabilityValidator availabilityValidator;
     BookingService service;
@@ -68,13 +69,14 @@ class BookingServiceTest {
     @BeforeEach
     void setUp() {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
-                appProperties, currentUserService, stateMachine, financials, eventPublisher, availabilityValidator,
+                appProperties, currentUserService, stateMachine, financials, priceCalculator, eventPublisher, availabilityValidator,
                 new BookingWorkflowProperties(24, 24, 60000));
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()
                 .id(bookingId).scoutId(scoutId).venueId(UUID.randomUUID())
-                .status(BookingStatus.PENDING).venuePriceEur(new BigDecimal("100.00"))
+                .status(BookingStatus.AWAITING_PAYMENT).paymentExpiresAt(OffsetDateTime.now().plusHours(1))
+                .venuePriceEur(new BigDecimal("100.00"))
                 .commissionPercentage(new BigDecimal("20.00")).commissionEur(new BigDecimal("20.00"))
                 .mollieFeeEur(new BigDecimal("0.00")).ownerPayoutEur(new BigDecimal("80.00"))
                 .totalPaidEur(new BigDecimal("0.00")).molliePaymentId("tr_expected").build();
@@ -104,12 +106,12 @@ class BookingServiceTest {
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
         MolliePaymentResponse payment = paidPayment("tr_expected", "99.99");
         assertThrows(IllegalStateException.class, () -> service.processPaidPayment(payment));
-        assertEquals(BookingStatus.PENDING, booking.getStatus());
+        assertEquals(BookingStatus.AWAITING_PAYMENT, booking.getStatus());
     }
 
     @Test
     void duplicatePaidWebhookDoesNotCreateAnotherEvent() {
-        booking.setStatus(BookingStatus.PAID);
+        booking.setStatus(BookingStatus.CONFIRMED);
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
         service.processPaidPayment(paidPayment("tr_expected", "100.00"));
         verifyNoInteractions(bookingEventRepository);
@@ -121,7 +123,7 @@ class BookingServiceTest {
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
         service.processPaidPayment(paidPayment("tr_expected", "100.00"));
         service.processPaidPayment(paidPayment("tr_expected", "100.00"));
-        assertEquals(BookingStatus.PAID, booking.getStatus());
+        assertEquals(BookingStatus.CONFIRMED, booking.getStatus());
         verify(eventPublisher, times(1)).publishEvent(new BookingPaidEvent(bookingId));
     }
 
@@ -140,29 +142,13 @@ class BookingServiceTest {
     }
 
     @Test
-    void ownerCanConfirmPaidBookingButScoutCannotConfirm() {
-        UUID ownerId = UUID.randomUUID();
-        User owner = User.builder().id(ownerId).email("owner@example.com").role(UserRole.OWNER).build();
-        booking.setStatus(BookingStatus.PAID);
-        when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
-        when(venueRepository.findById(booking.getVenueId())).thenReturn(Optional.of(
-                Venue.builder().id(booking.getVenueId()).owner(owner).name("Venue").build()));
-        when(currentUserService.getCurrentUser()).thenReturn(owner);
-        assertEquals(BookingStatus.CONFIRMED, service.confirmBooking(bookingId).status());
-
-        booking.setStatus(BookingStatus.PAID);
-        when(currentUserService.getCurrentUser()).thenReturn(User.builder().id(scoutId).role(UserRole.SCOUT).build());
-        assertThrows(ForbiddenException.class, () -> service.confirmBooking(bookingId));
-    }
-
-    @Test
-    void pendingCancelSucceedsAndPaidCancelIsRejected() {
+    void awaitingPaymentCancelSucceedsAndConfirmedCancelIsRejected() {
         User scout = User.builder().id(scoutId).email("scout@example.com").role(UserRole.SCOUT).build();
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
         when(currentUserService.getCurrentUser()).thenReturn(scout);
         assertEquals(BookingStatus.CANCELLED, service.cancelBooking(bookingId).status());
 
-        booking.setStatus(BookingStatus.PAID);
+        booking.setStatus(BookingStatus.CONFIRMED);
         assertThrows(ConflictException.class, () -> service.cancelBooking(bookingId));
     }
 
@@ -171,7 +157,9 @@ class BookingServiceTest {
         User owner = User.builder().id(UUID.randomUUID()).email("owner@example.com").fullName("Owner").role(UserRole.OWNER).build();
         User scout = User.builder().id(scoutId).email("scout@example.com").role(UserRole.SCOUT).build();
         Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).name("Venue").status(VenueStatus.ACTIVE)
-                .timezone("Europe/Amsterdam").dayRateEur(new BigDecimal("100.00")).build();
+                .timezone("Europe/Amsterdam")
+                .hourlyRateEur(new BigDecimal("25.00")).minimumBookingMinutes(240)
+                .fullDayRateEur(new BigDecimal("100.00")).build();
         when(venueRepository.findById(venue.getId())).thenReturn(Optional.of(venue));
         when(userRepository.findById(scoutId)).thenReturn(Optional.of(scout));
         when(bookingRepository.saveAndFlush(any(Booking.class)))
@@ -190,6 +178,7 @@ class BookingServiceTest {
         prepareRequestedBooking(owner);
 
         assertEquals(BookingStatus.AWAITING_PAYMENT, service.acceptRequest(bookingId).status());
+        verifyNoInteractions(priceCalculator);
         service.processPaidPayment(paidPayment("tr_expected", "100.00"));
         assertEquals(BookingStatus.CONFIRMED, booking.getStatus());
         service.processPaidPayment(paidPayment("tr_expected", "100.00"));
@@ -201,7 +190,9 @@ class BookingServiceTest {
         User owner = ownerForBooking();
         User scout = User.builder().id(scoutId).email("scout@example.com").role(UserRole.SCOUT).build();
         Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).name("Venue").status(VenueStatus.ACTIVE)
-                .timezone("Europe/Amsterdam").dayRateEur(new BigDecimal("100.00")).build();
+                .timezone("Europe/Amsterdam")
+                .hourlyRateEur(new BigDecimal("175.00")).minimumBookingMinutes(240)
+                .fullDayRateEur(new BigDecimal("1200.00")).build();
         when(venueRepository.findById(venue.getId())).thenReturn(Optional.of(venue));
         when(userRepository.findById(scoutId)).thenReturn(Optional.of(scout));
         when(bookingRepository.saveAndFlush(any(Booking.class))).thenAnswer(invocation -> {
@@ -217,6 +208,11 @@ class BookingServiceTest {
         assertEquals(BookingStatus.REQUESTED, result.status());
         assertEquals(LocalTime.of(10, 0), result.startTime());
         assertEquals(LocalTime.of(14, 0), result.endTime());
+        assertEquals(new BigDecimal("700.00"), result.venuePriceEur());
+        assertEquals(new BigDecimal("175.00"), result.hourlyRateEurSnapshot());
+        assertEquals(240, result.minimumBookingMinutesSnapshot());
+        assertEquals(240, result.durationMinutes());
+        assertEquals(240, result.billableMinutes());
         assertEquals(null, result.molliePaymentId());
         org.junit.jupiter.api.Assertions.assertNotNull(result.ownerResponseExpiresAt());
     }
@@ -320,7 +316,8 @@ class BookingServiceTest {
                 .role(UserRole.SCOUT).build();
         Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).name("Studio")
                 .timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE)
-                .dayRateEur(new BigDecimal("100.00")).build();
+                .hourlyRateEur(new BigDecimal("25.00"))
+                .minimumBookingMinutes(240).fullDayRateEur(new BigDecimal("100.00")).build();
         when(venueRepository.findById(venue.getId())).thenReturn(Optional.of(venue));
         when(userRepository.findById(scoutId)).thenReturn(Optional.of(scout));
         when(bookingRepository.findBlockingBookings(venue.getId(), LocalDate.now().plusDays(3))).thenReturn(java.util.List.of());

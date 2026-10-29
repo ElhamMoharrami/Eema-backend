@@ -38,8 +38,8 @@ public class RefundCoordinator {
     @Transactional
     public Claim claim(UUID bookingId, UUID adminId, String adminName) {
         Booking booking = locked(bookingId);
-        if (booking.getStatus() != BookingStatus.PAID && booking.getStatus() != BookingStatus.CONFIRMED) {
-            throw new ConflictException("Only paid or confirmed bookings can be refunded");
+        if (booking.getStatus() != BookingStatus.CONFIRMED) {
+            throw new ConflictException("Only confirmed bookings can be refunded");
         }
         if (booking.getMolliePaymentId() == null) throw new ConflictException("Booking has no Mollie payment");
         if (booking.getRefundStatus() == RefundStatus.REFUNDED) throw new ConflictException("Booking is already refunded");
