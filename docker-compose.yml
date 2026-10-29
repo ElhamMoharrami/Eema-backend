@@ -33,6 +33,7 @@ services:
       SPRING_DATASOURCE_USERNAME: eema
       SPRING_DATASOURCE_PASSWORD: eema
       UPLOAD_DIR: /app/uploads
+      DOCUMENT_STORAGE_DIR: /app/private-documents
     ports:
       - "8080:8080"
     healthcheck:
@@ -43,7 +44,9 @@ services:
       start_period: 30s
     volumes:
       - eema-uploads:/app/uploads
+      - eema-private-documents:/app/private-documents
 
 volumes:
   eema-postgres-data:
   eema-uploads:
+  eema-private-documents:

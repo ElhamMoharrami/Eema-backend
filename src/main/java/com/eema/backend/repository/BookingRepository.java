@@ -76,7 +76,13 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             """, nativeQuery = true)
     List<Booking> findBlockingBookings(@Param("venueId") UUID venueId, @Param("date") LocalDate date);
 
-    List<Booking> findByStatusAndPaymentExpiresAtBefore(BookingStatus status, java.time.OffsetDateTime cutoff);
+    @Query(value = """
+            select * from bookings where status = 'AWAITING_PAYMENT'
+              and payment_expires_at <= :cutoff
+            order by payment_expires_at for update skip locked limit :batchSize
+            """, nativeQuery = true)
+    List<Booking> lockDueAwaitingPaymentBookings(@Param("cutoff") OffsetDateTime cutoff,
+                                                  @Param("batchSize") int batchSize);
 
     long countByPaymentCreationStatusAndPaymentCreationStartedAtBefore(
             PaymentCreationStatus status, OffsetDateTime cutoff);

@@ -120,7 +120,7 @@ public class AvailabilityInquiryService {
 
     @Transactional
     public int expireOffers(OffsetDateTime now) {
-        List<AvailabilityInquiry> expired = inquiries.findByStatusAndOfferExpiresAtBefore(AvailabilityInquiryStatus.OFFERED, now);
+        List<AvailabilityInquiry> expired = inquiries.lockDueOffers(now, 100);
         expired.forEach(value -> expire(value, now));
         return expired.size();
     }

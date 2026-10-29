@@ -29,7 +29,8 @@ public record AppProperties(
                                 @Positive int refreshTokenExpiryDays) {
     }
 
-    public record StorageProperties(@NotBlank String uploadDir, @NotBlank String fileUrlPrefix) {
+    public record StorageProperties(@NotBlank String provider, @NotBlank String uploadDir,
+                                    @NotBlank String fileUrlPrefix, @Positive long maxFileSizeBytes) {
     }
 
     public record CorsProperties(@NotEmpty List<String> allowedOrigins) {

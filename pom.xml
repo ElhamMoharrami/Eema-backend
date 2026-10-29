@@ -20,6 +20,7 @@
         <mapstruct.version>1.6.2</mapstruct.version>
         <jjwt.version>0.11.5</jjwt.version>
         <pdfbox.version>3.0.8</pdfbox.version>
+        <aws-sdk.version>2.52.1</aws-sdk.version>
     </properties>
 
     <dependencyManagement>
@@ -145,6 +146,17 @@
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>${pdfbox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${aws-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>url-connection-client</artifactId>
+            <version>${aws-sdk.version}</version>
         </dependency>
 
     </dependencies>

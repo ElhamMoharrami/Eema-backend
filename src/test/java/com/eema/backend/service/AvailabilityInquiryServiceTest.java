@@ -182,7 +182,7 @@ class AvailabilityInquiryServiceTest {
     void scheduledExpiryReleasesOutstandingOffers() {
         AvailabilityInquiry inquiry = offeredInquiry();
         OffsetDateTime now = OffsetDateTime.now();
-        when(inquiries.findByStatusAndOfferExpiresAtBefore(AvailabilityInquiryStatus.OFFERED, now)).thenReturn(List.of(inquiry));
+        when(inquiries.lockDueOffers(now, 100)).thenReturn(List.of(inquiry));
 
         assertEquals(1, service.expireOffers(now));
         assertEquals(AvailabilityInquiryStatus.EXPIRED, inquiry.getStatus());

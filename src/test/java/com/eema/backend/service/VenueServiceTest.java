@@ -37,7 +37,7 @@ class VenueServiceTest {
     @BeforeEach
     void setUp() {
         AppProperties properties = new AppProperties(null,
-                new AppProperties.StorageProperties("/tmp/eema-venue-test", "/api/upload/files/"),
+                new AppProperties.StorageProperties("local", "/tmp/eema-venue-test", "/api/upload/files/", 5_242_880),
                 null, null, null, null, null, null, null);
         VenueMapper mapper = new VenueMapper(new UserMapper());
         service = new VenueService(venues, users, mapper, currentUser, new VenueMediaPolicy(properties), storage,

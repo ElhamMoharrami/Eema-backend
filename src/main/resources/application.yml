@@ -16,11 +16,23 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration/common
+  servlet:
+    multipart:
+      max-file-size: ${MAX_UPLOAD_FILE_SIZE:5MB}
+      max-request-size: ${MAX_UPLOAD_REQUEST_SIZE:6MB}
+  task:
+    scheduling:
+      pool:
+        size: ${SCHEDULER_POOL_SIZE:2}
 
 server:
   port: 8080
   servlet:
     context-path: /api
+  forward-headers-strategy: framework
+  tomcat:
+    max-http-form-post-size: ${MAX_FORM_POST_SIZE:6MB}
+    max-swallow-size: ${MAX_SWALLOW_SIZE:6MB}
 
 management:
   endpoints:
@@ -30,17 +42,23 @@ management:
   endpoint:
     health:
       show-details: never
+      probes:
+        enabled: true
 
 logging:
   level:
     root: INFO
-    org.hibernate.SQL: INFO
-    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
     org.springframework.web.client.RestTemplate: INFO
     com.eema.backend.service.ai: INFO
     org.apache.http.wire: WARN
 
 app:
+  async:
+    core-pool-size: ${ASYNC_CORE_POOL_SIZE:2}
+    max-pool-size: ${ASYNC_MAX_POOL_SIZE:4}
+    queue-capacity: ${ASYNC_QUEUE_CAPACITY:100}
   documents:
     storage-dir: ${DOCUMENT_STORAGE_DIR:/tmp/eema-private-documents}
   workflow-observability:
@@ -63,8 +81,18 @@ app:
     access-token-expiry-minutes: 15
     refresh-token-expiry-days: 7
   storage:
+    provider: ${STORAGE_PROVIDER:local}
     upload-dir: ${UPLOAD_DIR:/tmp/uploads}
     file-url-prefix: ${FILE_URL_PREFIX:/api/upload/files/}
+    max-file-size-bytes: ${MAX_UPLOAD_FILE_SIZE_BYTES:5242880}
+    s3:
+      endpoint: ${S3_ENDPOINT:}
+      region: ${S3_REGION:}
+      public-media-bucket: ${S3_BUCKET_PUBLIC_MEDIA:}
+      private-documents-bucket: ${S3_BUCKET_PRIVATE_DOCUMENTS:}
+      access-key: ${S3_ACCESS_KEY:}
+      secret-key: ${S3_SECRET_KEY:}
+      path-style-access: ${S3_PATH_STYLE_ACCESS:false}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
   admin-email-allowlist: ${ADMIN_EMAIL_ALLOWLIST:}
@@ -87,3 +115,5 @@ app:
   frontend-base-url: ${APP_FRONTEND_BASE_URL:http://localhost:3000}
   calendly:
     base-url: ${CALENDLY_BASE_URL:}
+  security:
+    hsts-enabled: ${HSTS_ENABLED:false}

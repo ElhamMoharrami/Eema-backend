@@ -2,10 +2,12 @@ package com.eema.backend.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import java.io.IOException;
 import java.nio.file.*;
 
 @Service
+@ConditionalOnProperty(name = "app.storage.provider", havingValue = "local", matchIfMissing = true)
 public class LocalPrivateDocumentStorage implements PrivateDocumentStorage {
     private final Path root;
 

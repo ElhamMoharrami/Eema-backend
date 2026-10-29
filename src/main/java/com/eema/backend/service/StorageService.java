@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ import java.util.Locale;
 import java.util.Set;
 
 @Service
+@ConditionalOnProperty(name = "app.storage.provider", havingValue = "local", matchIfMissing = true)
 public class StorageService implements FileStorage {
 
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
@@ -24,12 +26,14 @@ public class StorageService implements FileStorage {
     private final Path rootLocation;
     private final String fileUrlPrefix;
     private final VenueMediaPolicy mediaPolicy;
+    private final long maxFileSizeBytes;
 
     public StorageService(AppProperties appProperties) {
         this.rootLocation = Paths.get(appProperties.storage().uploadDir()).toAbsolutePath().normalize();
         String configuredPrefix = appProperties.storage().fileUrlPrefix();
         this.fileUrlPrefix = configuredPrefix.endsWith("/") ? configuredPrefix : configuredPrefix + "/";
         this.mediaPolicy = new VenueMediaPolicy(appProperties);
+        this.maxFileSizeBytes = appProperties.storage().maxFileSizeBytes();
 
         try {
             Files.createDirectories(rootLocation);
@@ -48,6 +52,9 @@ public class StorageService implements FileStorage {
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase(Locale.ROOT))) {
             throw new IllegalArgumentException("Only JPEG, PNG, and WebP images are allowed");
+        }
+        if (file.getSize() > maxFileSizeBytes) {
+            throw new IllegalArgumentException("Image exceeds the configured maximum size");
         }
 
         // Extract file extension

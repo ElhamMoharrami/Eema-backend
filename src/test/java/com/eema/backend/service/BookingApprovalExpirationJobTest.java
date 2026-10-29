@@ -1,7 +1,6 @@
 package com.eema.backend.service;
 
 import com.eema.backend.entity.Booking;
-import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.repository.BookingRepository;
 import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
@@ -17,7 +16,7 @@ class BookingApprovalExpirationJobTest {
         BookingRepository repository = mock(BookingRepository.class);
         BookingService service = mock(BookingService.class);
         UUID id = UUID.randomUUID();
-        when(repository.findByStatusAndPaymentExpiresAtBefore(eq(BookingStatus.AWAITING_PAYMENT), any()))
+        when(repository.lockDueAwaitingPaymentBookings(any(), eq(100)))
                 .thenReturn(List.of(Booking.builder().id(id).build()));
         new BookingApprovalExpirationJob(repository, service).expireUnpaidApprovals();
         verify(service).expireDueRequests(any(), eq(100));

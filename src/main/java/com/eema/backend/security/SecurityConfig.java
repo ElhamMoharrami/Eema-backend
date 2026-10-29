@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.http.HttpMethod;
 
@@ -33,6 +34,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AppProperties appProperties;
+    @Value("${app.security.hsts-enabled:false}")
+    private boolean hstsEnabled;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,6 +52,17 @@ public class SecurityConfig {
                  */.csrf(csrf -> csrf.disable())
 
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                .headers(headers -> {
+                    headers.contentTypeOptions(contentType -> {});
+                    headers.frameOptions(frame -> frame.deny());
+                    headers.referrerPolicy(referrer -> referrer.policy(
+                            org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER));
+                    headers.contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'none'; frame-ancestors 'none'"));
+                    if (hstsEnabled) headers.httpStrictTransportSecurity(hsts -> hsts
+                            .includeSubDomains(true).preload(true).maxAgeInSeconds(31536000));
+                    else headers.httpStrictTransportSecurity(hsts -> hsts.disable());
+                })
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -80,7 +94,8 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/venues", "/venues/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/upload/files/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/actuator/health", "/actuator/health/**").permitAll()
+                        .requestMatchers("/actuator/metrics/**").hasRole("ADMIN")
 
                         // Administrative operational and financial data.
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -142,7 +157,8 @@ public class SecurityConfig {
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "X-Request-ID"));
+        configuration.setExposedHeaders(List.of("X-Request-ID", "Content-Disposition"));
 
         configuration.setAllowCredentials(true);
 
