@@ -23,16 +23,16 @@ public class EmailService {
      */
     @Autowired
     public EmailService(AppProperties appProperties) {
-        String apiKey = appProperties.getResend().getApiKey();
+        String apiKey = appProperties.resend().apiKey();
         this.resendClient = new Resend(apiKey);
-        this.fromEmail = appProperties.getResend().getFromEmail();
+        this.fromEmail = appProperties.resend().fromEmail();
     }
 
     /**
      * Constructor for testing, allows injecting a mock Resend client.
      */
     EmailService(AppProperties appProperties, Resend resendClient) {
-        this.fromEmail = appProperties.getResend().getFromEmail();
+        this.fromEmail = appProperties.resend().fromEmail();
         this.resendClient = resendClient;
     }
 

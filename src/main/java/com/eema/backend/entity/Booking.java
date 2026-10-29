@@ -1,17 +1,24 @@
 package com.eema.backend.entity;
 
 import com.eema.backend.entity.enums.BookingStatus;
+
 import jakarta.persistence.*;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 
 @Entity
 @Table(name = "bookings")
@@ -33,12 +40,17 @@ public class Booking {
     private UUID scoutId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(
+            name = "status",
+            nullable = false,
+            columnDefinition = "booking_status"
+    )
     private BookingStatus status;
 
-    // ==========================
-    // Booking details
-    // ==========================
+    // --------------------------------------------------
+    // BOOKING DETAILS
+    // --------------------------------------------------
 
     @Column(name = "shoot_date", nullable = false)
     private LocalDate shootDate;
@@ -49,66 +61,141 @@ public class Booking {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "raw_brief", columnDefinition = "text")
     private String rawBrief;
 
-    // ==========================
-    // Financial snapshot
-    // ==========================
+    // --------------------------------------------------
+    // FINANCIAL SNAPSHOT
+    // --------------------------------------------------
 
-    // Price of the venue at booking time
-    @Column(name = "venue_price_eur", precision = 10, scale = 2, nullable = false)
+    @Column(
+            name = "venue_price_eur",
+            precision = 10,
+            scale = 2,
+            nullable = false
+    )
     private BigDecimal venuePriceEur;
 
-    // e.g. 15.00
-    @Column(name = "commission_percentage", precision = 5, scale = 2, nullable = false)
+    @Column(
+            name = "commission_percentage",
+            precision = 5,
+            scale = 2,
+            nullable = false
+    )
     private BigDecimal commissionPercentage;
 
-    // e.g. €30.00
-    @Column(name = "commission_eur", precision = 10, scale = 2, nullable = false)
+    @Column(
+            name = "commission_eur",
+            precision = 10,
+            scale = 2,
+            nullable = false
+    )
     private BigDecimal commissionEur;
 
-    // Fee charged by Mollie
-    @Column(name = "mollie_fee_eur", precision = 10, scale = 2)
+    @Column(
+            name = "mollie_fee_eur",
+            precision = 10,
+            scale = 2
+    )
     private BigDecimal mollieFeeEur;
 
-    // Amount transferred to venue owner
-    @Column(name = "owner_payout_eur", precision = 10, scale = 2)
+    @Column(
+            name = "owner_payout_eur",
+            precision = 10,
+            scale = 2
+    )
     private BigDecimal ownerPayoutEur;
 
-    // Total charged to the scout
-    @Column(name = "total_paid_eur", precision = 10, scale = 2)
+    @Column(
+            name = "total_paid_eur",
+            precision = 10,
+            scale = 2,
+            nullable = false
+    )
     private BigDecimal totalPaidEur;
 
-    // ==========================
-    // Payment
-    // ==========================
+    // --------------------------------------------------
+    // PAYMENT
+    // --------------------------------------------------
 
-    @Column(name = "mollie_payment_id", unique = true)
+    @Column(
+            name = "mollie_payment_id",
+            unique = true
+    )
     private String molliePaymentId;
 
-    // ==========================
-    // Contact snapshot
-    // ==========================
+    // --------------------------------------------------
+    // CONTACT SNAPSHOTS
+    // --------------------------------------------------
 
-    @Convert(converter = JsonbConverter.class)
-    @Column(name = "scout_contact", columnDefinition = "jsonb")
-    private String scoutContact;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "name",
+                    column = @Column(
+                            name = "scout_contact_name",
+                            nullable = false
+                    )
+            ),
+            @AttributeOverride(
+                    name = "email",
+                    column = @Column(
+                            name = "scout_contact_email",
+                            nullable = false
+                    )
+            ),
+            @AttributeOverride(
+                    name = "phone",
+                    column = @Column(
+                            name = "scout_contact_phone"
+                    )
+            )
+    })
+    private BookingContactSnapshot scoutContact;
 
-    @Convert(converter = JsonbConverter.class)
-    @Column(name = "owner_contact", columnDefinition = "jsonb")
-    private String ownerContact;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "name",
+                    column = @Column(
+                            name = "owner_contact_name",
+                            nullable = false
+                    )
+            ),
+            @AttributeOverride(
+                    name = "email",
+                    column = @Column(
+                            name = "owner_contact_email",
+                            nullable = false
+                    )
+            ),
+            @AttributeOverride(
+                    name = "phone",
+                    column = @Column(
+                            name = "owner_contact_phone"
+                    )
+            )
+    })
+    private BookingContactSnapshot ownerContact;
 
-    // ==========================
-    // Audit
-    // ==========================
+    // --------------------------------------------------
+    // AUDIT
+    // --------------------------------------------------
 
     @CreationTimestamp
+    @Column(
+            name = "created_at",
+            nullable = false,
+            updatable = false
+    )
     private OffsetDateTime createdAt;
 
+    @Column(name = "paid_at")
     private OffsetDateTime paidAt;
 
+    @Column(name = "confirmed_at")
     private OffsetDateTime confirmedAt;
 
+    @Column(name = "cancelled_at")
     private OffsetDateTime cancelledAt;
 }

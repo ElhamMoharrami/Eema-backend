@@ -1,245 +1,48 @@
 package com.eema.backend.config;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
-import lombok.Setter;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import jakarta.validation.constraints.NotEmpty;
-
+import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * Application properties configuration.
- */
-@ConfigurationProperties(prefix = "app")
-@Component
 @Validated
-public class AppProperties {
+@ConfigurationProperties(prefix = "app")
+public record AppProperties(
 
-    private final JwtProperties jwt = new JwtProperties();
-    private final StorageProperties storage = new StorageProperties();
-    private final CorsProperties cors = new CorsProperties();
-    private final MollieProperties mollie = new MollieProperties();
-    private final ResendProperties resend = new ResendProperties();
-    private final CalendlyProperties calendly = new CalendlyProperties();
-    @Setter
-    private String adminEmailAllowlist;
+        @Valid JwtProperties jwt, @Valid StorageProperties storage, @Valid CorsProperties cors,
+        @Valid MollieProperties mollie, @Valid ResendProperties resend, @Valid CalendlyProperties calendly,
+        @Valid CommissionProperties commission,
 
-    public JwtProperties getJwt() {
-        return jwt;
+        String adminEmailAllowlist
+
+) {
+
+    public record JwtProperties(@NotBlank String secret, @Positive int accessTokenExpiryMinutes,
+                                @Positive int refreshTokenExpiryDays) {
     }
 
-    public StorageProperties getStorage() {
-        return storage;
+    public record StorageProperties(@NotBlank String uploadDir, @NotBlank String fileUrlPrefix) {
     }
 
-    public CorsProperties getCors() {
-        return cors;
+    public record CorsProperties(@NotEmpty List<String> allowedOrigins) {
     }
 
-    public MollieProperties getMollie() {
-        return mollie;
+    public record MollieProperties(@NotBlank String apiKey, @NotBlank String redirectUrl, @NotBlank String webhookUrl) {
     }
 
-    public ResendProperties getResend() {
-        return resend;
+    public record ResendProperties(@NotBlank String apiKey, @NotBlank String fromEmail) {
     }
 
-    public CalendlyProperties getCalendly() {
-        return calendly;
+    public record CalendlyProperties(@NotBlank String baseUrl) {
     }
 
-    public String getAdminEmailAllowlist() {
-        return adminEmailAllowlist;
-    }
-
-    /**
-     * JWT properties.
-     */
-    public static class JwtProperties {
-        @NotBlank
-        private String secret;
-
-        @Positive
-        private int accessTokenExpiryMinutes;
-
-        @Positive
-        private int refreshTokenExpiryDays;
-
-        public String getSecret() {
-            return secret;
-        }
-
-        public void setSecret(String secret) {
-            this.secret = secret;
-        }
-
-        public int getAccessTokenExpiryMinutes() {
-            return accessTokenExpiryMinutes;
-        }
-
-        public void setAccessTokenExpiryMinutes(int accessTokenExpiryMinutes) {
-            this.accessTokenExpiryMinutes = accessTokenExpiryMinutes;
-        }
-
-        public int getRefreshTokenExpiryDays() {
-            return refreshTokenExpiryDays;
-        }
-
-        public void setRefreshTokenExpiryDays(int refreshTokenExpiryDays) {
-            this.refreshTokenExpiryDays = refreshTokenExpiryDays;
-        }
-    }
-
-    /**
-     * Storage properties.
-     */
-    public static class StorageProperties {
-        @NotBlank
-        private String uploadDir;
-
-        @NotBlank
-        private String fileUrlPrefix;
-
-        public String getUploadDir() {
-            return uploadDir;
-        }
-
-        public void setUploadDir(String uploadDir) {
-            this.uploadDir = uploadDir;
-        }
-
-        public String getFileUrlPrefix() {
-            return fileUrlPrefix;
-        }
-
-        public void setFileUrlPrefix(String fileUrlPrefix) {
-            this.fileUrlPrefix = fileUrlPrefix;
-        }
-    }
-
-    /**
-     * CORS properties.
-     */
-    public static class CorsProperties {
-        @NotEmpty
-        private List<String> allowedOrigins;
-
-        public List<String> getAllowedOrigins() {
-            return allowedOrigins;
-        }
-
-        public void setAllowedOrigins(java.util.List<String> allowedOrigins) {
-            this.allowedOrigins = allowedOrigins;
-        }
-    }
-
-    /**
-     * Mollie properties.
-     */
-    @Validated
-    public static class MollieProperties {
-        @NotBlank
-        private String apiKey;  // test_* in dev, live_* in prod
-
-        @NotBlank
-        private String webhookSecret;
-
-        @NotBlank
-        private String redirectUrl;  // redirect after payment (e.g. https://eema.co/booked)
-
-        public String getApiKey() {
-            return apiKey;
-        }
-
-        public void setApiKey(String apiKey) {
-            this.apiKey = apiKey;
-        }
-
-        public String getWebhookSecret() {
-            return webhookSecret;
-        }
-
-        public void setWebhookSecret(String webhookSecret) {
-            this.webhookSecret = webhookSecret;
-        }
-
-        public String getRedirectUrl() {
-            return redirectUrl;
-        }
-
-        public void setRedirectUrl(String redirectUrl) {
-            this.redirectUrl = redirectUrl;
-        }
-    }
-
-    /**
-     * Resend properties.
-     */
-    @Validated
-    public static class ResendProperties {
-        @NotBlank
-        private String apiKey;  // Resend API key
-
-        @NotBlank
-        private String fromEmail;  // From email address for sending emails
-
-        public String getApiKey() {
-            return apiKey;
-        }
-
-        public void setApiKey(String apiKey) {
-            this.apiKey = apiKey;
-        }
-
-        public String getFromEmail() {
-            return fromEmail;
-        }
-
-        public void setFromEmail(String fromEmail) {
-            this.fromEmail = fromEmail;
-        }
-    }
-
-    /**
-     * Calendly properties.
-     */
-    public static class CalendlyProperties {
-        @NotBlank
-        private String baseUrl;  // Base URL for Calendly links, e.g. https://calendly.com/eema
-
-        public String getBaseUrl() {
-            return baseUrl;
-        }
-
-        public void setBaseUrl(String baseUrl) {
-            this.baseUrl = baseUrl;
-        }
-    }
-
-    /**
-     * Commission properties.
-     */
-    @Validated
-    public static class CommissionProperties {
-        @NotBlank
-        private String percentage;  // Commission percentage as string (e.g., "4.00" for 4%)
-
-        public String getPercentage() {
-            return percentage;
-        }
-
-        public void setPercentage(String percentage) {
-            this.percentage = percentage;
-        }
-    }
-
-    private final CommissionProperties commission = new CommissionProperties();
-
-    public CommissionProperties getCommission() {
-        return commission;
+    public record CommissionProperties(@DecimalMin(value = "0.0", inclusive = false) BigDecimal percentage) {
     }
 }

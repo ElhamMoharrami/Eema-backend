@@ -39,30 +39,31 @@ logging:
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    # Log the request/response details from RestTemplate
     org.springframework.web.client.RestTemplate: DEBUG
-    # Log our own service at INFO (or DEBUG if you want more)
     com.eema.backend.service.ai: INFO
-    # Optional: see the raw HTTP wire traffic (requires spring-boot-starter-logging)
     org.apache.http.wire: DEBUG
-    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
 
 app:
   jwt:
-    secret: fRGDyDVTthYtZ+rNvijhiAWox290QmZuouDlUC0sNddnF803lbJud6r308dHQHNDZazfxUvpu66muD4TOox49w==
+    secret: ${JWT_SECRET}
     access-token-expiry-minutes: 15
     refresh-token-expiry-days: 7
   storage:
-    uploadDir: ${UPLOAD_DIR:/tmp/uploads}
-    fileUrlPrefix: ${FILE_URL_PREFIX:/api/files/}
+    upload-dir: ${UPLOAD_DIR:/tmp/uploads}
+    file-url-prefix: ${FILE_URL_PREFIX:/api/files/}
   cors:
-    allowedOrigins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
-  adminEmailAllowlist: ${ADMIN_EMAIL_ALLOWLIST:}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
+  admin-email-allowlist: ${ADMIN_EMAIL_ALLOWLIST:}
   gemini:
-    api-key: "${GEMINI_API_KEY:REDACTED_EXPOSED_CREDENTIAL}"   # allows overriding via env var, fails fast if missing
+    api-key: ${GEMINI_API_KEY}
   commission:
-    percentage: ${COMMISSION_PERCENTAGE:4.00}  # Commission percentage (e.g., 4.00 for 4%)
+    percentage: ${COMMISSION_PERCENTAGE:20.00}
   mollie:
-    api-key: "${MOLLIE_API_KEY:#{null}}"
-    webhook-secret: "${MOLLIE_WEBHOOK_SECRET:#{null}}"
-    redirect-url: "${MOLLIE_REDIRECT_URL:https://example.com}"
+    api-key: ${MOLLIE_API_KEY:REDACTED_EXPOSED_CREDENTIAL}
+    redirect-url: ${MOLLIE_REDIRECT_URL:http://localhost:3000/booked}
+    webhook-url: ${MOLLIE_WEBHOOK_URL}
+  resend:
+    api-key: ${RESEND_API_KEY}
+    from-email: ${RESEND_FROM_EMAIL}
+  calendly:
+    base-url: ${CALENDLY_BASE_URL}

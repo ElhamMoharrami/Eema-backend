@@ -5,10 +5,11 @@ package com.eema.backend.entity.enums;
  */
 public enum BookingEventType {
     BOOKING_CREATED,
-    AYMENT_STARTED,
+    PAYMENT_STARTED,
     PAYMENT_SUCCEEDED,
     PAYMENT_FAILED,
     PAYMENT_REFUNDED,
+    PAYMENT_RECONCILED,
 
     OWNER_CONFIRMED,
     OWNER_REJECTED,

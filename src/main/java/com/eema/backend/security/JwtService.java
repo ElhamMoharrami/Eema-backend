@@ -33,7 +33,7 @@ public class JwtService {
 
     @PostConstruct
     public void init() {
-        String secret = appProperties.getJwt().getSecret();
+        String secret = appProperties.jwt().secret();
 
         if (secret == null || secret.isEmpty()) {
             throw new IllegalStateException("JWT secret must be configured");
@@ -72,7 +72,7 @@ public class JwtService {
      * @return JWT access token
      */
     public String generateAccessToken(User user) {
-        long expirationMillis = appProperties.getJwt().getAccessTokenExpiryMinutes() * 60 * 1000L;
+        long expirationMillis = appProperties.jwt().accessTokenExpiryMinutes() * 60 * 1000L;
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
 

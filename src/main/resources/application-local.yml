@@ -42,7 +42,7 @@ app:
   admin:
     email-allowlist: admin@example.com
   mollie:
-    api-key: your-mollie-api-key
+    api-key: REDACTED_EXPOSED_CREDENTIAL
     webhook-secret: your-mollie-webhook-secret
   gemini:
     api-key: REDACTED_EXPOSED_CREDENTIAL

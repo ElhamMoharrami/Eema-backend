@@ -1,12 +1,22 @@
 package com.eema.backend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.Map;
 
-@Value
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookingEventPayload {
-    Map<String, Object> data;
+
+    @Builder.Default
+    private Map<String, Object> data =
+            new HashMap<>();
 }

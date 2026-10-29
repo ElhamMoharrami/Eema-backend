@@ -1,18 +1,20 @@
 package com.eema.backend.controller;
 
+import com.eema.backend.dto.request.CreateBookingRequest;
 import com.eema.backend.dto.response.BookingDto;
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.enums.UserRole;
-import com.eema.backend.repository.UserRepository;
 import com.eema.backend.service.BookingService;
+import com.eema.backend.service.CurrentUserService;
+
+import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/bookings")
@@ -20,24 +22,25 @@ import java.util.UUID;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final UserRepository userRepository;
+    private final CurrentUserService currentUserService;
+
+    @PostMapping
+    public ResponseEntity<BookingDto> createBooking(@Valid @RequestBody CreateBookingRequest request) {
+
+        User user = currentUserService.getCurrentUser();
+
+        BookingDto booking = bookingService.createBooking(request, user.getId());
+
+        return ResponseEntity.created(URI.create("/api/bookings/" + booking.id())).body(booking);
+    }
 
     @GetMapping
     public ResponseEntity<List<BookingDto>> getBookings() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).build();
-        }
 
-        // Get the user email from the principal (username)
-        String email = authentication.getName();
-        User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new IllegalStateException("User not found with email: " + email));
+        User user = currentUserService.getCurrentUser();
 
-        UUID userId = user.getId();
-        UserRole role = user.getRole();
+        List<BookingDto> bookings = bookingService.getBookingsForUser(user.getId(), user.getRole());
 
-        List<BookingDto> bookings = bookingService.getBookingsForUser(userId, role);
         return ResponseEntity.ok(bookings);
     }
 }

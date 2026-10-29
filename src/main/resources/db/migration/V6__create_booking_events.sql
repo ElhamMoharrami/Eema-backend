@@ -1,8 +1,8 @@
 CREATE TABLE booking_events
 (
-    id         UUID PRIMARY KEY            DEFAULT gen_random_uuid(),
+    id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
-    booking_id UUID               NOT NULL
+    booking_id UUID NOT NULL
         REFERENCES bookings (id)
             ON DELETE CASCADE,
 
@@ -12,9 +12,20 @@ CREATE TABLE booking_events
 
     actor_id   UUID,
 
-    actor_name TEXT               NOT NULL,
+    actor_name TEXT NOT NULL,
 
-    created_at TIMESTAMPTZ        NOT NULL DEFAULT NOW()
+    actor_type VARCHAR(20) NOT NULL
+        CHECK (
+            actor_type IN (
+                           'SCOUT',
+                           'OWNER',
+                           'ADMIN',
+                           'SYSTEM',
+                           'WEBHOOK'
+                )
+            ),
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 
@@ -24,3 +35,7 @@ CREATE INDEX booking_events_booking_idx
 
 CREATE INDEX booking_events_type_idx
     ON booking_events (event_type);
+
+
+CREATE INDEX booking_events_actor_idx
+    ON booking_events (actor_type, actor_id);

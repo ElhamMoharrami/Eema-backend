@@ -21,8 +21,8 @@ public class StorageService {
     private final String fileUrlPrefix;
 
     public StorageService(AppProperties appProperties) {
-        this.rootLocation = Paths.get(appProperties.getStorage().getUploadDir());
-        this.fileUrlPrefix = appProperties.getStorage().getFileUrlPrefix();
+        this.rootLocation = Paths.get(appProperties.storage().uploadDir());
+        this.fileUrlPrefix = appProperties.storage().fileUrlPrefix();
 
         try {
             Files.createDirectories(rootLocation);

@@ -169,7 +169,7 @@ public class AuthService {
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .user(user)
                 .tokenHash(refreshTokenHash)
-                .expiresAt(OffsetDateTime.now().plusDays(appProperties.getJwt().getRefreshTokenExpiryDays()))
+                .expiresAt(OffsetDateTime.now().plusDays(appProperties.jwt().refreshTokenExpiryDays()))
                 .revoked(false)
                 .build();
         refreshTokenRepository.save(newRefreshToken);
@@ -179,7 +179,7 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(rawRefreshToken)
                 .tokenType("Bearer")
-                .expiresIn(appProperties.getJwt().getAccessTokenExpiryMinutes() * 60L)
+                .expiresIn(appProperties.jwt().accessTokenExpiryMinutes() * 60L)
                 .user(userMapper.toDto(user))
                 .build();
     }

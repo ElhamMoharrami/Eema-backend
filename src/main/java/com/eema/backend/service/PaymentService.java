@@ -1,159 +1,256 @@
 package com.eema.backend.service;
 
 import com.eema.backend.config.AppProperties;
-import com.eema.backend.dto.request.CheckoutRequest;
 import com.eema.backend.dto.response.CheckoutResponse;
 import com.eema.backend.dto.response.MolliePaymentResponse;
+import com.eema.backend.entity.Booking;
+import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.exception.BadRequestException;
+import com.eema.backend.exception.NotFoundException;
+import com.eema.backend.repository.BookingRepository;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
 
-    private static final String MOLLIE_API_BASE = "https://api.mollie.com/v2";
+    private static final String MOLLIE_API_BASE =
+            "https://api.mollie.com/v2";
+
     private final RestTemplate restTemplate;
     private final AppProperties appProperties;
+    private final BookingRepository bookingRepository;
 
-    public PaymentService(RestTemplate restTemplate, AppProperties appProperties) {
-        this.restTemplate = restTemplate;
-        this.appProperties = appProperties;
-    }
+    public CheckoutResponse createPayment(
+            UUID bookingId
+    ) {
 
-    /**
-     * Create a Mollie payment order for a booking.
-     * 
-     * Steps:
-     * 1. Calculate total amount (dayRate + serviceFee)
-     * 2. Call Mollie API to create payment
-     * 3. Store molliePaymentId on the booking
-     * 4. Return CheckoutResponse with Mollie redirect URL
-     * 
-     * @param bookingId The booking UUID (already created in PENDING state)
-     * @param amount    Total EUR amount to charge
-     * @return CheckoutResponse with checkoutUrl (Mollie payment page)
-     * @throws BadRequestException if Mollie API call fails
-     */
-    public CheckoutResponse createPayment(UUID bookingId, BigDecimal amount) {
-        log.info("Creating Mollie payment for booking {}. Amount: €{}", bookingId, amount);
-        
-        try {
-            // Call Mollie API
-            MolliePaymentResponse mollieResponse = callMollieCreatePayment(bookingId, amount);
-            
-            // Extract checkout URL
-            String checkoutUrl = mollieResponse.links().checkout().href();
-            
-            log.info("Mollie payment created. Payment ID: {}. Redirect URL: {}", 
-                mollieResponse.id(), checkoutUrl);
-            
-            // Return checkout response
-            return new CheckoutResponse(
-                bookingId,
-                checkoutUrl,
-                mollieResponse.id(),
-                amount.doubleValue(),
-                300L  // expires in 5 minutes (300 seconds)
+        Booking booking =
+                bookingRepository
+                        .findById(bookingId)
+                        .orElseThrow(() ->
+                                new NotFoundException(
+                                        "Booking not found: "
+                                                + bookingId
+                                )
+                        );
+
+        if (booking.getStatus()
+                != BookingStatus.PENDING) {
+
+            throw new BadRequestException(
+                    "Only pending bookings can be paid"
             );
-        } catch (RestClientException e) {
-            log.error("Mollie API call failed", e);
-            throw new BadRequestException("Could not initiate payment. Please try again.");
         }
-    }
 
-    /**
-     * Call the Mollie Create Payment API.
-     * 
-     * POST https://api.mollie.com/v2/payments
-     * 
-     * Request body:
-     * {
-     *   "amount": { "value": "100.00", "currency": "EUR" },
-     *   "description": "Eema booking #{bookingId}",
-     *   "redirectUrl": "https://eema.co/booked",
-     *   "webhookUrl": "https://eema.co/api/webhook",
-     *   "method": "ideal"  (or null to allow all methods)
-     * }
-     */
-    private MolliePaymentResponse callMollieCreatePayment(UUID bookingId, BigDecimal amount) {
-        String url = MOLLIE_API_BASE + "/payments";
-        
-        // Build request body
-        Map<String, Object> body = new HashMap<>();
-        
-        // Amount in Mollie format
-        Map<String, String> amountObj = new HashMap<>();
-        amountObj.put("value", String.format("%.2f", amount));
-        amountObj.put("currency", "EUR");
-        body.put("amount", amountObj);
-        
-        // Description
-        body.put("description", "Eema booking #" + bookingId);
-        
-        // Redirect after payment
-        body.put("redirectUrl", appProperties.getMollie().getRedirectUrl());
-        
-        // Webhook for payment confirmation (will be POST /api/webhook)
-        String webhookUrl = appProperties.getMollie().getRedirectUrl()
-            .replaceAll("/booked$", "/api/webhook");
-        body.put("webhookUrl", webhookUrl);
-        
-        // Metadata (optional but useful for tracking)
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("bookingId", bookingId.toString());
-        body.put("metadata", metadata);
-        
-        // Headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + appProperties.getMollie().getApiKey());
-        headers.set("Content-Type", "application/json");
-        headers.set("Accept", "application/json");
-        
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-        
-        // Make the call
-        ResponseEntity<MolliePaymentResponse> response = restTemplate.exchange(
-            url,
-            HttpMethod.POST,
-            request,
-            MolliePaymentResponse.class
+        if (booking.getMolliePaymentId() != null
+                && !booking
+                .getMolliePaymentId()
+                .isBlank()) {
+
+            throw new BadRequestException(
+                    "Payment has already been created for this booking"
+            );
+        }
+
+        BigDecimal amount =
+                booking.getVenuePriceEur()
+                        .setScale(
+                                2,
+                                RoundingMode.HALF_UP
+                        );
+
+        log.info(
+                "Creating Mollie payment: bookingId={}, amount={}",
+                bookingId,
+                amount
         );
-        
-        if (response.getBody() == null) {
-            throw new IllegalStateException("Mollie returned empty response");
+
+        try {
+
+            MolliePaymentResponse payment =
+                    callMollieCreatePayment(
+                            bookingId,
+                            amount
+                    );
+
+            if (payment.id() == null
+                    || payment.id().isBlank()) {
+
+                throw new IllegalStateException(
+                        "Mollie returned no payment ID"
+                );
+            }
+
+            if (payment.links() == null
+                    || payment.links().checkout() == null
+                    || payment.links().checkout().href() == null) {
+
+                throw new IllegalStateException(
+                        "Mollie returned no checkout URL"
+                );
+            }
+
+            booking.setMolliePaymentId(
+                    payment.id()
+            );
+
+            bookingRepository.save(
+                    booking
+            );
+
+            return new CheckoutResponse(
+                    bookingId,
+                    payment.links()
+                            .checkout()
+                            .href(),
+                    payment.id(),
+                    amount.doubleValue(),
+                    300L
+            );
+
+        } catch (RestClientException e) {
+
+            log.error(
+                    "Failed to create Mollie payment for booking {}",
+                    bookingId,
+                    e
+            );
+
+            throw new BadRequestException(
+                    "Could not initiate payment"
+            );
         }
-        
-        return response.getBody();
     }
 
-    /**
-     * Calculate the total amount to charge (dayRate + serviceFee).
-     * This mirrors the backend fee calculation.
-     * 
-     * Formula:
-     *   serviceFee = max(€5.00, min(€20.00, dayRate × 4%))
-     *   total = dayRate + serviceFee
-     */
-    public static BigDecimal calculateTotal(BigDecimal dayRate) {
-        // Calculate service fee: max(5.00, min(20.00, dayRate * 0.04))
-        BigDecimal minFee = BigDecimal.valueOf(5.00);
-        BigDecimal maxFee = BigDecimal.valueOf(20.00);
-        BigDecimal percentageFee = dayRate.multiply(BigDecimal.valueOf(0.04));
-        
-        BigDecimal serviceFee = percentageFee.max(minFee).min(maxFee);
-        
-        return dayRate.add(serviceFee);
+    private MolliePaymentResponse callMollieCreatePayment(
+            UUID bookingId,
+            BigDecimal amount
+    ) {
+
+        String apiKey =
+                appProperties
+                        .mollie()
+                        .apiKey();
+
+        String redirectUrl =
+                appProperties
+                        .mollie()
+                        .redirectUrl();
+
+        String webhookUrl =
+                appProperties
+                        .mollie()
+                        .webhookUrl();
+
+        if (apiKey == null
+                || apiKey.isBlank()) {
+
+            throw new IllegalStateException(
+                    "Mollie API key is not configured"
+            );
+        }
+
+        if (webhookUrl == null
+                || webhookUrl.isBlank()) {
+
+            throw new IllegalStateException(
+                    "Mollie webhook URL is not configured"
+            );
+        }
+
+        String url =
+                MOLLIE_API_BASE
+                        + "/payments";
+
+        Map<String, Object> body =
+                new HashMap<>();
+
+        body.put(
+                "amount",
+                Map.of(
+                        "value",
+                        amount.toPlainString(),
+                        "currency",
+                        "EUR"
+                )
+        );
+
+        body.put(
+                "description",
+                "Eema booking #" + bookingId
+        );
+
+        body.put(
+                "redirectUrl",
+                redirectUrl
+        );
+
+        body.put(
+                "webhookUrl",
+                webhookUrl
+        );
+
+        body.put(
+                "metadata",
+                Map.of(
+                        "bookingId",
+                        bookingId.toString()
+                )
+        );
+
+        HttpHeaders headers =
+                new HttpHeaders();
+
+        headers.setBearerAuth(apiKey);
+
+        headers.setContentType(
+                MediaType.APPLICATION_JSON
+        );
+
+        headers.setAccept(
+                List.of(
+                        MediaType.APPLICATION_JSON
+                )
+        );
+
+        ResponseEntity<MolliePaymentResponse> response =
+                restTemplate.exchange(
+                        url,
+                        HttpMethod.POST,
+                        new HttpEntity<>(
+                                body,
+                                headers
+                        ),
+                        MolliePaymentResponse.class
+                );
+
+        MolliePaymentResponse payment =
+                response.getBody();
+
+        if (payment == null) {
+
+            throw new IllegalStateException(
+                    "Mollie returned an empty response"
+            );
+        }
+
+        return payment;
     }
 }
