@@ -55,9 +55,14 @@ public class Venue {
     @Builder.Default
     private List<String> tags = new ArrayList<>();
 
-    @Column(name = "photo_paths", columnDefinition = "text[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(
+            name = "photo_paths",
+            columnDefinition = "text[]"
+    )
     @Builder.Default
-    private List<String> photoPaths = new ArrayList<>();
+    private List<String> photoPaths =
+            new ArrayList<>();
 
     private String clipUrl;
 
@@ -65,7 +70,11 @@ public class Venue {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(
+            nullable = false,
+            columnDefinition = "venue_status"
+    )
     @Builder.Default
     private VenueStatus status = VenueStatus.DRAFT;
 

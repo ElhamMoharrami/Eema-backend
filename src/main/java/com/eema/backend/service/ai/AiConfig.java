@@ -11,9 +11,8 @@ public class AiConfig {
     @Bean
     public RestTemplate restTemplate() {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        // Set connection and read timeouts (in milliseconds)
-        requestFactory.setConnectTimeout(5000); // 5 seconds
-        requestFactory.setReadTimeout(10000); // 10 seconds
+        requestFactory.setConnectTimeout(10_000);
+        requestFactory.setReadTimeout(60_000);
         return new RestTemplate(requestFactory);
     }
 }

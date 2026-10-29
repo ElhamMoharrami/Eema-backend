@@ -2,45 +2,101 @@ package com.eema.backend.service.ai;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
-/**
- * Data transfer object representing the parsed brief from the AI service.
- * Uses a record for immutability and reduced boilerplate.
- */
 public record ParsedBrief(
         String aesthetic,
-        String locationPreferences,
+        String lighting,
+
+        Integer sizeM2Min,
+        Integer sizeM2Max,
+
+        BigDecimal budgetMinEur,
+        BigDecimal budgetMaxEur,
+
         String neighbourhood,
-        String indoorOutdoor, // "indoor", "outdoor", or "both"
-        Integer sizeM2,
-        BigDecimal budgetPerDay,
+        List<String> neighbourhoodOptions,
+
+        String indoorOutdoor,
+
         List<String> requiredAmenities,
+        List<String> mustHaveTags,
+        List<String> niceToHaveTags,
+
         String shootType,
         Integer numPeople,
-        String lightingPreferences,
+
         String accessibility,
         String timingDatePreferences,
-        List<String> tags,
-        Double confidenceScore // between 0 and 1
+
+        String briefSummary,
+        Double confidenceScore
 ) {
+
     public ParsedBrief {
-        // Validate fields
-        if (sizeM2 != null && sizeM2 < 0) {
-            throw new IllegalArgumentException("sizeM2 must be non-negative");
+        neighbourhoodOptions = safeList(neighbourhoodOptions);
+        requiredAmenities = safeList(requiredAmenities);
+        mustHaveTags = safeList(mustHaveTags);
+        niceToHaveTags = safeList(niceToHaveTags);
+
+        if (sizeM2Min != null && sizeM2Min < 0) {
+            throw new IllegalArgumentException(
+                    "sizeM2Min must be non-negative"
+            );
         }
-        if (budgetPerDay != null && budgetPerDay.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("budgetPerDay must be non-negative");
+
+        if (sizeM2Max != null && sizeM2Max < 0) {
+            throw new IllegalArgumentException(
+                    "sizeM2Max must be non-negative"
+            );
         }
+
+        if (sizeM2Min != null
+                && sizeM2Max != null
+                && sizeM2Min > sizeM2Max) {
+            throw new IllegalArgumentException(
+                    "sizeM2Min cannot be greater than sizeM2Max"
+            );
+        }
+
+        if (budgetMinEur != null
+                && budgetMinEur.signum() < 0) {
+            throw new IllegalArgumentException(
+                    "budgetMinEur must be non-negative"
+            );
+        }
+
+        if (budgetMaxEur != null
+                && budgetMaxEur.signum() < 0) {
+            throw new IllegalArgumentException(
+                    "budgetMaxEur must be non-negative"
+            );
+        }
+
+        if (budgetMinEur != null
+                && budgetMaxEur != null
+                && budgetMinEur.compareTo(budgetMaxEur) > 0) {
+            throw new IllegalArgumentException(
+                    "budgetMinEur cannot be greater than budgetMaxEur"
+            );
+        }
+
         if (numPeople != null && numPeople < 0) {
-            throw new IllegalArgumentException("numPeople must be non-negative");
+            throw new IllegalArgumentException(
+                    "numPeople must be non-negative"
+            );
         }
-        if (confidenceScore != null && (confidenceScore < 0.0 || confidenceScore > 1.0)) {
-            throw new IllegalArgumentException("confidenceScore must be between 0 and 1");
+
+        if (confidenceScore != null
+                && (confidenceScore < 0 || confidenceScore > 1)) {
+            throw new IllegalArgumentException(
+                    "confidenceScore must be between 0 and 1"
+            );
         }
-        // Validate indoorOutdoor
-        if (indoorOutdoor != null && !indoorOutdoor.matches("(?i)indoor|outdoor|both")) {
-            throw new IllegalArgumentException("indoorOutdoor must be 'indoor', 'outdoor', or 'both'");
-        }
+    }
+
+    private static <T> List<T> safeList(List<T> values) {
+        return values == null
+                ? List.of()
+                : List.copyOf(values);
     }
 }

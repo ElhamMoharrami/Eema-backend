@@ -45,7 +45,7 @@ app:
     api-key: your-mollie-api-key
     webhook-secret: your-mollie-webhook-secret
   gemini:
-    api-key: your-gemini-api-key
+    api-key: REDACTED_EXPOSED_CREDENTIAL
   resend:
     api-key: your-resend-api-key
     from-email: bookings@eema.co
