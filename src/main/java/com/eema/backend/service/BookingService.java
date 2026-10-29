@@ -78,6 +78,7 @@ public class BookingService {
     private final BookingWorkflowProperties workflowProperties;
     private final BookingCancellationPolicy cancellationPolicy;
     private final OwnerPayoutService ownerPayoutService;
+    private final VenueBookingLeadTimePolicy leadTimePolicy;
 
     // --------------------------------------------------
     // CREATE BOOKING
@@ -177,6 +178,7 @@ public class BookingService {
         User scout = userRepository.findById(scoutId).orElseThrow(() -> new NotFoundException("Scout not found"));
         if (scout.getRole() != UserRole.SCOUT) throw new ForbiddenException("Only SCOUT users can accept inquiry offers");
         BookingOverlapRule.requireValid(startTime, endTime);
+        leadTimePolicy.validate(venue, date, startTime);
         boolean conflict = bookingRepository.findBlockingBookings(venueId, date).stream()
                 .anyMatch(existing -> BookingOverlapRule.overlaps(startTime, endTime, existing.getStartTime(), existing.getEndTime()));
         if (conflict) throw new ConflictException("The offered interval conflicts with an existing booking");
@@ -243,7 +245,8 @@ public class BookingService {
         return bookingRepository.findByMolliePaymentId(paymentId).map(Booking::getMollieRefundId);
     }
 
-    @Transactional(noRollbackFor = RequestDeadlineExpiredException.class)
+    @Transactional(noRollbackFor = {RequestDeadlineExpiredException.class,
+            VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class})
     public BookingDto acceptRequest(UUID bookingId) {
         User user = currentUserService.getCurrentUser();
         Booking snapshot = bookingRepository.findById(bookingId)
@@ -262,6 +265,13 @@ public class BookingService {
             appendEvent(bookingId, BookingEventType.REQUEST_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
             eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.REQUEST_EXPIRED));
             throw new RequestDeadlineExpiredException("The owner response deadline has passed; this request is expired");
+        }
+        if (!leadTimePolicy.isSatisfied(venue, booking.getShootDate(), booking.getStartTime())) {
+            transition(booking, BookingStatus.EXPIRED);
+            appendEvent(bookingId, BookingEventType.REQUEST_EXPIRED, null, "SYSTEM", ActorType.SYSTEM,
+                    Map.of("reason", "MINIMUM_LEAD_TIME_NOT_MET"));
+            eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.REQUEST_EXPIRED));
+            throw leadTimePolicy.notMet(venue);
         }
         availabilityValidator.validate(venue, booking.getShootDate(), booking.getStartTime(), booking.getEndTime(), booking.getId());
         transition(booking, BookingStatus.AWAITING_PAYMENT);

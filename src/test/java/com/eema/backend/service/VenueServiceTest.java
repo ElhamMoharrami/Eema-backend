@@ -148,7 +148,7 @@ class VenueServiceTest {
     }
 
     private UpdateVenueRequest request(List<String> photos) {
-        return new UpdateVenueRequest("Updated Studio", "Centre", 250, new BigDecimal("175.00"), 240,
+        return new UpdateVenueRequest("Updated Studio", "Centre", 250, new BigDecimal("175.00"), 240, 1440,
                 new BigDecimal("1200.00"), 30,
                 List.of(ProductionActivity.PHOTO, ProductionActivity.FILM), List.of(ProductionActivity.MUSIC_VIDEO),
                 true, true, new BigDecimal("4.50"), true, true, 3, 0, false, true, true, true,
@@ -159,7 +159,7 @@ class VenueServiceTest {
 
     private UpdateVenueRequest requestWithPricing(BigDecimal hourlyRate, int minimumMinutes, BigDecimal fullDayRate,
                                                    Integer maxCrewSize, BigDecimal ceilingHeight, Integer parkingSpaces) {
-        return new UpdateVenueRequest("Updated Studio", "Centre", 250, hourlyRate, minimumMinutes,
+        return new UpdateVenueRequest("Updated Studio", "Centre", 250, hourlyRate, minimumMinutes, 1440,
                 fullDayRate, maxCrewSize, null, null, null, null, ceilingHeight, null,
                 parkingSpaces == null ? null : true, parkingSpaces, null, null, null, null, null,
                 null, null, List.of(), null, null, "Europe/Amsterdam", List.of());

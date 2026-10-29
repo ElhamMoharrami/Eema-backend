@@ -32,8 +32,9 @@ class VenueAvailabilityServiceTest {
     @BeforeEach
     void setUp() {
         User owner = User.builder().id(ownerId).role(UserRole.OWNER).build();
-        venue = Venue.builder().id(venueId).owner(owner).timezone("Europe/Amsterdam").build();
-        service = new VenueAvailabilityService(venues, weekly, overrides, currentUsers, venueService, bookings);
+        venue = Venue.builder().id(venueId).owner(owner).timezone("Europe/Amsterdam").minimumLeadTimeMinutes(60).build();
+        service = new VenueAvailabilityService(venues, weekly, overrides, currentUsers, venueService, bookings,
+                new VenueBookingLeadTimePolicy(java.time.Clock.fixed(java.time.Instant.parse("2026-01-01T00:00:00Z"), java.time.ZoneOffset.UTC)));
         when(venues.findById(venueId)).thenReturn(Optional.of(venue));
         when(venues.findByIdForUpdate(venueId)).thenReturn(Optional.of(venue));
         when(weekly.findByVenueIdOrderByDayOfWeekAscStartTimeAsc(venueId)).thenReturn(List.of());
@@ -105,6 +106,24 @@ class VenueAvailabilityServiceTest {
         when(overrides.findByVenueIdAndDateOrderByStartTime(venueId, date))
                 .thenReturn(List.of(override(date, AvailabilityOverrideType.AVAILABLE, 7, 23)));
         assertEquals(List.of(interval(7, 23)), service.getAvailableIntervals(venueId, date));
+    }
+
+    @Test
+    void leadTimeRemovesClipsAndPreservesIntervals() {
+        venue.setMinimumLeadTimeMinutes(1440);
+        service = new VenueAvailabilityService(venues, weekly, overrides, currentUsers, venueService, bookings,
+                new VenueBookingLeadTimePolicy(Clock.fixed(Instant.parse("2026-08-27T08:00:00Z"), ZoneOffset.UTC)));
+        LocalDate before = LocalDate.of(2026, 8, 27);
+        LocalDate boundary = LocalDate.of(2026, 8, 28);
+        LocalDate after = LocalDate.of(2026, 8, 29);
+        for (LocalDate date : List.of(before, boundary, after)) {
+            when(weekly.findByVenueIdAndDayOfWeekOrderByStartTime(venueId, date.getDayOfWeek()))
+                    .thenReturn(List.of(hours(date.getDayOfWeek(), 9, 18)));
+            when(overrides.findByVenueIdAndDateOrderByStartTime(venueId, date)).thenReturn(List.of());
+        }
+        assertTrue(service.getAvailableIntervals(venueId, before).isEmpty());
+        assertEquals(List.of(interval(10, 18)), service.getAvailableIntervals(venueId, boundary));
+        assertEquals(List.of(interval(9, 18)), service.getAvailableIntervals(venueId, after));
     }
 
     @Test

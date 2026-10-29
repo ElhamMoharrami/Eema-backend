@@ -111,6 +111,7 @@ public class GeminiVenueRanker implements VenueRanker {
                 dto.sizeM2(),
                 dto.hourlyRateEur(),
                 dto.minimumBookingMinutes(),
+                dto.minimumLeadTimeMinutes(),
                 dto.fullDayRateEur(),
                 dto.maxCrewSize(),
                 dto.naturalLight(),

@@ -30,6 +30,7 @@ class AvailabilityInquiryServiceTest {
     @Mock VenueAvailabilityService availabilityService;
     @Mock BookingService bookingService;
     @Mock ApplicationEventPublisher eventPublisher;
+    @Mock VenueBookingLeadTimePolicy leadTimePolicy;
     AvailabilityInquiryService service;
 
     UUID venueId;
@@ -43,11 +44,13 @@ class AvailabilityInquiryServiceTest {
     @BeforeEach
     void setUp() {
         service = new AvailabilityInquiryService(inquiries, venues, bookings, currentUserService,
-                availabilityService, bookingService, new AvailabilityInquiryProperties(48, 60000), eventPublisher);
+                availabilityService, bookingService, new AvailabilityInquiryProperties(48, 60000), eventPublisher, leadTimePolicy);
+        lenient().when(leadTimePolicy.isSatisfied(any(), any(), any())).thenReturn(true);
         venueId = UUID.randomUUID(); scoutId = UUID.randomUUID(); ownerId = UUID.randomUUID();
         scout = User.builder().id(scoutId).email("scout@example.com").fullName("Scout").role(UserRole.SCOUT).build();
         owner = User.builder().id(ownerId).email("owner@example.com").fullName("Owner").role(UserRole.OWNER).build();
-        venue = Venue.builder().id(venueId).owner(owner).name("Studio").timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE).build();
+        venue = Venue.builder().id(venueId).owner(owner).name("Studio").timezone("Europe/Amsterdam")
+                .minimumLeadTimeMinutes(1440).status(VenueStatus.ACTIVE).build();
         futureDate = LocalDate.now(ZoneId.of("Europe/Amsterdam")).plusDays(3);
     }
 
@@ -120,6 +123,39 @@ class AvailabilityInquiryServiceTest {
     }
 
     @Test
+    void inquiryAndOwnerOfferCannotBypassLeadTime() {
+        when(currentUserService.getCurrentUser()).thenReturn(scout);
+        when(venues.findById(venueId)).thenReturn(Optional.of(venue));
+        doThrow(new VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException("too late"))
+                .when(leadTimePolicy).validate(venue, futureDate, time(7));
+        assertThrows(VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class,
+                () -> service.create(new CreateAvailabilityInquiryRequest(venueId, futureDate, time(7), time(9), "Request")));
+
+        AvailabilityInquiry inquiry = openInquiry();
+        when(currentUserService.getCurrentUser()).thenReturn(owner);
+        when(inquiries.findByIdForUpdate(inquiry.getId())).thenReturn(Optional.of(inquiry));
+        assertThrows(VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class,
+                () -> service.offer(inquiry.getId(), new OfferAvailabilityInquiryRequest(futureDate, time(7), time(9))));
+        assertEquals(AvailabilityInquiryStatus.OPEN, inquiry.getStatus());
+    }
+
+    @Test
+    void offeredSlotThatBecomesTooLateExpiresWithoutCreatingBooking() {
+        AvailabilityInquiry inquiry = offeredInquiry();
+        when(currentUserService.getCurrentUser()).thenReturn(scout);
+        when(inquiries.findByIdForUpdate(inquiry.getId())).thenReturn(Optional.of(inquiry));
+        when(venues.findById(venueId)).thenReturn(Optional.of(venue));
+        when(leadTimePolicy.isSatisfied(venue, inquiry.getOfferedDate(), inquiry.getOfferedStartTime())).thenReturn(false);
+        when(leadTimePolicy.notMet(venue)).thenReturn(
+                new VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException("too late"));
+
+        assertThrows(VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class,
+                () -> service.accept(inquiry.getId()));
+        assertEquals(AvailabilityInquiryStatus.EXPIRED, inquiry.getStatus());
+        verifyNoInteractions(bookingService);
+    }
+
+    @Test
     void offerExpiresAndCannotBeAccepted() {
         AvailabilityInquiry inquiry = offeredInquiry();
         inquiry.setOfferExpiresAt(OffsetDateTime.now().minusMinutes(1));
@@ -149,6 +185,7 @@ class AvailabilityInquiryServiceTest {
         BookingDto result = bookingDto(bookingId);
         when(currentUserService.getCurrentUser()).thenReturn(scout);
         when(inquiries.findByIdForUpdate(inquiry.getId())).thenReturn(Optional.of(inquiry));
+        when(venues.findById(venueId)).thenReturn(Optional.of(venue));
         when(bookings.findBlockingBookings(venueId, futureDate)).thenReturn(List.of());
         when(bookingService.createApprovedExceptionBooking(venueId, scoutId, futureDate, time(7), time(9), inquiry.getMessage()))
                 .thenReturn(result);

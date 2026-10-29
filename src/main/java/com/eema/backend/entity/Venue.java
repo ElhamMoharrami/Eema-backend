@@ -9,6 +9,8 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -54,6 +56,11 @@ public class Venue {
     @Positive
     @Column(name = "minimum_booking_minutes", nullable = false)
     private Integer minimumBookingMinutes;
+
+    @Min(60)
+    @Max(43200)
+    @Column(name = "minimum_lead_time_minutes")
+    private Integer minimumLeadTimeMinutes;
 
     @DecimalMin("0.01")
     @Column(name = "full_day_rate_eur", precision = 10, scale = 2)

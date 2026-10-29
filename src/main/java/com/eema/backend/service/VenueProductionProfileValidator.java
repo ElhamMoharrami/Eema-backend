@@ -48,6 +48,7 @@ public class VenueProductionProfileValidator {
         if (venue.getSoundRecordingSuitable() == null) issues.add("soundRecordingSuitable");
         if (venue.getHourlyRateEur() == null) issues.add("hourlyRateEur");
         if (venue.getMinimumBookingMinutes() == null) issues.add("minimumBookingMinutes");
+        if (venue.getMinimumLeadTimeMinutes() == null) issues.add("minimumLeadTimeMinutes");
         if (venue.getTimezone() == null || venue.getTimezone().isBlank()) issues.add("timezone");
         if (venue.getPhotoPaths() == null || venue.getPhotoPaths().isEmpty()) issues.add("photoPaths");
         return List.copyOf(issues);

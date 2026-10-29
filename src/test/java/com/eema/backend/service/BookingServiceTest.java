@@ -61,6 +61,7 @@ class BookingServiceTest {
     @Mock ApplicationEventPublisher eventPublisher;
     @Mock BookingAvailabilityValidator availabilityValidator;
     @Mock OwnerPayoutService ownerPayoutService;
+    @Mock VenueBookingLeadTimePolicy leadTimePolicy;
     BookingService service;
 
     private UUID bookingId;
@@ -72,7 +73,8 @@ class BookingServiceTest {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
                 appProperties, currentUserService, stateMachine, financials, priceCalculator, eventPublisher, availabilityValidator,
                 new BookingWorkflowProperties(24, 24, 60000),
-                new BookingCancellationPolicy(financials), ownerPayoutService);
+                new BookingCancellationPolicy(financials), ownerPayoutService, leadTimePolicy);
+        org.mockito.Mockito.lenient().when(leadTimePolicy.isSatisfied(any(), any(), any())).thenReturn(true);
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()
@@ -259,6 +261,22 @@ class BookingServiceTest {
 
         assertThrows(com.eema.backend.exception.RequestDeadlineExpiredException.class,
                 () -> service.acceptRequest(bookingId));
+        assertEquals(BookingStatus.EXPIRED, booking.getStatus());
+        verify(availabilityValidator, never()).validate(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void acceptanceThatHasBecomeTooLateExpiresRequest() {
+        User owner = ownerForBooking();
+        prepareRequestedBooking(owner);
+        Venue venue = venueRepository.findByIdForUpdate(booking.getVenueId()).orElseThrow();
+        VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException failure =
+                new VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException("Minimum lead time not met");
+        when(leadTimePolicy.isSatisfied(venue, booking.getShootDate(), booking.getStartTime())).thenReturn(false);
+        when(leadTimePolicy.notMet(venue)).thenReturn(failure);
+
+        assertEquals(failure, assertThrows(VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class,
+                () -> service.acceptRequest(bookingId)));
         assertEquals(BookingStatus.EXPIRED, booking.getStatus());
         verify(availabilityValidator, never()).validate(any(), any(), any(), any(), any());
     }

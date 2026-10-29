@@ -53,11 +53,13 @@ class CriticalBookingWorkflowTest {
         bookingService = new BookingService(bookings, venues, users, audit, properties, current,
                 new BookingStateMachine(), new BookingFinancials(), new BookingPriceCalculator(), events, availability,
                 new BookingWorkflowProperties(24, 24, 60000),
-                new BookingCancellationPolicy(new BookingFinancials()), payouts);
+                new BookingCancellationPolicy(new BookingFinancials()), payouts,
+                new VenueBookingLeadTimePolicy(java.time.Clock.systemUTC()));
         Venue venue = Venue.builder().id(venueId).owner(owner).name("Workflow Studio")
                 .timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE)
                 .hourlyRateEur(new BigDecimal("25.00"))
-                .minimumBookingMinutes(240).fullDayRateEur(new BigDecimal("100.00")).build();
+                .minimumBookingMinutes(240).minimumLeadTimeMinutes(60)
+                .fullDayRateEur(new BigDecimal("100.00")).build();
         when(venues.findById(venueId)).thenReturn(Optional.of(venue));
         when(users.findById(scout.getId())).thenReturn(Optional.of(scout));
         when(bookings.saveAndFlush(any())).thenAnswer(invocation -> {

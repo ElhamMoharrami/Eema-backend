@@ -39,6 +39,7 @@ public class VenueMapper {
                 venue.getSizeM2(),
                 venue.getHourlyRateEur(),
                 venue.getMinimumBookingMinutes(),
+                venue.getMinimumLeadTimeMinutes(),
                 venue.getFullDayRateEur(),
                 venue.getMaxCrewSize(),
                 nullableList(venue.getPermittedActivities()),
@@ -91,6 +92,7 @@ public class VenueMapper {
                 venue.getSizeM2(),
                 venue.getHourlyRateEur(),
                 venue.getMinimumBookingMinutes(),
+                venue.getMinimumLeadTimeMinutes(),
                 venue.getFullDayRateEur(),
                 venue.getMaxCrewSize(),
                 venue.getNaturalLight(),
@@ -120,6 +122,7 @@ public class VenueMapper {
                 .sizeM2(request.sizeM2())
                 .hourlyRateEur(request.hourlyRateEur())
                 .minimumBookingMinutes(request.minimumBookingMinutes())
+                .minimumLeadTimeMinutes(request.minimumLeadTimeMinutes())
                 .fullDayRateEur(request.fullDayRateEur())
                 .maxCrewSize(request.maxCrewSize())
                 .permittedActivities(nullableList(request.permittedActivities()))
@@ -166,6 +169,7 @@ public class VenueMapper {
         venue.setSizeM2(request.sizeM2());
         venue.setHourlyRateEur(request.hourlyRateEur());
         venue.setMinimumBookingMinutes(request.minimumBookingMinutes());
+        venue.setMinimumLeadTimeMinutes(request.minimumLeadTimeMinutes());
         venue.setFullDayRateEur(request.fullDayRateEur());
         venue.setMaxCrewSize(request.maxCrewSize());
         venue.setPermittedActivities(nullableList(request.permittedActivities()));

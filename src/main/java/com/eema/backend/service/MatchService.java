@@ -80,6 +80,7 @@ public class MatchService {
                 venue.sizeM2(),
                 venue.hourlyRateEur(),
                 venue.minimumBookingMinutes(),
+                venue.minimumLeadTimeMinutes(),
                 venue.fullDayRateEur(),
                 venue.maxCrewSize(),
                 venue.naturalLight(),

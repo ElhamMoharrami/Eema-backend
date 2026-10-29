@@ -27,12 +27,14 @@ public class AvailabilityInquiryService {
     private final BookingService bookingService;
     private final AvailabilityInquiryProperties properties;
     private final ApplicationEventPublisher eventPublisher;
+    private final VenueBookingLeadTimePolicy leadTimePolicy;
 
     @Transactional
     public AvailabilityInquiryDto create(CreateAvailabilityInquiryRequest request) {
         User scout = requireRole(UserRole.SCOUT);
         Venue venue = activeVenue(request.venueId());
         validateFutureInterval(venue, request.requestedDate(), request.requestedStartTime(), request.requestedEndTime());
+        leadTimePolicy.validate(venue, request.requestedDate(), request.requestedStartTime());
         boolean normallyAvailable = availabilityService.getAvailableIntervals(venue.getId(), request.requestedDate()).stream()
                 .anyMatch(interval -> !request.requestedStartTime().isBefore(interval.startTime())
                         && !request.requestedEndTime().isAfter(interval.endTime()));
@@ -82,6 +84,7 @@ public class AvailabilityInquiryService {
         Venue venue = ownedVenue(inquiry, owner);
         requireStatus(inquiry, AvailabilityInquiryStatus.OPEN);
         validateFutureInterval(venue, request.offeredDate(), request.offeredStartTime(), request.offeredEndTime());
+        leadTimePolicy.validate(venue, request.offeredDate(), request.offeredStartTime());
         ensureNoBookingConflict(venue.getId(), request.offeredDate(), request.offeredStartTime(), request.offeredEndTime());
         OffsetDateTime now = OffsetDateTime.now();
         inquiry.setOfferedDate(request.offeredDate());
@@ -98,7 +101,7 @@ public class AvailabilityInquiryService {
         return dto(inquiry, venue);
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class)
     public BookingDto accept(UUID inquiryId) {
         User scout = requireRole(UserRole.SCOUT);
         AvailabilityInquiry inquiry = locked(inquiryId);
@@ -107,6 +110,11 @@ public class AvailabilityInquiryService {
         OffsetDateTime now = OffsetDateTime.now();
         if (!inquiry.getOfferExpiresAt().isAfter(now)) {
             throw new ConflictException("This availability offer has expired");
+        }
+        Venue venue = activeVenue(inquiry.getVenueId());
+        if (!leadTimePolicy.isSatisfied(venue, inquiry.getOfferedDate(), inquiry.getOfferedStartTime())) {
+            expire(inquiry, now);
+            throw leadTimePolicy.notMet(venue);
         }
         ensureNoBookingConflict(inquiry.getVenueId(), inquiry.getOfferedDate(), inquiry.getOfferedStartTime(), inquiry.getOfferedEndTime());
         BookingDto booking = bookingService.createApprovedExceptionBooking(
@@ -143,9 +151,7 @@ public class AvailabilityInquiryService {
         ZoneId zone;
         try { zone = ZoneId.of(venue.getTimezone()); }
         catch (DateTimeException exception) { throw new IllegalStateException("Venue timezone is invalid", exception); }
-        ZonedDateTime now = ZonedDateTime.now(zone);
-        if (!ZonedDateTime.of(date, start, zone).isAfter(now))
-            throw new BadRequestException("start time must be in the future in the venue timezone");
+        if (date == null || start == null) throw new BadRequestException("requested start is required");
     }
 
     private User requireRole(UserRole role) {

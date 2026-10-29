@@ -27,6 +27,7 @@ public class VenueAvailabilityService {
     private final CurrentUserService currentUserService;
     private final VenueService venueService;
     private final BookingRepository bookingRepository;
+    private final VenueBookingLeadTimePolicy leadTimePolicy;
 
     @Transactional(readOnly = true)
     public VenueAvailabilityDto getAvailability(UUID venueId, LocalDate from, LocalDate to) {
@@ -45,7 +46,7 @@ public class VenueAvailabilityService {
 
     @Transactional(readOnly = true)
     public List<AvailabilityIntervalDto> getAvailableIntervalsExcludingBooking(UUID venueId, LocalDate date, UUID excludedBookingId) {
-        findVenue(venueId);
+        Venue venue = findVenue(venueId);
         List<Interval> available = weeklyRepository.findByVenueIdAndDayOfWeekOrderByStartTime(venueId, date.getDayOfWeek())
                 .stream().map(row -> new Interval(row.getStartTime(), row.getEndTime())).collect(java.util.stream.Collectors.toCollection(ArrayList::new));
         List<Interval> blocked = new ArrayList<>();
@@ -60,7 +61,20 @@ public class VenueAvailabilityService {
                 .forEach(booking -> blocked.add(new Interval(booking.getStartTime(), booking.getEndTime())));
         List<Interval> result = normalize(available);
         for (Interval block : normalize(blocked)) result = subtract(result, block);
+        result = applyLeadTime(result, venue, date);
         return normalize(result).stream().map(i -> new AvailabilityIntervalDto(i.start(), i.end())).toList();
+    }
+
+    private List<Interval> applyLeadTime(List<Interval> intervals, Venue venue, LocalDate date) {
+        ZonedDateTime threshold = leadTimePolicy.earliestStart(venue).atZone(ZoneId.of(venue.getTimezone()));
+        if (date.isBefore(threshold.toLocalDate())) return List.of();
+        if (date.isAfter(threshold.toLocalDate())) return intervals;
+        LocalTime earliest = threshold.toLocalTime().truncatedTo(ChronoUnit.MINUTES);
+        if (threshold.getSecond() != 0 || threshold.getNano() != 0) earliest = earliest.plusMinutes(1);
+        LocalTime clip = earliest;
+        return intervals.stream().filter(interval -> interval.end().isAfter(clip))
+                .map(interval -> new Interval(interval.start().isBefore(clip) ? clip : interval.start(), interval.end()))
+                .toList();
     }
 
     @Transactional(readOnly = true)

@@ -19,7 +19,7 @@ class VenueProductionProfileValidatorTest {
                 .maxCrewSize(20).permittedActivities(List.of(ProductionActivity.PHOTO))
                 .naturalLight(false).loadingAccess(false).bathroomsAvailable(true)
                 .soundRecordingSuitable(true).productionRules("Keep common areas clear")
-                .hourlyRateEur(new BigDecimal("100.00")).minimumBookingMinutes(180)
+                .hourlyRateEur(new BigDecimal("100.00")).minimumBookingMinutes(180).minimumLeadTimeMinutes(1440)
                 .timezone("Europe/Amsterdam").photoPaths(List.of("/api/upload/files/photo.jpg"))
                 .build();
 
@@ -32,7 +32,7 @@ class VenueProductionProfileValidatorTest {
                 .timezone("Europe/Amsterdam").photoPaths(List.of()).build();
 
         List<String> issues = validator.readinessIssues(venue);
-        assertTrue(issues.containsAll(List.of("maxCrewSize", "permittedActivities", "productionRules",
+        assertTrue(issues.containsAll(List.of("maxCrewSize", "permittedActivities", "productionRules", "minimumLeadTimeMinutes",
                 "naturalLight", "loadingAccess", "bathroomsAvailable", "soundRecordingSuitable", "photoPaths")));
         assertNull(venue.getNaturalLight());
     }

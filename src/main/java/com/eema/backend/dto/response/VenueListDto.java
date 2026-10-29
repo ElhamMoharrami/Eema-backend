@@ -12,6 +12,7 @@ public record VenueListDto(
         int sizeM2,
         BigDecimal hourlyRateEur,
         Integer minimumBookingMinutes,
+        Integer minimumLeadTimeMinutes,
         BigDecimal fullDayRateEur,
         Integer maxCrewSize,
         Boolean naturalLight,

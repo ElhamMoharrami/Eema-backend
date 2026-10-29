@@ -15,6 +15,7 @@ public record VenueDto(
         int sizeM2,
         BigDecimal hourlyRateEur,
         Integer minimumBookingMinutes,
+        Integer minimumLeadTimeMinutes,
         BigDecimal fullDayRateEur,
         Integer maxCrewSize,
         List<ProductionActivity> permittedActivities,

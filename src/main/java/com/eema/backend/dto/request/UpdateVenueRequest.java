@@ -11,6 +11,7 @@ public record UpdateVenueRequest(
         @NotNull @Min(1) @Max(9999) Integer sizeM2,
         @NotNull @DecimalMin("0.01") @DecimalMax("99999999.99") BigDecimal hourlyRateEur,
         @NotNull @Min(1) @Max(10080) Integer minimumBookingMinutes,
+        @NotNull @Min(60) @Max(43200) Integer minimumLeadTimeMinutes,
         @DecimalMin("0.01") @DecimalMax("99999999.99") BigDecimal fullDayRateEur,
         @Min(1) @Max(10000) Integer maxCrewSize,
         @Size(max = 7) List<@NotNull ProductionActivity> permittedActivities,

@@ -14,7 +14,9 @@ import static org.mockito.Mockito.*;
 
 class BookingAvailabilityValidatorTest {
     private final VenueAvailabilityService availability = mock(VenueAvailabilityService.class);
-    private final BookingAvailabilityValidator validator = new BookingAvailabilityValidator(availability);
+    private final VenueBookingLeadTimePolicy leadTime = mock(VenueBookingLeadTimePolicy.class);
+    private final BookingAvailabilityValidator validator = new BookingAvailabilityValidator(availability, leadTime,
+            java.time.Clock.systemUTC());
     private final UUID venueId = UUID.randomUUID();
     private final Venue venue = Venue.builder().id(venueId).timezone("Europe/Amsterdam").build();
 

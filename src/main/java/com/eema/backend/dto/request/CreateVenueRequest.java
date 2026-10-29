@@ -38,6 +38,9 @@ public record CreateVenueRequest(
         @NotNull @Min(1) @Max(10080)
         Integer minimumBookingMinutes,
 
+        @NotNull @Min(60) @Max(43200)
+        Integer minimumLeadTimeMinutes,
+
         @DecimalMin("0.01") @DecimalMax("99999999.99")
         BigDecimal fullDayRateEur,
 
