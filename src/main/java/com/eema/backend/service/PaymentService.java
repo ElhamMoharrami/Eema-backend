@@ -13,12 +13,16 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @org.springframework.beans.factory.annotation.Autowired)
 public class PaymentService {
     private final PaymentCreationCoordinator coordinator;
     private final MollieProviderClient mollie;
+    private final CurrentUserService currentUserService;
+    private final PolicyAcceptanceService policyAcceptances;
+    PaymentService(PaymentCreationCoordinator coordinator,MollieProviderClient mollie){this(coordinator,mollie,null,null);}
 
     public CheckoutResponse createPayment(UUID bookingId, UUID scoutId) {
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(currentUserService.getCurrentUser());
         PaymentCreationCoordinator.Claim claim = coordinator.claim(bookingId, scoutId);
         if (claim.alreadyCreated()) return claim.existing();
         try {

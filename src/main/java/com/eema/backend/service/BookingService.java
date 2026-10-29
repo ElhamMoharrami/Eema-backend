@@ -58,7 +58,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @org.springframework.beans.factory.annotation.Autowired)
 public class BookingService {
 
     private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
@@ -79,6 +79,15 @@ public class BookingService {
     private final BookingCancellationPolicy cancellationPolicy;
     private final OwnerPayoutService ownerPayoutService;
     private final VenueBookingLeadTimePolicy leadTimePolicy;
+    private final PolicyAcceptanceService policyAcceptances;
+
+    BookingService(BookingRepository a, VenueRepository b, UserRepository c, BookingEventRepository d,
+                   AppProperties e, CurrentUserService f, BookingStateMachine g, BookingFinancials h,
+                   BookingPriceCalculator i, ApplicationEventPublisher j, BookingAvailabilityValidator k,
+                   BookingWorkflowProperties l, BookingCancellationPolicy m, OwnerPayoutService n,
+                   VenueBookingLeadTimePolicy o) {
+        this(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,null);
+    }
 
     // --------------------------------------------------
     // CREATE BOOKING
@@ -98,6 +107,7 @@ public class BookingService {
         if (scout.getRole() != UserRole.SCOUT) {
             throw new ForbiddenException("Only SCOUT users can create bookings");
         }
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(scout);
 
         User owner = venue.getOwner();
 
@@ -160,6 +170,7 @@ public class BookingService {
         } catch (DataIntegrityViolationException exception) {
             throw new ConflictException("Requested time is no longer available for this venue");
         }
+        if(policyAcceptances!=null) policyAcceptances.snapshotForBooking(savedBooking.getId(), scout);
 
         appendEvent(savedBooking.getId(), BookingEventType.REQUEST_SUBMITTED, scout.getId(), actorName(scout), ActorType.SCOUT,
                 Map.of("ownerResponseExpiresAt", ownerResponseExpiresAt.toString()));
@@ -177,6 +188,7 @@ public class BookingService {
         if (venue.getStatus() != VenueStatus.ACTIVE) throw new NotFoundException("Venue is not active");
         User scout = userRepository.findById(scoutId).orElseThrow(() -> new NotFoundException("Scout not found"));
         if (scout.getRole() != UserRole.SCOUT) throw new ForbiddenException("Only SCOUT users can accept inquiry offers");
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(scout);
         BookingOverlapRule.requireValid(startTime, endTime);
         leadTimePolicy.validate(venue, date, startTime);
         boolean conflict = bookingRepository.findBlockingBookings(venueId, date).stream()
@@ -207,6 +219,7 @@ public class BookingService {
                 .paymentExpiresAt(now.plusHours(workflowProperties.paymentWindowHours())).build();
         try { booking = bookingRepository.saveAndFlush(booking); }
         catch (DataIntegrityViolationException exception) { throw new ConflictException("The offered interval is no longer available"); }
+        if(policyAcceptances!=null) policyAcceptances.snapshotForBooking(booking.getId(), scout);
         appendEvent(booking.getId(), BookingEventType.REQUEST_ACCEPTED, owner.getId(), actorName(owner), ActorType.OWNER,
                 Map.of("source", "availability_inquiry", "paymentExpiresAt", booking.getPaymentExpiresAt().toString()));
         eventPublisher.publishEvent(new BookingLifecycleEvent(booking.getId(), BookingLifecycleEvent.Type.REQUEST_ACCEPTED));
@@ -249,6 +262,7 @@ public class BookingService {
             VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class})
     public BookingDto acceptRequest(UUID bookingId) {
         User user = currentUserService.getCurrentUser();
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(user);
         Booking snapshot = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
         // Serialize decisions for one venue so two request-row locks cannot deadlock
@@ -304,6 +318,7 @@ public class BookingService {
     @Transactional
     public BookingDto declineRequest(UUID bookingId) {
         User user = currentUserService.getCurrentUser();
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(user);
         Booking booking = bookingRepository.findByIdForUpdate(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
         authorizeOwnerOrAdmin(user, booking);

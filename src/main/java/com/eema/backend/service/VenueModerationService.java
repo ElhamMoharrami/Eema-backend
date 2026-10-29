@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor(onConstructor_ = @org.springframework.beans.factory.annotation.Autowired)
 public class VenueModerationService {
     private final VenueRepository venues;
     private final CurrentUserService currentUsers;
@@ -24,10 +24,13 @@ public class VenueModerationService {
     private final MarketplaceTrustAuditService audit;
     private final MarketplaceTrustEventRepository auditEvents;
     private final ApplicationEventPublisher events;
+    private final PolicyAcceptanceService policyAcceptances;
+    VenueModerationService(VenueRepository a,CurrentUserService b,OwnerVerificationService c,VenueProductionProfileValidator d,MarketplaceTrustAuditService e,MarketplaceTrustEventRepository f,ApplicationEventPublisher g){this(a,b,c,d,e,f,g,null);}
 
     @Transactional
     public VenueModerationDto submit(UUID id) {
         User owner=currentUsers.getCurrentUser();
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(owner);
         Venue venue=locked(id);
         if(owner.getRole()!=UserRole.OWNER || !venue.getOwner().getId().equals(owner.getId()))
             throw new ForbiddenException("Only the venue owner can submit this venue");

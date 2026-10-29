@@ -17,7 +17,7 @@ import java.time.*;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @org.springframework.beans.factory.annotation.Autowired)
 public class AvailabilityInquiryService {
     private final AvailabilityInquiryRepository inquiries;
     private final VenueRepository venues;
@@ -28,10 +28,14 @@ public class AvailabilityInquiryService {
     private final AvailabilityInquiryProperties properties;
     private final ApplicationEventPublisher eventPublisher;
     private final VenueBookingLeadTimePolicy leadTimePolicy;
+    private final PolicyAcceptanceService policyAcceptances;
+    AvailabilityInquiryService(AvailabilityInquiryRepository a,VenueRepository b,BookingRepository c,CurrentUserService d,
+      VenueAvailabilityService e,BookingService f,AvailabilityInquiryProperties g,ApplicationEventPublisher h,VenueBookingLeadTimePolicy i){this(a,b,c,d,e,f,g,h,i,null);}
 
     @Transactional
     public AvailabilityInquiryDto create(CreateAvailabilityInquiryRequest request) {
         User scout = requireRole(UserRole.SCOUT);
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(scout);
         Venue venue = activeVenue(request.venueId());
         validateFutureInterval(venue, request.requestedDate(), request.requestedStartTime(), request.requestedEndTime());
         leadTimePolicy.validate(venue, request.requestedDate(), request.requestedStartTime());
@@ -67,6 +71,7 @@ public class AvailabilityInquiryService {
     @Transactional
     public AvailabilityInquiryDto decline(UUID inquiryId) {
         User owner = requireRole(UserRole.OWNER);
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(owner);
         AvailabilityInquiry inquiry = locked(inquiryId);
         Venue venue = ownedVenue(inquiry, owner);
         requireStatus(inquiry, AvailabilityInquiryStatus.OPEN);
@@ -80,6 +85,7 @@ public class AvailabilityInquiryService {
     @Transactional
     public AvailabilityInquiryDto offer(UUID inquiryId, OfferAvailabilityInquiryRequest request) {
         User owner = requireRole(UserRole.OWNER);
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(owner);
         AvailabilityInquiry inquiry = locked(inquiryId);
         Venue venue = ownedVenue(inquiry, owner);
         requireStatus(inquiry, AvailabilityInquiryStatus.OPEN);
@@ -104,6 +110,7 @@ public class AvailabilityInquiryService {
     @Transactional(noRollbackFor = VenueBookingLeadTimePolicy.MinimumLeadTimeNotMetException.class)
     public BookingDto accept(UUID inquiryId) {
         User scout = requireRole(UserRole.SCOUT);
+        if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(scout);
         AvailabilityInquiry inquiry = locked(inquiryId);
         if (!inquiry.getScoutId().equals(scout.getId())) throw new ForbiddenException("Only the inquiry scout can accept this offer");
         requireStatus(inquiry, AvailabilityInquiryStatus.OFFERED);

@@ -1,0 +1,2 @@
+package com.eema.backend.entity.enums;
+public enum PolicyType { TERMS_OF_SERVICE, PRIVACY_POLICY, ACCEPTABLE_USE_POLICY, PRODUCTION_POLICY, INSURANCE_REQUIREMENTS }
