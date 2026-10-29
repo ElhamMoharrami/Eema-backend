@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface MollieProviderClient {
     MolliePaymentResponse createPayment(UUID bookingId, BigDecimal amount, UUID idempotencyKey);
     MolliePaymentResponse getPayment(String paymentId);
-    MollieRefundResponse createFullRefund(String paymentId, UUID bookingId, BigDecimal amount, UUID idempotencyKey);
+    MollieRefundResponse createRefund(String paymentId, UUID bookingId, BigDecimal amount, UUID idempotencyKey);
+    MolliePaymentResponse cancelPayment(String paymentId);
     MollieRefundResponse getRefund(String paymentId, String refundId);
 }

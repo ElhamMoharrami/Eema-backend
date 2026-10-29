@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Optional;
 import com.eema.backend.event.LatePaymentRefundInitiatedEvent;
+import com.eema.backend.event.CancellationRefundCompletedEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -64,9 +65,57 @@ public class RefundCoordinator {
     }
 
     @Transactional
+    public Claim claimCancellation(UUID bookingId, BigDecimal amount, UUID actorId,
+                                   String actorName, ActorType actorType) {
+        Booking booking = locked(bookingId);
+        if (booking.getStatus() != BookingStatus.CANCELLED) {
+            throw new ConflictException("Booking cancellation has not been recorded");
+        }
+        BigDecimal normalized = financials.money(amount);
+        if (normalized.signum() <= 0 || normalized.compareTo(financials.money(booking.getTotalPaidEur())) > 0) {
+            throw new ConflictException("Cancellation refund amount is invalid");
+        }
+        if (booking.getRefundStatus() == RefundStatus.REFUNDED
+                || booking.getRefundStatus() == RefundStatus.QUEUED
+                || booking.getRefundStatus() == RefundStatus.PENDING
+                || booking.getRefundStatus() == RefundStatus.PROCESSING) {
+            throw new ConflictException("A refund is already in progress or completed");
+        }
+        if (booking.getRefundStatus() != RefundStatus.CREATING) {
+            booking.setRefundStatus(RefundStatus.CREATING);
+            booking.setRefundIdempotencyKey(UUID.randomUUID());
+            booking.setRefundAmountEur(normalized);
+            booking.setRefundRequestedAt(OffsetDateTime.now());
+            append(bookingId, BookingEventType.REFUND_REQUESTED, actorId, actorName, actorType,
+                    Map.of("amount", normalized, "currency", "EUR", "reason", "booking_cancellation"));
+        } else if (booking.getRefundAmountEur().compareTo(normalized) != 0) {
+            throw new ConflictException("Cancellation refund amount cannot be changed");
+        }
+        return new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(),
+                booking.getRefundIdempotencyKey());
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Claim> resumableCancellationClaim(UUID bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException("Booking not found: " + bookingId));
+        if (booking.getStatus() != BookingStatus.CANCELLED
+                || booking.getRefundStatus() != RefundStatus.CREATING
+                || booking.getRefundIdempotencyKey() == null
+                || booking.getRefundAmountEur() == null
+                || booking.getMolliePaymentId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(new Claim(bookingId, booking.getMolliePaymentId(),
+                booking.getRefundAmountEur(), booking.getRefundIdempotencyKey()));
+    }
+
+    @Transactional
     public Optional<Claim> claimLatePayment(UUID bookingId) {
         Booking booking = locked(bookingId);
-        if (booking.getStatus() != BookingStatus.EXPIRED || booking.getLatePaymentDetectedAt() == null) {
+        if ((booking.getStatus() != BookingStatus.EXPIRED
+                && booking.getStatus() != BookingStatus.CANCELLED)
+                || booking.getLatePaymentDetectedAt() == null) {
             throw new ConflictException("Booking is not an expired late payment");
         }
         if (booking.getMolliePaymentId() == null) throw new ConflictException("Booking has no Mollie payment");
@@ -84,6 +133,15 @@ public class RefundCoordinator {
             booking.setRefundIdempotencyKey(UUID.randomUUID());
             booking.setRefundAmountEur(financials.money(booking.getTotalPaidEur()));
             booking.setRefundRequestedAt(now);
+            if (booking.getStatus() == BookingStatus.CANCELLED) {
+                booking.setCancellationRefundPercentage(new BigDecimal("100.00"));
+                booking.setCancellationRefundAmountEur(financials.money(booking.getTotalPaidEur()));
+                booking.setCancellationRetainedAmountEur(financials.money(BigDecimal.ZERO));
+                booking.setCommissionEur(financials.money(BigDecimal.ZERO));
+                booking.setOwnerPayoutEur(financials.money(BigDecimal.ZERO));
+                booking.setProviderCostResponsibility(
+                        com.eema.backend.entity.enums.ProviderCostResponsibility.EEMA);
+            }
             append(bookingId, BookingEventType.REFUND_REQUESTED, null, "SYSTEM", ActorType.SYSTEM,
                     Map.of("amount", booking.getRefundAmountEur(), "currency", "EUR", "reason", "late_payment"));
             append(bookingId, BookingEventType.LATE_PAYMENT_REFUND_REQUESTED, null, "SYSTEM", ActorType.SYSTEM,
@@ -140,15 +198,22 @@ public class RefundCoordinator {
         if (target == RefundStatus.REFUNDED) {
             boolean lateExpiredPayment = booking.getStatus() == BookingStatus.EXPIRED
                     && booking.getLatePaymentDetectedAt() != null;
-            if (!lateExpiredPayment) {
+            boolean cancellation = booking.getStatus() == BookingStatus.CANCELLED
+                    && booking.getCancellationPolicyTier() != null;
+            if (!lateExpiredPayment && !cancellation) {
                 stateMachine.requireTransition(booking.getStatus(), BookingStatus.REFUNDED);
                 booking.setStatus(BookingStatus.REFUNDED);
             }
             booking.setRefundedAt(OffsetDateTime.now());
-            booking.setOwnerPayoutEur(BigDecimal.ZERO.setScale(2));
+            if (!cancellation) {
+                booking.setOwnerPayoutEur(BigDecimal.ZERO.setScale(2));
+            }
             if (lateExpiredPayment) {
                 append(booking.getId(), BookingEventType.LATE_PAYMENT_REFUND_COMPLETED,
                         null, "Mollie", ActorType.WEBHOOK, Map.of());
+            }
+            if (cancellation) {
+                eventPublisher.publishEvent(new CancellationRefundCompletedEvent(booking.getId()));
             }
         }
         Map<String, Object> payload = new java.util.HashMap<>();

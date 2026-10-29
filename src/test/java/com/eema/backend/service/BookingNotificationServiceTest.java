@@ -6,6 +6,8 @@ import com.eema.backend.entity.BookingContactSnapshot;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.RefundStatus;
+import com.eema.backend.entity.enums.ActorType;
+import com.eema.backend.entity.enums.CancellationPolicyTier;
 import com.eema.backend.event.BookingLifecycleEvent;
 import com.eema.backend.repository.BookingRepository;
 import com.eema.backend.repository.VenueRepository;
@@ -92,6 +94,36 @@ class BookingNotificationServiceTest {
         assertTrue(text.getValue().contains("booking was not confirmed"));
         assertTrue(text.getValue().contains("full refund has been initiated"));
         assertFalse(text.getValue().contains("refund has been completed"));
+    }
+
+    @Test
+    void cancellationEmailDistinguishesInitiatedFromCompletedRefund() {
+        Booking booking = bookings.findById(bookingId).orElseThrow();
+        booking.setStatus(BookingStatus.CANCELLED);
+        booking.setCancelledByActorType(ActorType.OWNER);
+        booking.setCancellationPolicyTier(CancellationPolicyTier.OWNER_FULL_REFUND);
+        booking.setCancellationRefundAmountEur(new BigDecimal("125.00"));
+        booking.setRefundStatus(RefundStatus.QUEUED);
+
+        service.sendCancellation(bookingId);
+
+        verify(email).send(eq("snapshot-scout@example.test"), eq("Your Eema booking was cancelled"),
+                contains("€125.00 has been initiated"), anyString());
+        verify(email, never()).send(anyString(), contains("processed"), anyString(), anyString());
+    }
+
+    @Test
+    void authoritativeCancellationRefundCompletionUsesProcessedCopy() {
+        Booking booking = bookings.findById(bookingId).orElseThrow();
+        booking.setStatus(BookingStatus.CANCELLED);
+        booking.setCancellationPolicyTier(CancellationPolicyTier.PARTIAL_REFUND);
+        booking.setRefundStatus(RefundStatus.REFUNDED);
+        booking.setRefundAmountEur(new BigDecimal("62.50"));
+
+        service.sendCancellationRefundCompleted(bookingId);
+
+        verify(email).send(eq("snapshot-scout@example.test"),
+                eq("Your Eema refund has been processed"), contains("Bank settlement timing may vary"), anyString());
     }
 
     @Test

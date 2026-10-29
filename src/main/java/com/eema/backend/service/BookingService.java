@@ -48,6 +48,7 @@ import java.math.RoundingMode;
 import java.time.LocalTime;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +76,7 @@ public class BookingService {
     private final ApplicationEventPublisher eventPublisher;
     private final BookingAvailabilityValidator availabilityValidator;
     private final BookingWorkflowProperties workflowProperties;
+    private final BookingCancellationPolicy cancellationPolicy;
 
     // --------------------------------------------------
     // CREATE BOOKING
@@ -326,22 +328,6 @@ public class BookingService {
         return due.size();
     }
 
-    @Transactional
-    public BookingDto cancelBooking(UUID bookingId) {
-        User user = currentUserService.getCurrentUser();
-        Booking booking = bookingRepository.findByIdForUpdate(bookingId)
-                .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
-        authorizeAccess(user, booking);
-        transition(booking, BookingStatus.CANCELLED);
-        BookingEventType eventType = switch (user.getRole()) {
-            case SCOUT -> BookingEventType.SCOUT_CANCELLED;
-            case OWNER -> BookingEventType.OWNER_CANCELLED;
-            case ADMIN -> BookingEventType.ADMIN_CANCELLED;
-        };
-        appendEvent(bookingId, eventType, user.getId(), actorName(user), actorTypeForUser(user), Map.of());
-        return toBookingDto(booking);
-    }
-
     private List<Booking> getOwnerBookings(UUID ownerId) {
 
         List<UUID> venueIds = venueRepository.findByOwnerId(ownerId).stream().map(Venue::getId).toList();
@@ -400,6 +386,7 @@ public class BookingService {
         OffsetDateTime now = OffsetDateTime.now();
         boolean awaitingPayment = booking.getStatus() == BookingStatus.AWAITING_PAYMENT;
         boolean latePayment = booking.getStatus() == BookingStatus.EXPIRED
+                || booking.getStatus() == BookingStatus.CANCELLED
                 || (awaitingPayment && (booking.getPaymentExpiresAt() == null
                 || !booking.getPaymentExpiresAt().isAfter(now)));
         if (latePayment) {
@@ -428,6 +415,14 @@ public class BookingService {
         BigDecimal ownerPayoutEur = booking.getOwnerPayoutEur();
 
         transition(booking, BookingStatus.CONFIRMED);
+
+        Venue confirmedVenue = venueRepository.findById(booking.getVenueId())
+                .orElseThrow(() -> new NotFoundException("Venue not found for booking"));
+        cancellationPolicy.snapshotAtConfirmation(
+                booking,
+                ZoneId.of(confirmedVenue.getTimezone()),
+                booking.getConfirmedAt()
+        );
 
         bookingRepository.save(booking);
 
@@ -482,7 +477,8 @@ public class BookingService {
 
         Booking booking = bookingRepository.findByIdForUpdate(bookingId).orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
 
-        if (booking.getStatus() != BookingStatus.CONFIRMED) {
+        if (booking.getStatus() != BookingStatus.CONFIRMED
+                && booking.getStatus() != BookingStatus.CANCELLED) {
 
             throw new IllegalStateException("Cannot reconcile Mollie fee for unpaid booking");
         }
@@ -496,11 +492,25 @@ public class BookingService {
             throw new ConflictException("Mollie fee has already been reconciled");
         }
 
-        BigDecimal ownerPayout = calculateOwnerPayout(booking.getVenuePriceEur(), booking.getCommissionEur(), normalizedFee);
+        BigDecimal ownerPayout;
+        if (booking.getCancellationPolicyTier() == null) {
+            ownerPayout = calculateOwnerPayout(booking.getVenuePriceEur(), booking.getCommissionEur(), normalizedFee);
+        } else if (booking.getProviderCostResponsibility()
+                == com.eema.backend.entity.enums.ProviderCostResponsibility.OWNER_SETTLEMENT) {
+            BigDecimal gross = booking.getOwnerCancellationSettlementEur();
+            ownerPayout = money(gross.subtract(normalizedFee).max(BigDecimal.ZERO));
+        } else {
+            ownerPayout = money(BigDecimal.ZERO);
+        }
 
         booking.setMollieFeeEur(normalizedFee);
         booking.setMollieFeeReconciled(true);
         booking.setMollieFeeReconciledAt(OffsetDateTime.now());
+
+        if (booking.getCancellationPolicyTier() != null) {
+            booking.setCancellationProviderCostEur(normalizedFee);
+            booking.setCancellationProviderCostReconciled(true);
+        }
 
         booking.setOwnerPayoutEur(ownerPayout);
 
@@ -765,6 +775,12 @@ public class BookingService {
 
                 booking.getCreatedAt(), booking.getPaidAt(), booking.getConfirmedAt(), booking.getCancelledAt(),
                 booking.getAcceptedAt(), booking.getOwnerResponseExpiresAt(), booking.getPaymentExpiresAt(),
-                booking.getDeclinedAt(), booking.getExpiredAt());
+                booking.getDeclinedAt(), booking.getExpiredAt(),
+                booking.getCancellationPolicyVersion(), booking.getGracePeriodEndsAt(),
+                booking.getFullRefundUntil(), booking.getPartialRefundUntil(),
+                booking.getPartialRefundPercentage(), booking.getCancellationPolicyTier(),
+                booking.getCancelledByActorType(), booking.getCancellationRefundPercentage(),
+                booking.getCancellationRefundAmountEur(), booking.getCancellationRetainedAmountEur(),
+                booking.getCancellationReason());
     }
 }

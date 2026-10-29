@@ -4,6 +4,9 @@ import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.PaymentCreationStatus;
 import com.eema.backend.entity.enums.RefundStatus;
 import com.eema.backend.entity.enums.OwnerPayoutStatus;
+import com.eema.backend.entity.enums.ActorType;
+import com.eema.backend.entity.enums.CancellationPolicyTier;
+import com.eema.backend.entity.enums.ProviderCostResponsibility;
 
 import jakarta.persistence.*;
 
@@ -190,6 +193,55 @@ public class Booking {
 
     @Column(name = "owner_payout_paid_at")
     private OffsetDateTime ownerPayoutPaidAt;
+
+    @Column(name = "cancellation_policy_version", length = 20)
+    private String cancellationPolicyVersion;
+
+    @Column(name = "grace_period_ends_at")
+    private OffsetDateTime gracePeriodEndsAt;
+
+    @Column(name = "full_refund_until")
+    private OffsetDateTime fullRefundUntil;
+
+    @Column(name = "partial_refund_until")
+    private OffsetDateTime partialRefundUntil;
+
+    @Column(name = "partial_refund_percentage", precision = 5, scale = 2)
+    private BigDecimal partialRefundPercentage;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cancellation_policy_tier", length = 40)
+    private CancellationPolicyTier cancellationPolicyTier;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cancelled_by_actor_type", length = 20)
+    private ActorType cancelledByActorType;
+
+    @Column(name = "cancellation_refund_percentage", precision = 5, scale = 2)
+    private BigDecimal cancellationRefundPercentage;
+
+    @Column(name = "cancellation_refund_amount_eur", precision = 10, scale = 2)
+    private BigDecimal cancellationRefundAmountEur;
+
+    @Column(name = "cancellation_retained_amount_eur", precision = 10, scale = 2)
+    private BigDecimal cancellationRetainedAmountEur;
+
+    @Column(name = "owner_cancellation_settlement_eur", precision = 10, scale = 2)
+    private BigDecimal ownerCancellationSettlementEur;
+
+    @Column(name = "cancellation_reason", columnDefinition = "text")
+    private String cancellationReason;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "provider_cost_responsibility", length = 30)
+    private ProviderCostResponsibility providerCostResponsibility;
+
+    @Column(name = "cancellation_provider_cost_eur", precision = 10, scale = 2)
+    private BigDecimal cancellationProviderCostEur;
+
+    @Builder.Default
+    @Column(name = "cancellation_provider_cost_reconciled", nullable = false)
+    private boolean cancellationProviderCostReconciled = false;
 
     // --------------------------------------------------
     // CONTACT SNAPSHOTS

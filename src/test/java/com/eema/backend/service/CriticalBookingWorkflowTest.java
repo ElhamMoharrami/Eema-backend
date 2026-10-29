@@ -51,7 +51,8 @@ class CriticalBookingWorkflowTest {
                 new AppProperties.CommissionProperties(new BigDecimal("20.00")), null, null);
         bookingService = new BookingService(bookings, venues, users, audit, properties, current,
                 new BookingStateMachine(), new BookingFinancials(), new BookingPriceCalculator(), events, availability,
-                new BookingWorkflowProperties(24, 24, 60000));
+                new BookingWorkflowProperties(24, 24, 60000),
+                new BookingCancellationPolicy(new BookingFinancials()));
         Venue venue = Venue.builder().id(venueId).owner(owner).name("Workflow Studio")
                 .timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE)
                 .hourlyRateEur(new BigDecimal("25.00"))
@@ -144,7 +145,7 @@ class CriticalBookingWorkflowTest {
         MollieRefundResponse queued = new MollieRefundResponse("re_late", "queued", "tr_workflow",
                 new MolliePaymentResponse.Amount("100.00", "EUR"));
         when(mollie.getPayment("tr_workflow")).thenReturn(payment("paid", false));
-        when(mollie.createFullRefund(eq("tr_workflow"), eq(bookingId), eq(new BigDecimal("100.00")), any()))
+        when(mollie.createRefund(eq("tr_workflow"), eq(bookingId), eq(new BigDecimal("100.00")), any()))
                 .thenReturn(queued);
         when(bookings.findByMolliePaymentId("tr_workflow")).thenReturn(Optional.of(booking));
         when(mollie.getRefund("tr_workflow", "re_late")).thenReturn(queued);
@@ -156,7 +157,7 @@ class CriticalBookingWorkflowTest {
         assertEquals(BookingStatus.EXPIRED, booking.getStatus());
         assertEquals(RefundStatus.QUEUED, booking.getRefundStatus());
         assertFalse(BookingReservationPolicy.blocksAvailability(booking.getStatus()));
-        verify(mollie, times(1)).createFullRefund(eq("tr_workflow"), eq(bookingId), any(), any());
+        verify(mollie, times(1)).createRefund(eq("tr_workflow"), eq(bookingId), any(), any());
         verify(events, never()).publishEvent(any(BookingPaidEvent.class));
         verify(events, times(1)).publishEvent(new LatePaymentDetectedEvent(bookingId));
         verify(events, times(1)).publishEvent(new LatePaymentRefundInitiatedEvent(bookingId));

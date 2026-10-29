@@ -5,6 +5,8 @@ import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.PaymentCreationStatus;
 import com.eema.backend.entity.enums.RefundStatus;
 import com.eema.backend.entity.enums.OwnerPayoutStatus;
+import com.eema.backend.entity.enums.ActorType;
+import com.eema.backend.entity.enums.CancellationPolicyTier;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -58,6 +60,18 @@ public record BookingDto(
         OffsetDateTime ownerResponseExpiresAt,
         OffsetDateTime paymentExpiresAt,
         OffsetDateTime declinedAt,
-        OffsetDateTime expiredAt
+        OffsetDateTime expiredAt,
+
+        String cancellationPolicyVersion,
+        OffsetDateTime gracePeriodEndsAt,
+        OffsetDateTime fullRefundUntil,
+        OffsetDateTime partialRefundUntil,
+        BigDecimal partialRefundPercentage,
+        CancellationPolicyTier cancellationPolicyTier,
+        ActorType cancelledByActorType,
+        BigDecimal cancellationRefundPercentage,
+        BigDecimal cancellationRefundAmountEur,
+        BigDecimal cancellationRetainedAmountEur,
+        String cancellationReason
 ) {
 }

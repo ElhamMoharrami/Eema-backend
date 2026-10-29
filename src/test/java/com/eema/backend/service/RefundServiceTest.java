@@ -36,7 +36,7 @@ class RefundServiceTest {
         RefundCoordinator.Claim claim = new RefundCoordinator.Claim(bookingId, "tr_1", new BigDecimal("100.00"), UUID.randomUUID());
         when(current.getCurrentUser()).thenReturn(admin);
         when(coordinator.claim(eq(bookingId), eq(admin.getId()), anyString())).thenReturn(claim);
-        when(mollie.createFullRefund(anyString(), eq(bookingId), any(), any()))
+        when(mollie.createRefund(anyString(), eq(bookingId), any(), any()))
                 .thenThrow(HttpClientErrorException.create(org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY, "", null, null, null));
         assertThrows(BadRequestException.class, () -> service.requestFullRefund(bookingId));
         verify(coordinator).markRejected(bookingId);
@@ -48,10 +48,35 @@ class RefundServiceTest {
         RefundCoordinator.Claim claim = new RefundCoordinator.Claim(
                 bookingId, "tr_late", new BigDecimal("100.00"), UUID.randomUUID());
         when(coordinator.claimLatePayment(bookingId)).thenReturn(java.util.Optional.of(claim));
-        when(mollie.createFullRefund(anyString(), eq(bookingId), any(), eq(claim.idempotencyKey())))
+        when(mollie.createRefund(anyString(), eq(bookingId), any(), eq(claim.idempotencyKey())))
                 .thenThrow(new org.springframework.web.client.ResourceAccessException("timeout"));
 
         assertThrows(BadRequestException.class, () -> service.requestLatePaymentRefund(bookingId));
         verify(coordinator, never()).markRejected(bookingId);
+    }
+
+    @Test
+    void cancellationRefundUsesExactClaimedPartialAmount() {
+        UUID bookingId = UUID.randomUUID();
+        RefundCoordinator.Claim claim = new RefundCoordinator.Claim(
+                bookingId, "tr_partial", new BigDecimal("500.00"), UUID.randomUUID());
+        MollieRefundResponse response = new MollieRefundResponse(
+                "re_1", "queued", "tr_partial",
+                new MolliePaymentResponse.Amount("500.00", "EUR"));
+        when(mollie.createRefund("tr_partial", bookingId, new BigDecimal("500.00"), claim.idempotencyKey()))
+                .thenReturn(response);
+
+        service.requestCancellationRefund(claim);
+
+        verify(coordinator).recordProviderState(claim, response);
+    }
+
+    @Test
+    void duplicateCancellationClaimDoesNotCreateAnotherProviderRefund() {
+        UUID bookingId = UUID.randomUUID();
+        User scout = User.builder().id(UUID.randomUUID()).role(UserRole.SCOUT).build();
+        when(current.getCurrentUser()).thenReturn(scout);
+        assertThrows(ForbiddenException.class, () -> service.requestFullRefund(bookingId));
+        verifyNoInteractions(mollie);
     }
 }

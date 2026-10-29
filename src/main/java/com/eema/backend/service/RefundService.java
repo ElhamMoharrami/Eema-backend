@@ -28,7 +28,7 @@ public class RefundService {
         if (user.getRole() != UserRole.ADMIN) throw new ForbiddenException("Only administrators can perform refunds");
         RefundCoordinator.Claim claim = coordinator.claim(bookingId, user.getId(), actorName(user));
         try {
-            MollieRefundResponse refund = mollie.createFullRefund(claim.paymentId(), bookingId, claim.amount(), claim.idempotencyKey());
+            MollieRefundResponse refund = mollie.createRefund(claim.paymentId(), bookingId, claim.amount(), claim.idempotencyKey());
             coordinator.recordProviderState(claim, refund);
             log.info("Mollie refund created: bookingId={}, refundId={}, status={}", bookingId, refund.id(), refund.status());
             return bookingService.getBookingForCurrentUser(bookingId);
@@ -45,7 +45,7 @@ public class RefundService {
     public void requestLatePaymentRefund(UUID bookingId) {
         coordinator.claimLatePayment(bookingId).ifPresent(claim -> {
             try {
-                MollieRefundResponse refund = mollie.createFullRefund(
+                MollieRefundResponse refund = mollie.createRefund(
                         claim.paymentId(), bookingId, claim.amount(), claim.idempotencyKey());
                 coordinator.recordProviderState(claim, refund);
                 log.info("Late-payment refund created: bookingId={}, refundId={}, status={}",
@@ -62,6 +62,28 @@ public class RefundService {
                 throw new BadRequestException("Late-payment refund is pending reconciliation");
             }
         });
+    }
+
+    public void requestCancellationRefund(RefundCoordinator.Claim claim) {
+        try {
+            MollieRefundResponse refund = mollie.createRefund(
+                    claim.paymentId(), claim.bookingId(), claim.amount(), claim.idempotencyKey());
+            coordinator.recordProviderState(claim, refund);
+            log.info("Cancellation refund created: bookingId={}, refundId={}, status={}",
+                    claim.bookingId(), refund.id(), refund.status());
+        } catch (HttpStatusCodeException exception) {
+            coordinator.markRejected(claim.bookingId());
+            throw new BadRequestException("Cancellation was recorded but the refund could not be initiated");
+        } catch (RestClientException exception) {
+            throw new BadRequestException("Cancellation refund creation is pending reconciliation");
+        }
+    }
+
+    public boolean resumeCancellationRefund(UUID bookingId) {
+        return coordinator.resumableCancellationClaim(bookingId).map(claim -> {
+            requestCancellationRefund(claim);
+            return true;
+        }).orElse(false);
     }
 
     public void reconcileForPayment(String paymentId) {

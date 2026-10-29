@@ -6,6 +6,9 @@ import com.eema.backend.entity.User;
 import com.eema.backend.service.BookingService;
 import com.eema.backend.service.CurrentUserService;
 import com.eema.backend.service.RefundService;
+import com.eema.backend.service.CancellationService;
+import com.eema.backend.dto.request.CancelBookingRequest;
+import com.eema.backend.dto.response.CancellationPreviewDto;
 
 import jakarta.validation.Valid;
 
@@ -26,6 +29,7 @@ public class BookingController {
     private final BookingService bookingService;
     private final CurrentUserService currentUserService;
     private final RefundService refundService;
+    private final CancellationService cancellationService;
 
     @PostMapping
     public ResponseEntity<BookingDto> createBooking(@Valid @RequestBody CreateBookingRequest request) {
@@ -63,8 +67,15 @@ public class BookingController {
     }
 
     @PostMapping("/{id}/cancel")
-    public ResponseEntity<BookingDto> cancelBooking(@PathVariable UUID id) {
-        return ResponseEntity.ok(bookingService.cancelBooking(id));
+    public ResponseEntity<BookingDto> cancelBooking(
+            @PathVariable UUID id,
+            @Valid @RequestBody(required = false) CancelBookingRequest request) {
+        return ResponseEntity.ok(cancellationService.cancel(id, request));
+    }
+
+    @GetMapping("/{id}/cancellation-preview")
+    public ResponseEntity<CancellationPreviewDto> cancellationPreview(@PathVariable UUID id) {
+        return ResponseEntity.ok(cancellationService.preview(id));
     }
 
     @PostMapping("/{id}/refund")

@@ -6,6 +6,8 @@ import com.eema.backend.entity.Booking;
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.RefundStatus;
 import com.eema.backend.event.LatePaymentRefundInitiatedEvent;
+import com.eema.backend.event.CancellationRefundCompletedEvent;
+import com.eema.backend.entity.enums.CancellationPolicyTier;
 import com.eema.backend.repository.BookingEventRepository;
 import com.eema.backend.repository.BookingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,5 +60,25 @@ class RefundCoordinatorLatePaymentTest {
         assertNotNull(booking.getRefundedAt());
         assertEquals(new BigDecimal("0.00"), booking.getOwnerPayoutEur());
         assertTrue(coordinator.claimLatePayment(bookingId).isEmpty());
+    }
+
+    @Test
+    void cancellationRefundCompletionIsIdempotentAndKeepsCancelledStatus() {
+        booking.setStatus(BookingStatus.CANCELLED);
+        booking.setCancellationPolicyTier(CancellationPolicyTier.PARTIAL_REFUND);
+        booking.setRefundStatus(RefundStatus.CREATING);
+        booking.setRefundAmountEur(new BigDecimal("50.00"));
+        booking.setRefundIdempotencyKey(UUID.randomUUID());
+        var claim = new RefundCoordinator.Claim(bookingId, "tr_late", new BigDecimal("50.00"),
+                booking.getRefundIdempotencyKey());
+        var response = new MollieRefundResponse("re_partial", "refunded", "tr_late",
+                new MolliePaymentResponse.Amount("50.00", "EUR"));
+
+        coordinator.recordProviderState(claim, response);
+        coordinator.recordProviderState(claim, response);
+
+        assertEquals(BookingStatus.CANCELLED, booking.getStatus());
+        assertEquals(RefundStatus.REFUNDED, booking.getRefundStatus());
+        verify(publisher, times(1)).publishEvent(new CancellationRefundCompletedEvent(bookingId));
     }
 }

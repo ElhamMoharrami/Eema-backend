@@ -213,6 +213,7 @@ class AvailabilityInquiryServiceTest {
                 null, null, null, null, null, null, null, null, null, false, null, null, null, null,
                 null, null, null, null, null, null, null,
                 null, null,
-                null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null);
     }
 }

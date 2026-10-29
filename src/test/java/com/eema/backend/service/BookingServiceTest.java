@@ -70,16 +70,20 @@ class BookingServiceTest {
     void setUp() {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
                 appProperties, currentUserService, stateMachine, financials, priceCalculator, eventPublisher, availabilityValidator,
-                new BookingWorkflowProperties(24, 24, 60000));
+                new BookingWorkflowProperties(24, 24, 60000),
+                new BookingCancellationPolicy(financials));
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()
                 .id(bookingId).scoutId(scoutId).venueId(UUID.randomUUID())
                 .status(BookingStatus.AWAITING_PAYMENT).paymentExpiresAt(OffsetDateTime.now().plusHours(1))
+                .shootDate(LocalDate.now().plusDays(10)).startTime(LocalTime.of(10, 0)).endTime(LocalTime.of(14, 0))
                 .venuePriceEur(new BigDecimal("100.00"))
                 .commissionPercentage(new BigDecimal("20.00")).commissionEur(new BigDecimal("20.00"))
                 .mollieFeeEur(new BigDecimal("0.00")).ownerPayoutEur(new BigDecimal("80.00"))
                 .totalPaidEur(new BigDecimal("0.00")).molliePaymentId("tr_expected").build();
+        org.mockito.Mockito.lenient().when(venueRepository.findById(booking.getVenueId())).thenReturn(Optional.of(
+                Venue.builder().id(booking.getVenueId()).timezone("Europe/Amsterdam").build()));
     }
 
     @Test
@@ -139,17 +143,6 @@ class BookingServiceTest {
 
         when(currentUserService.getCurrentUser()).thenReturn(User.builder().id(UUID.randomUUID()).role(UserRole.ADMIN).build());
         assertEquals(bookingId, service.getBookingForCurrentUser(bookingId).id());
-    }
-
-    @Test
-    void awaitingPaymentCancelSucceedsAndConfirmedCancelIsRejected() {
-        User scout = User.builder().id(scoutId).email("scout@example.com").role(UserRole.SCOUT).build();
-        when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
-        when(currentUserService.getCurrentUser()).thenReturn(scout);
-        assertEquals(BookingStatus.CANCELLED, service.cancelBooking(bookingId).status());
-
-        booking.setStatus(BookingStatus.CONFIRMED);
-        assertThrows(ConflictException.class, () -> service.cancelBooking(bookingId));
     }
 
     @Test

@@ -29,7 +29,12 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     Optional<Booking> findByMolliePaymentId(String molliePaymentId);
 
-    @Query(value = "select * from bookings where mollie_fee_reconciled = false and mollie_payment_id is not null and status = 'CONFIRMED' order by paid_at", nativeQuery = true)
+    @Query(value = """
+            select * from bookings
+            where mollie_fee_reconciled = false and mollie_payment_id is not null
+              and status in ('CONFIRMED', 'CANCELLED') and total_paid_eur > 0
+            order by paid_at
+            """, nativeQuery = true)
     List<Booking> findPendingFeeReconciliation(Pageable pageable);
 
     @Query(value = """

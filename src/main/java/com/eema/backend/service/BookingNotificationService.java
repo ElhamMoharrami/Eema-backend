@@ -69,6 +69,64 @@ public class BookingNotificationService {
     }
 
     @Transactional(readOnly = true)
+    public void sendCancellation(UUID bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElse(null);
+        if (booking == null || booking.getStatus() != BookingStatus.CANCELLED
+                || booking.getCancellationPolicyTier() == null) return;
+        String venueName = venueRepository.findById(booking.getVenueId()).map(Venue::getName)
+                .orElse("your selected venue");
+        String url = bookingUrl(bookingId);
+        boolean refundInitiated = booking.getRefundStatus()
+                != com.eema.backend.entity.enums.RefundStatus.NONE;
+        String refundLine = refundInitiated
+                ? "A refund of €" + money(booking.getCancellationRefundAmountEur())
+                + " has been initiated. It is not yet completed."
+                : "No refund is due under the cancellation policy.";
+        String actorLine = switch (booking.getCancelledByActorType()) {
+            case OWNER -> "The venue owner cancelled this booking. We are sorry for the disruption. ";
+            case ADMIN -> "Eema cancelled this booking for the recorded operational reason. ";
+            default -> "Your booking has been cancelled. ";
+        };
+        String scoutMessage = actorLine + refundLine;
+        attempt("BOOKING_CANCELLED", "scout", bookingId, () -> emailService.send(
+                booking.getScoutContact().getEmail(), "Your Eema booking was cancelled",
+                text(booking.getScoutContact().getName(), scoutMessage, details(booking, venueName),
+                        "View booking", url),
+                html("Booking cancelled", booking.getScoutContact().getName(), scoutMessage,
+                        detailsHtml(booking, venueName), "View booking", url)));
+
+        if (booking.getCancelledByActorType() == com.eema.backend.entity.enums.ActorType.SCOUT) {
+            String ownerMessage = "The scout cancelled this booking under policy tier "
+                    + booking.getCancellationPolicyTier()
+                    + ". Your cancellation settlement is provisional until provider fee reconciliation.";
+            attempt("BOOKING_CANCELLED", "owner", bookingId, () -> emailService.send(
+                    booking.getOwnerContact().getEmail(), "A scout cancelled an Eema booking",
+                    text(booking.getOwnerContact().getName(), ownerMessage, details(booking, venueName),
+                            "View booking", url),
+                    html("Scout cancellation", booking.getOwnerContact().getName(), ownerMessage,
+                            detailsHtml(booking, venueName), "View booking", url)));
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void sendCancellationRefundCompleted(UUID bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElse(null);
+        if (booking == null || booking.getStatus() != BookingStatus.CANCELLED
+                || booking.getRefundStatus() != com.eema.backend.entity.enums.RefundStatus.REFUNDED) return;
+        String venueName = venueRepository.findById(booking.getVenueId()).map(Venue::getName)
+                .orElse("your selected venue");
+        String message = "Your refund of €" + money(booking.getRefundAmountEur())
+                + " has been processed. Bank settlement timing may vary.";
+        String url = bookingUrl(bookingId);
+        attempt("CANCELLATION_REFUND_COMPLETED", "scout", bookingId, () -> emailService.send(
+                booking.getScoutContact().getEmail(), "Your Eema refund has been processed",
+                text(booking.getScoutContact().getName(), message, details(booking, venueName),
+                        "View booking", url),
+                html("Refund processed", booking.getScoutContact().getName(), message,
+                        detailsHtml(booking, venueName), "View booking", url)));
+    }
+
+    @Transactional(readOnly = true)
     public void sendLifecycle(UUID bookingId, BookingLifecycleEvent.Type type) {
         Booking booking = bookingRepository.findById(bookingId).orElse(null);
         if (booking == null) {

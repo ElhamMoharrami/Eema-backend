@@ -14,7 +14,7 @@ public class BookingStateMachine {
                     || target == BookingStatus.CANCELLED;
             case AWAITING_PAYMENT -> target == BookingStatus.CONFIRMED || target == BookingStatus.EXPIRED
                     || target == BookingStatus.CANCELLED;
-            case CONFIRMED -> target == BookingStatus.REFUNDED;
+            case CONFIRMED -> target == BookingStatus.REFUNDED || target == BookingStatus.CANCELLED;
             case DECLINED, EXPIRED, UNAVAILABLE, CANCELLED, REFUNDED -> false;
         };
 

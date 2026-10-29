@@ -40,12 +40,18 @@ public class HttpMollieProviderClient implements MollieProviderClient {
     }
 
     @Override
-    public MollieRefundResponse createFullRefund(String paymentId, UUID bookingId, BigDecimal amount, UUID key) {
+    public MollieRefundResponse createRefund(String paymentId, UUID bookingId, BigDecimal amount, UUID key) {
         Map<String, Object> body = Map.of(
                 "amount", amount(amount),
-                "description", "Full refund for Eema booking #" + bookingId,
+                "description", "Refund for Eema booking #" + bookingId,
                 "metadata", Map.of("bookingId", bookingId.toString()));
         return exchange(API + "/payments/" + paymentId + "/refunds", HttpMethod.POST, body, key, MollieRefundResponse.class);
+    }
+
+    @Override
+    public MolliePaymentResponse cancelPayment(String paymentId) {
+        return exchange(API + "/payments/" + paymentId, HttpMethod.DELETE, null, null,
+                MolliePaymentResponse.class);
     }
 
     @Override
