@@ -5,6 +5,7 @@ import com.eema.backend.dto.request.UpdateVenueRequest;
 import com.eema.backend.entity.User;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.UserRole;
+import com.eema.backend.entity.enums.ProductionActivity;
 import com.eema.backend.exception.BadRequestException;
 import com.eema.backend.exception.ForbiddenException;
 import com.eema.backend.mapper.UserMapper;
@@ -39,7 +40,8 @@ class VenueServiceTest {
                 new AppProperties.StorageProperties("/tmp/eema-venue-test", "/api/upload/files/"),
                 null, null, null, null, null, null, null);
         VenueMapper mapper = new VenueMapper(new UserMapper());
-        service = new VenueService(venues, users, mapper, currentUser, new VenueMediaPolicy(properties), storage);
+        service = new VenueService(venues, users, mapper, currentUser, new VenueMediaPolicy(properties), storage,
+                new VenueProductionProfileValidator());
         venue = Venue.builder().id(venueId).owner(owner).name("Old Studio").neighbourhood("West")
                 .sizeM2(100).hourlyRateEur(new BigDecimal("100.00"))
                 .minimumBookingMinutes(240).fullDayRateEur(new BigDecimal("500.00")).tags(List.of("old"))
@@ -69,6 +71,11 @@ class VenueServiceTest {
         assertFalse(result.photoPaths().contains(photo("22222222-2222-4222-8222-222222222222")));
         assertEquals(primary, result.photoPaths().getFirst());
         assertEquals("Europe/Paris", result.timezone());
+        assertEquals(30, result.maxCrewSize());
+        assertEquals(List.of(ProductionActivity.PHOTO, ProductionActivity.FILM), result.permittedActivities());
+        assertEquals(new BigDecimal("4.50"), result.ceilingHeightM());
+        assertTrue(result.loadingAccess());
+        assertEquals(3, result.parkingSpaces());
     }
 
     @Test
@@ -86,29 +93,29 @@ class VenueServiceTest {
     @Test
     void ownerMayRemoveOptionalFullDayRate() {
         when(currentUser.getCurrentUser()).thenReturn(owner);
-        UpdateVenueRequest withoutCap = new UpdateVenueRequest("Updated Studio", "Centre", 250,
-                new BigDecimal("175.00"), 240, null, List.of("daylight"), "Updated description",
-                "https://video.example.test/clip", "Europe/Paris", List.of());
+        UpdateVenueRequest withoutCap = requestWithPricing(new BigDecimal("175.00"), 240, null,
+                30, new BigDecimal("4.50"), 3);
 
         var result = service.updateVenue(venueId, withoutCap);
 
         assertNull(result.fullDayRateEur());
+        assertNull(result.naturalLight());
+        assertNull(result.permittedActivities());
     }
 
     @Test
     void venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap() {
         try (var factory = jakarta.validation.Validation.buildDefaultValidatorFactory()) {
             var validator = factory.getValidator();
-            UpdateVenueRequest valid = new UpdateVenueRequest("Updated Studio", "Centre", 250,
-                    new BigDecimal("175.00"), 240, null, List.of(), null, null,
-                    "Europe/Amsterdam", List.of());
+            UpdateVenueRequest valid = requestWithPricing(new BigDecimal("175.00"), 240, null,
+                    null, null, null);
             assertTrue(validator.validate(valid).isEmpty());
 
-            UpdateVenueRequest invalid = new UpdateVenueRequest("Updated Studio", "Centre", 250,
-                    BigDecimal.ZERO, 0, BigDecimal.ZERO, List.of(), null, null,
-                    "Europe/Amsterdam", List.of());
-            assertEquals(3, validator.validate(invalid).stream()
-                    .filter(v -> java.util.Set.of("hourlyRateEur", "minimumBookingMinutes", "fullDayRateEur")
+            UpdateVenueRequest invalid = requestWithPricing(BigDecimal.ZERO, 0, BigDecimal.ZERO,
+                    0, BigDecimal.ZERO, -1);
+            assertEquals(6, validator.validate(invalid).stream()
+                    .filter(v -> java.util.Set.of("hourlyRateEur", "minimumBookingMinutes", "fullDayRateEur",
+                                    "maxCrewSize", "ceilingHeightM", "parkingSpaces")
                             .contains(v.getPropertyPath().toString())).count());
         }
     }
@@ -142,9 +149,20 @@ class VenueServiceTest {
 
     private UpdateVenueRequest request(List<String> photos) {
         return new UpdateVenueRequest("Updated Studio", "Centre", 250, new BigDecimal("175.00"), 240,
-                new BigDecimal("1200.00"),
+                new BigDecimal("1200.00"), 30,
+                List.of(ProductionActivity.PHOTO, ProductionActivity.FILM), List.of(ProductionActivity.MUSIC_VIDEO),
+                true, true, new BigDecimal("4.50"), true, true, 3, 0, false, true, true, true,
+                "No smoke without approval", "Three-phase 63A",
                 List.of("daylight", "industrial"), "Updated description", "https://video.example.test/clip",
                 "Europe/Paris", photos);
+    }
+
+    private UpdateVenueRequest requestWithPricing(BigDecimal hourlyRate, int minimumMinutes, BigDecimal fullDayRate,
+                                                   Integer maxCrewSize, BigDecimal ceilingHeight, Integer parkingSpaces) {
+        return new UpdateVenueRequest("Updated Studio", "Centre", 250, hourlyRate, minimumMinutes,
+                fullDayRate, maxCrewSize, null, null, null, null, ceilingHeight, null,
+                parkingSpaces == null ? null : true, parkingSpaces, null, null, null, null, null,
+                null, null, List.of(), null, null, "Europe/Amsterdam", List.of());
     }
 
     private String photo(String uuid) { return "/api/upload/files/" + uuid + ".jpg"; }

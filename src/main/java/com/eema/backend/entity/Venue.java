@@ -1,6 +1,7 @@
 package com.eema.backend.entity;
 
 import com.eema.backend.entity.enums.VenueStatus;
+import com.eema.backend.entity.enums.ProductionActivity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Positive;
@@ -57,6 +58,58 @@ public class Venue {
     @DecimalMin("0.01")
     @Column(name = "full_day_rate_eur", precision = 10, scale = 2)
     private BigDecimal fullDayRateEur;
+
+    @Positive
+    @Column(name = "max_crew_size")
+    private Integer maxCrewSize;
+
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(name = "permitted_activities", columnDefinition = "production_activity[]")
+    private List<ProductionActivity> permittedActivities;
+
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(name = "prohibited_activities", columnDefinition = "production_activity[]")
+    private List<ProductionActivity> prohibitedActivities;
+
+    @Column(name = "natural_light")
+    private Boolean naturalLight;
+
+    @Column(name = "blackout_possible")
+    private Boolean blackoutPossible;
+
+    @DecimalMin("0.01")
+    @Column(name = "ceiling_height_m", precision = 5, scale = 2)
+    private BigDecimal ceilingHeightM;
+
+    @Column(name = "loading_access")
+    private Boolean loadingAccess;
+
+    @Column(name = "parking_available")
+    private Boolean parkingAvailable;
+
+    @Column(name = "parking_spaces")
+    private Integer parkingSpaces;
+
+    @Column(name = "floor_number")
+    private Integer floorNumber;
+
+    @Column(name = "lift_available")
+    private Boolean liftAvailable;
+
+    @Column(name = "wheelchair_accessible")
+    private Boolean wheelchairAccessible;
+
+    @Column(name = "bathrooms_available")
+    private Boolean bathroomsAvailable;
+
+    @Column(name = "sound_recording_suitable")
+    private Boolean soundRecordingSuitable;
+
+    @Column(name = "production_rules", columnDefinition = "text")
+    private String productionRules;
+
+    @Column(name = "power_details", columnDefinition = "text")
+    private String powerDetails;
 
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "tags", columnDefinition = "text[]")

@@ -43,6 +43,7 @@ public class VenueService {
     private final CurrentUserService currentUserService;
     private final VenueMediaPolicy mediaPolicy;
     private final FileStorage fileStorage;
+    private final VenueProductionProfileValidator productionProfileValidator;
 
     @Transactional
     public VenueDto createVenue(
@@ -70,6 +71,7 @@ public class VenueService {
                 venueMapper.toEntity(request);
 
         venue.setOwner(owner);
+        productionProfileValidator.validateConsistency(venue);
 
         Venue savedVenue =
                 venueRepository.save(venue);
@@ -168,6 +170,7 @@ public class VenueService {
 
         venueMapper.updateEntityFromDto(request, venue);
         venue.setPhotoPaths(validatedPhotos);
+        productionProfileValidator.validateConsistency(venue);
 
         Venue updatedVenue =
                 venueRepository.save(venue);

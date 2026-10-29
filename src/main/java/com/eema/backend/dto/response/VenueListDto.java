@@ -13,6 +13,11 @@ public record VenueListDto(
         BigDecimal hourlyRateEur,
         Integer minimumBookingMinutes,
         BigDecimal fullDayRateEur,
+        Integer maxCrewSize,
+        Boolean naturalLight,
+        Boolean loadingAccess,
+        Boolean parkingAvailable,
+        Boolean soundRecordingSuitable,
         List<String> tags,
         String firstPhotoUrl,
         VenueStatus status

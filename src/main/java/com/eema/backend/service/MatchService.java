@@ -81,6 +81,11 @@ public class MatchService {
                 venue.hourlyRateEur(),
                 venue.minimumBookingMinutes(),
                 venue.fullDayRateEur(),
+                venue.maxCrewSize(),
+                venue.naturalLight(),
+                venue.loadingAccess(),
+                venue.parkingAvailable(),
+                venue.soundRecordingSuitable(),
                 venue.tags(),
                 getPrimaryPhoto(venue),
                 venue.status()
