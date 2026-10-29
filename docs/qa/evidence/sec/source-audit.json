@@ -1,0 +1,49 @@
+{
+  "domain": "SEC",
+  "scenarios": [
+    "SEC-001",
+    "SEC-002",
+    "SEC-003",
+    "SEC-004",
+    "SEC-005",
+    "SEC-006",
+    "SEC-007"
+  ],
+  "contracts": {
+    "auth": "Current DB user active/role authoritative; verified email/policies only on specified mutations",
+    "cors": "Configured origins only; four allowed request headers and two exposed headers",
+    "headers": "nosniff,DENY,no-referrer,API CSP; opt-in HSTS on secure request",
+    "documents": "Spring Security no-store already proven; no public storage reference",
+    "framework": "Health public without details (probe groups allowed); metrics ADMIN; Swagger authenticated; nonexposed actuator routes absent",
+    "session": "Validate cached auth payload; localStorage design retained; legacy optional metadata compatible"
+  },
+  "reuse": [
+    "AUTH",
+    "VEN",
+    "AVL",
+    "BK",
+    "INQ",
+    "PAY",
+    "REF",
+    "PAYOUT",
+    "DEST",
+    "DOC",
+    "INC",
+    "ADMIN",
+    "MATCH",
+    "POL"
+  ],
+  "fixes": [
+    "SEC-DEF-001 log privacy",
+    "SEC-DEF-002 malformed session robustness",
+    "SEC-DEF-003 safe firewall rejection"
+  ],
+  "staging": [
+    "Deployed TLS/edge headers",
+    "Production logging",
+    "Real provider transport",
+    "WAF/rate limits"
+  ],
+  "newMigration": false,
+  "publicAuthArchitectureChanged": false
+}

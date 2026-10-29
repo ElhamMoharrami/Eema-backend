@@ -100,8 +100,8 @@ public class AvailabilityInquiryService {
         inquiry.setOfferedEndTime(request.offeredEndTime());
         inquiry.setOfferedAt(now);
         OffsetDateTime configuredExpiry = now.plusHours(properties.offerValidHours());
-        OffsetDateTime slotStart = ZonedDateTime.of(request.offeredDate(), request.offeredStartTime(),
-                ZoneId.of(venue.getTimezone())).toOffsetDateTime();
+        OffsetDateTime slotStart = BookingTimePolicy.resolve(request.offeredDate(), request.offeredStartTime(),
+                ZoneId.of(venue.getTimezone()));
         inquiry.setOfferExpiresAt(configuredExpiry.isBefore(slotStart) ? configuredExpiry : slotStart);
         inquiry.setStatus(AvailabilityInquiryStatus.OFFERED);
         eventPublisher.publishEvent(new AvailabilityInquiryLifecycleEvent(
@@ -129,6 +129,7 @@ public class AvailabilityInquiryService {
         if (!inquiry.getOfferExpiresAt().isAfter(now)) {
             throw new ConflictException("This availability offer has expired");
         }
+        BookingTimePolicy.interval(inquiry.getOfferedDate(), inquiry.getOfferedStartTime(), inquiry.getOfferedEndTime(), ZoneId.of(venue.getTimezone()));
         if (!leadTimePolicy.isSatisfied(venue, inquiry.getOfferedDate(), inquiry.getOfferedStartTime())) {
             expire(inquiry, now);
             throw leadTimePolicy.notMet(venue);
@@ -164,7 +165,7 @@ public class AvailabilityInquiryService {
     }
 
     private void validateFutureInterval(Venue venue, LocalDate date, LocalTime start, LocalTime end) {
-        BookingOverlapRule.requireValid(start, end);
+        BookingTimePolicy.interval(date, start, end, ZoneId.of(venue.getTimezone()));
         ZoneId zone;
         try { zone = ZoneId.of(venue.getTimezone()); }
         catch (DateTimeException exception) { throw new IllegalStateException("Venue timezone is invalid", exception); }

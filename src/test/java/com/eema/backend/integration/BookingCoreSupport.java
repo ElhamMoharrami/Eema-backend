@@ -29,12 +29,11 @@ abstract class BookingCoreSupport extends AuthPostgresSupport {
         static org.springframework.beans.factory.config.BeanPostProcessor bookingFaults(){
             return new org.springframework.beans.factory.config.BeanPostProcessor(){
                 public Object postProcessAfterInitialization(Object bean,String name){
-                    if(!(bean instanceof BookingRepository) && !(bean instanceof BookingNotificationService))return bean;
+                    if(!(bean instanceof BookingRepository))return bean;
                     var proxy=new org.springframework.aop.framework.ProxyFactory(bean);
-                    proxy.setProxyTargetClass(bean instanceof BookingNotificationService);
+
                     proxy.addAdvice((org.aopalliance.intercept.MethodInterceptor) invocation->{
                         if(invocation.getMethod().getName().equals("findOverlappingRequestedForUpdate") && Objects.equals(FAIL_COMPETITORS,invocation.getArguments()[0]))throw new com.eema.backend.exception.ConflictException("QA injected competitor conflict");
-                        if(invocation.getMethod().getName().equals("sendLifecycle") && Objects.equals(FAIL_NOTICE,invocation.getArguments()[0]) && invocation.getArguments()[1]==BookingLifecycleEvent.Type.REQUEST_ACCEPTED){NOTICE_REACHED.countDown();throw new IllegalStateException("QA notification failure");}
                         return invocation.proceed();
                     });return proxy.getProxy();
                 }
@@ -50,9 +49,8 @@ abstract class BookingCoreSupport extends AuthPostgresSupport {
         public Clock withZone(ZoneId zone){return Clock.fixed(now,zone);}
         public Instant instant(){return now;}
     }
-    static volatile UUID FAIL_COMPETITORS,FAIL_NOTICE;
-    static volatile java.util.concurrent.CountDownLatch NOTICE_REACHED;
-    @AfterEach void disarmFaults(){FAIL_COMPETITORS=null;FAIL_NOTICE=null;}
+    static volatile UUID FAIL_COMPETITORS;
+    @AfterEach void disarmFaults(){FAIL_COMPETITORS=null;}
     @Autowired TestClock clock;
     @Autowired VenueRepository venues;
     @Autowired UserRepository users;

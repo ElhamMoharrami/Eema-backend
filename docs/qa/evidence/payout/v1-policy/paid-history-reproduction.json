@@ -1,0 +1,13 @@
+{
+  "totals": {
+    "tests": 41,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failedTests": [
+    "paidOwnerSettlementDoesNotChargeAlreadyAppliedProviderCostAgain",
+    "paidPlatformBorneCostCannotBecomeLimitedRecourseRecovery{ProviderCostResponsibility}[1]",
+    "paidPlatformBorneCostCannotBecomeLimitedRecourseRecovery{ProviderCostResponsibility}[2]"
+  ]
+}

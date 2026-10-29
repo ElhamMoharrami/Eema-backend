@@ -22,7 +22,6 @@ class BookingFinancialsTest {
         assertEquals(new BigDecimal("12.35"), financials.money(new BigDecimal("12.345")));
         assertThrows(IllegalArgumentException.class,
                 () -> financials.commission(BigDecimal.ONE, new BigDecimal("100.01")));
-        assertThrows(IllegalArgumentException.class,
-                () -> financials.ownerPayout(BigDecimal.TEN, new BigDecimal("9.00"), new BigDecimal("2.00")));
+        assertEquals(new BigDecimal("0.00"), financials.ownerPayout(BigDecimal.TEN, new BigDecimal("9.00"), new BigDecimal("2.00")));
     }
 }

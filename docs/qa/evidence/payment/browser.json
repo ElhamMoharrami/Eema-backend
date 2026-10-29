@@ -1,0 +1,141 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Expired checkout refetches EXPIRED, removes Pay now and retains safe conflict",
+      "result": "PASS"
+    },
+    {
+      "name": "Fabricated paid/success/status/bookingId query is not authority",
+      "result": "PASS"
+    },
+    {
+      "name": "Unrelated booking session ID does not expose contacts",
+      "result": "PASS"
+    },
+    {
+      "name": "Malformed stored ID gives safe error",
+      "result": "PASS"
+    },
+    {
+      "name": "Pay now uses server URL; controlled provider return stays AWAITING_PAYMENT until webhook",
+      "result": "PASS"
+    },
+    {
+      "name": "Provider retrieval through real webhook confirms once; browser manual recheck reflects Spring",
+      "result": "PASS"
+    },
+    {
+      "name": "Late payment displays EXPIRED/refund information, never success from redirect",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Controlled navigation and mocked Mollie transport; not real provider execution",
+  "network": [
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546/checkout",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546/checkout",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/bookings/e12912f1-b0e6-46a3-8438-68aab4f87546",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/ee45549a-8c09-41e1-a3cc-a41197c406a6",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/ee45549a-8c09-41e1-a3cc-a41197c406a6",
+      "method": "GET",
+      "status": 403
+    },
+    {
+      "path": "/api/bookings/not-a-uuid",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/not-a-uuid",
+      "method": "GET",
+      "status": 400
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897/checkout",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897/checkout",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/4648fbda-95ef-4d41-b277-b4b4784aa897",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/c188100e-d440-4e65-88e9-151d16268462",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/c188100e-d440-4e65-88e9-151d16268462",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

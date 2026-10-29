@@ -165,9 +165,10 @@ public class AvailabilityInquiryNotificationService {
     private void attempt(UUID inquiryId, String type, String recipientType, Runnable delivery) {
         try {
             delivery.run();
-            log.info("Inquiry notification processed: inquiryId={}, notificationType={}, recipientType={}",
+            log.info("Inquiry notification prepared: inquiryId={}, notificationType={}, recipientType={}",
                     inquiryId, type, recipientType);
         } catch (RuntimeException exception) {
+            if (emailService.isCapturing()) throw exception;
             log.error("Inquiry notification failed: inquiryId={}, notificationType={}, recipientType={}, errorType={}",
                     inquiryId, type, recipientType, exception.getClass().getSimpleName());
         }

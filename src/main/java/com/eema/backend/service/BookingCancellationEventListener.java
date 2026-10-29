@@ -1,27 +1,23 @@
 package com.eema.backend.service;
 
-import com.eema.backend.event.BookingCancelledEvent;
-import com.eema.backend.event.CancellationRefundCompletedEvent;
+import com.eema.backend.event.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.transaction.event.*;
 
-@Component
-@RequiredArgsConstructor
+@Component @RequiredArgsConstructor
 public class BookingCancellationEventListener {
     private final BookingNotificationService notifications;
+    private final NotificationOutboxWriter outbox;
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void cancelled(BookingCancelledEvent event) {
-        notifications.sendCancellation(event.bookingId());
+        outbox.record("BOOKING",event.bookingId(),"CANCELLATION","BOOKING:"+event.bookingId()+":CANCELLATION",
+                () -> notifications.sendCancellation(event.bookingId()));
     }
-
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void refundCompleted(CancellationRefundCompletedEvent event) {
-        notifications.sendCancellationRefundCompleted(event.bookingId());
+        outbox.record("BOOKING",event.bookingId(),"CANCELLATION_REFUND_COMPLETED","BOOKING:"+event.bookingId()+":CANCELLATION_REFUND_COMPLETED",
+                () -> notifications.sendCancellationRefundCompleted(event.bookingId()));
     }
 }

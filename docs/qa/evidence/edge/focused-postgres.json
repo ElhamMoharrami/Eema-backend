@@ -1,0 +1,18 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.EdgeIntegrationTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    }
+  ],
+  "totals": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

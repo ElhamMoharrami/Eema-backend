@@ -1,0 +1,33 @@
+{
+  "defect": "PRICE-DEF-005",
+  "result": "RESOLVED",
+  "decision": "Free bookings are not supported. A calculated booking total below EUR 0.01 is rejected before booking persistence/payment creation.",
+  "canonicalScenarios": "PRICE-001\u2013011 unchanged, 11 PASS",
+  "newFocusedPostgres": 8,
+  "newCheckoutUnitCases": 3,
+  "frontendChanged": false,
+  "frontendMessageCheck": "PASS",
+  "migration": "V13__positive_booking_price.sql; fresh PostgreSQL and Hibernate validation PASS",
+  "commands": {
+    "unit": {
+      "tests": 1000,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 800,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    },
+    "package": {
+      "tests": 1000,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "nextDomain": "DOC-001\u2013004",
+  "realProviderVerified": false
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "suite": "DocumentIntegrationTest",
+    "tests": 32,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "failedCases": [
+      {
+        "case": "failedIssuanceNeverSucceedsAndCleansStoredObject(String)[3]",
+        "message": "Rollback must attempt private object cleanup ==> expected: <true> but was: <false>"
+      }
+    ]
+  }
+]

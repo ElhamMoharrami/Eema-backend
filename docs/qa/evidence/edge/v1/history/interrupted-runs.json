@@ -1,0 +1,15 @@
+{
+  "runs": [
+    {
+      "scope": "First full PostgreSQL regression",
+      "result": "INTERRUPTED",
+      "reason": "Deliberately stopped to isolate browser-only test controller from component scanning; full unit1040 had passed."
+    },
+    {
+      "scope": "Browser after test-component isolation",
+      "result": "INTERRUPTED",
+      "reason": "Foreground process exited143 during application startup, before test result; rerun in persistent process."
+    }
+  ],
+  "claimedPass": false
+}

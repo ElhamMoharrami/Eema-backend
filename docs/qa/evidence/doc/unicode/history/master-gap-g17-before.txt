@@ -1,0 +1,1 @@
+| G17 | P1 | PDF uses current venue/owner display details at first issuance, then immutable bytes; unsupported Unicode becomes ?, text is truncated at 180 and single-page layout can overflow. Not every document field is booking-time snapshotted. | DOC-002/004 | FinancialDocumentService; FinancialDocumentPdfRenderer |

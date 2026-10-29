@@ -1,0 +1,12 @@
+{
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "build": "PASS",
+  "diffCheck": "PASS",
+  "productionChangesInOPS": false,
+  "browserChecks": 4,
+  "screenshotsReviewed": [
+    "scout-after-restart.png",
+    "admin-after-restart.png"
+  ]
+}

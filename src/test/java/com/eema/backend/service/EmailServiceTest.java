@@ -19,9 +19,10 @@ class EmailServiceTest {
 
     @Test
     void disabledDeliveryNeverCallsProvider() {
-        com.resend.Resend provider = org.mockito.Mockito.mock(com.resend.Resend.class);
-        new EmailService(false, null, provider).send("scout@example.test", "Verify", "placeholder", "placeholder");
-        org.mockito.Mockito.verifyNoInteractions(provider);
+        var email=new EmailService(properties(false,null,null));
+        email.send("scout@example.test", "Verify", "placeholder", "placeholder");
+        assertThrows(EmailService.DeliveryFailure.class,()->email.deliver(java.util.UUID.randomUUID(),null,
+            new EmailService.Draft("scout@example.test","Verify","placeholder","placeholder")));
     }
 
     private AppProperties properties(boolean enabled, String key, String sender) {

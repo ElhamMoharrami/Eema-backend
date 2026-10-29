@@ -124,6 +124,7 @@ public class BookingService {
                 venue.getHourlyRateEur(), venue.getMinimumBookingMinutes(), venue.getFullDayRateEur(),
                 bookingStart, bookingEnd);
         BigDecimal venuePriceEur = quote.finalPriceEur();
+        financials.requireBookablePrice(venuePriceEur);
 
         BigDecimal commissionPercentage = validateCommissionPercentage(appProperties.commission().percentage());
 
@@ -182,6 +183,11 @@ public class BookingService {
         return toBookingDto(savedBooking);
     }
 
+    public void validateCommitmentTime(Booking booking) {
+        Venue venue = venueRepository.findById(booking.getVenueId()).orElseThrow(() -> new NotFoundException("Venue not found"));
+        BookingTimePolicy.interval(booking.getShootDate(), booking.getStartTime(), booking.getEndTime(), ZoneId.of(venue.getTimezone()));
+    }
+
     @Transactional
     public BookingDto createApprovedExceptionBooking(UUID venueId, UUID scoutId, LocalDate date,
                                                      LocalTime startTime, LocalTime endTime, String brief) {
@@ -190,7 +196,7 @@ public class BookingService {
         User scout = userRepository.findById(scoutId).orElseThrow(() -> new NotFoundException("Scout not found"));
         if (scout.getRole() != UserRole.SCOUT) throw new ForbiddenException("Only SCOUT users can accept inquiry offers");
         if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(scout);
-        BookingOverlapRule.requireValid(startTime, endTime);
+        BookingTimePolicy.interval(date, startTime, endTime, ZoneId.of(venue.getTimezone()));
         leadTimePolicy.validate(venue, date, startTime);
         boolean conflict = bookingRepository.findBlockingBookings(venueId, date).stream()
                 .anyMatch(existing -> BookingOverlapRule.overlaps(startTime, endTime, existing.getStartTime(), existing.getEndTime()));
@@ -202,6 +208,7 @@ public class BookingService {
                 venue.getHourlyRateEur(), venue.getMinimumBookingMinutes(), venue.getFullDayRateEur(),
                 startTime, endTime);
         BigDecimal venuePrice = quote.finalPriceEur();
+        financials.requireBookablePrice(venuePrice);
         BigDecimal percentage = validateCommissionPercentage(appProperties.commission().percentage());
         BigDecimal commission = calculateCommission(venuePrice, percentage);
         BigDecimal fee = money(BigDecimal.ZERO);
@@ -319,7 +326,7 @@ public class BookingService {
         }
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = RequestDeadlineExpiredException.class)
     public BookingDto declineRequest(UUID bookingId) {
         User user = currentUserService.getCurrentUser();
         if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(user);
@@ -327,6 +334,13 @@ public class BookingService {
                 .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
         authorizeOwnerOrAdmin(user, booking);
         if (booking.getStatus() != BookingStatus.REQUESTED) throw new ConflictException("Only requested bookings can be declined");
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        if (booking.getOwnerResponseExpiresAt() == null || !booking.getOwnerResponseExpiresAt().isAfter(now)) {
+            transition(booking, BookingStatus.EXPIRED);
+            appendEvent(bookingId, BookingEventType.REQUEST_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
+            eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.REQUEST_EXPIRED));
+            throw new RequestDeadlineExpiredException("The owner response deadline has passed; this request is expired");
+        }
         transition(booking, BookingStatus.DECLINED);
         appendEvent(bookingId, BookingEventType.REQUEST_DECLINED, user.getId(), actorName(user), actorTypeForUser(user), Map.of());
         eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.REQUEST_DECLINED));
@@ -393,9 +407,11 @@ public class BookingService {
 
         /*
          * Mollie may deliver the same webhook multiple times.
+         * Later cancellation does not make an already-confirmed payment newly late.
          */
         if (booking.getStatus() == BookingStatus.CONFIRMED
-                || booking.getStatus() == BookingStatus.REFUNDED) {
+                || booking.getStatus() == BookingStatus.REFUNDED
+                || (booking.getStatus() == BookingStatus.CANCELLED && booking.getConfirmedAt() != null)) {
 
             log.info("Booking {} already has a completed payment state; duplicate Mollie webhook ignored", bookingId);
 
@@ -413,14 +429,14 @@ public class BookingService {
             throw new IllegalStateException("Paid amount does not match venue price");
         }
 
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         boolean awaitingPayment = booking.getStatus() == BookingStatus.AWAITING_PAYMENT;
         boolean latePayment = booking.getStatus() == BookingStatus.EXPIRED
                 || booking.getStatus() == BookingStatus.CANCELLED
                 || (awaitingPayment && (booking.getPaymentExpiresAt() == null
                 || !booking.getPaymentExpiresAt().isAfter(now)));
         if (latePayment) {
-            applyPaidFinancialSnapshot(booking, paidAmount);
+            if (booking.getLatePaymentDetectedAt() == null) applyPaidFinancialSnapshot(booking, paidAmount);
             if (awaitingPayment) {
                 transition(booking, BookingStatus.EXPIRED);
                 appendEvent(bookingId, BookingEventType.APPROVAL_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
@@ -440,6 +456,7 @@ public class BookingService {
             throw new ConflictException("Booking is not eligible for payment confirmation");
         }
 
+        validateCommitmentTime(booking);
         applyPaidFinancialSnapshot(booking, paidAmount);
         BigDecimal commissionEur = booking.getCommissionEur();
         BigDecimal ownerPayoutEur = booking.getOwnerPayoutEur();
@@ -480,7 +497,7 @@ public class BookingService {
     }
 
     private void applyPaidFinancialSnapshot(Booking booking, BigDecimal paidAmount) {
-        if (booking.getPaidAt() == null) booking.setPaidAt(OffsetDateTime.now());
+        if (booking.getPaidAt() == null) booking.setPaidAt(OffsetDateTime.now(clock));
         booking.setTotalPaidEur(paidAmount);
         BigDecimal mollieFeeEur = money(BigDecimal.ZERO);
         booking.setMollieFeeEur(mollieFeeEur);
@@ -510,8 +527,14 @@ public class BookingService {
         Booking booking = bookingRepository.findByIdForUpdate(bookingId).orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
 
         if (booking.getStatus() != BookingStatus.CONFIRMED
-                && booking.getStatus() != BookingStatus.CANCELLED) {
+                && booking.getStatus() != BookingStatus.CANCELLED
+                && booking.getStatus() != BookingStatus.REFUNDED) {
 
+            throw new IllegalStateException("Cannot reconcile Mollie fee for unpaid booking");
+        }
+
+        if (booking.getPaidAt() == null || booking.getTotalPaidEur() == null
+                || booking.getTotalPaidEur().signum() <= 0) {
             throw new IllegalStateException("Cannot reconcile Mollie fee for unpaid booking");
         }
 
@@ -524,16 +547,9 @@ public class BookingService {
             throw new ConflictException("Mollie fee has already been reconciled");
         }
 
-        BigDecimal ownerPayout;
-        if (booking.getCancellationPolicyTier() == null) {
-            ownerPayout = calculateOwnerPayout(booking.getVenuePriceEur(), booking.getCommissionEur(), normalizedFee);
-        } else if (booking.getProviderCostResponsibility()
-                == com.eema.backend.entity.enums.ProviderCostResponsibility.OWNER_SETTLEMENT) {
-            BigDecimal gross = booking.getOwnerCancellationSettlementEur();
-            ownerPayout = money(gross.subtract(normalizedFee).max(BigDecimal.ZERO));
-        } else {
-            ownerPayout = money(BigDecimal.ZERO);
-        }
+        BigDecimal ownerPayout = financials.allocateProviderCost(
+                financials.ownerEntitlementBeforeProviderCost(booking), normalizedFee,
+                booking.getProviderCostResponsibility()).ownerPayout();
 
         booking.setMollieFeeEur(normalizedFee);
         booking.setMollieFeeReconciled(true);
@@ -685,7 +701,7 @@ public class BookingService {
 
         try {
 
-            return money(new BigDecimal(payment.amount().value()));
+            return MollieResponseValidation.eurAmount(payment.amount());
 
         } catch (NumberFormatException e) {
 

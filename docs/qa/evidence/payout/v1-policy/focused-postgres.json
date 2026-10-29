@@ -1,0 +1,20 @@
+{
+  "command": "mvn verify -Ppostgres-integration -Dit.test=ProviderCostAllocationIntegrationTest,PayoutIntegrationTest",
+  "suites": [
+    {
+      "suite": "PayoutIntegrationTest",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "ProviderCostAllocationIntegrationTest",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "note": "Initial 50 green cases; full regression additionally covers NULL normal-booking excess and paid NONE/EEMA/NULL."
+}

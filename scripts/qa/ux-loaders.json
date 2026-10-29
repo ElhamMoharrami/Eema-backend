@@ -1,0 +1,112 @@
+{
+  "/admin/bookings/[id]": [
+    "/api/admin/bookings/10000000-0000-0000-0000-000000000001",
+    "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events"
+  ],
+  "/admin/bookings": [
+    "/api/admin/bookings"
+  ],
+  "/admin/exceptions": [
+    "/api/admin/operations/exceptions"
+  ],
+  "/admin/incidents/[id]": [
+    "/api/admin/incidents/10000000-0000-0000-0000-000000000001"
+  ],
+  "/admin/incidents": [
+    "/api/admin/incidents"
+  ],
+  "/admin/liabilities/[id]": [
+    "/api/admin/liabilities/10000000-0000-0000-0000-000000000001"
+  ],
+  "/admin/liabilities": [
+    "/api/admin/liabilities"
+  ],
+  "/admin/owner-verifications/[id]": [
+    "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001"
+  ],
+  "/admin/owner-verifications": [
+    "/api/admin/owner-verifications"
+  ],
+  "/admin": [],
+  "/admin/payout-destinations/[id]": [
+    "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001"
+  ],
+  "/admin/payout-destinations": [
+    "/api/admin/payout-destinations"
+  ],
+  "/admin/payouts/[id]": [
+    "/api/admin/payouts/10000000-0000-0000-0000-000000000001"
+  ],
+  "/admin/payouts": [
+    "/api/admin/payouts"
+  ],
+  "/admin/policies": [
+    "/api/admin/policies"
+  ],
+  "/admin/venues/[id]": [
+    "/api/admin/venues/10000000-0000-0000-0000-000000000001",
+    "/api/venues/10000000-0000-0000-0000-000000000001",
+    "/api/admin/venues/10000000-0000-0000-0000-000000000001/events"
+  ],
+  "/admin/venues": [
+    "/api/admin/venues"
+  ],
+  "/booked": [
+    "/api/bookings/10000000-0000-0000-0000-000000000001",
+    "/api/venues"
+  ],
+  "/bookings/[id]": [
+    "/api/bookings/10000000-0000-0000-0000-000000000001",
+    "/api/venues/10000000-0000-0000-0000-000000000001",
+    "/api/bookings/10000000-0000-0000-0000-000000000001/incidents"
+  ],
+  "/forgot-password": [],
+  "/owner/bookings": [
+    "/api/bookings",
+    "/api/venues/my"
+  ],
+  "/owner/inquiries": [
+    "/api/availability-inquiries/owned-venues"
+  ],
+  "/owner/payout-destination": [
+    "/api/owner/payout-destinations",
+    "/api/owner/verification"
+  ],
+  "/owner/payouts/[id]": [
+    "/api/owner/payouts/10000000-0000-0000-0000-000000000001",
+    "/api/venues/my"
+  ],
+  "/owner/payouts": [
+    "/api/owner/payouts",
+    "/api/venues/my"
+  ],
+  "/owner/venues/[id]": [
+    "/api/venues/10000000-0000-0000-0000-000000000001",
+    "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings",
+    "/api/venues/10000000-0000-0000-0000-000000000001/moderation",
+    "/api/owner/verification"
+  ],
+  "/owner/venues/new": [],
+  "/owner/venues": [
+    "/api/venues/my"
+  ],
+  "/owner/verification": [
+    "/api/owner/verification"
+  ],
+  "/": [
+    "/api/venues"
+  ],
+  "/policies": [
+    "/api/policies/current",
+    "/api/policies/status"
+  ],
+  "/reset-password": [],
+  "/scout/bookings": [
+    "/api/bookings",
+    "/api/venues"
+  ],
+  "/scout/inquiries": [
+    "/api/availability-inquiries/mine"
+  ],
+  "/verify-email": []
+}

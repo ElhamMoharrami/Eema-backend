@@ -1,0 +1,14 @@
+{
+  "totals": {
+    "tests": "14",
+    "failures": "1",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "failures": [
+    {
+      "case": "secondsAndNanosRespectWholeMinuteGuard(String, String, int, int)[2]",
+      "message": "expected: <09:00:00.123456> but was: <09:00:00.123>"
+    }
+  ]
+}

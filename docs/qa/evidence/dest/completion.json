@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-19",
+  "domain": "DEST",
+  "scenarios": [
+    "DEST-001",
+    "DEST-002",
+    "DEST-003",
+    "DEST-004"
+  ],
+  "scenarioResults": {
+    "PASS": 4,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "fixedDefects": {
+    "P0": 1,
+    "P1": 3
+  },
+  "unresolvedLocalDefects": 0,
+  "commands": {
+    "unit": {
+      "tests": 997,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 792,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    },
+    "package": {
+      "tests": 997,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "dependencyDefectFixed": "PAYOUT-V1-D1 historical fee deduction preserved; see PAYOUT report",
+  "frontend": "typecheck/lint/build/diff PASS",
+  "browserChecks": 12,
+  "realProviderVerified": false,
+  "locallyComplete": true,
+  "automaticContinuation": false,
+  "stopReason": "Inherited PRICE-DEF-005 zero-price checkout/accounting decision affects DOC receipt eligibility; no minimum charge or free-booking policy assumed",
+  "nextDomain": "DOC-001\u2013004",
+  "pdfPages": 637,
+  "pdfSha256": "aee200b7d4d836b04461927b4a2f8343a1ed2e60f3fae15ea58d64c216f7bfd8",
+  "subsequentPriceDecision": {
+    "date": "2026-09-19",
+    "defect": "PRICE-DEF-005",
+    "status": "RESOLVED",
+    "evidence": "../price/v1-minimum/completion.json",
+    "note": "Prior stopReason is historical; authorized DOC continuation is now clear."
+  }
+}

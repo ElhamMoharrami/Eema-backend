@@ -1,0 +1,1493 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 375px",
+      "result": "FAIL",
+      "detail": {
+        "crash": false,
+        "overflow": true,
+        "width": 375,
+        "scrollWidth": 1220,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/booked",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/booked",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/booked",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 375,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/policies",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/policies",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/policies",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/reset-password",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 375,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/reset-password",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/reset-password",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/verify-email",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 375,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/verify-email",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/verify-email",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    }
+  ],
+  "failures": [
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 375px",
+      "result": "FAIL",
+      "detail": {
+        "crash": false,
+        "overflow": true,
+        "width": 375,
+        "scrollWidth": 1220,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    }
+  ],
+  "unexpected": [],
+  "provider": "Intercepted synthetic UI fixtures; no live provider or database mutation"
+}

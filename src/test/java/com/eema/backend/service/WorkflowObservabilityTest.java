@@ -21,7 +21,7 @@ class WorkflowObservabilityTest {
         WorkflowObservability visibility = new WorkflowObservability(bookings,
                 mock(com.eema.backend.repository.OwnerPayoutRepository.class),
                 mock(com.eema.backend.repository.OwnerFinancialLiabilityRepository.class),
-                registry, new OperationalThresholds(60, 1440, 1440, 72));
+                registry, new OperationalThresholds(60, 1440, 1440, 72, java.time.Clock.systemUTC()));
 
         visibility.bookingLifecycle(new BookingLifecycleEvent(java.util.UUID.randomUUID(),
                 BookingLifecycleEvent.Type.APPROVAL_EXPIRED));
@@ -54,7 +54,7 @@ class WorkflowObservabilityTest {
         WorkflowObservability visibility = new WorkflowObservability(bookings,
                 mock(com.eema.backend.repository.OwnerPayoutRepository.class),
                 mock(com.eema.backend.repository.OwnerFinancialLiabilityRepository.class),
-                registry, new OperationalThresholds(60, 1440, 1440, 72));
+                registry, new OperationalThresholds(60, 1440, 1440, 72, java.time.Clock.systemUTC()));
 
         visibility.scanStuckStates();
 

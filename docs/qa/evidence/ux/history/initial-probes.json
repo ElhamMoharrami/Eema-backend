@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "route": "/admin/bookings",
+      "variant": "200 {}",
+      "crashed": true
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "200 {}",
+      "crashed": true
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "200 {}",
+      "crashed": true
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "keyboard modal open",
+      "focusInside": false
+    }
+  ]
+}

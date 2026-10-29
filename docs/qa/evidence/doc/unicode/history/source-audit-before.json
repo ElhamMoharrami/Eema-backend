@@ -1,0 +1,19 @@
+{
+  "productionSha256": {
+    "src/main/java/com/eema/backend/service/FinancialDocumentService.java": "041329496a21edd106c0dec0644b94b840ce64ac63dc21b36a25e76d16503432",
+    "src/main/java/com/eema/backend/service/FinancialDocumentPdfRenderer.java": "f588c1f0656def22bfe56d241d5458ba3894ea90ea1e9baf80a076b09e6512d5",
+    "src/main/java/com/eema/backend/service/LocalPrivateDocumentStorage.java": "0422a437f84d7374b992660d5c4d6ff663fa125f1d6bcd21a23e94f9a51c6582"
+  },
+  "frontendChanged": false,
+  "realProviderVerified": false,
+  "templateVersion": 2,
+  "visualReview": [
+    "wide-receipt.png",
+    "long-statement.png",
+    "unicode-receipt.png",
+    "receipt-control.png",
+    "statement-control.png",
+    "missing-document-error.png"
+  ],
+  "remainingDecision": "DOC-DEC-001 unsupported-script name substitution"
+}

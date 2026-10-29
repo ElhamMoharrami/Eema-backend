@@ -1,0 +1,131 @@
+{
+  "name": "com.eema.backend.service.CancellationScenarioBoundaryTest",
+  "tests": "30",
+  "failures": "0",
+  "errors": "0",
+  "skipped": "0",
+  "time": "28.752",
+  "cases": [
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[4]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[5]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[6]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[7]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[8]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[9]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[10]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[11]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[12]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[13]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[14]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[15]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[16]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[17]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[18]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[19]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[20]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[21]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[22]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[23]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[24]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[25]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[26]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[27]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[28]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[29]",
+      "result": "PASS"
+    },
+    {
+      "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[30]",
+      "result": "PASS"
+    }
+  ],
+  "date": "2026-09-19"
+}

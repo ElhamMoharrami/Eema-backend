@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "At-deadline decline409 refetches EXPIRED, retains feedback and removes actions",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload preserves EXPIRED rather than DECLINED",
+      "result": "PASS"
+    },
+    {
+      "name": "Authoritative split intervals exclude spring gap; out-of-interval request is disabled",
+      "result": "PASS"
+    },
+    {
+      "name": "Gap inquiry rejection shows actionable backend message without false success",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local only; no live provider"
+}

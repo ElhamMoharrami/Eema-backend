@@ -42,6 +42,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 /** AUTH-001: actual HTTP/security/transaction stack and disposable PostgreSQL, no provider calls. */
+@org.springframework.test.context.TestPropertySource(properties="app.notification-outbox.initial-delay-ms=86400000")
 class RegistrationIntegrationTest extends AuthPostgresSupport {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper json;
@@ -191,12 +192,20 @@ class RegistrationIntegrationTest extends AuthPostgresSupport {
         assertEquals(0, mockingDetails(email).getInvocations().stream().filter(i -> i.getMethod().getName().equals("send")).count());
     }
 
+    @Autowired com.eema.backend.service.NotificationOutboxDispatcher outboxDispatcher;
     @Test void deliveryFailureAfterCommitDoesNotRollbackRegistration() throws Exception {
-        String address = freshEmail(); CountDownLatch attempted = new CountDownLatch(1);
-        doAnswer(invocation -> { attempted.countDown(); throw new IllegalStateException("Injected QA delivery failure"); })
-                .when(email).send(eq(address), anyString(), anyString(), anyString());
-        register(payload(address), 201, null);
-        assertTrue(attempted.await(5, TimeUnit.SECONDS)); assertCounts(address, 1);
+        jdbc.update("delete from notification_outbox");
+        String address = freshEmail();
+        doReturn(true).when(email).enabled();
+        doThrow(new EmailService.DeliveryFailure("PROVIDER_HTTP_503",false)).when(email).deliver(any(),any(),any());
+        JsonNode registered=register(payload(address),201,null);
+        outboxDispatcher.dispatchBatch();assertCounts(address,1);
+        UUID userId=UUID.fromString(registered.path("user").path("id").asText());
+        UUID notificationId=jdbc.queryForObject("select id from notification_outbox where aggregate_id=?",UUID.class,userId);
+        verify(email).deliver(eq(notificationId),any(),any());
+        assertEquals(1,jdbc.queryForObject("select attempt_count from notification_outbox where id=?",Integer.class,notificationId));
+        assertEquals("PENDING",jdbc.queryForObject("select status from notification_outbox where aggregate_id=?",String.class,
+            UUID.fromString(registered.path("user").path("id").asText())));
     }
     private JsonNode postAuth(String endpoint, Map<String, ?> body, int status) throws Exception {
         var response = mvc.perform(post("/api/auth/" + endpoint).contextPath("/api")

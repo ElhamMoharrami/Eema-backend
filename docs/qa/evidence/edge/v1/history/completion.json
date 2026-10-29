@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-20",
+  "domain": "EDGE",
+  "results": {
+    "pass": 3,
+    "fail": 1,
+    "blocked": 2
+  },
+  "scenarioResults": {
+    "EDGE-001": "PASS",
+    "EDGE-002": "FAIL",
+    "EDGE-003": "BLOCKED",
+    "EDGE-004": "PASS",
+    "EDGE-005": "BLOCKED",
+    "EDGE-006": "PASS"
+  },
+  "unresolvedDefects": [
+    {
+      "id": "EDGE-DEF-001",
+      "severity": "P0",
+      "summary": "Distinct spring-gap local reservations resolve to identical instants; separate positive local interval can resolve to negative elapsed duration"
+    }
+  ],
+  "unresolvedDecisions": [
+    "EDGE-DEC-001 DST acceptance/presentation",
+    "EDGE-DEC-002 matching recall before availability cap",
+    "EDGE-DEC-003 decline at or after response deadline"
+  ],
+  "localClearToProceed": false,
+  "nextUnfinishedDomain": "EDGE",
+  "nextUntestedDomain": "OPS-001\u2013009",
+  "nextDomainStarted": false,
+  "productionChangedInEdge": false,
+  "migrationAdded": false,
+  "freshDatabase": "V1\u2013V13 and Hibernate validation passed",
+  "reusedCompleteRegression": "../sec/completion.json; run before EDGE test additions, unchanged production",
+  "reusedBrowser": [
+    "../availability/browser.json",
+    "../booking/browser.json",
+    "../match/browser.json",
+    "../sec/browser.json",
+    "../sec/doc-browser-regression.json"
+  ],
+  "focusedUnit": "focused-unit.json",
+  "focusedPostgres": {
+    "file": "focused-postgres.json",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "meaning": "Characterization only; includes unresolved P0 reproduction"
+  },
+  "providerVerification": "Local mocks and synthetic payment association only; no real provider",
+  "pdf": "document-check.json",
+  "focusedUnits": 141,
+  "diffCheckBothRepos": "PASS"
+}

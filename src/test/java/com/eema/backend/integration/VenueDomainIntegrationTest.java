@@ -698,7 +698,8 @@ class VenueDomainIntegrationTest extends AuthPostgresSupport {
         availabilityBookingService.processPaidPayment(new MolliePaymentResponse(paymentId,"paid",new MolliePaymentResponse.Amount(amount,"EUR"),links,Map.of("bookingId",b.toString())));
         assertEquals("CONFIRMED",jdbc.queryForObject("select status::text from bookings where id=?",String.class,b));assertEquals(List.of("08:00:00-11:00:00","12:00:00-20:00:00"),avlIntervals(v,date));
         when(mollie.createRefund(eq(paymentId),eq(b),any(),any())).thenReturn(new com.eema.backend.dto.response.MollieRefundResponse("re_avl_"+b,"refunded",paymentId,new MolliePaymentResponse.Amount(amount,"EUR")));
-        request(post("/api/bookings/"+b+(refund?"/refund":"/cancel")),refund?admin:scout,null,refund?202:200);
+        Object consent=refund?null:Map.of("previewToken",request(get("/api/bookings/"+b+"/cancellation-preview"),scout,null,200).path("previewToken").asText());
+        request(post("/api/bookings/"+b+(refund?"/refund":"/cancel")),refund?admin:scout,consent,refund?202:200);
         assertEquals(refund?"REFUNDED":"CANCELLED",jdbc.queryForObject("select status::text from bookings where id=?",String.class,b));assertEquals(List.of("08:00:00-20:00:00"),avlIntervals(v,date));
     }
 }

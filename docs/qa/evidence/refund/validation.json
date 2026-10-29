@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-15",
+  "verdict": {
+    "REF-001": "PASS (local)",
+    "REF-002": "PASS (local)",
+    "REF-003": "PASS (local)",
+    "REF-004": "PASS (local)"
+  },
+  "backend": {
+    "mvn test": {
+      "exitCode": 0,
+      "tests": 915,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mvn verify -Ppostgres-integration": {
+      "exitCode": 0,
+      "tests": 692,
+      "passed": 686,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6,
+      "refundCases": 53
+    },
+    "mvn clean package": {
+      "exitCode": 0,
+      "tests": 915,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "frontend": {
+    "npm run typecheck": {
+      "exitCode": 0
+    },
+    "npm run lint": {
+      "exitCode": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    }
+  },
+  "repetitions": {
+    "ambiguousRestart": 3,
+    "concurrentLogicalRefund": 3,
+    "refundVersusMarkPaid": {
+      "refundWins": 3,
+      "payoutWins": 3
+    }
+  },
+  "limits": [
+    "Mollie is mocked; no real provider certification",
+    "Six opt-in browser suites skipped; no new REF browser suite",
+    "Older ambiguous refunds require operations reconciliation",
+    "No dedicated administrative refund email or mutation UI"
+  ],
+  "providerErrorBodyFixtureAbsentFromLog": true
+}

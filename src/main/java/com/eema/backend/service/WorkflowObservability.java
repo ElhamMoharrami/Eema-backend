@@ -84,7 +84,7 @@ public class WorkflowObservability {
 
     @Scheduled(fixedDelayString = "${app.workflow-observability.scan-delay-ms:300000}")
     public void scanStuckStates() {
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = thresholds.now();
         long payments = bookings.countByPaymentCreationStatusAndPaymentCreationStartedAtBefore(
                 PaymentCreationStatus.CREATING, thresholds.paymentCutoff(now));
         long refunds = bookings.countByRefundStatusInAndRefundRequestedAtBefore(

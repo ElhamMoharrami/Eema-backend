@@ -1,0 +1,12 @@
+flow,route,browser/version,screen_reader/version,scenario,result,observed_announcement,problem,screenshot_optional,notes,date,build,base_url
+AT-R01,/forgot-password,,,UX-020,BLOCKED,,Actual AT not executed,,,,
+AT-R02,/policies,,,UX-031,BLOCKED,,Actual AT not executed,,,,
+AT-R03,/bookings/[id],,,UX-019,BLOCKED,,Actual AT not executed,,,,
+AT-R04,/scout/bookings,,,UX-033,BLOCKED,,Actual AT not executed,,,,
+AT-R05,/owner/bookings,,,UX-021,BLOCKED,,Actual AT not executed,,,,
+AT-R06,/owner/venues/[id],,,UX-026,BLOCKED,,Actual AT not executed,,,,
+AT-R07,/owner/payout-destination,,,UX-023,BLOCKED,,Actual AT not executed,,,,
+AT-R08,/admin/bookings,,,UX-002,BLOCKED,,Actual AT not executed,,,,
+AT-R09,/admin/bookings/[id],,,UX-001,BLOCKED,,Actual AT not executed,,,,
+AT-R10,/admin/payout-destinations/[id],,,UX-011,BLOCKED,,Actual AT not executed,,,,
+AT-R11,/admin/exceptions,,,UX-003,BLOCKED,,Actual AT not executed,,,,

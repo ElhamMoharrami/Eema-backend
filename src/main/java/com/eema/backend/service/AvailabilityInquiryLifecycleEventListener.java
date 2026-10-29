@@ -1,27 +1,18 @@
 package com.eema.backend.service;
 
-import com.eema.backend.event.AvailabilityInquiryLifecycleEvent;
+import com.eema.backend.event.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.event.*;
 
-@Component
-@RequiredArgsConstructor
-@Slf4j
+@Component @RequiredArgsConstructor
 public class AvailabilityInquiryLifecycleEventListener {
     private final AvailabilityInquiryNotificationService notifications;
+    private final NotificationOutboxWriter outbox;
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void inquiryLifecycleChanged(AvailabilityInquiryLifecycleEvent event) {
-        try {
-            notifications.sendLifecycle(event.inquiryId(), event.type());
-        } catch (RuntimeException exception) {
-            log.error("Inquiry lifecycle notification failed: inquiryId={}, notificationType={}, recipientType=unknown, errorType={}",
-                    event.inquiryId(), event.type(), exception.getClass().getSimpleName());
-        }
+        outbox.record("INQUIRY",event.inquiryId(),event.type().name(),"INQUIRY:"+event.inquiryId()+":"+event.type(),
+                () -> notifications.sendLifecycle(event.inquiryId(),event.type()));
     }
 }

@@ -1,0 +1,21 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.service.AdminBoundaryTest",
+      "tests": 2,
+      "failures": 1,
+      "errors": 1,
+      "skipped": 0,
+      "failedTests": [
+        "nestedValuesCannotBypassEventRedaction",
+        "largePageOffsetsAreBoundedBeforeIntegerNarrowing"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 2,
+    "failures": 1,
+    "errors": 1,
+    "skipped": 0
+  }
+}

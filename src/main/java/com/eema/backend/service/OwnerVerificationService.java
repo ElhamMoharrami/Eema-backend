@@ -49,9 +49,9 @@ public class OwnerVerificationService {
         verification.setReviewedBy(null);
         verification.setSubmittedAt(OffsetDateTime.now());
         OwnerVerification saved = verifications.save(verification);
-        audit.append(TrustSubjectType.OWNER_VERIFICATION, saved.getId(), TrustEventType.OWNER_VERIFICATION_SUBMITTED,
+        UUID notificationEventId=audit.append(TrustSubjectType.OWNER_VERIFICATION, saved.getId(), TrustEventType.OWNER_VERIFICATION_SUBMITTED,
                 owner.getId(), ActorType.OWNER, null);
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_SUBMITTED, saved.getId(), null));
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_SUBMITTED, saved.getId(), null,notificationEventId));
         return ownerDto(saved);
     }
 
@@ -74,9 +74,9 @@ public class OwnerVerificationService {
         v.setVerificationMethod(request.verificationMethod());
         v.setReviewNote(clean(request.note()));
         reviewed(v, admin);
-        audit.append(TrustSubjectType.OWNER_VERIFICATION, v.getId(), TrustEventType.OWNER_VERIFICATION_APPROVED,
+        UUID notificationEventId=audit.append(TrustSubjectType.OWNER_VERIFICATION, v.getId(), TrustEventType.OWNER_VERIFICATION_APPROVED,
                 admin.getId(), ActorType.ADMIN, null);
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_APPROVED, v.getId(), null));
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_APPROVED, v.getId(), null,notificationEventId));
         return adminDto(v);
     }
 
@@ -88,9 +88,9 @@ public class OwnerVerificationService {
         v.setReviewNote(request.reason().trim());
         v.setVerificationMethod(null);
         reviewed(v, admin);
-        audit.append(TrustSubjectType.OWNER_VERIFICATION, v.getId(), TrustEventType.OWNER_VERIFICATION_REJECTED,
+        UUID notificationEventId=audit.append(TrustSubjectType.OWNER_VERIFICATION, v.getId(), TrustEventType.OWNER_VERIFICATION_REJECTED,
                 admin.getId(), ActorType.ADMIN, v.getReviewNote());
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_REJECTED, v.getId(), v.getReviewNote()));
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_REJECTED, v.getId(), v.getReviewNote(),notificationEventId));
         return adminDto(v);
     }
 

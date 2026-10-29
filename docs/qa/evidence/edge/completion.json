@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-20",
+  "domain": "EDGE",
+  "results": {
+    "pass": 6,
+    "fail": 0,
+    "blocked": 0
+  },
+  "scenarioResults": {
+    "EDGE-001": "PASS",
+    "EDGE-002": "PASS",
+    "EDGE-003": "PASS",
+    "EDGE-004": "PASS",
+    "EDGE-005": "PASS",
+    "EDGE-006": "PASS"
+  },
+  "resolved": [
+    "EDGE-DEF-001",
+    "EDGE-DEC-001",
+    "EDGE-DEC-002",
+    "EDGE-DEC-003"
+  ],
+  "unresolvedDefects": [],
+  "unresolvedDecisions": [],
+  "localClearToProceed": true,
+  "nextUnfinishedDomain": "OPS-001\u2013009",
+  "migrationAdded": false,
+  "regression": {
+    "full-unit": {
+      "tests": 1040,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "full-postgres": {
+      "tests": 984,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 13
+    },
+    "package": {
+      "tests": 1040,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "focusedUnits": 174,
+  "focusedPostgres": 25,
+  "browserChecks": 4,
+  "frontend": "PASS typecheck/lint/build/diff",
+  "providerVerification": "Local mocks and synthetic fixtures only; real providers not verified",
+  "evidence": "v1/",
+  "historical": "v1/history/",
+  "pdf": "v1/document-check.json"
+}

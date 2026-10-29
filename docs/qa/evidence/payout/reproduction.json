@@ -1,0 +1,112 @@
+{
+  "tests": "21",
+  "failures": "3",
+  "errors": "2",
+  "cases": [
+    {
+      "name": "concurrentPaidRecordingIsIdempotentOrConflicts(boolean)[1]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "concurrentPaidRecordingIsIdempotentOrConflicts(boolean)[2]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "feeValidationExactReplayAndCorrectionConflictLeaveOneAudit",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "adminListsAcceptOmittedAndPartialFilters(String)[1]",
+      "result": "FAIL",
+      "issue": "{\"timestamp\":\"2026-09-19T14:43:59.030660117Z\",\"status\":500,\"error\":\"Internal Server Error\",\"message\":\"An unexpected error occurred\",\"path\":\"/api/admin/payouts\"} ==> expected: <200> but was: <500>"
+    },
+    {
+      "name": "adminListsAcceptOmittedAndPartialFilters(String)[2]",
+      "result": "FAIL",
+      "issue": "{\"timestamp\":\"2026-09-19T14:43:59.613888707Z\",\"status\":500,\"error\":\"Internal Server Error\",\"message\":\"An unexpected error occurred\",\"path\":\"/api/admin/liabilities\"} ==> expected: <200> but was: <500>"
+    },
+    {
+      "name": "firstReadyDestinationSurvivesRealReplacementAndPaidRecalculation",
+      "result": "FAIL",
+      "issue": "could not execute statement [ERROR: duplicate key value violates unique constraint \"owner_one_verified_destination_uq\"\n  Detail: Key (owner_id)=(ceffa347-6972-4fa2-804e-916719717570) already exists.] [update owner_payout_destinations set account_holder_name=?,currency=?,iban_encrypted=?,iban_fingerprint=?,iban_last4=?,rejected_at=?,rejection_reason=?,replaced_at=?,status=?,submitted_at=?,type=?,updated_at=?,verified_at=?,verified_by=?,version=? where id=? and version=?]; SQL [update owner_payout_destinations set account_holder_name=?,currency=?,iban_encrypted=?,iban_fingerprint=?,iban_last4=?,rejected_at=?,rejection_reason=?,replaced_at=?,status=?,submitted_at=?,type=?,updated_at=?,verified_at=?,verified_by=?,version=? where id=? and version=?]; constraint [owner_one_verified_destination_uq]"
+    },
+    {
+      "name": "concurrentRecalculationCreatesOneLedgerAndOneAudit",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "liabilitySettlementUsesStoredAmountAndSerializes(String)[1]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "liabilitySettlementUsesStoredAmountAndSerializes(String)[2]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "readinessWorkerSkipsBusyBookingAndProcessesItOnNextScan",
+      "result": "FAIL",
+      "issue": null
+    },
+    {
+      "name": "onlyReadyCanBeRecordedPaid(String)[1]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "onlyReadyCanBeRecordedPaid(String)[2]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "onlyReadyCanBeRecordedPaid(String)[3]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "invalidTransferReferenceIsRejectedBeforeMutation(String)[1]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "invalidTransferReferenceIsRejectedBeforeMutation(String)[2]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "invalidTransferReferenceIsRejectedBeforeMutation(String)[3]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "waivedLiabilityCannotBeSettledAndDatabaseRejectsInvalidMoneyAndDuplicates",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "unpaidBookingsCannotAcquireReconciledFees(boolean)[1]",
+      "result": "PASS",
+      "issue": null
+    },
+    {
+      "name": "unpaidBookingsCannotAcquireReconciledFees(boolean)[2]",
+      "result": "FAIL",
+      "issue": "Expected java.lang.IllegalStateException to be thrown, but nothing was thrown."
+    },
+    {
+      "name": "paidRecordingRollsBackWithItsAudit",
+      "result": "PASS",
+      "issue": null
+    }
+  ]
+}

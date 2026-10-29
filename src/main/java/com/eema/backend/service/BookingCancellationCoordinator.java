@@ -38,16 +38,23 @@ public class BookingCancellationCoordinator {
     private final ApplicationEventPublisher publisher;
     private final OwnerPayoutService ownerPayoutService;
 
+    private final CancellationPreviewProof proofs;
+    private final java.time.Clock clock;
+
     @Transactional
-    public CancellationResult cancel(UUID bookingId, User actor, String reason, OffsetDateTime now) {
+    public CancellationResult cancel(UUID bookingId, User actor, String reason, String previewToken) {
         Booking booking = bookings.findByIdForUpdate(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking not found: " + bookingId));
+        OffsetDateTime now = OffsetDateTime.now(clock);
         ActorType actorType = actorType(actor);
         authorize(actor, booking);
         validateState(actorType, booking);
         requireReason(actorType, reason);
 
         BookingCancellationPolicy.CancellationDecision decision = policy.evaluate(booking, actorType, now);
+        if (booking.getStatus() == BookingStatus.CONFIRMED) {
+            proofs.validate(previewToken, booking, actor, decision, now);
+        }
         stateMachine.requireTransition(booking.getStatus(), BookingStatus.CANCELLED);
         booking.setStatus(BookingStatus.CANCELLED);
         booking.setCancelledAt(now);
@@ -93,20 +100,19 @@ public class BookingCancellationCoordinator {
         boolean canCancel = isStateAllowed(actorType, booking.getStatus());
         if (!canCancel) {
             return new CancellationPreviewDto(bookingId, null, BigDecimal.ZERO.setScale(2),
-                    BigDecimal.ZERO.setScale(2), booking.getTotalPaidEur(), null, false);
+                    BigDecimal.ZERO.setScale(2), booking.getTotalPaidEur(), null, false, null);
         }
         BookingCancellationPolicy.CancellationDecision decision = policy.evaluate(booking, actorType, now);
         return new CancellationPreviewDto(bookingId, decision.policyTier(), decision.refundPercentage(),
-                decision.refundAmountEur(), decision.retainedAmountEur(), deadline(booking, decision), true);
+                decision.refundAmountEur(), decision.retainedAmountEur(), deadline(booking, decision), true,
+                booking.getStatus() == BookingStatus.CONFIRMED ? proofs.issue(booking, actor, decision, now) : null);
     }
 
     private BigDecimal ownerEntitlement(Booking booking, BookingCancellationPolicy.CancellationDecision decision) {
-        if (decision.providerCostResponsibility() != ProviderCostResponsibility.OWNER_SETTLEMENT) {
-            return financials.money(BigDecimal.ZERO);
-        }
         BigDecimal knownCost = booking.isMollieFeeReconciled()
                 ? financials.money(booking.getMollieFeeEur()) : financials.money(BigDecimal.ZERO);
-        return financials.money(decision.ownerGrossSettlementEur().subtract(knownCost).max(BigDecimal.ZERO));
+        return financials.allocateProviderCost(decision.ownerGrossSettlementEur(), knownCost,
+                decision.providerCostResponsibility()).ownerPayout();
     }
 
     private OffsetDateTime deadline(Booking booking, BookingCancellationPolicy.CancellationDecision decision) {
@@ -144,6 +150,7 @@ public class BookingCancellationCoordinator {
     }
 
     private void requireReason(ActorType actor, String reason) {
+        if (reason != null && reason.length() > 1000) throw new ConflictException("Cancellation reason is too long");
         if ((actor == ActorType.OWNER || actor == ActorType.ADMIN) && trimToNull(reason) == null) {
             throw new ConflictException("Owner and admin cancellations require a reason");
         }

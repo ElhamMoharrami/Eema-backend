@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check": "PASS"
+  },
+  "change": "Existing owner payout raw provider-cost label corrected; no financial calculations or new internal accounting fields",
+  "browser": "Prior 10-check PAYOUT browser evidence reused; no interaction change"
+}

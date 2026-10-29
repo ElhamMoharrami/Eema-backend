@@ -1,0 +1,89 @@
+{
+  "domain": "DOC",
+  "scenarios": [
+    "DOC-001",
+    "DOC-002",
+    "DOC-003",
+    "DOC-004"
+  ],
+  "results": {
+    "PASS": 4,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "resolvedDecision": "DOC-DEC-001",
+  "policy": "Financial documents preserve supported original Unicode names through controlled embedded font rendering; unsupported glyphs fail safely rather than being silently replaced.",
+  "totals": {
+    "focused-unit": {
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focused-postgres": {
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "harness-focused": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unit": {
+      "tests": 1029,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 848,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 9
+    },
+    "package": {
+      "tests": 1029,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "browserChecks": 8,
+  "packagedJar": "PASS, 9 names plus missing/corrupt required-font startup probes",
+  "dockerRuntime": "PASS, 9 names with network disabled and embedded-font verification",
+  "frontendSourceChanged": false,
+  "remainingP0P1": 0,
+  "locallyClearToProceed": true,
+  "realProviderVerified": false,
+  "newProductDecisions": [],
+  "nextDomain": "INC-001–002",
+  "limitations": [
+    "Combining marks, format/join controls and unsupported glyphs fail safely; no universal Unicode or general complex-script correctness claimed",
+    "Previously issued documents remain unchanged, including historical substitutions",
+    "Real S3/provider operations remain staging-only"
+  ],
+  "date": "2026-09-19",
+  "documentVerification": {
+    "date": "2026-09-19",
+    "scenarioIds": 703,
+    "unchangedOrder": true,
+    "pdfExtractedIdsMatch": true,
+    "pdfPages": 636,
+    "visuallyReviewedPages": [
+      1,
+      88,
+      89,
+      90,
+      91,
+      627,
+      628,
+      629
+    ],
+    "review": "DOC result, original-script examples, safe-failure boundary and gap-table corrections readable; no clipping/overlap. Final rerender changed only page628; all other reviewed PNGs were byte-identical.",
+    "pdfSha256": "e3091205f6373190e499edfcf5c3dc4334062d9a28c85c5f4d21ea2f82360c81"
+  },
+  "cleanup": "Browser server, temporary Chrome profile, auth fixture and probe extraction directories cleaned up; disposable PostgreSQL tests completed"
+}

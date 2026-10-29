@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Only fresh uniquely named QA project and three project-owned volumes targeted",
+    "Packaged local profile applied common V1\u2013V13/dev V100\u2013V103 with Hibernate validation",
+    "Development seed login succeeded before and after reset",
+    "Actual Compose down -v removed database/public/private volumes",
+    "Recreated database has no marker and deterministic venue seeds; both file markers absent",
+    "No legal policy content seeded; no shared stack or real provider used"
+  ],
+  "seedVenueCount": 10,
+  "cleanup": "All owned containers/volumes removed"
+}

@@ -1,0 +1,42 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.service.AvailabilityAlgebraTest",
+      "tests": 67,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    },
+    {
+      "name": "com.eema.backend.service.CancellationScenarioBoundaryTest",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    },
+    {
+      "name": "com.eema.backend.service.OwnerPayoutServiceTest",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    },
+    {
+      "name": "com.eema.backend.service.VenueBookingLeadTimePolicyTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    }
+  ],
+  "totals": {
+    "tests": 141,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

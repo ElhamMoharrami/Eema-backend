@@ -25,12 +25,16 @@ public class WebhookService {
 
     public void handlePaymentWebhook(String paymentId) {
 
-        if (paymentId == null || paymentId.isBlank() || !paymentId.startsWith("tr_")) {
+        if (!MollieResponseValidation.paymentId(paymentId)) {
 
             throw new IllegalArgumentException("Invalid Mollie payment ID");
         }
 
         MolliePaymentResponse payment = mollieProviderClient.getPayment(paymentId);
+
+        if (payment == null || !paymentId.equals(payment.id()) || payment.status() == null || payment.status().isBlank()) {
+            throw new IllegalStateException("Mollie payment retrieval did not match the callback");
+        }
 
         log.info("Mollie payment fetched: paymentId={}, status={}", payment.id(), payment.status());
 

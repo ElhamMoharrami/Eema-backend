@@ -1,0 +1,6 @@
+{
+  "issue": "Initial test compilation attempted setter on immutable BookingContactSnapshot",
+  "resolution": "Replace whole snapshot through Booking.setScoutContact",
+  "productTestsExecuted": 0,
+  "productDefect": false
+}

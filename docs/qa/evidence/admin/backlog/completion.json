@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-20",
+  "domain": "ADMIN",
+  "scenarios": "ADMIN-001\u2013011",
+  "results": {
+    "pass": 11,
+    "fail": 0,
+    "blocked": 0
+  },
+  "resolvedDecision": "ADMIN-DEC-001: approved complete pageable operational backlog",
+  "resolvedDefect": "P1 backlog visibility: previous200-of201 is now201-of201",
+  "localClearToProceed": true,
+  "unresolvedP0P1": [],
+  "unresolvedDecisions": [],
+  "backend": {
+    "unit": {
+      "tests": 1030,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 938,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 11
+    },
+    "package": {
+      "tests": 1030,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "focusedPostgres": 47,
+  "browserChecks": 13,
+  "frontendProductionChanged": false,
+  "frontendGates": "No new frontend source changes; prior passing gates retained; current production build browser-tested",
+  "diffCheckBothRepos": "PASS",
+  "database": "Fresh V1\u2013V13 and Hibernate validation passed; no migration added",
+  "pdf": "document-check.json",
+  "nextDomain": "SEC-001\u2013007",
+  "providers": "Local only; no real provider verification"
+}

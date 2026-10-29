@@ -1,0 +1,18 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "name": "Malformed cached session recovers: invalid JSON",
+      "result": "PASS"
+    },
+    {
+      "name": "Malformed cached session recovers: object display name",
+      "result": "FAIL"
+    },
+    {
+      "name": "Malformed cached session recovers: missing role",
+      "result": "FAIL"
+    }
+  ],
+  "provider": "Local only; no live provider"
+}

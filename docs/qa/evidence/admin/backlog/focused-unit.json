@@ -1,0 +1,26 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.service.AdminBoundaryTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    },
+    {
+      "name": "com.eema.backend.service.AdminOperationsServiceTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    }
+  ],
+  "totals": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

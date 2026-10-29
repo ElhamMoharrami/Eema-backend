@@ -1,0 +1,247 @@
+[
+  {
+    "id": "UX-001",
+    "route": "/admin/bookings/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-002",
+    "route": "/admin/bookings",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-003",
+    "route": "/admin/exceptions",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-004",
+    "route": "/admin/incidents/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-005",
+    "route": "/admin/incidents",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-006",
+    "route": "/admin/liabilities/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-007",
+    "route": "/admin/liabilities",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-008",
+    "route": "/admin/owner-verifications/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-009",
+    "route": "/admin/owner-verifications",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-010",
+    "route": "/admin",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-011",
+    "route": "/admin/payout-destinations/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-012",
+    "route": "/admin/payout-destinations",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-013",
+    "route": "/admin/payouts/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-014",
+    "route": "/admin/payouts",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-015",
+    "route": "/admin/policies",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-016",
+    "route": "/admin/venues/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-017",
+    "route": "/admin/venues",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-018",
+    "route": "/booked",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-019",
+    "route": "/bookings/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-020",
+    "route": "/forgot-password",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-021",
+    "route": "/owner/bookings",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-022",
+    "route": "/owner/inquiries",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-023",
+    "route": "/owner/payout-destination",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-024",
+    "route": "/owner/payouts/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-025",
+    "route": "/owner/payouts",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-026",
+    "route": "/owner/venues/[id]",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-027",
+    "route": "/owner/venues/new",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-028",
+    "route": "/owner/venues",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-029",
+    "route": "/owner/verification",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-030",
+    "route": "/",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-031",
+    "route": "/policies",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-032",
+    "route": "/reset-password",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-033",
+    "route": "/scout/bookings",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-034",
+    "route": "/scout/inquiries",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  },
+  {
+    "id": "UX-035",
+    "route": "/verify-email",
+    "result": "BLOCKED",
+    "localBrowser": "PASS",
+    "blocker": "UX-ENV-001: actual screen-reader execution unavailable"
+  }
+]

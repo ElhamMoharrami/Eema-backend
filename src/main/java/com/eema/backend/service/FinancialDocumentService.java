@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor @lombok.extern.slf4j.Slf4j
 public class FinancialDocumentService {
-    private static final int TEMPLATE_VERSION = 1;
+    private static final int TEMPLATE_VERSION = 3;
     private final FinancialDocumentRepository documents;
     private final BookingRepository bookings;
     private final OwnerPayoutRepository payouts;
@@ -80,6 +80,21 @@ public class FinancialDocumentService {
 
     private DocumentDownload issue(FinancialDocument document, byte[] pdf, BookingEventType eventType, String filenamePrefix) {
         storage.store(document.getStorageReference(), pdf);
+        boolean transactionalCleanup = org.springframework.transaction.support.TransactionSynchronizationManager
+                .isSynchronizationActive();
+        if (transactionalCleanup) {
+            org.springframework.transaction.support.TransactionSynchronizationManager.registerSynchronization(
+                    new org.springframework.transaction.support.TransactionSynchronization() {
+                        @Override public void afterCompletion(int status) {
+                            if (status == STATUS_ROLLED_BACK) {
+                                try { storage.delete(document.getStorageReference()); }
+                                catch (RuntimeException cleanupFailure) {
+                                    log.error("Private document rollback cleanup failed: documentId={}", document.getId());
+                                }
+                            }
+                        }
+                    });
+        }
         try {
             documents.saveAndFlush(document);
             events.save(BookingEvent.builder().bookingId(document.getBookingId()).eventType(eventType)
@@ -88,7 +103,10 @@ public class FinancialDocumentService {
                             "documentNumber", document.getDocumentNumber(), "templateVersion", TEMPLATE_VERSION))).build());
             return new DocumentDownload(pdf, document.getDocumentNumber(), filenamePrefix + document.getDocumentNumber() + ".pdf");
         } catch (RuntimeException e) {
-            storage.delete(document.getStorageReference());
+            if (!transactionalCleanup) {
+                try { storage.delete(document.getStorageReference()); }
+                catch (RuntimeException cleanupFailure) { e.addSuppressed(cleanupFailure); }
+            }
             throw e;
         }
     }

@@ -1,0 +1,1 @@
+Full unit suite passed 1076 tests before a subsequent deterministic LinkedHashMap serialization refinement in EmailService. Final clean-package unit execution must cover that refinement; no provider data or business logic changed.

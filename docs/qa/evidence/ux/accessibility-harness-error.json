@@ -1,0 +1,5273 @@
+{
+  "error": "Browser evaluation failed: TypeError: Cannot read properties of undefined (reading 'focus')\n    at <anonymous>:1:92",
+  "checks": [
+    {
+      "name": "UX-001 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 15,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-001 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 50,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-001 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 15,
+        "visited": 15,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-002 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 24,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-002 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 33,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-002 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 24,
+        "visited": 24,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-003 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 14,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-003 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 17,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-3 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-003 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 14,
+        "visited": 15,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-004 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-004 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 26,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "font-mono text-xs text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre mt-5",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-004 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-005 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 21,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-005 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 27,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-005 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 21,
+        "visited": 21,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-006 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-006 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 26,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-006 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-007 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 22,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-007 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 29,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-007 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 22,
+        "visited": 22,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-008 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-008 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 24,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-008 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-009 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 19,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-009 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 24,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-009 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 19,
+        "visited": 20,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-010 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 19,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-010 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 21,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-010 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 19,
+        "visited": 19,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-011 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-011 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 28,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-011 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-012 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 20,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-012 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 26,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-012 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 20,
+        "visited": 20,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-013 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-013 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 36,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-013 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-014 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 22,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-014 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 30,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-014 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 22,
+        "visited": 22,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-015 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 16,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-015 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 26,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre mb-7",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-1 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-3 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-015 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 18,
+        "visited": 19,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-016 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-016 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 46,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "mt-1 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-016 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-017 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 20,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-017 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 27,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "mt-1 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "break-all font-mono text-xs text-ochre underline-offset-4 hover:underline focus:outline focus:outline-2 focus:outline-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-017 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 20,
+        "visited": 20,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-018 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 7,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-018 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 24,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-3 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.100675054266237
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-1 break-all text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-1 break-all text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-018 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 8,
+        "visited": 8,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-019 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-019 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 31,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 break-all font-mono text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.100675054266237
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "mt-1 block break-all text-sm text-ochre hover:text-ochreDeep",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "mt-1 block break-all text-sm text-ochre hover:text-ochreDeep",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-019 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-020 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 9,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-020 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 10,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre mt-6",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "ml-4 text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-020 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 9,
+        "visited": 9,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-021 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 15,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-021 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 37,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-1 break-all font-mono text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.100675054266237
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "mt-1 block break-all text-sm text-ochre hover:text-ochreDeep",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "mt-1 block break-all text-sm text-ochre hover:text-ochreDeep",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-021 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 15,
+        "visited": 16,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-022 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 13,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-022 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 18,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "SPAN",
+            "class": "font-mono text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-022 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 13,
+        "visited": 13,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-023 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 11,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-023 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 15,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-023 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 11,
+        "visited": 11,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-024 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-024 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 25,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "text-sm text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "font-mono text-xs text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-4 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-024 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-025 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-025 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 21,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-1 font-mono text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "font-mono text-xs text-ochre hover:underline",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DT",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-025 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-026 accessible control names",
+      "result": "FAIL",
+      "detail": {
+        "controls": 47,
+        "missing": [
+          "combobox",
+          "combobox"
+        ]
+      }
+    },
+    {
+      "name": "UX-026 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 76,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-7 border-t border-rule pt-5 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "pt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "pt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "pt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "pt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "pt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "pt-2 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre mt-7",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label mt-5",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-3 text-sm italic text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-026 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 55,
+        "visited": 56,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-027 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-027 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 28,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "ml-2 normal-case tracking-normal text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-027 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 22,
+        "visited": 22,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-028 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-028 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 17,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "A",
+            "class": "btn btn-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "label mt-2",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-028 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 13,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-029 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 10,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-029 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 13,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-029 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 10,
+        "visited": 10,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-030 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 13,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-030 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 22,
+        "minimum": 2.1421619587070904,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "label self-center mr-2",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "label mt-5 max-w-[80%] truncate",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.1824082929635433
+          },
+          {
+            "tag": "SPAN",
+            "class": "label mt-1 text-taupe/70",
+            "color": "rgba(137, 129, 112, 0.7)",
+            "ratio": 2.1421619587070904
+          },
+          {
+            "tag": "DIV",
+            "class": "text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label mb-8",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "label mt-5 max-w-[80%] truncate",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.1824082929635433
+          },
+          {
+            "tag": "SPAN",
+            "class": "label mt-1 text-taupe/70",
+            "color": "rgba(137, 129, 112, 0.7)",
+            "ratio": 2.1421619587070904
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-4 text-[0.95rem] uppercase tracking-label text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "btn btn-ochre mt-8",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "SPAN",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "SPAN",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-030 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-031 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-031 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 11,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "P",
+            "class": "mt-2 text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-031 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 7,
+        "visited": 7,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-032 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 7,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-032 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 7,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-032 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 7,
+        "visited": 7,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-033 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-033 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 9,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-033 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 6,
+        "visited": 7,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-034 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-034 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 12,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "DIV",
+            "class": "label label-ochre",
+            "color": "rgb(154, 106, 47)",
+            "ratio": 4.198673238744981
+          },
+          {
+            "tag": "SPAN",
+            "class": "font-mono text-xs text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "DIV",
+            "class": "label",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-034 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 6,
+        "visited": 6,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-035 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-035 active small-text contrast",
+      "result": "FAIL",
+      "detail": {
+        "count": 8,
+        "minimum": 3.445828495854862,
+        "failures": [
+          {
+            "tag": "DIV",
+            "class": "label mt-1",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "A",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "BUTTON",
+            "class": "label hover:text-ink",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          },
+          {
+            "tag": "P",
+            "class": "mt-4 text-sm text-taupe",
+            "color": "rgb(138, 129, 112)",
+            "ratio": 3.445828495854862
+          }
+        ]
+      }
+    },
+    {
+      "name": "UX-035 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 6,
+        "visited": 7,
+        "unnamed": 0
+      }
+    }
+  ]
+}

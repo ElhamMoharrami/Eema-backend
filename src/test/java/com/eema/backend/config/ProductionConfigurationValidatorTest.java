@@ -1,6 +1,8 @@
 package com.eema.backend.config;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.mock.env.MockEnvironment;
 
@@ -43,6 +45,26 @@ class ProductionConfigurationValidatorTest {
         ProductionConfigurationValidator validator = new ProductionConfigurationValidator(environment,
                 properties("s3", strongSecret(), List.of("https://app.eema.example")));
         assertThatThrownBy(() -> validator.run(new DefaultApplicationArguments())).hasMessageContaining("S3_SECRET_KEY");
+    }
+
+    @Test void acceptsCompleteProductionConfigurationWithoutCallingProviders() {
+        var environment=productionEnvironment()
+                .withProperty("PAYOUT_DATA_ENCRYPTION_KEY",strongSecret())
+                .withProperty("PAYOUT_DATA_FINGERPRINT_KEY",strongSecret());
+        new ProductionConfigurationValidator(environment,properties("s3",strongSecret(),List.of("https://app.eema.example")))
+                .run(new DefaultApplicationArguments());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings={"SPRING_DATASOURCE_URL","SPRING_DATASOURCE_USERNAME","SPRING_DATASOURCE_PASSWORD",
+            "S3_BUCKET_PUBLIC_MEDIA","S3_BUCKET_PRIVATE_DOCUMENTS","S3_REGION","S3_ACCESS_KEY",
+            "PAYOUT_DATA_ENCRYPTION_KEY","PAYOUT_DATA_FINGERPRINT_KEY"})
+    void rejectsMissingRequiredProductionValue(String name) {
+        var environment=productionEnvironment()
+                .withProperty("PAYOUT_DATA_ENCRYPTION_KEY",strongSecret())
+                .withProperty("PAYOUT_DATA_FINGERPRINT_KEY",strongSecret()).withProperty(name,"");
+        var validator=new ProductionConfigurationValidator(environment,properties("s3",strongSecret(),List.of("https://app.eema.example")));
+        assertThatThrownBy(()->validator.run(new DefaultApplicationArguments())).hasMessageContaining(name);
     }
 
     private static MockEnvironment productionEnvironment() {

@@ -40,7 +40,7 @@ class CancellationServiceTest {
         arrange(booking);
         when(mollie.getPayment("tr_open")).thenReturn(payment("tr_open", "open"));
         when(mollie.cancelPayment("tr_open")).thenReturn(payment("tr_open", "canceled"));
-        when(coordinator.cancel(bookingId, scout, null, now))
+        when(coordinator.cancel(bookingId, scout, null, null))
                 .thenReturn(new BookingCancellationCoordinator.CancellationResult(bookingId, null));
 
         service.cancel(bookingId, null);
@@ -58,14 +58,14 @@ class CancellationServiceTest {
         when(mollie.getPayment("tr_paid")).thenReturn(paid);
         RefundCoordinator.Claim claim = new RefundCoordinator.Claim(
                 bookingId, "tr_paid", new BigDecimal("100.00"), UUID.randomUUID());
-        when(coordinator.cancel(bookingId, scout, null, now))
+        when(coordinator.cancel(bookingId, scout, null, null))
                 .thenReturn(new BookingCancellationCoordinator.CancellationResult(bookingId, claim));
 
         service.cancel(bookingId, null);
 
         var order = inOrder(bookingService, coordinator, refunds);
         order.verify(bookingService).processPaidPayment(paid);
-        order.verify(coordinator).cancel(bookingId, scout, null, now);
+        order.verify(coordinator).cancel(bookingId, scout, null, null);
         order.verify(refunds).requestCancellationRefund(claim);
     }
 
@@ -73,10 +73,10 @@ class CancellationServiceTest {
     void zeroRefundCancellationNeverCallsRefundProvider() {
         Booking booking = Booking.builder().id(bookingId).status(BookingStatus.CONFIRMED).build();
         arrange(booking);
-        when(coordinator.cancel(bookingId, scout, null, now))
+        when(coordinator.cancel(bookingId, scout, null, null))
                 .thenReturn(new BookingCancellationCoordinator.CancellationResult(bookingId, null));
 
-        service.cancel(bookingId, new CancelBookingRequest(null));
+        service.cancel(bookingId, new CancelBookingRequest(null, null));
 
         verifyNoInteractions(mollie, refunds);
     }
@@ -88,12 +88,40 @@ class CancellationServiceTest {
         when(clock.now()).thenReturn(now);
         when(bookings.findById(bookingId)).thenReturn(Optional.of(booking));
         when(coordinator.preview(bookingId, scout, now)).thenReturn(new CancellationPreviewDto(
-                bookingId, null, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, null, false));
+                bookingId, null, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, null, false, null));
 
         service.cancel(bookingId, null);
 
         verify(refunds).resumeCancellationRefund(bookingId);
         verify(coordinator, never()).cancel(any(), any(), any(), any());
+    }
+
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {"canceled", "expired", "failed"})
+    void alreadyTerminalPaymentNeedsNoProviderCancellation(String status) {
+        Booking booking = Booking.builder().id(bookingId).status(BookingStatus.AWAITING_PAYMENT).molliePaymentId("tr_open").build();
+        arrange(booking);
+        when(mollie.getPayment("tr_open")).thenReturn(payment("tr_open", status));
+        when(coordinator.cancel(bookingId, scout, null, null)).thenReturn(new BookingCancellationCoordinator.CancellationResult(bookingId, null));
+        service.cancel(bookingId, null);
+        verify(mollie, never()).cancelPayment(anyString());
+    }
+
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {"timeout", "rejection", "stillOpen", "wrongPayment", "missing"})
+    void unsuccessfulProviderCancellationCannotWithdraw(String variant) {
+        Booking booking = Booking.builder().id(bookingId).status(BookingStatus.AWAITING_PAYMENT).molliePaymentId("tr_open").build();
+        arrange(booking);
+        when(mollie.getPayment("tr_open")).thenReturn(payment("tr_open", "open"));
+        switch (variant) {
+            case "timeout" -> when(mollie.cancelPayment("tr_open")).thenThrow(new org.springframework.web.client.ResourceAccessException("QA timeout"));
+            case "rejection" -> when(mollie.cancelPayment("tr_open")).thenThrow(org.springframework.web.client.HttpClientErrorException.create(org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY,"QA rejected",org.springframework.http.HttpHeaders.EMPTY,new byte[0],null));
+            case "stillOpen" -> when(mollie.cancelPayment("tr_open")).thenReturn(payment("tr_open", "open"));
+            case "wrongPayment" -> when(mollie.cancelPayment("tr_open")).thenReturn(payment("tr_other", "canceled"));
+        }
+        org.junit.jupiter.api.Assertions.assertThrows(com.eema.backend.exception.BadRequestException.class, () -> service.cancel(bookingId, null));
+        verify(coordinator, never()).cancel(any(), any(), any(), any());
+        verifyNoInteractions(refunds);
     }
 
     private void arrange(Booking booking) {
@@ -102,7 +130,7 @@ class CancellationServiceTest {
         when(bookings.findById(bookingId)).thenReturn(Optional.of(booking));
         when(coordinator.preview(bookingId, scout, now)).thenReturn(new CancellationPreviewDto(
                 bookingId, CancellationPolicyTier.PRE_PAYMENT_WITHDRAWAL,
-                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, null, true));
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, null, true, null));
     }
 
     private MolliePaymentResponse payment(String id, String status) {

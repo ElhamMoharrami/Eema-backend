@@ -49,7 +49,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, org.spr
     List<Booking> findStuckRefunds(@Param("statuses") List<RefundStatus> statuses,
             @Param("cutoff") OffsetDateTime cutoff, Pageable pageable);
 
-    @Query("select b from Booking b where b.mollieFeeReconciled = false and b.totalPaidEur > 0 and b.paidAt < :cutoff and b.status in (com.eema.backend.entity.enums.BookingStatus.CONFIRMED, com.eema.backend.entity.enums.BookingStatus.CANCELLED) order by b.paidAt")
+    @Query(value = "select * from bookings where mollie_fee_reconciled = false and total_paid_eur > 0 and paid_at < :cutoff and status in ('CONFIRMED', 'CANCELLED', 'REFUNDED') order by paid_at", nativeQuery = true)
     List<Booking> findOldUnreconciledMollieFees(@Param("cutoff") OffsetDateTime cutoff, Pageable pageable);
 
     @Query("select b from Booking b where b.latePaymentDetectedAt is not null and b.refundStatus in :statuses order by b.latePaymentDetectedAt")
@@ -61,13 +61,27 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, org.spr
 
     Optional<Booking> findByMolliePaymentId(String molliePaymentId);
 
+    @Query("select b.id from Booking b where b.molliePaymentId = :paymentId")
+    Optional<UUID> findIdByMolliePaymentId(@Param("paymentId") String paymentId);
+
     @Query(value = """
             select * from bookings
             where mollie_fee_reconciled = false and mollie_payment_id is not null
-              and status in ('CONFIRMED', 'CANCELLED') and total_paid_eur > 0
-            order by paid_at
+              and status in ('CONFIRMED', 'CANCELLED', 'REFUNDED') and total_paid_eur > 0
+            order by coalesce(paid_at, created_at), id
             """, nativeQuery = true)
     List<Booking> findPendingFeeReconciliation(Pageable pageable);
+
+    @Query(value = """
+            select * from bookings
+            where mollie_fee_reconciled = false and mollie_payment_id is not null
+              and status in ('CONFIRMED', 'CANCELLED', 'REFUNDED') and total_paid_eur > 0
+              and (coalesce(paid_at, created_at), id) > (:afterTime, :afterId)
+            order by coalesce(paid_at, created_at), id
+            """, nativeQuery = true)
+    List<Booking> findPendingFeeReconciliationAfter(@Param("afterTime") OffsetDateTime afterTime,
+            @Param("afterId") UUID afterId, Pageable pageable);
+
 
     @Query(value = """
             select * from bookings
@@ -93,8 +107,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, org.spr
 
     @Query(value = """
             select count(*) from bookings
-            where status = 'CONFIRMED'
-              and mollie_fee_reconciled = false and paid_at < :cutoff
+            where status in ('CONFIRMED', 'CANCELLED', 'REFUNDED')
+              and total_paid_eur > 0 and mollie_fee_reconciled = false and paid_at < :cutoff
             """, nativeQuery = true)
     long countOldUnreconciledMollieFees(@Param("cutoff") OffsetDateTime cutoff);
 

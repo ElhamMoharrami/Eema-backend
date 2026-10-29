@@ -1,0 +1,38 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Rejected markup reaches backend with 400 and has no success",
+      "result": "PASS"
+    },
+    {
+      "name": "Unverified participant reports and sees authoritative Unicode plain text",
+      "result": "PASS"
+    },
+    {
+      "name": "Report survives reload",
+      "result": "PASS"
+    },
+    {
+      "name": "Owning owner sees participant report",
+      "result": "PASS"
+    },
+    {
+      "name": "Stale admin mutation shows 409 and refetches authoritative review state",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin resolves and closes with immutable visible history after reload",
+      "result": "PASS"
+    },
+    {
+      "name": "Participant sees final status without internal resolution note",
+      "result": "PASS"
+    },
+    {
+      "name": "Unrelated scout cannot see incident text",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local PostgreSQL and private filesystem only; no live provider or transfer"
+}

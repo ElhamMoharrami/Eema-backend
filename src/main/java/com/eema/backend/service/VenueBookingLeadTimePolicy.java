@@ -32,7 +32,7 @@ public class VenueBookingLeadTimePolicy {
 
     public Instant bookingStart(Venue venue, LocalDate date, LocalTime startTime) {
         if (date == null || startTime == null) throw new IllegalArgumentException("Booking start is required");
-        try { return ZonedDateTime.of(date, startTime, ZoneId.of(venue.getTimezone())).toInstant(); }
+        try { return BookingTimePolicy.resolve(date, startTime, ZoneId.of(venue.getTimezone())).toInstant(); }
         catch (DateTimeException | NullPointerException exception) {
             throw new IllegalStateException("Venue timezone is invalid", exception);
         }

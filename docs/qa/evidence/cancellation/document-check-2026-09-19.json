@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-19",
+  "pdfPages": 641,
+  "visualReviewPages": [
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83
+  ],
+  "visualReview": "PASS: changed cancellation section and adjacent transitions legible; no clipped or overlapping text observed",
+  "masterScenarioIds": 703,
+  "cancellationLocalPass": 14,
+  "pdfSha256": "48d46abdf341ee1dd7236dc227b7d6475be4246b16107b4a87c9fd45fa160d37",
+  "markdownSha256": "f5c24a29a6e92910d05031941c629e0eb03f96d5027d40505d87d8e420c710c3"
+}

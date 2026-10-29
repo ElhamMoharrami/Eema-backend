@@ -43,25 +43,19 @@ public class GeminiAiService implements AiService {
                     briefParser.parseBrief(brief);
 
 
-            // Step 2:
-            // Query the database using the hard requirements extracted by Gemini.
-            List<Venue> candidates =
-                    venueFilterBuilder.findCandidateVenues(
-                            parsedBrief
-                    );
-
-            log.info(
-                    "Database filtering returned {} candidates",
-                    candidates.size()
-            );
-
-            candidates = availabilityFilter.retainAvailable(candidates, parsedBrief);
-
-            log.info(
-                    "Availability filtering returned {} candidates; exactInterval={}",
-                    candidates.size(),
-                    availabilityFilter.hasExactInterval(parsedBrief)
-            );
+            // Each database query is bounded; availability does not truncate useful recall.
+            var selected = new java.util.LinkedHashMap<java.util.UUID, Venue>();
+            int offset = 0;
+            while (selected.size() < VenueFilterBuilder.CANDIDATE_BATCH_SIZE) {
+                var batch = venueFilterBuilder.findCandidateBatch(parsedBrief, offset);
+                for (Venue candidate : availabilityFilter.retainAvailable(batch.candidates(), parsedBrief)) {
+                    selected.putIfAbsent(candidate.getId(), candidate);
+                    if (selected.size() == VenueFilterBuilder.CANDIDATE_BATCH_SIZE) break;
+                }
+                if (!batch.hasMore() || selected.size() == VenueFilterBuilder.CANDIDATE_BATCH_SIZE) break;
+                offset = batch.nextOffset();
+            }
+            List<Venue> candidates = List.copyOf(selected.values());
 
             if (candidates.isEmpty()) {
                 return new MatchResponse(

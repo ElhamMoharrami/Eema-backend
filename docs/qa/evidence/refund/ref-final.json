@@ -1,0 +1,221 @@
+{
+  "name": "com.eema.backend.integration.RefundIntegrationTest",
+  "tests": "53",
+  "failures": "0",
+  "errors": "0",
+  "skipped": "0",
+  "cases": [
+    {
+      "name": "ambiguousCreationRestartAndExactWindow(int)[1]",
+      "passed": true
+    },
+    {
+      "name": "ambiguousCreationRestartAndExactWindow(int)[2]",
+      "passed": true
+    },
+    {
+      "name": "ambiguousCreationRestartAndExactWindow(int)[3]",
+      "passed": true
+    },
+    {
+      "name": "authorizationDenialHasNoSideEffects(String)[1]",
+      "passed": true
+    },
+    {
+      "name": "authorizationDenialHasNoSideEffects(String)[2]",
+      "passed": true
+    },
+    {
+      "name": "authorizationDenialHasNoSideEffects(String)[3]",
+      "passed": true
+    },
+    {
+      "name": "feeCanReconcileAfterAdministrativeRefundWithoutRestoringEntitlement",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[1]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[2]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[3]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[4]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[5]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[6]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[7]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[8]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[9]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[10]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[11]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[12]",
+      "passed": true
+    },
+    {
+      "name": "malformedProviderFactsCannotComplete(String)[13]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[1]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[2]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[3]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[4]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[5]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[6]",
+      "passed": true
+    },
+    {
+      "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[7]",
+      "passed": true
+    },
+    {
+      "name": "refundAndMarkPaidRaceBothSerializations",
+      "passed": true
+    },
+    {
+      "name": "refundAndMarkPaidRaceBothSerializations",
+      "passed": true
+    },
+    {
+      "name": "refundAndMarkPaidRaceBothSerializations",
+      "passed": true
+    },
+    {
+      "name": "concurrentRequestsShareOneLogicalProviderRefund",
+      "passed": true
+    },
+    {
+      "name": "concurrentRequestsShareOneLogicalProviderRefund",
+      "passed": true
+    },
+    {
+      "name": "concurrentRequestsShareOneLogicalProviderRefund",
+      "passed": true
+    },
+    {
+      "name": "databaseProtectsRefundIdentityBoundsAndLiabilityUniqueness",
+      "passed": true
+    },
+    {
+      "name": "completionPreservesRefundOrigin(String)[1]",
+      "passed": true
+    },
+    {
+      "name": "completionPreservesRefundOrigin(String)[2]",
+      "passed": true
+    },
+    {
+      "name": "completionPreservesRefundOrigin(String)[3]",
+      "passed": true
+    },
+    {
+      "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[1]",
+      "passed": true
+    },
+    {
+      "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[2]",
+      "passed": true
+    },
+    {
+      "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[3]",
+      "passed": true
+    },
+    {
+      "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[4]",
+      "passed": true
+    },
+    {
+      "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[5]",
+      "passed": true
+    },
+    {
+      "name": "providerStatusAndFailedEconomics(String)[1]",
+      "passed": true
+    },
+    {
+      "name": "providerStatusAndFailedEconomics(String)[2]",
+      "passed": true
+    },
+    {
+      "name": "providerStatusAndFailedEconomics(String)[3]",
+      "passed": true
+    },
+    {
+      "name": "providerStatusAndFailedEconomics(String)[4]",
+      "passed": true
+    },
+    {
+      "name": "providerStatusAndFailedEconomics(String)[5]",
+      "passed": true
+    },
+    {
+      "name": "providerStatusAndFailedEconomics(String)[6]",
+      "passed": true
+    },
+    {
+      "name": "fullRefundIgnoresCustomClientEconomicsAndMutableVenuePrice",
+      "passed": true
+    },
+    {
+      "name": "repeatAmbiguousRestart",
+      "passed": true
+    },
+    {
+      "name": "repeatAmbiguousRestart",
+      "passed": true
+    },
+    {
+      "name": "repeatAmbiguousRestart",
+      "passed": true
+    },
+    {
+      "name": "paidPayoutSurvivesRefundAndRepeatedRecalculation",
+      "passed": true
+    }
+  ]
+}

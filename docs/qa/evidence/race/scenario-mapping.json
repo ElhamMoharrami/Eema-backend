@@ -1,0 +1,47 @@
+{
+  "result": "PASS",
+  "scenarios": {
+    "RACE-001": [
+      "VenueDomainIntegrationTest.avlConcurrentAcceptanceReservesOnceAndExpiryReopens",
+      "PostgresCriticalPathIntegrationTest.overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve"
+    ],
+    "RACE-002": [
+      "InquiryIntegrationTest.twoOffersAndNormalAcceptanceShareVenueReservationBoundary",
+      "InquiryIntegrationTest.concurrentSameOfferCreatesExactlyOneBooking",
+      "PostgresCriticalPathIntegrationTest.exclusionRejectsOneOverlappingBlockingInsert"
+    ],
+    "RACE-003": [
+      "AuthSessionIntegrationTest.concurrentHttpRefreshHasOneWinner",
+      "PostgresCriticalPathIntegrationTest.refreshTokenRotationLockAllowsOnlyOneWinner"
+    ],
+    "RACE-004": [
+      "PayoutIntegrationTest.concurrentRecalculationCreatesOneLedgerAndOneAudit",
+      "PayoutIntegrationTest.concurrentPaidRecordingIsIdempotentOrConflicts",
+      "PostgresCriticalPathIntegrationTest.payoutAndDocumentUniqueConstraintsHaveSingleAuthorities"
+    ],
+    "RACE-005": [
+      "DestinationIntegrationTest.concurrentDistinctVerificationSerializesOwnerRouting",
+      "DestinationIntegrationTest.sameRecordVerifyRejectHasOneWinner",
+      "PostgresCriticalPathIntegrationTest.verifiedDestinationPartialIndexAndReplacementSemanticsHold"
+    ],
+    "RACE-006": [
+      "PolicyIntegrationTest.concurrentServicePublicationHasOneCurrentAndSafeConflict",
+      "PostgresCriticalPathIntegrationTest.policyPublishRaceLeavesExactlyOneCurrentVersion"
+    ],
+    "RACE-007": [
+      "DocumentIntegrationTest.simultaneousReceiptRequestsIssueOneObjectAndAudit",
+      "DocumentIntegrationTest.simultaneousStatementRequestsIssueOneObjectAndAudit",
+      "DocumentIntegrationTest.failedIssuanceNeverSucceedsAndCleansStoredObject"
+    ],
+    "RACE-008": [
+      "ScheduledJobsIntegrationTest.bookingWorkersAndBusyRowLeaveOneCommittedTransitionPerBooking",
+      "ScheduledJobsIntegrationTest.inquiryWorkerSkipsLockedOfferThenRecoversItWithoutDuplicateIntent",
+      "PayoutIntegrationTest.readinessWorkersClaimDisjointBookingsInIndependentTransactions",
+      "OperationsNotificationIntegrationTest.twoWorkersCannotSendTheSameClaimSimultaneously",
+      "OperationsNotificationIntegrationTest.expiredLeaseRecoversAtEqualityAndOldWorkerCannotComplete"
+    ]
+  },
+  "source": "../job/full-postgres-tests.json",
+  "execution": "The just-completed full PostgreSQL run; no source/test changes afterward. Each mapped class had zero failures/errors/skips. Repetitions and independent barriers inspected in source.",
+  "noNewRunClaim": true
+}

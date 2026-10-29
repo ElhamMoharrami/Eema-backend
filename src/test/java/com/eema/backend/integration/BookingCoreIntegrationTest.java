@@ -116,9 +116,11 @@ class BookingCoreIntegrationTest extends BookingCoreSupport {
         UUID v=venue(owner,60),a=create(v,scout,"09:00","12:00"),b=create(v,second,"10:00","11:00");String original=row(a);var open=available(v);FAIL_COMPETITORS=v;
         action(a,"accept",owner,409);assertEquals(original,row(a));assertEquals("REQUESTED",state(b));assertEquals(List.of("REQUEST_SUBMITTED"),audit(a));assertEquals(List.of("REQUEST_SUBMITTED"),audit(b));assertEquals(open,available(v));assertEquals(1,notices(a));
     }
-    @Test void afterCommitNotificationFailureCannotUndoReservation()throws Exception{
-        UUID b=create(venue(owner,60),scout,"09:00","12:00");FAIL_NOTICE=b;NOTICE_REACHED=new java.util.concurrent.CountDownLatch(1);action(b,"accept",owner,200);
-        assertTrue(NOTICE_REACHED.await(10,java.util.concurrent.TimeUnit.SECONDS));assertEquals("AWAITING_PAYMENT",state(b));assertEquals(List.of("REQUEST_SUBMITTED","REQUEST_ACCEPTED"),audit(b));
+    @Test void reservationAndNotificationIntentCommitTogetherWithoutProvider()throws Exception{
+        UUID b=create(venue(owner,60),scout,"09:00","12:00");action(b,"accept",owner,200);
+        assertEquals("AWAITING_PAYMENT",state(b));assertEquals(List.of("REQUEST_SUBMITTED","REQUEST_ACCEPTED"),audit(b));
+        assertEquals(1,jdbc.queryForObject("select count(*) from notification_outbox where aggregate_id=? and notification_type='REQUEST_ACCEPTED' and status='PENDING'",Integer.class,b));
+        // Provider-failure persistence is exercised by OperationsNotificationIntegrationTest.
     }
     @ParameterizedTest @ValueSource(strings={"BLOCKED","SUSPENDED","LEAD"})
     void acceptanceRevalidatesCurrentConditions(String condition)throws Exception{

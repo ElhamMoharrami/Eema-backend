@@ -1,0 +1,20 @@
+{
+  "pages": 646,
+  "sha256": "f773bc7b4bba76ff0ec9a4e45447350ba7068777edbb3dade6a8eba046843210",
+  "sections": {
+    "REF-001 \u2014 Admin full-only": [
+      87
+    ],
+    "REF-002 \u2014 Validated monotonic": [
+      88
+    ],
+    "REF-003 \u2014 Durable ambiguous": [
+      88
+    ],
+    "REF-004 \u2014 Historical PAID": [
+      89
+    ]
+  },
+  "visualReview": "Page 88 inspected: REF-002/003 and continuation of REF-001 readable, no clipping",
+  "preview": "master-plan-ref-page88.png"
+}

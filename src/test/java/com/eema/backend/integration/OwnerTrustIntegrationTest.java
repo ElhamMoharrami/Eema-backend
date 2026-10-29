@@ -20,14 +20,37 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 /** Owner review HTTP/security/transactions on disposable PostgreSQL; no identity provider. */
+@org.springframework.test.context.TestPropertySource(properties="app.notification-outbox.initial-delay-ms=86400000")
 @org.springframework.context.annotation.Import(OwnerTrustIntegrationTest.NotificationCapture.class)
 class OwnerTrustIntegrationTest extends AuthPostgresSupport {
-    @SpyBean OwnerVerificationRepository verifications;
+    private record RepositoryRace(UUID verificationId, UUID ownerId, CyclicBarrier barrier) {}
+    private static volatile RepositoryRace repositoryRace;
     @SpyBean CurrentUserService current;
     @SpyBean TrustNotificationService notifications;
     @SpyBean EmailService mail;
     @org.springframework.boot.test.context.TestConfiguration
     static class NotificationCapture {
+        @org.springframework.context.annotation.Bean
+        static org.springframework.beans.factory.config.BeanPostProcessor repositoryRaceHook() {
+            return new org.springframework.beans.factory.config.BeanPostProcessor() {
+                @Override public Object postProcessAfterInitialization(Object bean, String name) {
+                    if (!(bean instanceof OwnerVerificationRepository)) return bean;
+                    var proxy = new org.springframework.aop.framework.ProxyFactory(bean);
+                    proxy.addAdvice((org.aopalliance.intercept.MethodInterceptor) invocation -> {
+                        RepositoryRace race = repositoryRace;
+                        if (race != null && invocation.getArguments().length == 1) {
+                            String method = invocation.getMethod().getName();
+                            Object id = invocation.getArguments()[0];
+                            if ((method.equals("findByIdForUpdate") && Objects.equals(id, race.verificationId()))
+                                    || (method.equals("findByOwnerIdForUpdate") && Objects.equals(id, race.ownerId())))
+                                race.barrier().await(15, TimeUnit.SECONDS);
+                        }
+                        return invocation.proceed();
+                    });
+                    return proxy.getProxy();
+                }
+            };
+        }
         final List<TrustNotificationEvent> published = new CopyOnWriteArrayList<>();
         @org.springframework.context.event.EventListener
         public void capture(TrustNotificationEvent event) { published.add(event); }
@@ -52,7 +75,6 @@ class OwnerTrustIntegrationTest extends AuthPostgresSupport {
     Map<String,Object> row(UUID id){return jdbc.queryForMap("select * from owner_verifications where id=?",id);}
     List<Map<String,Object>> audit(UUID id){return jdbc.queryForList("select event_type,actor_id,actor_type,subject_type,note,created_at from marketplace_trust_events where subject_id=? order by created_at,id",id);}
     long published(UUID id){return capture.published.stream().filter(e->e.subjectId().equals(id)).count();}
-    Object real(Object mock,org.mockito.invocation.InvocationOnMock invocation)throws Throwable{return mockingDetails(mock).getMockCreationSettings().getDefaultAnswer().answer(invocation);}
 
     @Test void fullLifecyclePreservesHistoryAndOwnerSafeProjection()throws Exception {
         var initial=read("/owner/verification",access(owner),200);assertTrue(initial.path("id").isNull());assertEquals("UNVERIFIED",initial.path("status").asText());assertEquals(0,rows("owner_verifications","owner_id",id(owner)));
@@ -132,33 +154,43 @@ class OwnerTrustIntegrationTest extends AuthPostgresSupport {
         doAnswer(inv->{Object u=inv.callRealMethod();if(TransactionSynchronizationManager.isActualTransactionActive()&&((User)u).getId().equals(id(owner)))entered.await(15,TimeUnit.SECONDS);return u;}).when(current).getCurrentUser();
         ExecutorService pool=Executors.newFixedThreadPool(2);
         try{var a=pool.submit(()->submit(owner,Map.of("note","QA first"),200));var b=pool.submit(()->submit(owner,Map.of("note","QA second"),200));var one=a.get(30,TimeUnit.SECONDS);var two=b.get(30,TimeUnit.SECONDS);assertEquals(one.path("id"),two.path("id"));assertEquals("PENDING",two.path("status").asText());UUID p=UUID.fromString(one.path("id").asText());assertEquals(1,rows("owner_verifications","owner_id",id(owner)));assertEquals(1,audit(p).size());assertEquals(1,published(p));}
-        finally{pool.shutdownNow();reset(current,verifications);}
+        finally{pool.shutdownNow();reset(current);}
     }
     @RepeatedTest(3) void competingAdminReviewsHaveOneWinner()throws Exception {
         for(String competing:List.of("approve","reject")){
             JsonNode fresh=actor("OWNER");jdbc.update("update users set email_verified=true where id=?",id(fresh));UUID p=pending(fresh);CyclicBarrier start=new CyclicBarrier(2);
-            doAnswer(inv->{start.await(15,TimeUnit.SECONDS);return real(verifications,inv);}).when(verifications).findByIdForUpdate(p);
+            repositoryRace = new RepositoryRace(p, null, start);
             ExecutorService pool=Executors.newFixedThreadPool(2);
             try{var a=pool.submit(()->reviewStatus(p,"approve",approval()));var b=pool.submit(()->reviewStatus(p,competing,competing.equals("approve")?approval():Map.of("reason","QA rejected")));var statuses=new ArrayList<>(List.of(a.get(30,TimeUnit.SECONDS),b.get(30,TimeUnit.SECONDS)));Collections.sort(statuses);assertEquals(List.of(200,409),statuses);var r=row(p);assertEquals(2,audit(p).size());assertEquals(2,published(p));assertEquals(1L,((Number)r.get("version")).longValue());assertNotNull(r.get("reviewed_at"));assertEquals(id(admin),r.get("reviewed_by"));if(r.get("status").toString().equals("VERIFIED")){assertEquals("MANUAL_REVIEW",r.get("verification_method"));assertNull(r.get("review_note"));}else{assertNull(r.get("verification_method"));assertEquals("QA rejected",r.get("review_note"));}}
-            finally{pool.shutdownNow();reset(verifications);}
+            finally{pool.shutdownNow();repositoryRace = null;}
         }
     }
     int reviewStatus(UUID p,String action,Object body)throws Exception{return mvc.perform(post("/api/admin/owner-verifications/"+p+"/"+action).contextPath("/api").header("Authorization","Bearer "+access(admin)).contentType("application/json").content(json.writeValueAsBytes(body))).andReturn().getResponse().getStatus();}
     @RepeatedTest(3) void rejectionVersusResubmissionHasOnlyLegalOrderedOutcomes()throws Exception {
         UUID p=pending(owner);CyclicBarrier start=new CyclicBarrier(2);
-        doAnswer(inv->{start.await(15,TimeUnit.SECONDS);return real(verifications,inv);}).when(verifications).findByIdForUpdate(p);
-        doAnswer(inv->{start.await(15,TimeUnit.SECONDS);return real(verifications,inv);}).when(verifications).findByOwnerIdForUpdate(id(owner));
+        repositoryRace = new RepositoryRace(p, id(owner), start);
         ExecutorService pool=Executors.newFixedThreadPool(2);
         try{var a=pool.submit(()->review(p,"reject",Map.of("reason","QA reason"),admin,200));var b=pool.submit(()->submit(owner,Map.of("note","QA resubmit"),200));a.get(30,TimeUnit.SECONDS);b.get(30,TimeUnit.SECONDS);var r=row(p);if(r.get("status").toString().equals("PENDING")){assertNull(r.get("review_note"));assertNull(r.get("reviewed_at"));assertEquals(3,audit(p).size());}else{assertEquals("REJECTED",r.get("status").toString());assertEquals("QA reason",r.get("review_note"));assertEquals(2,audit(p).size());}}
-        finally{pool.shutdownNow();reset(verifications);}
+        finally{pool.shutdownNow();repositoryRace = null;}
     }
 
-    @Test void notificationRunsAfterCommitAndFailureCannotRollBackTrust()throws Exception {
-        CountDownLatch delivered=new CountDownLatch(1);var seen=new java.util.concurrent.atomic.AtomicBoolean();
-        doAnswer(inv->{TrustNotificationEvent e=inv.getArgument(0);if(e.type()==TrustEventType.OWNER_VERIFICATION_SUBMITTED){seen.set(jdbc.queryForObject("select count(*) from owner_verifications where id=?",Integer.class,e.subjectId())==1);try{return inv.callRealMethod();}finally{delivered.countDown();}}return inv.callRealMethod();}).when(notifications).send(any());
-        UUID p=pending(owner);assertTrue(delivered.await(10,TimeUnit.SECONDS));assertTrue(seen.get());verify(mail,timeout(10000)).send(eq(email(owner)),eq("Owner verification submitted"),contains("/owner/verification"),anyString());assertFalse(app.resend().enabled());
-        CountDownLatch failed=new CountDownLatch(1);doAnswer(inv->{failed.countDown();throw new IllegalStateException("QA delivery failure");}).when(notifications).send(argThat(e->e.type()==TrustEventType.OWNER_VERIFICATION_APPROVED));
-        review(p,"approve",approval(),admin,200);assertTrue(failed.await(10,TimeUnit.SECONDS));assertEquals("VERIFIED",row(p).get("status").toString());assertEquals(2,audit(p).size());
-        reset(notifications);
+    @Autowired NotificationOutboxDispatcher outboxDispatcher;
+    @Test void durableNotificationRunsAfterCommitAndProviderFailureCannotRollBackTrust()throws Exception {
+        jdbc.update("delete from notification_outbox");
+        UUID p=pending(owner);
+        verify(mail).send(eq(email(owner)),eq("Owner verification submitted"),contains("/owner/verification"),anyString());
+        assertEquals("PENDING",jdbc.queryForObject("select status from notification_outbox where aggregate_id=?",String.class,p));
+        verify(mail,never()).deliver(any(),any(),any());
+        review(p,"approve",approval(),admin,200);
+        doReturn(true).when(mail).enabled();
+        doAnswer(inv->{
+            assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+            assertEquals("VERIFIED",row(p).get("status").toString());
+            throw new EmailService.DeliveryFailure("PROVIDER_HTTP_503",false);
+        }).when(mail).deliver(any(),any(),any());
+        outboxDispatcher.dispatchBatch();
+        assertEquals("VERIFIED",row(p).get("status").toString());assertEquals(2,audit(p).size());
+        assertEquals(2,jdbc.queryForObject("select count(*) from notification_outbox where aggregate_id=? and status='PENDING' and attempt_count=1 and last_failure_category='PROVIDER_HTTP_503'",Integer.class,p));
+        verify(mail,times(2)).deliver(any(),any(),any());
     }
 }

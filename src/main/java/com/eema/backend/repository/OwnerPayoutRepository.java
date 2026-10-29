@@ -11,37 +11,58 @@ import org.springframework.data.repository.query.Param;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-public interface OwnerPayoutRepository extends JpaRepository<OwnerPayout, UUID> {
+public interface OwnerPayoutRepository extends JpaRepository<OwnerPayout, UUID>, JpaSpecificationExecutor<OwnerPayout> {
     Optional<OwnerPayout> findByBookingId(UUID bookingId);
+
+    @org.springframework.data.jpa.repository.Query("select p.bookingId from OwnerPayout p where p.id = :id")
+    Optional<UUID> findBookingIdById(@Param("id") UUID id);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select p from OwnerPayout p where p.id = :id")
     Optional<OwnerPayout> findByIdForUpdate(@Param("id") UUID id);
 
-    @Query("""
-            select p from OwnerPayout p
-            where (:status is null or p.status = :status)
-              and (:ownerId is null or p.ownerId = :ownerId)
-              and (:bookingId is null or p.bookingId = :bookingId)
-              and (:venueId is null or p.venueId = :venueId)
-            order by case p.status
-                when com.eema.backend.entity.enums.OwnerPayoutStatus.READY then 0
-                when com.eema.backend.entity.enums.OwnerPayoutStatus.HELD then 1
-                when com.eema.backend.entity.enums.OwnerPayoutStatus.CALCULATED then 2
-                when com.eema.backend.entity.enums.OwnerPayoutStatus.PAID then 3
-                else 4 end,
-                p.readyAt asc nulls last, p.createdAt desc
-            """)
-    Page<OwnerPayout> search(@Param("status") OwnerPayoutStatus status,
-            @Param("ownerId") UUID ownerId, @Param("bookingId") UUID bookingId,
-            @Param("venueId") UUID venueId, Pageable pageable);
+    default Page<OwnerPayout> search(OwnerPayoutStatus status, UUID ownerId, UUID bookingId,
+                                    UUID venueId, Pageable pageable) {
+        return findAll((root, query, cb) -> {
+            var filters = new ArrayList<jakarta.persistence.criteria.Predicate>();
+            if (status != null) filters.add(cb.equal(root.get("status"), status));
+            if (ownerId != null) filters.add(cb.equal(root.get("ownerId"), ownerId));
+            if (bookingId != null) filters.add(cb.equal(root.get("bookingId"), bookingId));
+            if (venueId != null) filters.add(cb.equal(root.get("venueId"), venueId));
+            if (query.getResultType() != Long.class) {
+                var priority = cb.<OwnerPayoutStatus, Integer>selectCase(root.get("status"))
+                        .when(OwnerPayoutStatus.READY, 0).when(OwnerPayoutStatus.HELD, 1)
+                        .when(OwnerPayoutStatus.CALCULATED, 2).when(OwnerPayoutStatus.PAID, 3).otherwise(4);
+                query.orderBy(cb.asc(priority), cb.asc(root.get("readyAt")), cb.desc(root.get("createdAt")));
+            }
+            return cb.and(filters.toArray(jakarta.persistence.criteria.Predicate[]::new));
+        }, pageable);
+    }
 
     @Query(value = """
-            select * from owner_payouts
-            where status in ('CALCULATED','HELD') and eligible_at <= :now
-            order by eligible_at for update skip locked limit :limit
+            select b.id from bookings b join owner_payouts p on p.booking_id = b.id
+            where p.status in ('CALCULATED','HELD') and p.eligible_at <= :now
+            order by p.eligible_at, b.id for update of b skip locked limit :limit
             """, nativeQuery = true)
-    List<OwnerPayout> lockDueForReadiness(@Param("now") OffsetDateTime now, @Param("limit") int limit);
+    List<UUID> lockBookingIdsDueForReadiness(@Param("now") OffsetDateTime now, @Param("limit") int limit);
+
+
+    interface ReadinessCandidate {
+        UUID getBookingId();
+        java.time.Instant getEligibleAt();
+    }
+
+    @Query(value = """
+            select b.id as "bookingId", p.eligible_at as "eligibleAt"
+            from bookings b join owner_payouts p on p.booking_id = b.id
+            where p.status in ('CALCULATED','HELD') and p.eligible_at <= :now
+              and (cast(:afterTime as timestamptz) is null
+                   or (p.eligible_at, b.id) > (cast(:afterTime as timestamptz), cast(:afterId as uuid)))
+            order by p.eligible_at, b.id for update of b skip locked limit :limit
+            """, nativeQuery = true)
+    List<ReadinessCandidate> lockReadinessCandidatesAfter(@Param("now") OffsetDateTime now,
+            @Param("afterTime") OffsetDateTime afterTime, @Param("afterId") UUID afterId,
+            @Param("limit") int limit);
 
     long countByStatus(OwnerPayoutStatus status);
     long countByStatusAndReadyAtBefore(OwnerPayoutStatus status, OffsetDateTime cutoff);

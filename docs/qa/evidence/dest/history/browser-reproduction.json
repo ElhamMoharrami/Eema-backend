@@ -1,0 +1,30 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "name": "Owner submission refetches pending state and clears sensitive input",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload preserves masked destination and pending review",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner account switch removes previous owner history and reloads scoped data",
+      "result": "FAIL"
+    },
+    {
+      "name": "Revealed bank value is absent from persistent browser storage",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin reveal requires confirmation and Hide clears the value",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin account switch clears a previously revealed value",
+      "result": "FAIL"
+    }
+  ],
+  "error": "Browser timeout: button Cancel"
+}

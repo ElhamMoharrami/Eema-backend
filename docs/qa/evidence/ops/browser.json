@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Existing scout session reloads persisted CONFIRMED booking after real backend restart",
+      "result": "PASS"
+    },
+    {
+      "name": "Authenticated browser receipt bytes remain identical across restart",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner deep link reloads persisted booking with correct role navigation",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin booking operations and event timeline reload from PostgreSQL after restart",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local only; no live provider"
+}

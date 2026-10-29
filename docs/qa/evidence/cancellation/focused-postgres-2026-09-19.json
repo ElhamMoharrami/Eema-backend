@@ -1,0 +1,103 @@
+{
+  "name": "com.eema.backend.integration.CancellationIntegrationTest",
+  "tests": "23",
+  "failures": "0",
+  "errors": "0",
+  "skipped": "0",
+  "time": "98.362",
+  "cases": [
+    {
+      "name": "rejectionKeepsCancelledBookingAndCannotMintNewLogicalRefund",
+      "result": "PASS"
+    },
+    {
+      "name": "concurrentReconciliationCompletesOnceWithImmutableCancellation",
+      "result": "PASS"
+    },
+    {
+      "name": "acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase(String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase(String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase(String)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "canonicalReasonBoundaryAndAuthoritativeFullRefund(String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "canonicalReasonBoundaryAndAuthoritativeFullRefund(String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable",
+      "result": "PASS"
+    },
+    {
+      "name": "markPaidAndCancellationSerializeOnRealBookingLock(boolean)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "markPaidAndCancellationSerializeOnRealBookingLock(boolean)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "stuckQueueAndMetricShareExactThreshold(int)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "stuckQueueAndMetricShareExactThreshold(int)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "stuckQueueAndMetricShareExactThreshold(int)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "historicalDocumentsSurviveRefundAndRecovery",
+      "result": "PASS"
+    },
+    {
+      "name": "rollbackBeforeProviderLeavesNoCancellationOrClaim",
+      "result": "PASS"
+    },
+    {
+      "name": "feeReconciliationAndLiabilitySettlementLeaveCancellationAndRefundUnchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "staleTermsConflictAndReplayCannotChangeEconomics",
+      "result": "PASS"
+    },
+    {
+      "name": "incidentModerationProfilesAndDeletionCannotRewriteHistory",
+      "result": "PASS"
+    },
+    {
+      "name": "unexpectedPaymentAfterWithdrawalIsRefundedWithoutResurrectingBooking",
+      "result": "PASS"
+    },
+    {
+      "name": "canonicalUnpaidWithdrawalReleasesReservation(String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "canonicalUnpaidWithdrawalReleasesReservation(String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "canonicalUnpaidWithdrawalReleasesReservation(String)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "paidPaymentDiscoveredDuringUnpaidWithdrawalRequiresFinancialPreview",
+      "result": "PASS"
+    }
+  ],
+  "date": "2026-09-19"
+}

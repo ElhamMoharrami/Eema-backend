@@ -25,7 +25,7 @@ class GeminiAiServiceTest {
         MatchResponse ranked = new MatchResponse(List.of(), "brief", 0);
 
         when(parser.parseBrief("brief")).thenReturn(parsed);
-        when(filter.findCandidateVenues(parsed)).thenReturn(List.of(eligible));
+        when(filter.findCandidateBatch(parsed, 0)).thenReturn(new VenueFilterBuilder.CandidateBatch(List.of(eligible), 0, false));
         when(availability.retainAvailable(List.of(eligible), parsed)).thenReturn(List.of(eligible));
         when(ranker.rank("brief", parsed, List.of(eligible))).thenReturn(ranked);
 
@@ -44,7 +44,7 @@ class GeminiAiServiceTest {
         VenueRanker ranker = mock(VenueRanker.class);
         ParsedBrief parsed = ParsedBriefFixtures.empty();
         when(parser.parseBrief("brief")).thenReturn(parsed);
-        when(filter.findCandidateVenues(parsed)).thenReturn(List.of());
+        when(filter.findCandidateBatch(parsed, 0)).thenReturn(new VenueFilterBuilder.CandidateBatch(List.of(), 0, false));
         when(availability.retainAvailable(List.of(), parsed)).thenReturn(List.of());
 
         MatchResponse result = new GeminiAiService(parser, filter, availability, ranker).searchVenues("brief");
@@ -66,7 +66,7 @@ class GeminiAiServiceTest {
                 """);
         Venue candidate = mock(Venue.class);
         when(parser.parseBrief("brief")).thenReturn(parsed);
-        when(filter.findCandidateVenues(parsed)).thenReturn(List.of(candidate));
+        when(filter.findCandidateBatch(parsed, 0)).thenReturn(new VenueFilterBuilder.CandidateBatch(List.of(candidate), 0, false));
         when(availability.retainAvailable(List.of(candidate), parsed)).thenReturn(List.of());
 
         MatchResponse result = new GeminiAiService(parser, filter, availability, ranker).searchVenues("brief");
@@ -85,7 +85,7 @@ class GeminiAiServiceTest {
         Venue available = mock(Venue.class);
         Venue unavailable = mock(Venue.class);
         when(parser.parseBrief("brief")).thenReturn(parsed);
-        when(filter.findCandidateVenues(parsed)).thenReturn(List.of(available, unavailable));
+        when(filter.findCandidateBatch(parsed, 0)).thenReturn(new VenueFilterBuilder.CandidateBatch(List.of(available, unavailable), 0, false));
         when(availability.retainAvailable(List.of(available, unavailable), parsed)).thenReturn(List.of(available));
         when(ranker.rank("brief", parsed, List.of(available)))
                 .thenReturn(new MatchResponse(List.of(), "brief", 0));

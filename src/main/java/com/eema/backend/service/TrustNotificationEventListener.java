@@ -1,15 +1,18 @@
 package com.eema.backend.service;
-import com.eema.backend.event.TrustNotificationEvent;
+
+import com.eema.backend.event.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.*;
 
-@Component @RequiredArgsConstructor @Slf4j
+@Component @RequiredArgsConstructor
 public class TrustNotificationEventListener {
     private final TrustNotificationService notifications;
-    @Async("notificationExecutor") @TransactionalEventListener(phase=TransactionPhase.AFTER_COMMIT)
-    public void notifyOwner(TrustNotificationEvent event){try{notifications.send(event);}catch(RuntimeException ex){
-        log.error("Trust workflow notification failed: subjectId={}, eventType={}, errorType={}",event.subjectId(),event.type(),ex.getClass().getSimpleName());}}
+    private final NotificationOutboxWriter outbox;
+
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    public void notifyOwner(TrustNotificationEvent event) {
+        outbox.record("TRUST",event.subjectId(),event.type().name(),"TRUST:"+java.util.Objects.requireNonNull(event.eventId()),
+                () -> notifications.send(event));
+    }
 }

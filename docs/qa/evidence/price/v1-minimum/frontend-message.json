@@ -1,0 +1,5 @@
+{
+  "result": "PASS",
+  "check": "Actual TypeScript ApiError and apiErrorMessage preserve the safe backend HTTP 400 minimum-total message",
+  "sourceAudit": "InstantQuote and scout inquiry acceptance render this formatter; no frontend pricing or UI changes"
+}

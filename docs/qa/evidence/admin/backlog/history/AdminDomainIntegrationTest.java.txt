@@ -1,0 +1,86 @@
+package com.eema.backend.integration;
+
+import com.eema.backend.entity.enums.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
+import java.util.*;
+import java.time.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+class AdminDomainIntegrationTest extends BookingCoreSupport {
+ @BeforeAll static void fresh(){owner=null;policies.clear();}
+ @AfterEach void noProvider(){verifyNoInteractions(mollie);}
+ UUID fixture() {UUID v=venue(owner,60),b=UUID.randomUUID();jdbc.update("""
+ insert into bookings(id,venue_id,scout_id,status,shoot_date,start_time,end_time,venue_price_eur,hourly_rate_eur_snapshot,minimum_booking_minutes_snapshot,duration_minutes,billable_minutes,commission_percentage,commission_eur,total_paid_eur,scout_contact_name,scout_contact_email,owner_contact_name,owner_contact_email,owner_response_expires_at)
+ values(?,?,?,'REQUESTED',current_date+14,'09:00','10:00',125.50,125.50,60,60,60,20,25.10,0,'QA Scout','qa@example.test','QA Owner','owner@example.test',now()+interval '1 day')
+ """,b,v,id(scout));return b;}
+ UUID payout(UUID b,String status,OffsetDateTime ready,String hold){UUID p=UUID.randomUUID();jdbc.update("insert into owner_payouts(id,booking_id,owner_id,venue_id,gross_retained_amount_eur,commission_eur,provider_cost_eur,payout_amount_eur,status,eligible_at,ready_at,hold_reason) select ?,id,?,venue_id,125.50,25.10,1.50,98.90,?,now(),?,? from bookings where id=?",p,id(owner),status,ready,hold,b);return p;}
+ UUID liability(UUID b){UUID l=UUID.randomUUID();jdbc.update("insert into owner_financial_liabilities(id,owner_id,booking_id,type,amount_eur,status) values (?,?,?,'PROVIDER_COST',1.50,'OPEN')",l,id(owner),b);return l;}
+ JsonNode readAdmin(String path)throws Exception{return req(get("/api/admin"+path),admin,null,200);}
+ JsonNode queue(String path,Map<String,String> params,int status)throws Exception{var r=get("/api/admin"+path);params.forEach(r::param);return req(r,admin,null,status);}
+ JsonNode exception(UUID b,String type)throws Exception{for(JsonNode e:readAdmin("/operations/exceptions?size=100").path("content"))if(e.path("bookingId").asText().equals(b.toString())&&e.path("type").asText().equals(type))return e;return null;}
+ @Test void allAdminQueuesBoundPaginationFilterAndDenyOtherRoles()throws Exception{
+  UUID chosen=null;
+  for(int n=0;n<25;n++){UUID b=fixture();chosen=b;UUID v=jdbc.queryForObject("select venue_id from bookings where id=?",UUID.class,b);payout(b,n%2==0?"CALCULATED":"HELD",null,n%2==0?null:"WAITING_FOR_PROVIDER_COST");liability(b);
+   jdbc.update("insert into incident_reports(id,booking_id,reported_by_user_id,category,description,status) values (?,?,?,'OTHER','QA queue','OPEN')",UUID.randomUUID(),b,id(scout));
+   UUID u=UUID.randomUUID();jdbc.update("insert into users(id,email,password_hash,role,full_name) values (?,?,'unusable-qa-hash','OWNER','QA Queue Owner')",u,"queue+"+u+"@example.test");jdbc.update("insert into owner_verifications(id,owner_id,status,submitted_at) values (?,?,'PENDING',now())",UUID.randomUUID(),u);
+   jdbc.update("insert into owner_payout_destinations(id,owner_id,type,currency,account_holder_name,iban_encrypted,iban_fingerprint,iban_last4,status,submitted_at) values (?,?,'IBAN','EUR','QA Queue','qa-opaque',?,'4821','PENDING_VERIFICATION',now())",UUID.randomUUID(),id(owner),UUID.randomUUID().toString());
+  }
+  for(String route:List.of("/bookings","/payouts","/liabilities","/owner-verifications","/venues","/payout-destinations","/incidents","/operations/exceptions")){
+   var first=queue(route,Map.of("size","20","page","0","sort","notAField,desc"),200);assertEquals(20,first.path("content").size(),route);assertTrue(first.path("totalElements").asInt()>=25,route);
+   var next=queue(route,Map.of("size","20","page","1"),200);assertTrue(next.path("content").size()>0,route);
+   for(int size:List.of(1,20,100,101))assertEquals(Math.min(size,100),queue(route,Map.of("size",""+size),200).path("size").asInt(),route);
+   assertEquals(0,queue(route,Map.of("page","-1"),200).path("number").asInt());assertTrue(queue(route,Map.of("page","99999"),200).path("empty").asBoolean());
+   for(var actor:Arrays.asList(scout,owner,null))req(get("/api/admin"+route),actor,null,actor==null?401:403);
+   if(!route.equals("/operations/exceptions"))queue(route,Map.of("status","UNKNOWN"),400);
+  }
+  for(String route:List.of("/bookings","/payouts","/liabilities","/incidents")){var filtered=queue(route,Map.of("bookingId",chosen.toString()),200);assertEquals(1,filtered.path("totalElements").asInt(),route);queue(route,Map.of("bookingId","invalid"),400);}
+  for(String route:List.of("/payouts","/liabilities","/venues","/owner-verifications","/payout-destinations")){assertEquals(0,queue(route,Map.of("ownerId",UUID.randomUUID().toString()),200).path("totalElements").asInt());queue(route,Map.of("ownerId","invalid"),400);}
+  UUID chosenVenue=jdbc.queryForObject("select venue_id from bookings where id=?",UUID.class,chosen);
+  var verification=jdbc.queryForMap("select id,owner_id from owner_verifications where status='PENDING' limit 1");
+  UUID destination=jdbc.queryForObject("select id from owner_payout_destinations where owner_id=? and status='PENDING_VERIFICATION' limit 1",UUID.class,id(owner));
+  Map<String,Map<String,String>> filters=new LinkedHashMap<>();
+  filters.put("/bookings",Map.of("bookingId",chosen.toString(),"venueId",chosenVenue.toString(),"scoutId",id(scout).toString(),"status","REQUESTED","refundStatus","NONE","paymentCreationStatus","NOT_STARTED"));
+  filters.put("/payouts",Map.of("bookingId",chosen.toString(),"venueId",chosenVenue.toString(),"ownerId",id(owner).toString(),"status","CALCULATED"));
+  filters.put("/liabilities",Map.of("bookingId",chosen.toString(),"ownerId",id(owner).toString(),"status","OPEN","type","PROVIDER_COST"));
+  filters.put("/venues",Map.of("venueId",chosenVenue.toString(),"ownerId",id(owner).toString(),"status","ACTIVE"));
+  filters.put("/incidents",Map.of("bookingId",chosen.toString(),"category","OTHER","status","OPEN"));
+  filters.put("/payout-destinations",Map.of("destinationId",destination.toString(),"ownerId",id(owner).toString(),"status","PENDING_VERIFICATION"));
+  filters.put("/owner-verifications",Map.of("ownerId",verification.get("owner_id").toString(),"status","PENDING"));
+  for(var route:filters.entrySet()){
+   for(var filter:route.getValue().entrySet()){
+    var result=queue(route.getKey(),Map.of(filter.getKey(),filter.getValue()),200);assertTrue(result.path("totalElements").asInt()>0);
+    String field=filter.getKey();if(route.getKey().equals("/bookings")&&field.equals("bookingId")||route.getKey().equals("/venues")&&field.equals("venueId")||field.equals("destinationId"))field="id";
+    for(JsonNode item:result.path("content"))assertEquals(filter.getValue(),item.path(field).asText(),route.getKey()+" "+field);
+   }
+   assertEquals(1,queue(route.getKey(),route.getValue(),200).path("totalElements").asInt(),route.getKey());
+  }
+  assertTrue(readAdmin("/policies").isArray()); // policies intentionally use a non-paged list
+ }
+ @ParameterizedTest @EnumSource(BookingStatus.class) void bookingStatusFilter(BookingStatus status)throws Exception{UUID b=fixture();jdbc.update("update bookings set status=?::booking_status where id=?",status.name(),b);assertEquals(1,queue("/bookings",Map.of("bookingId",b.toString(),"status",status.name()),200).path("totalElements").asInt());}
+ @ParameterizedTest @EnumSource(RefundStatus.class) void refundStatusFilter(RefundStatus status)throws Exception{UUID b=fixture();jdbc.update("update bookings set refund_status=? where id=?",status.name(),b);assertEquals(1,queue("/bookings",Map.of("bookingId",b.toString(),"refundStatus",status.name()),200).path("totalElements").asInt());}
+ @ParameterizedTest @EnumSource(PaymentCreationStatus.class) void creationStatusFilter(PaymentCreationStatus status)throws Exception{UUID b=fixture();jdbc.update("update bookings set payment_creation_status=? where id=?",status.name(),b);assertEquals(1,queue("/bookings",Map.of("bookingId",b.toString(),"paymentCreationStatus",status.name()),200).path("totalElements").asInt());}
+ @Test void detailReadsExactStoredFinancialValuesWithoutWrites()throws Exception{UUID b=fixture(),p=payout(b,"CALCULATED",null,null),l=liability(b);jdbc.update("update bookings set status='CONFIRMED',total_paid_eur=125.50,paid_at=now(),mollie_payment_id=?,mollie_fee_eur=1.50,refund_status='PROCESSING',refund_amount_eur=12.55,cancellation_refund_amount_eur=12.55,cancellation_retained_amount_eur=112.95 where id=?","tr_qa_"+b,b);String before=row(b);var d=readAdmin("/bookings/"+b);assertEquals("25.1",d.path("commissionEur").asText());assertEquals("1.5",d.path("mollieFeeEur").asText());assertEquals("12.55",d.path("refundAmountEur").asText());assertEquals("112.95",d.path("cancellationRetainedAmountEur").asText());assertEquals(p.toString(),d.path("payout").path("id").asText());assertEquals(l.toString(),d.path("liabilities").get(0).path("id").asText());assertEquals(before,row(b));assertEquals(1,queue("/bookings",Map.of("molliePaymentId","  tr_qa_"+b+"  "),200).path("totalElements").asInt());req(get("/api/admin/bookings/"+UUID.randomUUID()),admin,null,404);}
+ @Test void timelineOrdersPagesAndRejectsNestedSensitivePayloads()throws Exception{UUID b=fixture();for(int n=0;n<25;n++)jdbc.update("insert into booking_events(id,booking_id,event_type,actor_name,actor_type,payload,created_at) values (?,?,'PAYMENT_SUCCEEDED','QA SYSTEM','SYSTEM',?::jsonb,? )",UUID.randomUUID(),b,json.writeValueAsString(Map.of("data",Map.of("amountEur",125.50,"password","QA-hidden","reason",Map.of("iban","QA-hidden-bank"),"source",List.of(Map.of("token","QA-hidden-token")),"currency","EUR"))),OffsetDateTime.now(clock).plusSeconds(n));
+  JsonNode page0=readAdmin("/bookings/"+b+"/events?size=20"),page1=readAdmin("/bookings/"+b+"/events?size=20&page=1");assertEquals(20,page0.path("content").size());assertEquals(5,page1.path("content").size());assertTrue(OffsetDateTime.parse(page0.path("content").get(19).path("createdAt").asText()).isBefore(OffsetDateTime.parse(page1.path("content").get(0).path("createdAt").asText())));assertFalse(page0.toString().contains("QA-hidden"));assertEquals("EUR",page0.path("content").get(0).path("payload").path("currency").asText());req(get("/api/admin/bookings/"+UUID.randomUUID()+"/events"),admin,null,404);
+ }
+ @ParameterizedTest @ValueSource(ints={-1,0,1}) void strictExceptionCutoffs(int offset)throws Exception{
+  clock.now=Instant.parse("2030-06-01T12:00:00Z");OffsetDateTime now=OffsetDateTime.now(clock);UUID payoutBook=fixture(),payment=fixture(),refund=fixture(),fee=fixture();payout(payoutBook,"READY",now.minusHours(72).plusSeconds(offset),null);
+  jdbc.update("update bookings set payment_creation_status='CREATING',payment_creation_started_at=? where id=?",now.minusHours(1).plusSeconds(offset),payment);jdbc.update("update bookings set refund_status='CREATING',refund_requested_at=? where id=?",now.minusDays(1).plusSeconds(offset),refund);jdbc.update("update bookings set status='REFUNDED',total_paid_eur=125.50,paid_at=? where id=?",now.minusDays(1).plusSeconds(offset),fee);
+  for(var pair:Map.of(payoutBook,"PAYOUT_READY_OVERDUE",payment,"PAYMENT_CREATION_STUCK",refund,"REFUND_STUCK",fee,"MOLLIE_FEE_UNRECONCILED").entrySet()){var e=exception(pair.getKey(),pair.getValue());assertEquals(offset<0,e!=null,pair.getValue());if(e!=null)assertEquals(pair.getValue().equals("REFUND_STUCK")?"CRITICAL":"WARNING",e.path("severity").asText());}
+ }
+ @ParameterizedTest @EnumSource(OwnerPayoutHoldReason.class) void heldReasons(OwnerPayoutHoldReason reason)throws Exception{UUID b=fixture(),p=payout(b,"HELD",null,reason.name());var e=exception(b,"PAYOUT_HELD");assertNotNull(e);assertEquals("INFO",e.path("severity").asText());assertEquals("PAYOUT_"+reason,e.path("reason").asText());assertEquals(p.toString(),e.path("payoutId").asText());}
+ @ParameterizedTest @EnumSource(RefundStatus.class) void lateRefundStatusMembership(RefundStatus status)throws Exception{UUID b=fixture();jdbc.update("update bookings set refund_status=?,late_payment_detected_at=? where id=?",status.name(),OffsetDateTime.now(clock),b);var e=exception(b,"LATE_PAYMENT_REFUND_IN_PROGRESS");assertEquals(List.of(RefundStatus.CREATING,RefundStatus.QUEUED,RefundStatus.PENDING,RefundStatus.PROCESSING).contains(status),e!=null);}
+ @Test void liabilityLinksAndReadOnlySeverityOrdering()throws Exception{UUID b=fixture(),l=liability(b);String before=row(b);var e=exception(b,"OWNER_LIABILITY_OPEN");assertNotNull(e);assertEquals(l.toString(),e.path("liabilityId").asText());assertEquals("WARNING",e.path("severity").asText());var page=readAdmin("/operations/exceptions?size=100");int last=-1;OffsetDateTime previous=null;for(JsonNode item:page.path("content")){int rank=List.of("CRITICAL","WARNING","INFO").indexOf(item.path("severity").asText());OffsetDateTime time=OffsetDateTime.parse(item.path("detectedAt").asText());assertTrue(rank>=last);if(rank==last)assertFalse(time.isBefore(previous));last=rank;previous=time;}assertEquals(before,row(b));assertEquals("OPEN",jdbc.queryForObject("select status from owner_financial_liabilities where id=?",String.class,l));}
+ @Test void veryLargeExceptionPageIsSafelyEmpty()throws Exception{assertTrue(readAdmin("/operations/exceptions?page=2147483647&size=100").path("empty").asBoolean());}
+ @Test void exceptionCandidateCapCharacterization()throws Exception{
+  // Explicitly characterize the deliberate operational cap; do not treat sampled totals as global counts.
+  clock.now=Instant.parse("2030-06-01T12:00:00Z");jdbc.update("update bookings set refund_status='NONE',late_payment_detected_at=null");
+  for(int n=0;n<201;n++){UUID b=fixture();jdbc.update("update bookings set refund_status='CREATING',refund_requested_at=? where id=?",OffsetDateTime.now(clock).minusDays(2).plusSeconds(n),b);}
+  int count=0;for(int page=0;page<20;page++){var r=readAdmin("/operations/exceptions?size=100&page="+page);for(JsonNode e:r.path("content"))if(e.path("type").asText().equals("REFUND_STUCK"))count++;if(r.path("last").asBoolean())break;}assertEquals(200,count);assertEquals(201,jdbc.queryForObject("select count(*) from bookings where refund_status='CREATING'",Integer.class));jdbc.update("update bookings set refund_status='NONE'");
+ }
+}

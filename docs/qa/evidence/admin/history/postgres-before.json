@@ -1,0 +1,22 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.AdminDomainIntegrationTest",
+      "tests": 40,
+      "failures": 2,
+      "errors": 1,
+      "skipped": 0,
+      "failedTests": [
+        "detailReadsExactStoredFinancialValuesWithoutWrites",
+        "veryLargeExceptionPageIsSafelyEmpty",
+        "timelineOrdersPagesAndRejectsNestedSensitivePayloads"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 40,
+    "failures": 2,
+    "errors": 1,
+    "skipped": 0
+  }
+}

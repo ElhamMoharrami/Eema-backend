@@ -1,0 +1,27 @@
+{
+  "tests": "4",
+  "failures": "3",
+  "errors": "0",
+  "findings": [
+    "P1: admin payout and liability lists return HTTP 500; PostgreSQL cannot determine nullable UUID parameter types",
+    "P1: an unpaid cancelled booking accepted fee reconciliation"
+  ],
+  "cases": [
+    {
+      "name": "adminListsAcceptOmittedAndPartialFilters(String)[1]",
+      "result": "FAIL"
+    },
+    {
+      "name": "adminListsAcceptOmittedAndPartialFilters(String)[2]",
+      "result": "FAIL"
+    },
+    {
+      "name": "unpaidBookingsCannotAcquireReconciledFees(boolean)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "unpaidBookingsCannotAcquireReconciledFees(boolean)[2]",
+      "result": "FAIL"
+    }
+  ]
+}

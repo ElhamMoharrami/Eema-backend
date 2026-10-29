@@ -1,0 +1,10 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "name": "Rejected markup has visible error and no success",
+      "result": "PASS"
+    }
+  ],
+  "error": "Browser timeout: report saved"
+}

@@ -1,0 +1,149 @@
+{
+  "description": "Exact asserted results in production-helper unit matrix and concurrent PostgreSQL persistence matrix; not independent test-only allocation logic",
+  "cases": [
+    {
+      "responsibility": "NONE",
+      "entitlement": "16.00",
+      "providerCost": "5.00",
+      "payout": "16.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "5.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "NONE",
+      "entitlement": "16.00",
+      "providerCost": "16.00",
+      "payout": "16.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "16.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "NONE",
+      "entitlement": "16.00",
+      "providerCost": "25.00",
+      "payout": "16.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "25.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "NONE",
+      "entitlement": "0.00",
+      "providerCost": "25.00",
+      "payout": "0.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "25.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "EEMA",
+      "entitlement": "16.00",
+      "providerCost": "5.00",
+      "payout": "16.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "5.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "EEMA",
+      "entitlement": "16.00",
+      "providerCost": "16.00",
+      "payout": "16.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "16.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "EEMA",
+      "entitlement": "16.00",
+      "providerCost": "25.00",
+      "payout": "16.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "25.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "EEMA",
+      "entitlement": "0.00",
+      "providerCost": "25.00",
+      "payout": "0.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "25.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER_SETTLEMENT",
+      "entitlement": "16.00",
+      "providerCost": "5.00",
+      "payout": "11.00",
+      "appliedToSettlement": "5.00",
+      "platformCost": "0.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER_SETTLEMENT",
+      "entitlement": "16.00",
+      "providerCost": "16.00",
+      "payout": "0.00",
+      "appliedToSettlement": "16.00",
+      "platformCost": "0.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER_SETTLEMENT",
+      "entitlement": "16.00",
+      "providerCost": "25.00",
+      "payout": "0.00",
+      "appliedToSettlement": "16.00",
+      "platformCost": "9.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER_SETTLEMENT",
+      "entitlement": "0.00",
+      "providerCost": "25.00",
+      "payout": "0.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "25.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER",
+      "entitlement": "16.00",
+      "providerCost": "5.00",
+      "payout": "11.00",
+      "appliedToSettlement": "5.00",
+      "platformCost": "0.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER",
+      "entitlement": "16.00",
+      "providerCost": "16.00",
+      "payout": "0.00",
+      "appliedToSettlement": "16.00",
+      "platformCost": "0.00",
+      "ownerLiability": "0.00"
+    },
+    {
+      "responsibility": "OWNER",
+      "entitlement": "16.00",
+      "providerCost": "25.00",
+      "payout": "0.00",
+      "appliedToSettlement": "16.00",
+      "platformCost": "0.00",
+      "ownerLiability": "9.00"
+    },
+    {
+      "responsibility": "OWNER",
+      "entitlement": "0.00",
+      "providerCost": "25.00",
+      "payout": "0.00",
+      "appliedToSettlement": "0.00",
+      "platformCost": "0.00",
+      "ownerLiability": "25.00"
+    }
+  ]
+}

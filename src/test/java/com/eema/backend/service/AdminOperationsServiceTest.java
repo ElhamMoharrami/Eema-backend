@@ -21,19 +21,9 @@ class AdminOperationsServiceTest {
     private final OwnerFinancialLiabilityRepository liabilities = mock(OwnerFinancialLiabilityRepository.class);
     private final OwnerPayoutService payoutService = mock(OwnerPayoutService.class);
     private final OwnerFinancialLiabilityService liabilityService = mock(OwnerFinancialLiabilityService.class);
+    private final OperationalExceptionRepository exceptions = mock(OperationalExceptionRepository.class);
     private final AdminOperationsService service = new AdminOperationsService(bookings, events, payouts, liabilities,
-            payoutService, liabilityService, new OperationalThresholds(60, 1440, 1440, 72));
-
-    @BeforeEach
-    void emptyQueues() {
-        when(payouts.findByStatusOrderByCreatedAtAsc(any(), any())).thenReturn(List.of());
-        when(payouts.findByStatusAndReadyAtBeforeOrderByReadyAtAsc(any(), any(), any())).thenReturn(List.of());
-        when(liabilities.findByStatusOrderByCreatedAtAsc(any(), any())).thenReturn(List.of());
-        when(bookings.findStuckRefunds(anyList(), any(), any())).thenReturn(List.of());
-        when(bookings.findStuckPaymentCreations(any(), any(), any())).thenReturn(List.of());
-        when(bookings.findOldUnreconciledMollieFees(any(), any())).thenReturn(List.of());
-        when(bookings.findLatePaymentRefundsInProgress(anyList(), any())).thenReturn(List.of());
-    }
+            payoutService, liabilityService, new OperationalThresholds(60, 1440, 1440, 72, java.time.Clock.systemUTC()), exceptions);
 
     @Test
     void eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys() {
@@ -42,39 +32,23 @@ class AdminOperationsServiceTest {
         BookingEvent event = BookingEvent.builder().id(UUID.randomUUID()).bookingId(bookingId)
                 .eventType(BookingEventType.PAYMENT_SUCCEEDED).actorType(ActorType.SYSTEM).actorName("SYSTEM")
                 .payload(new BookingEventPayload(new LinkedHashMap<>(Map.of(
-                        "amount", "100.00", "apiKey", "secret", "rawMollieResponse", "hidden")))).build();
+                        "amount", "100.00", "apiKey", "secret", "rawMollieResponse", "hidden", "previewToken", "QA-secret-proof", "fingerprint", "QA-fingerprint")))).build();
         when(events.findPageByBookingIdOrderByCreatedAtAsc(eq(bookingId), any()))
                 .thenReturn(new PageImpl<>(List.of(event)));
         var page = service.events(bookingId, PageRequest.of(0, 250));
         assertThat(page.getContent().getFirst().payload()).containsEntry("amount", "100.00")
-                .doesNotContainKeys("apiKey", "rawMollieResponse");
+                .doesNotContainKeys("apiKey", "rawMollieResponse", "previewToken", "fingerprint");
         verify(events).findPageByBookingIdOrderByCreatedAtAsc(eq(bookingId),
                 argThat(p -> p.getPageSize() == 100));
     }
 
     @Test
-    void exceptionQueueAggregatesAllRequiredOperationalCategories() {
-        UUID bookingId = UUID.randomUUID();
-        OffsetDateTime old = OffsetDateTime.now().minusDays(10);
-        OwnerPayout held = OwnerPayout.builder().id(UUID.randomUUID()).bookingId(bookingId)
-                .status(OwnerPayoutStatus.HELD).holdReason(OwnerPayoutHoldReason.WAITING_FOR_PROVIDER_COST).updatedAt(old).build();
-        OwnerPayout overdue = OwnerPayout.builder().id(UUID.randomUUID()).bookingId(bookingId)
-                .status(OwnerPayoutStatus.READY).readyAt(old).build();
-        OwnerFinancialLiability liability = OwnerFinancialLiability.builder().id(UUID.randomUUID()).bookingId(bookingId)
-                .status(OwnerFinancialLiabilityStatus.OPEN).createdAt(old).build();
-        Booking booking = Booking.builder().id(bookingId).refundRequestedAt(old).paymentCreationStartedAt(old)
-                .paidAt(old).latePaymentDetectedAt(old).build();
-        when(payouts.findByStatusOrderByCreatedAtAsc(eq(OwnerPayoutStatus.HELD), any())).thenReturn(List.of(held));
-        when(payouts.findByStatusAndReadyAtBeforeOrderByReadyAtAsc(eq(OwnerPayoutStatus.READY), any(), any())).thenReturn(List.of(overdue));
-        when(liabilities.findByStatusOrderByCreatedAtAsc(eq(OwnerFinancialLiabilityStatus.OPEN), any())).thenReturn(List.of(liability));
-        when(bookings.findStuckRefunds(anyList(), any(), any())).thenReturn(List.of(booking));
-        when(bookings.findStuckPaymentCreations(eq(PaymentCreationStatus.CREATING), any(), any())).thenReturn(List.of(booking));
-        when(bookings.findOldUnreconciledMollieFees(any(), any())).thenReturn(List.of(booking));
-        when(bookings.findLatePaymentRefundsInProgress(anyList(), any())).thenReturn(List.of(booking));
-
-        Set<OperationalExceptionType> types = service.exceptions(PageRequest.of(0, 100)).stream()
-                .map(OperationalExceptionDto::type).collect(java.util.stream.Collectors.toSet());
-        assertThat(types).containsExactlyInAnyOrder(OperationalExceptionType.values());
+    void exceptionQueueBoundsRequestsWithoutNarrowingLargeOffsets() {
+        when(exceptions.findPage(any(), any(), any(), any(), any())).thenReturn(Page.empty());
+        service.exceptions(PageRequest.of(Integer.MAX_VALUE, 500));
+        verify(exceptions).findPage(argThat(p -> p.getPageSize() == 100
+                && p.getOffset() == 214748364700L), any(), any(), any(), any());
+        verifyNoInteractions(bookings, payouts, liabilities);
     }
 
     @Test

@@ -1,0 +1,22 @@
+{
+  "policy": "Complete pageable operational backlog; bound each request, not total accessible backlog",
+  "categories": 7,
+  "filters": "Pageable only; no existing type/severity filter contract",
+  "defaultPage": 0,
+  "defaultSize": 20,
+  "maximumSize": 100,
+  "order": [
+    "severity_rank",
+    "detected_at ASC NULLS LAST",
+    "type COLLATE C",
+    "source entity UUID"
+  ],
+  "database": "One PostgreSQL statement: UNION ALL derived rows, count, LIMIT/OFFSET, count-only row for empty page",
+  "applicationMemory": "Only requested page DTOs, max100; no entity loading or Java backlog sorting",
+  "snapshot": "One statement; no cross-request snapshot guarantee",
+  "workers": "Unchanged fee reconciliation and token-cleanup batch100; metric counts unchanged",
+  "migration": "None; existing indexes used where planner chooses; small-fixture plan does not justify new indexes",
+  "provider": "No live provider tested",
+  "frontendProductionChanges": false,
+  "historicalEvidence": "history/"
+}

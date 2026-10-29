@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-19",
+  "domain": "PAYOUT",
+  "scenarios": [
+    "PAYOUT-001",
+    "PAYOUT-002",
+    "PAYOUT-003",
+    "PAYOUT-004",
+    "PAYOUT-005",
+    "PAYOUT-006"
+  ],
+  "scenarioResults": {
+    "PASS": 6,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "fixedDefects": {
+    "P1": 4,
+    "P2": 1
+  },
+  "unresolvedReproducedPayoutDefects": 0,
+  "commands": {
+    "mvn test": {
+      "result": "PASS",
+      "tests": 989,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 989
+    },
+    "mvn verify -Ppostgres-integration": {
+      "result": "PASS",
+      "tests": 753,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 7,
+      "executed": 746
+    },
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 989,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 989
+    },
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check (backend and frontend)": "PASS"
+  },
+  "browser": {
+    "result": "PASS",
+    "checks": 10,
+    "realProviderVerified": false,
+    "controlledClientCase": "liability 409 followed by WAIVED response"
+  },
+  "locallyComplete": true,
+  "automaticContinuation": true,
+  "stopReason": null,
+  "nextDomain": "DEST-001\u2013004",
+  "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
+  "pdfPages": 639,
+  "accountingPolicy": "User-approved Eema v1: OWNER_SETTLEMENT limited to unpaid entitlement; OWNER explicit excess liability; EEMA/NONE no owner cost",
+  "policyNewUnitCases": 16,
+  "policyNewPostgresCases": 30,
+  "frontendPolicyChange": "Existing fee label corrected only; no new accounting UI or arithmetic",
+  "browserPolicyUpdate": "Prior ten-check interaction evidence reused; frontend build/typecheck/lint rerun",
+  "policyEvidence": "v1-policy/"
+}

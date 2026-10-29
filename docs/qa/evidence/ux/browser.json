@@ -1,0 +1,4053 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/venues wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "/api/admin/bookings/10000000-0000-0000-0000-000000000001/events wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "/api/admin/bookings wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/bookings",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "/api/admin/operations/exceptions wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/exceptions",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "/api/admin/incidents/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "/api/admin/incidents wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/incidents",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "/api/admin/liabilities/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "/api/admin/liabilities wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/liabilities",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "/api/admin/owner-verifications/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "/api/admin/owner-verifications wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/owner-verifications",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "/api/admin/payout-destinations/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "/api/admin/payout-destinations wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payout-destinations",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "/api/admin/payouts/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "/api/admin/payouts wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/payouts",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "/api/admin/policies wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/policies",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "/api/admin/venues/10000000-0000-0000-0000-000000000001/events wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "/api/admin/venues wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/admin/venues",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/booked",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/booked",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "/api/venues wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/booked",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "/api/bookings/10000000-0000-0000-0000-000000000001/incidents wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 375,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/forgot-password",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/bookings wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "/api/venues/my wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/bookings",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "/api/availability-inquiries/owned-venues wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/payout-destinations wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "/api/owner/verification wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/owner/payouts/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "/api/venues/my wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/venues/my wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "/api/owner/payouts wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payouts",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001 wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/availability/settings wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/venues/10000000-0000-0000-0000-000000000001/moderation wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "/api/owner/verification wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/[id]",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/new",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "/api/venues/my wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "/api/owner/verification wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "/api/venues wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/policies",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/policies",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/current wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/reset-password",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 375,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/reset-password",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/reset-password",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/reset-password",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 753,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1425,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/bookings wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "/api/venues wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/bookings",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 360,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "/api/availability-inquiries/mine wrong-shape",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "anonymous",
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "variant": "wrong role",
+      "result": "PASS"
+    },
+    {
+      "route": "/verify-email",
+      "variant": "ready 375px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 375,
+        "scrollWidth": 375,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/verify-email",
+      "variant": "ready 768px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 768,
+        "scrollWidth": 768,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/verify-email",
+      "variant": "ready 1440px",
+      "result": "PASS",
+      "detail": {
+        "crash": false,
+        "overflow": false,
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingLabels": [],
+        "headings": 1,
+        "main": 1
+      }
+    },
+    {
+      "route": "/verify-email",
+      "variant": "empty collections",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 400 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 401 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 403 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 404 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 409 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 500 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status offline reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status invalid-json reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status wrong-shape reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status wrong-shape",
+      "result": "PASS"
+    }
+  ],
+  "failures": [],
+  "unexpected": [],
+  "provider": "Intercepted synthetic UI fixtures; no live provider or database mutation",
+  "executionEvidence": [
+    "history/final-browser-before-loader-reconciliation.json",
+    "loader-supplement.json"
+  ],
+  "reconciliation": "Retains successfully executed checks; replaces the corrected policy traversal using the actual successful rerun; adds source-audited missing loader checks. Original execution is preserved."
+}

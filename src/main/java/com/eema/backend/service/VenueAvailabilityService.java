@@ -62,7 +62,8 @@ public class VenueAvailabilityService {
         List<Interval> result = normalize(available);
         for (Interval block : normalize(blocked)) result = subtract(result, block);
         result = applyLeadTime(result, venue, date);
-        return normalize(result).stream().map(i -> new AvailabilityIntervalDto(i.start(), i.end())).toList();
+        return normalize(result).stream().flatMap(i -> BookingTimePolicy.available(date, i.start(), i.end(),
+                ZoneId.of(venue.getTimezone())).stream()).toList();
     }
 
     private List<Interval> applyLeadTime(List<Interval> intervals, Venue venue, LocalDate date) {
@@ -74,8 +75,8 @@ public class VenueAvailabilityService {
         // Requests resolve an ambiguous local time to its earlier offset. The second occurrence
         // therefore cannot be selected: move beyond the overlap, without inventing offset input.
         if (threshold.withEarlierOffsetAtOverlap().toInstant().isBefore(rounded)) {
-            threshold = zone.getRules().getTransition(threshold.toLocalDateTime())
-                    .getDateTimeBefore().atZone(zone);
+            var afterOverlap = zone.getRules().getTransition(threshold.toLocalDateTime()).getDateTimeBefore();
+            threshold = BookingTimePolicy.resolve(afterOverlap.toLocalDate(), afterOverlap.toLocalTime(), zone).toZonedDateTime();
         }
         // Compare dates after rounding so 23:59:xx cannot wrap to 00:00 on the same day.
         if (date.isBefore(threshold.toLocalDate())) return List.of();

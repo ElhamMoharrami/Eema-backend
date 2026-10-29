@@ -1,0 +1,33 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Incident POST reaches backend with emailVerified=false",
+      "result": "PASS"
+    },
+    {
+      "name": "Incident POST reaches backend with emailVerified=true",
+      "result": "PASS"
+    },
+    {
+      "name": "Existing verification gate retained: /bookings",
+      "result": "PASS"
+    },
+    {
+      "name": "Existing verification gate retained: /bookings/id/accept",
+      "result": "PASS"
+    },
+    {
+      "name": "Existing verification gate retained: /bookings/id/incidents/extra",
+      "result": "PASS"
+    },
+    {
+      "name": "Existing verification gate retained: /venues",
+      "result": "PASS"
+    },
+    {
+      "name": "Backend authorization denial remains authoritative",
+      "result": "PASS"
+    }
+  ]
+}

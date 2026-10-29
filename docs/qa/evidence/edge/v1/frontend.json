@@ -1,0 +1,8 @@
+{
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "build": "PASS",
+  "diffCheck": "PASS",
+  "changes": "Timezone first-occurrence explanatory copy only; no client temporal/pricing authority",
+  "logs": "Temporary local edge-v1 typecheck/lint/build logs; no provider credentials included"
+}

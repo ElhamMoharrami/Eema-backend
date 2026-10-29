@@ -1,0 +1,52 @@
+{
+  "domain": "EDGE",
+  "date": "2026-09-20",
+  "source": [
+    "BookingService",
+    "VenueAvailabilityService",
+    "VenueBookingLeadTimePolicy",
+    "BookingPriceCalculator",
+    "BookingCancellationPolicy",
+    "OwnerPayoutService",
+    "VenueFilterBuilder",
+    "GeminiAiService",
+    "VenueController",
+    "BookingController",
+    "V1 booking exclusion/precision",
+    "V4 payout eligible_at",
+    "V13 paid-booking minimum",
+    "InstantQuote",
+    "BookingCard",
+    "app/page.tsx",
+    "BookerVerification",
+    "app/api/verify-booker/route.ts"
+  ],
+  "reuse": [
+    "AVL",
+    "PRICE",
+    "MATCH",
+    "VEN",
+    "BK",
+    "CANCEL",
+    "PAYOUT",
+    "SEC"
+  ],
+  "corrections": [
+    "Midnight date carry already fixed in AVL",
+    "Under-one-whole-minute guard already fixed in PRICE",
+    "Suspended acceptance already fixed in VEN",
+    "HeroFeature is imported and rendered by homepage",
+    "Public GET uses getAllActiveVenues, not compatibility getAllVenues",
+    "Public refund route exists and is role/domain guarded; no generic force-state route"
+  ],
+  "compatibility": {
+    "VenueService.getAllVenues": "no production caller",
+    "VenueService.deleteVenue": "no production controller/caller",
+    "BookerVerification": "component definition only, no production importing caller",
+    "HeroFeature": "active homepage usage",
+    "CalaBff": "public Next POST route still exists independently; provider/privacy assessment belongs to CALA-001, not owner verification"
+  },
+  "newProductionChanges": false,
+  "newMigration": false,
+  "providerBoundary": "Synthetic payment association plus real confirmation; mocked Gemini transport; no real provider or delivery"
+}

@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
+  "pdfSha256": "550fc7c094e8807640a1958b969f1e13490c9135a708c7f82b0c8365555c67f2",
+  "markdownSha256": "259b785b633f3fdb6204e0b03c638393b88b57509c070be0e7148a0d4c5ccf92",
+  "pages": 622,
+  "scenarioIds": 703,
+  "sameIdOrder": true,
+  "visuallyReviewedPages": [
+    1,
+    114,
+    132,
+    149,
+    618
+  ],
+  "layout": "No clipping or overlap on reviewed pages. OPS/JOB/RACE local PASS, UX overall BLOCKED, UXACT NOT RUN and release-gate blocker retained."
+}

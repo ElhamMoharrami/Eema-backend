@@ -73,7 +73,7 @@ class BookingNotificationServiceTest {
 
     @Test
     void scoutFailureStillAttemptsOwner() {
-        doThrow(new EmailService.EmailDeliveryException("failed", new RuntimeException()))
+        doThrow(new EmailService.DeliveryFailure("QA_FAILURE",false))
                 .when(email).send(eq("snapshot-scout@example.test"), eq("Payment received for your Eema booking"), anyString(), anyString());
         service.sendPaymentReceived(bookingId);
         verify(email).send(eq("snapshot-owner@example.test"), eq("Confirmed booking for your Eema venue"), anyString(), anyString());
@@ -108,7 +108,7 @@ class BookingNotificationServiceTest {
         service.sendCancellation(bookingId);
 
         verify(email).send(eq("snapshot-scout@example.test"), eq("Your Eema booking was cancelled"),
-                contains("€125.00 has been initiated"), anyString());
+                contains("refund amount is €125.00"), anyString());
         verify(email, never()).send(anyString(), contains("processed"), anyString(), anyString());
     }
 
@@ -173,7 +173,7 @@ class BookingNotificationServiceTest {
     void lifecycleEmailFailureIsContained() {
         Booking booking = bookings.findById(bookingId).orElseThrow();
         booking.setStatus(BookingStatus.DECLINED);
-        doThrow(new EmailService.EmailDeliveryException("failed", new RuntimeException()))
+        doThrow(new EmailService.DeliveryFailure("QA_FAILURE",false))
                 .when(email).send(anyString(), anyString(), anyString(), anyString());
 
         assertDoesNotThrow(() -> service.sendLifecycle(bookingId, BookingLifecycleEvent.Type.REQUEST_DECLINED));
@@ -193,4 +193,22 @@ class BookingNotificationServiceTest {
         verify(email).send(eq("snapshot-scout@example.test"), eq("The requested time is no longer available"),
                 argThat(body -> body.contains("Another booking reserved") && body.contains("did not explicitly decline")), anyString());
     }
+    @Test
+    void oneRecipientFailureDoesNotPreventOtherRecipientAttempt() {
+        var booking=bookings.findById(bookingId).orElseThrow();
+        booking.setStatus(BookingStatus.REQUESTED);
+        doThrow(new EmailService.DeliveryFailure("QA_FAILURE",false))
+                .when(email).send(eq("snapshot-scout@example.test"),anyString(),anyString(),anyString());
+        assertDoesNotThrow(()->service.sendLifecycle(bookingId,BookingLifecycleEvent.Type.REQUEST_SUBMITTED));
+        verify(email).send(eq("snapshot-scout@example.test"),anyString(),anyString(),anyString());
+        verify(email).send(eq("snapshot-owner@example.test"),anyString(),anyString(),anyString());
+    }
+
+    @Test
+    void missingBookingProducesNoEmail() {
+        when(bookings.findById(bookingId)).thenReturn(java.util.Optional.empty());
+        assertDoesNotThrow(()->service.sendLifecycle(bookingId,BookingLifecycleEvent.Type.REQUEST_SUBMITTED));
+        verifyNoInteractions(email);
+    }
+
 }

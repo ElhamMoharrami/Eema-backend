@@ -1,0 +1,31 @@
+{
+  "tests": 18,
+  "failures": 5,
+  "errors": 1,
+  "failed": [
+    {
+      "name": "correlationIdIsSafeAndDoesNotBleedBetweenRequests(String)[3]",
+      "message": "expected: <200> but was: <500>"
+    },
+    {
+      "name": "actuatorAndFrameworkExposureIsRoleBounded",
+      "message": "expected: <[status]> but was: <[status, groups]>"
+    },
+    {
+      "name": "malformedJwtThroughHttpDoesNotLogHeaderContents",
+      "message": "expected: <false> but was: <true>"
+    },
+    {
+      "name": "unexpectedHttpFailureIsSafeInBodyAndLogs",
+      "message": "expected: <null> but was: <ch.qos.logback.classic.spi.ThrowableProxy@7de34bb5>"
+    },
+    {
+      "name": "databaseRoleActiveAndVerificationWinOverCachedClaims",
+      "message": "expected: <403> but was: <400>"
+    },
+    {
+      "name": "corsAllowsOnlyConfiguredOriginsMethodsAndHeaders",
+      "message": "The port must be an integer: 3000.evil.example"
+    }
+  ]
+}

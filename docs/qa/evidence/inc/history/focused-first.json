@@ -1,0 +1,17 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.IncidentIntegrationTest",
+      "tests": 40,
+      "failures": 27,
+      "errors": 1,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "tests": 40,
+    "failures": 27,
+    "errors": 1,
+    "skipped": 0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "src/main/java/com/eema/backend/entity/IncidentReport.java": "39ba8fcd07740fda22d7b68a8efbdbe76264fd54d6137ffb4f3840ec09bf2b2c",
+  "src/main/java/com/eema/backend/repository/IncidentReportRepository.java": "163575cd348fa98d29726fb518670e6a6a4765c4ba8c09f42f1c29b9eb285b98",
+  "src/main/java/com/eema/backend/service/IncidentService.java": "d7107522ae0f1b76b87c290d11530298f24664862642ae6f219851ba56911b4d",
+  "src/main/java/com/eema/backend/controller/AdminIncidentController.java": "c4bdc306bfca2f684bcea0a68f29aa3d49cf7111290e872f9d8a7808844b094f",
+  "src/main/java/com/eema/backend/controller/IncidentController.java": "b75b15756926c3c223e4dc056c4346f62f99d590b53a13fbc5271705a471471a",
+  "src/main/java/com/eema/backend/dto/request/CreateIncidentRequest.java": "bd02bedac47f4166938f55b2fba60dc0e0c3d0acf59e80711574843c2dda2cf8",
+  "src/main/java/com/eema/backend/dto/request/ResolveIncidentRequest.java": "22b7f68aa2e121591d9198a583dd543796580988cfda6903b4cd97d804f892c5",
+  "src/main/java/com/eema/backend/dto/response/IncidentDto.java": "e9922f3c26268001ff0b9b548b442292fbc2370203c6f302755a60e0b927c83c",
+  "src/main/java/com/eema/backend/entity/enums/IncidentStatus.java": "b6a758ee6448028459cd460ec2c1884a2e2d664aeffa7dd3e9bedd3300c9b320",
+  "src/main/java/com/eema/backend/entity/enums/IncidentCategory.java": "9f9186ffa3b04713ae98ec925906ac889700a685f834a6e0017fd0e071d345e1",
+  "src/main/java/com/eema/backend/service/MarketplaceTrustAuditService.java": "a11f002df3084a3bd0fe36105b8eebd0de527fe6c0b0d23672fcfcd1bfb9685e",
+  "src/main/java/com/eema/backend/security/SecurityConfig.java": "d59addb26ef91abcad9f1800029c5d62cf3b65523b6d47ea65db1d3f16d984d3",
+  "src/main/resources/db/migration/common/V11__policy_acceptance_and_incidents.sql": "01c897f655ad6f33fde6ac25ace30d863cc5342520a65b930a35fdf43cb488cd",
+  "/home/elham/workspace/Eema-frontend/components/incident/BookingIncidents.tsx": "355452c737cc4349870075a0e58e843186db557121a60c718875a282db958c23",
+  "/home/elham/workspace/Eema-frontend/app/admin/incidents/page.tsx": "1c9968db9f1d47faa13599dab225e38d7f334cb50ee4d2359bf9abb0e22ef4b8",
+  "/home/elham/workspace/Eema-frontend/app/admin/incidents/[id]/page.tsx": "4028382c2129a8a19689a4aa59bea3ac1089049cde1feb4a8429a906597af047",
+  "/home/elham/workspace/Eema-frontend/lib/api/client.ts": "cf20158c7cc898dd79d7799d263a8b387910633a44954fe7c1f14163df1b6776"
+}

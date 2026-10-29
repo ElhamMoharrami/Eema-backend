@@ -1,0 +1,9 @@
+{
+  "defect": "OPS-DEF-002",
+  "severity": "P1",
+  "status": "FIXED_FOCUSED_42_PASS_FULL_REGRESSION_PENDING",
+  "reproduction": "CancellationIntegrationTest.unexpectedPaymentAfterWithdrawalIsRefundedWithoutResurrectingBooking: outbox zero-recipient guard aborted the late-payment refund claim for an already CANCELLED unpaid withdrawal.",
+  "cause": "LatePaymentRefundInitiatedEvent also drives a financial metric; the existing initiation template is only for EXPIRED bookings and intentionally produces no email for CANCELLED.",
+  "fix": "Explicitly preserve that no-initiation-email branch in the listener; keep financial event/metric and existing cancellation-refund completion email. No new template or changed financial calculation.",
+  "coverage": "Assert refund completed, booking remains CANCELLED, owner payout is zero, no LATE_PAYMENT_REFUND outbox row and one existing CANCELLATION_REFUND_COMPLETED row."
+}

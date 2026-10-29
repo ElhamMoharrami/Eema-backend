@@ -151,6 +151,7 @@ class CriticalBookingWorkflowTest {
         when(mollie.createRefund(eq("tr_workflow"), eq(bookingId), eq(new BigDecimal("100.00")), any()))
                 .thenReturn(queued);
         when(bookings.findByMolliePaymentId("tr_workflow")).thenReturn(Optional.of(booking));
+        when(bookings.findIdByMolliePaymentId("tr_workflow")).thenReturn(Optional.of(bookingId));
         when(mollie.getRefund("tr_workflow", "re_late")).thenReturn(queued);
 
         WebhookService webhook = new WebhookService(mollie, bookingService, refundService);

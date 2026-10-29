@@ -1,0 +1,48 @@
+{
+  "domain": "INC",
+  "scenarios": {
+    "INC-001": "PASS",
+    "INC-002": "PASS"
+  },
+  "counts": {
+    "PASS": 2,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "locallyClear": true,
+  "defects": {
+    "INC-DEF-001": "RESOLVED"
+  },
+  "unresolvedDecisions": [],
+  "focusedPostgres": 41,
+  "racePairs": 9,
+  "browserChecks": 8,
+  "clientChecks": 7,
+  "authClientChecks": 13,
+  "unit": {
+    "tests": 1029,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "postgres": {
+    "tests": 890,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 10
+  },
+  "package": {
+    "tests": 1029,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "diffCheck": "PASS"
+  },
+  "nextDomain": "ADMIN",
+  "continuation": "User explicitly authorized automatic sequential continuation"
+}

@@ -1,0 +1,98 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 400 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 400",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 401 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 401",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 403 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 403",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 404 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 404",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 409 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 409",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 500 reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status 500",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status offline reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status offline",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status invalid-json reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status invalid-json",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status wrong-shape reached",
+      "result": "PASS"
+    },
+    {
+      "route": "/policies",
+      "variant": "/api/policies/status wrong-shape",
+      "result": "PASS"
+    }
+  ],
+  "failures": [],
+  "unexpected": [],
+  "provider": "Intercepted synthetic UI fixtures; no live provider or database mutation"
+}

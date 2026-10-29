@@ -28,13 +28,13 @@ public class WebhookController {
 
         } catch (IllegalArgumentException e) {
 
-            log.warn("Invalid Mollie webhook: {}", e.getMessage());
+            log.warn("Invalid Mollie webhook request");
 
             return ResponseEntity.badRequest().build();
 
         } catch (Exception e) {
 
-            log.error("Failed to process Mollie webhook: paymentId={}", paymentId, e);
+            log.error("Failed to process Mollie webhook: paymentId={}, errorType={}", paymentId, e.getClass().getSimpleName());
 
             return ResponseEntity.internalServerError().build();
         }

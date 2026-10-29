@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-20",
+  "domain": "SEC",
+  "scenarios": "SEC-001\u2013007",
+  "results": {
+    "pass": 7,
+    "fail": 0,
+    "blocked": 0
+  },
+  "resolvedDefects": [
+    "SEC-DEF-001",
+    "SEC-DEF-002",
+    "SEC-DEF-003"
+  ],
+  "unresolvedP0P1": [],
+  "unresolvedDecisions": [],
+  "localClearToProceed": true,
+  "backend": {
+    "unit": {
+      "tests": 1032,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 958,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 12
+    },
+    "package": {
+      "tests": 1032,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "diffCheck": "PASS"
+  },
+  "focusedUnits": 8,
+  "focusedPostgres": 19,
+  "browserChecks": 6,
+  "documentBrowserRegression": 8,
+  "sessionClientChecks": 26,
+  "diffCheckBothRepos": "PASS",
+  "pdf": "document-check.json",
+  "nextDomain": "EDGE-001\u2013006",
+  "providers": "Local mocks only; staging unverified"
+}

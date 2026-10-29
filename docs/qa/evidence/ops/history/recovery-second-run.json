@@ -1,0 +1,7 @@
+{
+  "result": "HARNESS ASSERTION",
+  "browser": "4 PASS",
+  "crashBoundary": "Committed booking survives; held notification absent after restart, new delivery processed",
+  "restore": "All table hashes matched; constraint text comparison failed on PostgreSQL equivalent varchar array casts and associative AND formatting",
+  "correction": "Narrow canonicalization preserves every constraint name/operator/operand. Correct inquiry read assertion to actual /mine endpoint; no product changes."
+}

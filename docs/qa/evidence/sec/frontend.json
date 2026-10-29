@@ -1,0 +1,6 @@
+{
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "build": "PASS",
+  "diffCheck": "PASS"
+}

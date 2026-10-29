@@ -7,7 +7,7 @@ const results=[];
 const sample=()=>({accessToken:'fixture-access',refreshToken:'fixture-refresh',tokenType:'Bearer',expiresIn:900,user:{id:'fixture-user',email:'qa@example.test',fullName:'QA Auth',role:'SCOUT',active:true,emailVerified:true}});
 function harness(fetch,shared=new Map()){
  const window={localStorage:{getItem:k=>shared.get(k)||null,setItem:(k,v)=>shared.set(k,v),removeItem:k=>shared.delete(k)},dispatchEvent:()=>{}};
- const context=vm.createContext({window,fetch,Headers,Response,FormData,Event,setTimeout,clearTimeout,console:{log:()=>{}}});const cache={};
+ const context=vm.createContext({crypto:require("crypto").webcrypto,window,fetch,Headers,Response,FormData,Event,setTimeout,clearTimeout,console:{log:()=>{}}});const cache={};
  function load(name){if(cache[name])return cache[name];if(name==='@/lib/config')return {API_BASE_URL:'http://qa/api'};
   const rel=name.replace('@/','');const source=fs.readFileSync(path.join(frontend,rel+'.ts'),'utf8');
   const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;

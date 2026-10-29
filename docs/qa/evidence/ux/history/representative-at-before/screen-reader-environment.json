@@ -1,0 +1,18 @@
+{
+  "result": "BLOCKED",
+  "requirement": "UX-001\u2013035 exact step 4: screen-reader labels, errors, loading and table headings",
+  "localOrcaInstalled": true,
+  "privateAccessibilityBusStarts": true,
+  "headlessChromiumAvailable": true,
+  "graphicalBrowserAttempts": [
+    "Wayland: browser debugging endpoint did not initialize",
+    "X11: browser debugging endpoint did not initialize"
+  ],
+  "isolatedDisplayTools": {
+    "Xvfb": false,
+    "Xephyr": false,
+    "weston": false,
+    "cage": false
+  },
+  "boundary": "Browser accessibility-tree/keyboard checks are separate from actual screen-reader execution. No change to user desktop preferences; temporary private bus/profile only."
+}

@@ -1,0 +1,15 @@
+{
+  "pages": 625,
+  "scenarioIds": 703,
+  "sameOrder": true,
+  "sha256": "015bd63e8a44469af0ffd28d69428a607cd03d02a7f5d1b4286e9bb28aecf8f9",
+  "reviewedPages": [
+    97,
+    98,
+    99,
+    614,
+    616
+  ],
+  "visualResult": "PASS",
+  "result": "Current master includes ADMIN/SEC completion and EDGE stop gate; prior PDF hashes remain historical"
+}

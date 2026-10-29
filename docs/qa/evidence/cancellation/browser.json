@@ -1,0 +1,38 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Preview failure cannot enable paid cancellation",
+      "result": "PASS"
+    },
+    {
+      "name": "Preview retry loads server amounts, explicit CTA and keep-booking action",
+      "result": "PASS"
+    },
+    {
+      "name": "409 refetches preview, shows conflict and requires another explicit confirmation",
+      "result": "PASS"
+    },
+    {
+      "name": "Duplicate clicks submit once and authoritative booking is refetched",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload preserves cancelled state and pending refund distinction",
+      "result": "PASS"
+    },
+    {
+      "name": "Zero refund has explicit destructive consequence and back action",
+      "result": "PASS"
+    },
+    {
+      "name": "401 mutation is not refreshed and automatically replayed",
+      "result": "PASS"
+    },
+    {
+      "name": "Account switch invalidates pending confirmation",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Mocked Mollie in disposable PostgreSQL fixture; not live provider verification"
+}

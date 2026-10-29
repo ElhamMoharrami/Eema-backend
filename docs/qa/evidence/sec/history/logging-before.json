@@ -1,0 +1,15 @@
+{
+  "tests": 2,
+  "failures": 2,
+  "errors": 0,
+  "cases": [
+    {
+      "name": "unexpectedProviderCauseDoesNotReachApplicationLogsOrResponse",
+      "result": "FAIL"
+    },
+    {
+      "name": "malformedJwtHeaderCannotInjectTokenContentsIntoDebugLogs",
+      "result": "FAIL"
+    }
+  ]
+}

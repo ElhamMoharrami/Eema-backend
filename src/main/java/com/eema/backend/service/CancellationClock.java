@@ -9,11 +9,7 @@ import java.time.OffsetDateTime;
 public class CancellationClock {
     private final Clock clock;
 
-    public CancellationClock() {
-        this(Clock.systemUTC());
-    }
-
-    CancellationClock(Clock clock) {
+    public CancellationClock(Clock clock) {
         this.clock = clock;
     }
 

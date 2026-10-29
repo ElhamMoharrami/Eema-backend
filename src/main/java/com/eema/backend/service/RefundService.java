@@ -33,9 +33,13 @@ public class RefundService {
             log.info("Mollie refund created: bookingId={}, refundId={}, status={}", bookingId, refund.id(), refund.status());
             return bookingService.getBookingForCurrentUser(bookingId);
         } catch (HttpStatusCodeException e) {
+            if (ambiguous(e)) {
+                log.warn("Mollie refund response was ambiguous: bookingId={}, status={}", bookingId, e.getStatusCode().value());
+                throw new BadRequestException("Refund creation is pending reconciliation; retry shortly");
+            }
             coordinator.markRejected(bookingId);
             log.warn("Mollie rejected refund: bookingId={}, status={}", bookingId, e.getStatusCode().value());
-            throw new BadRequestException("Refund could not be initiated");
+            throw new BadRequestException("Refund could not be initiated; support must review the existing refund");
         } catch (RestClientException e) {
             log.warn("Mollie refund response was ambiguous: bookingId={}, errorType={}", bookingId, e.getClass().getSimpleName());
             throw new BadRequestException("Refund creation is pending reconciliation; retry shortly");
@@ -51,6 +55,12 @@ public class RefundService {
                 log.info("Late-payment refund created: bookingId={}, refundId={}, status={}",
                         bookingId, refund.id(), refund.status());
             } catch (HttpStatusCodeException exception) {
+                if (ambiguous(exception)) {
+                    // The provider may have committed before returning an error. Keep the claim.
+                    log.warn("Late-payment refund response was ambiguous: bookingId={}, status={}",
+                            bookingId, exception.getStatusCode().value());
+                    throw new BadRequestException("Late-payment refund is pending reconciliation");
+                }
                 coordinator.markRejected(bookingId);
                 log.warn("Mollie rejected late-payment refund: bookingId={}, status={}",
                         bookingId, exception.getStatusCode().value());
@@ -72,6 +82,9 @@ public class RefundService {
             log.info("Cancellation refund created: bookingId={}, refundId={}, status={}",
                     claim.bookingId(), refund.id(), refund.status());
         } catch (HttpStatusCodeException exception) {
+            if (ambiguous(exception)) {
+                throw new BadRequestException("Cancellation refund creation is pending reconciliation");
+            }
             coordinator.markRejected(claim.bookingId());
             throw new BadRequestException("Cancellation was recorded but the refund could not be initiated");
         } catch (RestClientException exception) {
@@ -92,6 +105,11 @@ public class RefundService {
             MollieRefundResponse refund = mollie.getRefund(paymentId, reference);
             coordinator.reconcile(paymentId, refund);
         });
+    }
+
+    private boolean ambiguous(HttpStatusCodeException exception) {
+        int status = exception.getStatusCode().value();
+        return status >= 500 || status == 408 || status == 409 || status == 429;
     }
 
     private String actorName(User user) {

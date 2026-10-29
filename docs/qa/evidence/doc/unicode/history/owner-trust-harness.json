@@ -1,0 +1,6 @@
+{
+  "observed": "OwnerTrustIntegrationTest.competingAdminReviewsHaveOneWinner failed with UnfinishedStubbingException while configuring its repository spy",
+  "independentReproduction": "PASS: a deliberately interleaved asynchronous read consumes doAnswer(...).when(repository) before the intended method call; no production code involved",
+  "correction": "Use a test-only MethodInterceptor around lock methods, with volatile immutable barrier configuration; ordinary async reads never consume/configure the hook",
+  "productionChanged": false
+}

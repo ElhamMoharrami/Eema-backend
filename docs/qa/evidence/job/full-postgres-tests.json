@@ -1,0 +1,330 @@
+[
+  {
+    "name": "com.eema.backend.integration.PriceBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.001"
+  },
+  {
+    "name": "com.eema.backend.integration.OwnerTrustIntegrationTest",
+    "tests": "30",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "110.926"
+  },
+  {
+    "name": "com.eema.backend.integration.CancellationIntegrationTest",
+    "tests": "23",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "23.192"
+  },
+  {
+    "name": "com.eema.backend.integration.CancellationBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.001"
+  },
+  {
+    "name": "com.eema.backend.integration.InquiryIntegrationTest",
+    "tests": "94",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "25.604"
+  },
+  {
+    "name": "com.eema.backend.integration.PayoutBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.003"
+  },
+  {
+    "name": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "33.603"
+  },
+  {
+    "name": "com.eema.backend.integration.BookingBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  },
+  {
+    "name": "com.eema.backend.integration.MatchingBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.001"
+  },
+  {
+    "name": "com.eema.backend.integration.ZeroPriceIntegrationTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "28.308"
+  },
+  {
+    "name": "com.eema.backend.integration.PriceIntegrationTest",
+    "tests": "18",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "18.371"
+  },
+  {
+    "name": "com.eema.backend.integration.AdminBookingSearchIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "11.856"
+  },
+  {
+    "name": "com.eema.backend.integration.RegistrationIntegrationTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "18.237"
+  },
+  {
+    "name": "com.eema.backend.integration.AdminDomainIntegrationTest",
+    "tests": "47",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "29.045"
+  },
+  {
+    "name": "com.eema.backend.integration.OperationsRecoveryIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "495.313"
+  },
+  {
+    "name": "com.eema.backend.integration.IncidentBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  },
+  {
+    "name": "com.eema.backend.integration.PolicyIntegrationTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "46.255"
+  },
+  {
+    "name": "com.eema.backend.integration.MatchingIntegrationTest",
+    "tests": "138",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "23.646"
+  },
+  {
+    "name": "com.eema.backend.integration.EdgeBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  },
+  {
+    "name": "com.eema.backend.integration.ScheduledJobsIntegrationTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "64.121"
+  },
+  {
+    "name": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+    "tests": "14",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "25.032"
+  },
+  {
+    "name": "com.eema.backend.integration.DocumentBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  },
+  {
+    "name": "com.eema.backend.integration.OperationsNotificationIntegrationTest",
+    "tests": "19",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "19.822"
+  },
+  {
+    "name": "com.eema.backend.integration.BookingCoreIntegrationTest",
+    "tests": "37",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "97.486"
+  },
+  {
+    "name": "com.eema.backend.integration.OperationsIntegrationTest",
+    "tests": "5",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "15.456"
+  },
+  {
+    "name": "com.eema.backend.integration.DocumentIntegrationTest",
+    "tests": "47",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "29.162"
+  },
+  {
+    "name": "com.eema.backend.integration.PaymentIntegrationTest",
+    "tests": "90",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "36.492"
+  },
+  {
+    "name": "com.eema.backend.integration.DestinationIntegrationTest",
+    "tests": "35",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "47.092"
+  },
+  {
+    "name": "com.eema.backend.integration.EdgeIntegrationTest",
+    "tests": "25",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "24.356"
+  },
+  {
+    "name": "com.eema.backend.integration.InquiryBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  },
+  {
+    "name": "com.eema.backend.integration.SecurityIntegrationTest",
+    "tests": "19",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "30.565"
+  },
+  {
+    "name": "com.eema.backend.integration.VenueDomainIntegrationTest",
+    "tests": "154",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "44.229"
+  },
+  {
+    "name": "com.eema.backend.integration.AdminBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  },
+  {
+    "name": "com.eema.backend.integration.IncidentIntegrationTest",
+    "tests": "41",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "27.1"
+  },
+  {
+    "name": "com.eema.backend.integration.RefundIntegrationTest",
+    "tests": "53",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "29.684"
+  },
+  {
+    "name": "com.eema.backend.integration.PayoutIntegrationTest",
+    "tests": "24",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "20.326"
+  },
+  {
+    "name": "com.eema.backend.integration.AuthSessionIntegrationTest",
+    "tests": "8",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "33.217"
+  },
+  {
+    "name": "com.eema.backend.integration.DestinationBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.001"
+  },
+  {
+    "name": "com.eema.backend.integration.SecurityBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.001"
+  },
+  {
+    "name": "com.eema.backend.integration.ProviderCostAllocationIntegrationTest",
+    "tests": "33",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "17.292"
+  },
+  {
+    "name": "com.eema.backend.integration.PaymentBrowserIntegrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "1",
+    "time": "0.0"
+  }
+]

@@ -92,7 +92,7 @@ class AvailabilityInquiryNotificationServiceTest {
 
     @Test
     void providerFailureDoesNotEscapeNotificationBoundary() {
-        doThrow(new EmailService.EmailDeliveryException("failed", new RuntimeException()))
+        doThrow(new EmailService.DeliveryFailure("QA_FAILURE",false))
                 .when(email).send(anyString(), anyString(), anyString(), anyString());
         assertDoesNotThrow(() -> service.sendLifecycle(inquiryId, AvailabilityInquiryLifecycleEvent.Type.CREATED));
     }

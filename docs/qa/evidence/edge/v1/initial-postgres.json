@@ -1,0 +1,21 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.EdgeIntegrationTest",
+      "tests": 25,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": [
+        "matchingBoundsAndStableTies(boolean)[1]",
+        "matchingBoundsAndStableTies(boolean)[2]"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 25,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  }
+}

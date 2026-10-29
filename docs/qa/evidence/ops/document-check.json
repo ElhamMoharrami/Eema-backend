@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
+  "pdfSha256": "8ddcd43057589451137b3a912515781d14d2c8ac8f19a1217fee1eb95538ebd1",
+  "markdownSha256": "4d59400bf5742428057e6f9acd7e954e6f08a2c9a44d277fcf309d0a71fd9b1f",
+  "pages": 625,
+  "scenarioIds": 703,
+  "sameIdOrder": true,
+  "visuallyReviewedPages": [
+    1,
+    99,
+    102,
+    105,
+    106,
+    616
+  ],
+  "layout": "No clipping/overlap on reviewed pages; OPS-008 BLOCKED and EDGE resolution preserved",
+  "history": "Earlier EDGE PDF hashes remain point-in-time evidence; this is the current shared document"
+}

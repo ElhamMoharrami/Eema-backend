@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-15",
+  "result": "PASS",
+  "unitTests": {
+    "tests": 900,
+    "failures": 0,
+    "errors": 0,
+    "evidence": "/tmp/cancel-final.log",
+    "note": "All unit tests passed in the combined verify run. That run failed only on a browser label assertion, corrected and rerun separately."
+  },
+  "postgresql": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "engine": "PostgreSQL 16 Testcontainers",
+    "report": "CancellationIntegrationTest"
+  },
+  "browser": {
+    "journeys": 1,
+    "checks": 6,
+    "failures": 0,
+    "report": "CancellationBrowserIntegrationTest",
+    "evidence": "browser.json",
+    "command": "mvn verify -Ppostgres-integration -Dit.test=CancellationBrowserIntegrationTest -Deema.cancellation.browser=true"
+  },
+  "frontend": {
+    "build": "PASS (includes type checking and lint)",
+    "lint": "PASS",
+    "repository": "Eema-frontend"
+  },
+  "diffWhitespace": "PASS",
+  "provider": "Mocked Mollie transport; no real provider, bank settlement or live email verification",
+  "restartScope": "New service/coordinator fixture reading persisted PostgreSQL claim, not an operating-system process crash",
+  "operationsLimitations": [
+    "Unknown provider reference beyond one-hour creation replay window needs controlled manual reconciliation; current client has no refund-list/search abstraction.",
+    "Current client cannot independently distinguish a same-payment, same-amount unrelated refund before the provider ID is attached.",
+    "OWNER_SETTLEMENT excess-fee liability requires an explicit accounting policy."
+  ]
+}

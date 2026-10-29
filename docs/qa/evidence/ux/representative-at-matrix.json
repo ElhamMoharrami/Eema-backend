@@ -1,0 +1,235 @@
+{
+  "status": "BLOCKED",
+  "acceptanceModel": "Automated route/state coverage plus representative actual screen-reader coverage of shared interaction patterns",
+  "representatives": [
+    {
+      "flow": "AT-R01",
+      "scenario": "UX-020",
+      "route": "/forgot-password",
+      "role": "anonymous",
+      "represents": "Public required-field form, validation, asynchronous submission and recovery feedback",
+      "actions": "Submit empty/invalid email; correct to a synthetic test address; submit with a mocked successful response and one controlled failure. Hear labels, required/error feedback, progress and result; inspect focus after each.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R02",
+      "scenario": "UX-031",
+      "route": "/policies",
+      "role": "signed-in Scout, unaccepted current policies",
+      "represents": "Policy reading regions, individual checkboxes, disabled/enabled acceptance and refreshed status",
+      "actions": "Read each policy heading and checkbox in context; distinguish privacy acknowledgement from acceptance. Select the required policies, submit, hear the recorded result; exercise one controlled error and retry.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R03",
+      "scenario": "UX-019",
+      "route": "/bookings/[id]",
+      "role": "owning Scout",
+      "represents": "Financial definition lists, booking state and consequential action confirmation",
+      "actions": "Read a synthetic booking with money and payment status. Open an available cancellation/withdrawal confirmation, hear its consequence, then cancel the confirmation. Use a separate disposable fixture for a completed action and its feedback; never start real checkout.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R04",
+      "scenario": "UX-033",
+      "route": "/scout/bookings",
+      "role": "Scout with multiple own bookings",
+      "represents": "Marketplace card/list navigation and navigation back from detail",
+      "actions": "Navigate by headings/links between two bookings and detail; return to the list. Hear venue, date, state and amounts without relying on color; verify context and focus after navigation.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R05",
+      "scenario": "UX-021",
+      "route": "/owner/bookings",
+      "role": "owning verified Owner with REQUESTED bookings",
+      "represents": "Owner decision buttons, busy state, authoritative refresh and conflict feedback",
+      "actions": "On disposable requests, accept one and decline another using existing controls. Hear action names/consequences, loading and final state; exercise one controlled conflict/error and inspect focus. No payment is made.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R06",
+      "scenario": "UX-026",
+      "route": "/owner/venues/[id]",
+      "role": "Owner of editable synthetic venue",
+      "represents": "Long grouped editor, activity selects, instructions, validation and save result",
+      "actions": "Navigate headings/fieldsets, activity selectors and form labels. Submit a missing required field, correct it, save a harmless synthetic text change and hear feedback. Check focus/error recovery and decorative photo announcements.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R07",
+      "scenario": "UX-023",
+      "route": "/owner/payout-destination",
+      "role": "verified Owner; current policies accepted; synthetic verified destination",
+      "represents": "Sensitive-data form, inline cancellation and pending/replacement explanation",
+      "actions": "Open Change payout details, check field labels/instructions and required errors, then cancel. Using ONLY a synthetic test fixture, submit a replacement; hear under-review state and the explanation that the existing verified destination stays active. Do not record the full test IBAN.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R08",
+      "scenario": "UX-002",
+      "route": "/admin/bookings",
+      "role": "Admin; more than 20 synthetic bookings",
+      "represents": "Shared admin shell, filter controls, table headers/cells and pagination",
+      "actions": "Navigate table rows/cells with the reader, associate headers with values, filter, use Next/Previous and open a booking. Hear page context, loading and an empty result; recover from one controlled list error.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R09",
+      "scenario": "UX-001",
+      "route": "/admin/bookings/[id]",
+      "role": "Admin; synthetic booking with events and monetary fields",
+      "represents": "Complex section hierarchy, financial facts and independently loading pageable timeline",
+      "actions": "Navigate Booking/Payment/Refund/Payout sections and event list. Hear amount/status labels including unavailable values. Exercise timeline error/retry while booking facts remain; paginate events and inspect focus.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R10",
+      "scenario": "UX-011",
+      "route": "/admin/payout-destinations/[id]",
+      "role": "Admin; synthetic destination",
+      "represents": "Sensitive inline reveal confirmation and focus return, without false modal semantics",
+      "actions": "Open the existing reveal confirmation, hear its purpose/consequence, cancel and verify focus returns to its opener. Reopen and confirm using ONLY synthetic bank data; check reveal/error feedback. Record only a redacted description of announcements.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    },
+    {
+      "flow": "AT-R11",
+      "scenario": "UX-003",
+      "route": "/admin/exceptions",
+      "role": "Admin; synthetic queue with severity/types and multiple pages",
+      "represents": "Operational cards, textual severity, linked records and queue pagination",
+      "actions": "Read exception severity, type, reason and related-record links. Navigate Next/Previous and a linked record; hear loading/empty/error feedback. Confirm no meaning depends on border color and no decorative content obscures the reason.",
+      "result": "BLOCKED",
+      "actualATExecuted": false
+    }
+  ],
+  "completion": "All eleven must actually pass; pending shared gate prevents UX domain completion and UXACT continuation.",
+  "sharedPatternCoverage": {
+    "UX-001": [
+      "AT-R09"
+    ],
+    "UX-002": [
+      "AT-R08"
+    ],
+    "UX-003": [
+      "AT-R11"
+    ],
+    "UX-004": [
+      "AT-R09",
+      "AT-R10"
+    ],
+    "UX-005": [
+      "AT-R08"
+    ],
+    "UX-006": [
+      "AT-R09",
+      "AT-R10"
+    ],
+    "UX-007": [
+      "AT-R08"
+    ],
+    "UX-008": [
+      "AT-R09",
+      "AT-R10"
+    ],
+    "UX-009": [
+      "AT-R08"
+    ],
+    "UX-010": [
+      "AT-R08"
+    ],
+    "UX-011": [
+      "AT-R10"
+    ],
+    "UX-012": [
+      "AT-R08"
+    ],
+    "UX-013": [
+      "AT-R09"
+    ],
+    "UX-014": [
+      "AT-R08"
+    ],
+    "UX-015": [
+      "AT-R02",
+      "AT-R08"
+    ],
+    "UX-016": [
+      "AT-R06",
+      "AT-R10"
+    ],
+    "UX-017": [
+      "AT-R08"
+    ],
+    "UX-018": [
+      "AT-R03"
+    ],
+    "UX-019": [
+      "AT-R03"
+    ],
+    "UX-020": [
+      "AT-R01"
+    ],
+    "UX-021": [
+      "AT-R05"
+    ],
+    "UX-022": [
+      "AT-R04",
+      "AT-R05"
+    ],
+    "UX-023": [
+      "AT-R07"
+    ],
+    "UX-024": [
+      "AT-R03",
+      "AT-R09"
+    ],
+    "UX-025": [
+      "AT-R04"
+    ],
+    "UX-026": [
+      "AT-R06"
+    ],
+    "UX-027": [
+      "AT-R06"
+    ],
+    "UX-028": [
+      "AT-R04",
+      "AT-R06"
+    ],
+    "UX-029": [
+      "AT-R07"
+    ],
+    "UX-030": [
+      "AT-R01",
+      "AT-R06"
+    ],
+    "UX-031": [
+      "AT-R02"
+    ],
+    "UX-032": [
+      "AT-R01"
+    ],
+    "UX-033": [
+      "AT-R04"
+    ],
+    "UX-034": [
+      "AT-R04",
+      "AT-R05"
+    ],
+    "UX-035": [
+      "AT-R01"
+    ]
+  },
+  "coverageLimit": "Pattern mapping combines with existing route-specific automation; it does not assert that every route is identical or has been used with AT. Actual representatives remain BLOCKED."
+}

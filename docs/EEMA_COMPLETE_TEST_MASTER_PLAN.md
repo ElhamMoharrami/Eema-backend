@@ -1,6 +1,8 @@
 # Eema Complete End-to-End Test Master Plan
 
-Authoritative planning baseline: **2026-09-09**, backend `b1c33b09ecb7b405a9113021586e03b996c45f1c`, frontend `8eb69a824772caf794945bdb3ac036a6654fb90a`; working-tree source inspected in both repositories. This is a test plan with a complete AUTH execution addendum dated 2026-09-10: **15 LOCAL PASS, 0 FAIL, 0 BLOCKED (rerun after pre-launch fixes; historical failures retained in the execution report)**. Subsequent domain execution sections and linked reports supersede baseline NOT RUN labels. PRICE-001–011 were audited and executed on 2026-09-15: **11 LOCAL PASS**, with the zero-price accounting decision still open; see [PRICE execution report](qa/PRICE_EXECUTION_REPORT.md). Existing automated means a test exists, not that its associated business scenario has passed. AUTH-001 results and newly added coverage are recorded in its companion guide; original suite inventories/counts below describe the 2026-09-09 baseline.
+Authoritative planning baseline: **2026-09-09**, backend `b1c33b09ecb7b405a9113021586e03b996c45f1c`, frontend `8eb69a824772caf794945bdb3ac036a6654fb90a`; working-tree source inspected in both repositories. This is a test plan with a complete AUTH execution addendum dated 2026-09-10: **15 LOCAL PASS, 0 FAIL, 0 BLOCKED (rerun after pre-launch fixes; historical failures retained in the execution report)**. Subsequent domain execution sections and linked reports supersede baseline NOT RUN labels. PRICE-001–011 were audited and executed on 2026-09-15: **11 LOCAL PASS**, with PRICE-DEF-005 resolved on 2026-09-19 by the approved no-free-booking policy; see [PRICE execution report](qa/PRICE_EXECUTION_REPORT.md). PAY-001–008 were audited and executed on 2026-09-15: **8 LOCAL PASS**, with live Mollie validation outstanding (the zero-price decision is now resolved; see PRICE addendum); see [PAY execution report](qa/PAY_EXECUTION_REPORT.md). PAYOUT-001–006 were audited and locally executed on 2026-09-19: **6 LOCAL PASS**, with the user-approved Eema v1 provider-cost allocation policy now implemented; see [PAYOUT execution report](qa/PAYOUT_EXECUTION_REPORT.md). DEST-001–004 were executed on 2026-09-19: **4 LOCAL PASS**; see [DEST execution report](qa/DEST_EXECUTION_REPORT.md). DOC-001–004 are **4 LOCAL PASS** after the approved Unicode-name policy resolution; see [DOC execution report](qa/DOC_EXECUTION_REPORT.md). Existing automated means a test exists, not that its associated business scenario has passed. AUTH-001 results and newly added coverage are recorded in its companion guide; original suite inventories/counts below describe the 2026-09-09 baseline.
+
+OPS-DEC-001 is resolved: important existing lifecycle notifications use a PostgreSQL transactional outbox. OPS-001–009 are **9 PASS / 0 FAIL / 0 BLOCKED** locally, with complete regression and packaged crash recovery passing. Historical **8 PASS / 0 FAIL / 1 BLOCKED** evidence is preserved. See [OPS execution report](qa/OPS_EXECUTION_REPORT.md). JOB-001–006 are also **6 PASS / 0 FAIL / 0 BLOCKED**, after shared-clock and bounded-backlog progress fixes. See [JOB execution report](qa/JOB_EXECUTION_REPORT.md). RACE-001–008 are **8 PASS / 0 FAIL / 0 BLOCKED** after reconciling current application-level race evidence. See [RACE execution report](qa/RACE_EXECUTION_REPORT.md). UX-001–035 have passing executed browser/client checks after five P2 fixes, with **24 PASS / 0 FAIL / 11 BLOCKED** under the approved representative AT model. The 11 selected scenarios require distinct real screen-reader flows; the other routes reuse shared coverage. The overall UX domain remains BLOCKED by UX-ENV-001 until all 11 actual AT flows pass; no actual AT execution is claimed. See [UX execution report](qa/UX_EXECUTION_REPORT.md). Automatic continuation stops at UX; UXACT is not started.
 
 Scope: current business workflows, UI, APIs, service contracts, persistent constraints, scheduled work and external-provider boundaries. The original planning baseline did not execute application changes or provider calls. Later authorized execution passes record their narrow source fixes, automated/browser evidence and remaining provider/product gates in their domain reports. Explicit characterization of a limitation is not approval of it for launch.
 
@@ -63,7 +65,7 @@ Spring URLs below are relative to `http://localhost:8080/api`; Next routes use `
 | Exception queue | `AdminOperationsExceptionController`: `/admin/operations/exceptions` | OperationalExceptionType/Severity, BookingEventType, ActorType | AdminOperationsService / OperationalThresholds; /admin/exceptions | [ADMIN-001](#admin-001)–[ADMIN-011](#admin-011) |
 
 
-Shared dependencies: PostgreSQL 16 native enums/arrays, row locks and exclusion/unique constraints; Flyway common V1–V11 and local-only V100–V102; JWT/database user authority; Clock in selected time policies (other services use OffsetDateTime.now); asynchronous after-commit notification listeners; Mollie payment/refund/reporting client; Gemini parser/ranker; Resend; local/S3 public media and private document stores; AES-GCM/HMAC bank protection. Optional Next Cala BFF is separately tested and has no Spring trust authority.
+Shared dependencies: PostgreSQL 16 native enums/arrays, row locks and exclusion/unique constraints; Flyway common V1–V14 and local-only V100–V103; JWT/database user authority; Clock in selected time policies (other services use OffsetDateTime.now); transactional notification intents and bounded asynchronous outbox dispatch; Mollie payment/refund/reporting client; Gemini parser/ranker; Resend; local/S3 public media and private document stores; AES-GCM/HMAC bank protection. Optional Next Cala BFF is separately tested and has no Spring trust authority.
 
 ### Authoritative enums and state coverage
 
@@ -297,7 +299,7 @@ Auth-input contract update (2026-09-10): register/login/resend/forgot email is t
 
 **Expected database/domain state:** One new `users` row with returned UUID, normalized email, exact full_name, SCOUT, active=true, email_verified=false; password_hash is self-describing Argon2id (default memory 65536 KiB, iterations 3, parallelism 1), differs from raw password and satisfies `PasswordEncoder.matches(raw, hash)`. One `refresh_tokens` row for that user, revoked=false, expiry approximately registration time + configured 7 days, token_hash equal to lowercase SHA-256 hex of returned raw refresh token and unequal to the raw token. One `email_verification_tokens` row, used_at NULL, expiry approximately injected Clock time + configured 24 hours, token_hash equal to `OneTimeTokenCodec.hash` of the transient event token. Both token hashes have 64 hex characters; neither raw token is stored. No policy acceptance is implied. HTTP status, response fields and header copy are not database columns. Verification persistence failure rolls the user/token transaction back; post-commit delivery failure preserves committed state.
 
-**Expected email/provider behavior:** Success publishes exactly one `EmailVerificationRequestedEvent(userId, rawToken)`. `AccountEmailEventListener` handles it asynchronously AFTER_COMMIT. Notification recipient is the normalized email; subject **Verify your Eema email**; CTA `/verify-email?token=<transient-token>` at configured frontend base URL, with configured expiry and verification-required wording. Raw verification token is transient notification content, never the auth response or a DB column. Delivery failure is caught and logged with user ID/error type; there is no durable delivery/retry guarantee in this listener.
+**Expected email/provider behavior:** Success publishes exactly one `EmailVerificationRequestedEvent(userId, rawToken)`. `AccountEmailEventListener` captures a credential-placeholder artifact synchronously BEFORE_COMMIT in the same transaction; the durable worker sends after commit. Notification recipient is the normalized email; subject **Verify your Eema email**; CTA `/verify-email?token=<transient-token>` at configured frontend base URL, with configured expiry and verification-required wording. Raw verification token is transient notification content, never the auth response or a DB column. Provider failure cannot undo registration. OPS-DEC-001 adds durable retry; the outbox stores only a nonsecret derivation nonce/hash reference and credential-placeholder content, never the raw token or a credential-bearing URL. See OPS-008 for dispatch/recovery semantics.
 
 - **AUTH-001A — LOCAL EMAIL DISABLED:** `EMAIL_NOTIFICATIONS_ENABLED=false`; token/event still created; notification adapter may execute, but `EmailService` skips Resend. Registration succeeds. This variant requires no real email delivery.
 - **AUTH-001B — STAGING EMAIL ENABLED:** authorized controlled mailbox, configured sender/base URL and enabled Resend; verify one attempt, actual receipt, correct subject/CTA and expiry copy. Delivery is NOT RUN until proven in staging; synthetic local `.test` addresses cannot prove it. Do not click verification before completing the unverified-state checks.
@@ -2284,3139 +2286,861 @@ Run shared fixture `PRICE-010` through Java calculator and actual frontend prici
 
 Run shared fixture `PRICE-011` through Java calculator and actual frontend pricing module. Assert selected=301, billable=301, rounded hourly=501.67, final=500.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
-**Local conclusion:** canonical PRICE-001–011 pass. The wider domain is not unconditionally clear for paid launch until zero-price handling is decided; see PRICE-DEF-005 and product/staging boundaries in the execution report.
+**Local conclusion:** canonical PRICE-001–011 pass unchanged. PRICE-DEF-005, previously an unresolved accounting decision, is resolved by the explicit Eema v1 policy: free bookings are not supported. After the unchanged exact-minute/minimum/hourly/HALF_UP/normalized-cap calculation, a final total below EUR 0.01 is rejected with HTTP 400 before booking persistence/payment creation. Inquiry acceptance remains coherently OFFERED on rejection. PRICE-008 remains valid at EUR 0.01. Checkout refuses legacy/corrupt stored amounts below EUR 0.01 without recomputation or provider interaction. Common migration V13 enforces the original-price invariant without changing legitimate zero paid/refund/payout amounts. Eight PostgreSQL and three service regression cases plus full backend verification passed; historical evidence and staging boundaries remain in the PRICE report.
 
 <a id="family-pay"></a>
-### PAY scenarios
+### PAY — Payment execution contract (audited 2026-09-15)
+
+**Authority:** `PaymentCreationCoordinator`, `PaymentService`, `HttpMollieProviderClient`, `WebhookService`, locked `BookingService.processPaidPayment`, `RefundCoordinator`, and server-read frontend `/booked`. Full evidence, defects and limits: [PAY execution report](qa/PAY_EXECUTION_REPORT.md), `docs/qa/evidence/payment/`.
+
+**Three separate state machines:** Booking `REQUESTED → AWAITING_PAYMENT → CONFIRMED`, or `AWAITING_PAYMENT → EXPIRED`. Payment creation `NOT_STARTED → CREATING → CREATED`. Refund `NONE → CREATING → QUEUED/PENDING/PROCESSING → REFUNDED`, with FAILED/CANCELED outcomes. A late paid booking stays EXPIRED while its refund progresses. No PENDING/PAID booking states, redirect confirmation, or second owner confirmation.
+
+**Shared execution:** one parameterized `PaymentIntegrationTest` uses real PostgreSQL, fixed Clock and mocked Mollie; `PaymentTransportContractTest` verifies actual adapter payload/JSON handling and log redaction. Existing PRICE/BK/INQ/notification/payout coverage is referenced, not copied. `PaymentBrowserIntegrationTest` runs a representative real Chrome/UI/API journey with controlled provider navigation. Mocks do not establish real Mollie behavior.
+
+**Actors:** checkout uses current active/verified user policy, centralized current policy acceptance and exact booking.scoutId ownership. No delegated owner/ADMIN checkout; normal unrelated actors403, anonymous401. An ADMIN policy exemption does not grant another scout's payment authority. Webhook is public form POST and fetches provider facts server-side.
+
+**Cleanup:** unique fictional users/venues/bookings in disposable Testcontainers PostgreSQL; isolated browser profile and temporary auth config removed afterward. No shared staging history deletion, no fictitious fixture snapshot restoration. Real delivery, provider replay and deployed permissions remain staging checks.
 
 <a id="pay-001"></a>
 #### PAY-001 — Checkout snapshot and association
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** UNIT / API / REAL POSTGRES. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Eligible AWAITING_PAYMENT booking, deadline future. POST `/bookings/{id}/checkout` returns201 with server `bookingId`, `checkoutUrl`, `molliePaymentId`, `totalAmount`, `expiresIn`. Provider request uses stored `venuePriceEur`, EUR and server bookingId metadata. Current venue price changes and body/query amount/currency/total fields cannot change it. Configured redirect is passed; blank local webhook omitted; production HTTPS validation retained. Incomplete/mismatched response or unsafe checkout URL fails without attaching an ID. Stored/generated URL only; no client provider URL construction.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** POST /bookings/{id}/checkout as booking Scout A for AWAITING_PAYMENT before expiry; inspect mocked Mollie create request and returned redirect; inject extra amount JSON body and altered query amount.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 201 uses database venuePriceEur EUR; metadata bookingId authoritative; stored ID/checkoutURL returned; redirect includes booking association; webhook omitted when blank or uses configured public URL. Client amount cannot override.
-
-
-**Expected database/domain state:** 201 uses database venuePriceEur EUR; metadata bookingId authoritative; stored ID/checkoutURL returned; redirect includes booking association; webhook omitted when blank or uses configured public URL. Client amount cannot override.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-002"></a>
-#### PAY-002 — Checkout eligibility all states
+#### PAY-002 — Checkout eligibility and exact deadline
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** PARAMETERIZED API / REAL POSTGRES. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+All eight BookingStatus values: only AWAITING_PAYMENT checks out; other states400. Wrong participant403, anonymous401, unverified database email403 despite stale token, missing/stale policies403 before provider call. Deadline before/equal/after:201/409/409. Discovered expiry commits EXPIRED and one APPROVAL_EXPIRED event before409; worker retries do not duplicate it. Accepted commitments remain checkout-eligible inside the venue lead-time window until payment deadline.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Attempt checkout in every BookingStatus, expired-at-equality AWAITING_PAYMENT, wrong scout, owner, admin, unverified account and stale policies.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only correct scout + eligible AWAITING_PAYMENT + current policy/email + future payment deadline accepted; wrong status 400, expiry 409, actor/trust 403. No payment provider call on rejection.
-
-
-**Expected database/domain state:** Only correct scout + eligible AWAITING_PAYMENT + current policy/email + future payment deadline accepted; wrong status 400, expiry 409, actor/trust 403. No payment provider call on rejection.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-003"></a>
-#### PAY-003 — Durable payment creation claims
+#### PAY-003 — Durable creation identity and concurrency
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** REAL POSTGRES / REPEATED BARRIER RACE. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Claim/key/start time commit before external creation. Concurrent CREATING callers may perform multiple same-key HTTP requests, but never create independent identities. Three barrier repetitions inspect the committed row from provider callback and assert identical keys/results. CREATED retry returns stored ID/URL without new create. Fresh coordinator instance reuses persisted CREATING/CREATED state. In-flight valid response arriving after expiry stores its association, leaves EXPIRED and returns409 so a later callback can be refunded. This is service-boundary durability proof, not a live process-crash/provider experiment.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Start NOT_STARTED; pause remote creation after durable CREATING claim; submit duplicate/concurrent checkout; return valid CREATED response; retry after restart.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** One durable idempotency key/booking association. CREATING retries reuse key; CREATED reuses stored payment/URL. Mismatched/incomplete provider response cannot attach wrong booking.
-
-
-**Expected database/domain state:** One durable idempotency key/booking association. CREATING retries reuse key; CREATED reuses stored payment/URL. Mismatched/incomplete provider response cannot attach wrong booking.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-004"></a>
-#### PAY-004 — Ambiguous payment creation within and beyond replay window
+#### PAY-004 — Ambiguous creation and replay window
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** FIXED-CLOCK API / REAL POSTGRES. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Transport timeout preserves CREATING, key and original start. At59 minutes and exactly60 minutes current local code permits same-key retry;61 minutes returns409 with no create call. One hour is a source constant, not configurable. No new identity after uncertainty. Existing PAYMENT_CREATION_STUCK exception queue/metric supports manual reconciliation. Mollie documentation says within one hour; exact provider-edge replay remains staging verification, not inferred from the local equality test.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Mock remote accepted request then timeout; retry at 59 minutes, exactly one hour and >one hour after claim.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Ambiguity keeps durable claim; same key only inside provider replay window; beyond window conflict requires manual reconciliation, not blind new charge. Capture exact boundary against real service clock.
-
-
-**Expected database/domain state:** Ambiguity keeps durable claim; same key only inside provider replay window; beyond window conflict requires manual reconciliation, not blind new charge. Capture exact boundary against real service clock.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-005"></a>
-#### PAY-005 — Webhook payment integrity
+#### PAY-005 — Webhook integrity and safe failures
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** PARAMETERIZED API / UNIT / REAL POSTGRES. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Public POST `/webhooks/mollie/payment` consumes form `id`. Extra paid/amount/currency/bookingId fields are ignored. Blank/missing/malformed ID400 before transport. Server fetch must match incoming ID, stored payment ID, bookingId metadata, exact two-decimal booking amount and EUR. Fractional/under/over/missing amounts, bad association, malformed provider JSON, timeout/5xx and missing status cannot confirm. Processing/integrity failures500 retain retry signal; known duplicate succeeds200. Logs retain safe ID/error class, never raw provider error body. Do not blanket-convert failures200.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** POST form id for unknown, blank, invalid-format, mismatched stored ID, absent/invalid metadata, wrong amount, non-EUR, missing amount and malformed provider body.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Webhook is public but retrieves provider payment. No forged body status/amount can confirm; invalid ID 400; processing integrity exceptions may produce 500 via webhook wrapper; no financial transition.
-
-
-**Expected database/domain state:** Webhook is public but retrieves provider payment. No forged body status/amount can confirm; invalid ID 400; processing integrity exceptions may produce 500 via webhook wrapper; no financial transition.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-006"></a>
-#### PAY-006 — Webhook open, failed, cancelled and paid
+#### PAY-006 — Provider status and exactly-once confirmation
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** PARAMETERIZED API / REAL POSTGRES / REPEATED BARRIER RACE. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+open/pending/authorized/failed/canceled/expired do not confirm or mirror provider status into BookingStatus. Valid paid before Eema deadline directly confirms; equality/after take late-refund path. Saved price/commission determine paid financials; paidAt/confirmedAt, PAYMENT_SUCCEEDED/BOOKING_CONFIRMED and after-commit paid notification occur once. Three concurrent duplicate runs prove one economic effect and one payout ledger row. Unknown fee stays unreconciled and payout is not READY. A duplicate paid callback after a previously confirmed booking is cancelled preserves recorded cancellation economics and does not initiate a late refund. Confirmation emails target scout and owner; no real delivery claimed.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Mock provider open, pending, failed, canceled, expired then paid before payment deadline; send duplicate paid callback; inspect /booked and events.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Nonpaid provider status does not confirm; current callback path is not a general failed-payment booking transition. On-time paid→CONFIRMED once, paid/confirmed/financial snapshot and payout calculation authoritative; duplicate no duplicate confirmation/event.
-
-
-**Expected database/domain state:** Nonpaid provider status does not confirm; current callback path is not a general failed-payment booking transition. On-time paid→CONFIRMED once, paid/confirmed/financial snapshot and payout calculation authoritative; duplicate no duplicate confirmation/event.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-007"></a>
-#### PAY-007 — Late paid callback and automatic refund
+#### PAY-007 — Late paid callback and full refund
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** REAL POSTGRES / FIXED CLOCK / REPEATED IDEMPOTENCY. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Test expiry already persisted and overdue callback before worker. Both remain EXPIRED, record late detection once and initiate full saved-amount refund under durable refund key. No normal receipt/payable owner entitlement or inventory resurrection. Replacement reservation remains valid. Duplicate callbacks preserve completed economics; stale queued response cannot regress REFUNDED. Timeout/provider5xx preserves CREATING and same-key replay within safe window; old ambiguous claim stops for reconciliation. No cancellation percentage is applied to this safety refund. Refund delivery remains mocked.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Expire AWAITING_PAYMENT by job then send paid callback; also paid callback after deadline before job; repeat callbacks and timeout refund creation.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Booking remains EXPIRED, slot released, latePaymentDetectedAt set, full refund claim once; no normal confirmation/receipt or owner payout. Email says not confirmed and refund initiated; refund ambiguity remains reconcilable.
-
-
-**Expected database/domain state:** Booking remains EXPIRED, slot released, latePaymentDetectedAt set, full refund claim once; no normal confirmation/receipt or owner payout. Email says not confirmed and refund initiated; refund ambiguity remains reconcilable.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="pay-008"></a>
-#### PAY-008 — Redirect cannot assert payment
+#### PAY-008 — Redirect is navigation only
 
-**Area:** PAY · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Layer:** BROWSER REPRESENTATIVE / REAL API / REAL POSTGRES. **Priority:** P0 payment integrity.
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Real Pay now uses returned stored provider URL. Controlled provider return before webhook remains AWAITING_PAYMENT with manual Check payment status. Authenticated server refetch after authoritative callback shows CONFIRMED; late callback shows EXPIRED/refund. Query paid/success/status/bookingId cannot set state. `/booked` currently resolves only sessionStorage eema:bookingId: missing ID neutral, malformed safe400, unrelated safe403. Expired Pay now409 refetches authoritative EXPIRED, removes stale action and retains useful conflict. No frontend paid setter or real Mollie claim.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Open /booked with fabricated paid/success query; missing ID, malformed ID, unrelated booking; use navigation session and bookingId parameter; reload during delayed webhook then Check payment status.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** UI reads authoritative GET; redirect alone never CONFIRMED. Missing/denied/expired states have safe recovery; no browser calls to Mollie API with key.
-
-
-**Expected database/domain state:** UI reads authoritative GET; redirect alone never CONFIRMED. Missing/denied/expired states have safe recovery; no browser calls to Mollie API with key.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PaymentCreationCoordinator, PaymentService, HttpMollieProviderClient, WebhookService, BookingService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PaymentIntegrationTest`, transport/unit references and representative browser evidence mapped in [PAY report](qa/PAY_EXECUTION_REPORT.md).
 
 <a id="family-cancel"></a>
 ### CANCEL scenarios
 
+Contract audit 2026-09-19. See [CANCEL execution report](qa/CANCEL_EXECUTION_REPORT.md). Tests use disposable PostgreSQL, mocked Mollie, injected time and fictional actors. Current policy acceptance is not a new gate on historical cancellation rights; mutation requires authoritative verified-user/ownership checks. No live provider or legal approval is implied. Prior generated scenario text is retained in cancellation historical evidence.
+
 <a id="cancel-001"></a>
-#### CANCEL-001 — Withdraw REQUESTED and unpaid AWAITING_PAYMENT
+#### CANCEL-001 — Withdraw unpaid request or approval
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles:** SCOUT participant. **Environment:** LOCAL REAL POSTGRES; representative browser for CANCEL-003/004.
 
+**Steps and acceptance:** Withdraw REQUESTED and AWAITING_PAYMENT with open/canceled provider state. Confirm CANCELLED, zero refund/no claim, and a replacement booking can reserve the released slot. A discovered authoritative paid payment first becomes CONFIRMED; missing paid-preview proof returns 409 and requires fresh consent. Provider ambiguity leaves withdrawal uncommitted.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution mapping:** canonicalUnpaidWithdrawalReleasesReservation; paidPaymentDiscoveredDuringUnpaidWithdrawalRequiresFinancialPreview; unexpectedPaymentAfterWithdrawalIsRefundedWithoutResurrectingBooking.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** As Scout A cancel each fixture; for pending provider payment mock open, canceled and paid responses separately; GET after operation.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** REQUESTED/unpaid approval→CANCELLED no refund; blocking slot released; open payment cancellation reconciled before withdrawal. If provider already paid, first apply payment then confirmed cancellation policy.
-
-
-**Expected database/domain state:** REQUESTED/unpaid approval→CANCELLED no refund; blocking slot released; open payment cancellation reconciled before withdrawal. If provider already paid, first apply payment then confirmed cancellation policy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** CancellationService, BookingCancellationCoordinator, BookingCancellationPolicy, BookingCancellation.tsx
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. Testcontainers disposes fixtures; do not reset shared volumes. Actual Mollie refund and email delivery remain STAGING ONLY.
 
 <a id="cancel-002"></a>
-#### CANCEL-002 — Owner and admin cancellation
+#### CANCEL-002 — Owner/admin full cancellation and reason limits
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles:** Owning OWNER and ADMIN; unrelated actors denied. **Environment:** LOCAL REAL POSTGRES; representative browser for CANCEL-003/004.
 
+**Steps and acceptance:** Preview then cancel CONFIRMED as OWNER and ADMIN. Missing/blank reason returns 409; 1001 characters returns HTTP400; 1000 succeeds. Both return the full stored paid amount with zero owner entitlement; provider-cost responsibility is OWNER or EEMA respectively. Client-supplied refund fields do not control money. Denials preserve booking/events and call no provider.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution mapping:** canonicalReasonBoundaryAndAuthoritativeFullRefund; canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** On independent CONFIRMED fixtures cancel as owning owner then ADMIN; submit absent/blank/1000/1001 reason and unrelated owner.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Reason required (current coordinator uses 409 for missing owner/admin reason); owner/admin 100% refund, zero commission/owner entitlement; responsibility OWNER versus EEMA; no negative payout.
-
-
-**Expected database/domain state:** Reason required (current coordinator uses 409 for missing owner/admin reason); owner/admin 100% refund, zero commission/owner entitlement; responsibility OWNER versus EEMA; no negative payout.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** CancellationService, BookingCancellationCoordinator, BookingCancellationPolicy, BookingCancellation.tsx
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. Testcontainers disposes fixtures; do not reset shared volumes. Actual Mollie refund and email delivery remain STAGING ONLY.
 
 <a id="cancel-003"></a>
-#### CANCEL-003 — Cancellation preview and stale UI
+#### CANCEL-003 — Authoritative preview, stale terms and renewed consent
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles:** SCOUT, owning OWNER, ADMIN. **Environment:** LOCAL REAL POSTGRES; representative browser for CANCEL-003/004.
 
+**Steps and acceptance:** Preview supplies canCancel, tier, percentage, refund/retained amounts, relevant deadline and signed previewToken for CONFIRMED. Cancellation recomputes under booking lock. Missing/expired/tampered or actor/booking/economics-mismatched proof returns 409 CANCELLATION_TERMS_CHANGED without cancellation. Frontend refetches terms and requires another explicit confirmation; failed preview/session switch clears consent. Mutation 401 is not automatically replayed. Reload reflects authoritative cancellation/refund states. ADMIN remains API-only.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution mapping:** CancellationPreviewProofTest; staleTermsConflictAndReplayCannotChangeEconomics; cancellation-browser.cjs.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** As scout and owner GET preview then open frontend confirmation; change booking state before confirming and inject 409. Repeat at money-tier boundary without state change.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** canCancel/tier/percentage/refund/retained/deadline from backend. 409 refetches preview and booking; no forced local cancel. Request has no preview version token; crossing a time tier alone can yield different cancellation economics without 409—record UX gap.
-
-
-**Expected database/domain state:** canCancel/tier/percentage/refund/retained/deadline from backend. 409 refetches preview and booking; no forced local cancel. Request has no preview version token; crossing a time tier alone can yield different cancellation economics without 409—record UX gap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** CancellationService, BookingCancellationCoordinator, BookingCancellationPolicy, BookingCancellation.tsx
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. Testcontainers disposes fixtures; do not reset shared volumes. Actual Mollie refund and email delivery remain STAGING ONLY.
 
 <a id="cancel-004"></a>
-#### CANCEL-004 — No refund and duplicate cancellation recovery
+#### CANCEL-004 — Zero refund and idempotent cancellation
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles:** SCOUT participant. **Environment:** LOCAL REAL POSTGRES; representative browser for CANCEL-003/004.
 
+**Steps and acceptance:** Inside nonrefundable tier, cancel with current proof: CANCELLED, refund 0.00, refund status NONE and no provider refund or claim. Duplicate cancellation leaves one cancellation event and unchanged economics. Positive ambiguous refunds reuse the original persisted amount/key within the exclusive one-hour replay window; no new economic refund. Refund completion does not rewrite CANCELLED.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution mapping:** canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable; acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase; RefundCancellationContractTest; CancellationServiceTest.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Cancel inside nonrefundable window; repeat; cancel refundable booking with remote ambiguity then repeat cancellation.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Zero refund never calls provider. Duplicate completed mutation does not add financial effects; ambiguous persisted refund may resume using same claim. CANCELLED remains separate from RefundStatus.
-
-
-**Expected database/domain state:** Zero refund never calls provider. Duplicate completed mutation does not add financial effects; ambiguous persisted refund may resume using same claim. CANCELLED remains separate from RefundStatus.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** CancellationService, BookingCancellationCoordinator, BookingCancellationPolicy, BookingCancellation.tsx
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. Testcontainers disposes fixtures; do not reset shared volumes. Actual Mollie refund and email delivery remain STAGING ONLY.
 
 <a id="cancel-005"></a>
-#### CANCEL-005 — grace before
+#### CANCEL-005 — Grace just before 24 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 1439 elapsed minutes before cancellation; shoot 11520 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `GRACE_PERIOD`, 100.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 005 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−23h59m, shootStart=T0+8d; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 100% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 100% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-006"></a>
-#### CANCEL-006 — grace equality
+#### CANCEL-006 — Grace exactly 24 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 1440 elapsed minutes before cancellation; shoot 4320 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `GRACE_PERIOD`, 100.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 006 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−24h, shootStart=T0+3d; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 100% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 100% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-007"></a>
-#### CANCEL-007 — grace after
+#### CANCEL-007 — Grace just after 24 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 1441 elapsed minutes before cancellation; shoot 4320 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `PARTIAL_REFUND`, 50.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 007 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−24h1m, shootStart=T0+3d; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-008"></a>
-#### CANCEL-008 — over seven days
+#### CANCEL-008 — More than seven days
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 2880 elapsed minutes before cancellation; shoot 10081 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `FLEXIBLE_FULL_REFUND`, 100.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 008 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−48h, shootStart=T0+7d1m; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 100% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 100% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-009"></a>
-#### CANCEL-009 — exact seven days
+#### CANCEL-009 — Exactly seven days
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 2880 elapsed minutes before cancellation; shoot 10080 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `PARTIAL_REFUND`, 50.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 009 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−48h, shootStart=T0+7d; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-010"></a>
-#### CANCEL-010 — between seven and two days
+#### CANCEL-010 — Between seven days and 48 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 2880 elapsed minutes before cancellation; shoot 4320 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `PARTIAL_REFUND`, 50.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 010 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−48h, shootStart=T0+3d; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-011"></a>
-#### CANCEL-011 — exact 48 hours outside grace
+#### CANCEL-011 — Exactly 48 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 2880 elapsed minutes before cancellation; shoot 2880 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `PARTIAL_REFUND`, 50.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 011 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−48h, shootStart=T0+48h; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-012"></a>
-#### CANCEL-012 — less than 48 hours
+#### CANCEL-012 — Just inside 48 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 2880 elapsed minutes before cancellation; shoot 2879 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `NON_REFUNDABLE`, 0.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 012 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−48h, shootStart=T0+47h59m; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 0% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 0% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-013"></a>
-#### CANCEL-013 — grace cannot override 48h equality
+#### CANCEL-013 — Grace does not override exactly 48 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 60 elapsed minutes before cancellation; shoot 2880 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `PARTIAL_REFUND`, 50.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 013 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−1h, shootStart=T0+48h; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 50% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 <a id="cancel-014"></a>
-#### CANCEL-014 — grace cannot override under 48h
+#### CANCEL-014 — Grace does not override inside 48 hours
 
-**Area:** CANCEL · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** CANCEL · **Priority:** P0 · **Result:** LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md).
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles / level:** Booking SCOUT; deterministic policy/coordinator unit test with real signed proof. Persistence and HTTP authorization are covered by CANCEL-001–004.
 
+**Fixture:** Confirmation 60 elapsed minutes before cancellation; shoot 2820 elapsed minutes after cancellation. Run at `2026-06-01T10:00:00Z`, `2026-03-28T10:00:00Z`, and `2026-10-24T10:00:00Z`; convert shoot to Europe/Amsterdam before creating confirmation snapshots. Paid amount EUR100.01, snapshotted commission 20.00%, reconciled fee EUR1.00.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps and acceptance:** Preview then cancel at fixed Clock with that signed proof. Expect `NON_REFUNDABLE`, 0.00% refund; identical preview/mutation amounts and two-decimal HALF_UP results. Refund/retained/commission/gross settlement respectively are 100.01/0.00/0.00/0.00 for full, 50.01/50.00/10.00/40.00 for partial, 0.00/100.01/20.00/80.01 for zero. Owner payout is gross less known fee, clamped at zero. Paid snapshot remains unchanged; zero calls no refund coordinator. Verify grace/full/partial preview deadline, elapsed 168-hour and 48-hour snapshots, and equivalent instants expressed with another offset.
 
+**Execution mapping:** `CancellationScenarioBoundaryTest.previewAndCancellationAgreeAtEveryBoundary`, named 014 row, three dates. Existing `BookingCancellationPolicyTest` retained.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Freeze cancellation T0; set confirmedAt=T0−1h, shootStart=T0+47h; snapshot EEMA_V1 in venue timezone. Preview then cancel as scout; repeat equivalent instants across spring/fall DST.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Refund 0% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected database/domain state:** Refund 0% of paid snapshot with HALF_UP cents; retained=paid−refund; commission recomputed on retained using snapshot percentage; provider cost accounted separately; booking CANCELLED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingCancellationPolicy#evaluate
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Evidence:** [execution report](qa/CANCEL_EXECUTION_REPORT.md), `docs/qa/evidence/cancellation/`. No database/provider reset or browser journey per arithmetic permutation. Real settlement is STAGING ONLY.
 
 
 <a id="family-ref"></a>
 ### REF scenarios
 
 <a id="ref-001"></a>
-#### REF-001 — Admin full refund and exact partial cancellation refund
+#### REF-001 — Admin full-only refund and one policy-owned partial refund
 
-**Area:** REF · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** REF · **Priority:** P0 · **Test level:** real PostgreSQL API/service integration + separate transport/unit contracts · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles:** ADMIN permitted; OWNER/SCOUT 403; anonymous 401.
 
+**Fixture and steps:** Create a CONFIRMED booking with successful EUR 125.50 payment. POST `/bookings/{id}/refund`; expect 202 BookingDto and exactly EUR 125.50 sent with a durably committed refund key. Change venue price and supply arbitrary amount/percentage/currency JSON: none influences the full-only endpoint, which has no request-body contract. Repeat all seven other BookingStatus values; expect 409 and identical booking, refund, payout, liability and audit snapshots, with no provider call. Missing paidAt or invalid paid amount must conflict before claim creation.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Partial comparison:** Use one existing 50% cancellation result: its authoritative EUR 62.75 claim must produce exactly EUR 62.75 at the provider boundary. No custom partial admin API exists. Do not duplicate CANCEL policy boundaries.
 
+**UI/notifications:** Existing booking/admin details expose persisted facts. Admin full refund has no mutation UI and no dedicated lifecycle email. Requested is not completed.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** As ADMIN POST /bookings/{id}/refund for confirmed paid fixture; compare partial cancellation refund path; try OWNER/SCOUT and all non-CONFIRMED statuses.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Administrative endpoint is full refund only (202), role restricted; partial comes from cancellation policy, not arbitrary amount API. Correct claimed amount/key; rejection safe and no second operation.
-
-
-**Expected database/domain state:** Administrative endpoint is full refund only (202), role restricted; partial comes from cancellation policy, not arbitrary amount API. Correct claimed amount/key; rejection safe and no second operation.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** RefundService, RefundCoordinator, OwnerPayoutService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Evidence:** [REF execution report](qa/REF_EXECUTION_REPORT.md), [sanitized execution evidence](qa/evidence/refund/). `RefundIntegrationTest`, `RefundClaimContractTest`, shared `RefundCancellationContractTest` and separate `RefundTransportContractTest`. Local mocks prove Eema safety logic only. Real Mollie refunds, idempotency, statuses, settlement and actual emails remain staging-only.
 
 
 <a id="ref-002"></a>
-#### REF-002 — Refund status lifecycle and validation
 
-**Area:** REF · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+#### REF-002 — Validated monotonic refund lifecycle and origin-sensitive completion
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Area:** REF · **Priority:** P0 · **Test level:** real PostgreSQL API/service integration + separate transport/unit contracts · **Result:** PASS (local)
 
+**Exact states:** NONE, CREATING, QUEUED, PENDING, PROCESSING, REFUNDED, FAILED, CANCELED. NONE/CREATING are local states; provider `creating` is invalid. CREATING accepts any real provider state; QUEUED → PENDING/PROCESSING/REFUNDED/FAILED/CANCELED; PENDING → PROCESSING/REFUNDED/FAILED/CANCELED; PROCESSING → REFUNDED/FAILED. All three terminal states are absorbing; equality/stale regressions have no effects.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Provider checks:** Validate payment ID, attached refund ID, persisted claim association, exact EUR amount and supported status before a transition. Parameterize missing/wrong fields, EUR currency, amount format and unknown status. Invalid facts must not complete or alter economics. The abstraction does not expose echoed claim metadata or list/search; before ID attachment it cannot independently distinguish an unrelated same-payment/same-amount response.
 
+**Completion:** Admin CONFIRMED → REFUNDED; cancellation stays CANCELLED; late safety refund stays EXPIRED. Set refundedAt once only on accepted completion. Repeated terminal responses produce one audit completion and one payout recalculation; cancellation emits one completion notification, admin emits none. FAILED/CANCELED never claim successful money movement or permit automatic rekeying.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Mock provider creating/queued/pending/processing/refunded/failed/canceled for separately claimed refunds; also wrong payment ID/refund ID/amount/currency and unknown status; replay terminal response.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** RefundStatus NONE/CREATING/QUEUED/PENDING/PROCESSING/REFUNDED/FAILED/CANCELED distinct. Ordinary full refund finishes Booking REFUNDED; cancellation remains CANCELLED; late payment remains EXPIRED. Invalid association/amount must not complete.
-
-
-**Expected database/domain state:** RefundStatus NONE/CREATING/QUEUED/PENDING/PROCESSING/REFUNDED/FAILED/CANCELED distinct. Ordinary full refund finishes Booking REFUNDED; cancellation remains CANCELLED; late payment remains EXPIRED. Invalid association/amount must not complete.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** RefundService, RefundCoordinator, OwnerPayoutService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Evidence:** [REF execution report](qa/REF_EXECUTION_REPORT.md), [sanitized execution evidence](qa/evidence/refund/). `RefundIntegrationTest`, `RefundClaimContractTest`, shared `RefundCancellationContractTest` and separate `RefundTransportContractTest`. Local mocks prove Eema safety logic only. Real Mollie refunds, idempotency, statuses, settlement and actual emails remain staging-only.
 
 
 <a id="ref-003"></a>
-#### REF-003 — Refund ambiguity and replay window
 
-**Area:** REF · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+#### REF-003 — Durable ambiguous creation and exclusive one-hour replay window
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Area:** REF · **Priority:** P0 · **Test level:** real PostgreSQL API/service integration + separate transport/unit contracts · **Result:** PASS (local)
 
+**Fixture and steps:** Commit the claim, let the mock provider observe its database key and accept, then lose the response. Reconstruct the service boundary and retry from PostgreSQL. The same payment, amount and key must survive. Test fixed Clock at 3,599 / 3,600 / 3,601 seconds: only strictly inside one hour permits remote retry; at/after the boundary expect 409 and manual reconciliation with no new provider creation.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Errors:** Transport failure and HTTP 408/409/429/5xx preserve CREATING. Representative definitive HTTP 422 enters FAILED, retains the identity and returns sanitized support-review text. No raw provider body. No force-success or arbitrary provider-ID mutation exists.
 
+**Concurrency/durability:** Repeat ambiguous restart and two simultaneous requests three times. Real PostgreSQL and provider barriers must show one claim, one logical mock-provider refund and no concurrency 500. Multiple transports may reuse the same provider idempotency key. Reuse existing shared pre-call rollback/post-call persistence failure tests. V12 enforces amount <= paid amount and immutable claimed key/amount/payment and attached refund ID. Disposable databases only.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Provider accepts refund then response lost; retry duplicate while pending, within one hour, beyond one hour; mock definitive rejection separately.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Persisted key and amount immutable; no duplicate remote refund; >1h manual reconciliation required; definitive rejection recorded/sanitized, ambiguity retains claim. There is no generic admin reconciliation mutation UI.
-
-
-**Expected database/domain state:** Persisted key and amount immutable; no duplicate remote refund; >1h manual reconciliation required; definitive rejection recorded/sanitized, ambiguity retains claim. There is no generic admin reconciliation mutation UI.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** RefundService, RefundCoordinator, OwnerPayoutService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Evidence:** [REF execution report](qa/REF_EXECUTION_REPORT.md), [sanitized execution evidence](qa/evidence/refund/). `RefundIntegrationTest`, `RefundClaimContractTest`, shared `RefundCancellationContractTest` and separate `RefundTransportContractTest`. Local mocks prove Eema safety logic only. Real Mollie refunds, idempotency, statuses, settlement and actual emails remain staging-only.
 
 
 <a id="ref-004"></a>
-#### REF-004 — Refund after PAID payout
 
-**Area:** REF · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+#### REF-004 — Historical PAID payout, recovery liability and mark-paid race
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Area:** REF · **Priority:** P0 · **Test level:** real PostgreSQL API/service integration + separate transport/unit contracts · **Result:** PASS (local)
 
+**Fixture and steps:** Pay EUR 125.50, reconcile actual provider fee EUR 1.50, end the interval, prepare verified destination and calculate READY. ADMIN marks EUR 98.90 paid; snapshot the entire payout row. Initiate full refund and accept provider completion. Repeat lookup and payout recalculation twice.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Expected accounting:** PAID row remains byte-for-byte unchanged, including amount, paidAt, reference and destination snapshot. Exactly one positive EUR 98.90 OWNER_PAYOUT_RECOVERY liability; no new transfer and no negative payout. Refund completion is independent of later liability settlement.
 
+**Required race:** With real PostgreSQL booking locks and barriers, repeat each serialization three times. Refund claim first holds the stale READY payout and mark-paid conflicts. Transfer first preserves PAID and completion creates recovery liability. Neither path rewrites transfer history.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Fee follow-up:** A fee may reconcile after admin refund; owner entitlement remains zero and payout is CANCELLED if never paid. Unknown cost is not estimated. Keep the existing CANCEL/PAYOUT accounting policy; do not invent a waiver or debt rule.
 
-
-**Exact steps:** Confirm, reconcile fee, end booking, ready payout and mark paid; perform authorized reversal/refund; run payout recalculation twice.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** PAID historical payout unchanged; positive shortfall produces exactly one OWNER_PAYOUT_RECOVERY liability; no negative or rewritten payout and no new transfer.
-
-
-**Expected database/domain state:** PAID historical payout unchanged; positive shortfall produces exactly one OWNER_PAYOUT_RECOVERY liability; no negative or rewritten payout and no new transfer.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** RefundService, RefundCoordinator, OwnerPayoutService
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Evidence:** [REF execution report](qa/REF_EXECUTION_REPORT.md), [sanitized execution evidence](qa/evidence/refund/). `RefundIntegrationTest`, `RefundClaimContractTest`, shared `RefundCancellationContractTest` and separate `RefundTransportContractTest`. Local mocks prove Eema safety logic only. Real Mollie refunds, idempotency, statuses, settlement and actual emails remain staging-only.
 
 
 <a id="family-payout"></a>
 ### PAYOUT scenarios
 
+Executed 2026-09-19 against the current contract. **6 LOCAL PASS, 0 FAIL, 0 BLOCKED.** See [PAYOUT execution report](qa/PAYOUT_EXECUTION_REPORT.md) and [sanitized evidence](qa/evidence/payout/). Historical generated scenarios and reproduced failures are retained under evidence/history. The user explicitly approved the Eema v1 allocation policy below; local tests do not verify real bank/provider operations.
+
 <a id="payout-001"></a>
 #### PAYOUT-001 — Payout creation economics
 
-**Area:** PAYOUT · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** PAYOUT · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** A CONFIRMED or CANCELLED booking can acquire one payout ledger; other states do not create a new ledger. Stored retained gross, commission, reconciled fee and owner entitlement determine the ledger. Zero entitlement, refund or late payment cannot create a normal payable amount. PAID amounts, reference and routing remain historical; reversal is represented by a positive liability. Current venue pricing and client-supplied money are not authoritative.
 
+**Executed:** Concurrent first calculation produces one payout and one PAYOUT_CALCULATED event. The fixture's stored EUR 125.50 gross and EUR 25.10 commission produce EUR 100.40 provisional entitlement, held for actual fee; EUR 1.23 reconciliation produces EUR 99.17. These are fixture snapshots, not a universal commission rate. Listing-price changes do not rewrite them. Ineligible booking states, zero/late/cancelled economics and paid reversal reuse the payout unit suite and CANCEL/REF integration evidence. PostgreSQL rejects negative payout values and preserves financial foreign keys.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** On CONFIRMED payment calculate retained gross, commission and actual provider fee; repeat recalculation. Also test zero entitlement, cancellation, full refund, late payment and no existing payout.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** At most one payout per booking; zero entitlement CANCELLED; no normal late-payment payout; fees must be authoritative and monetary values nonnegative. Snapshot commission differs by configured profile, never hardcode 20% for local.
-
-
-**Expected database/domain state:** At most one payout per booking; zero entitlement CANCELLED; no normal late-payment payout; fees must be authoritative and monetary values nonnegative. Snapshot commission differs by configured profile, never hardcode 20% for local.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutService, OwnerFinancialLiabilityService, BookingFinancials
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** `PayoutIntegrationTest.concurrentRecalculationCreatesOneLedgerAndOneAudit`, `OwnerPayoutServiceTest`, existing CANCEL/REF suites, owner/admin browser reads. No provider transfer is claimed.
 
 <a id="payout-002"></a>
 #### PAYOUT-002 — Payout readiness precedence
 
-**Area:** PAYOUT · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** PAYOUT · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected state order:** zero → CANCELLED; positive amount with active refund → HELD/REFUND_IN_PROGRESS; missing actual fee → HELD/WAITING_FOR_PROVIDER_COST; before venue-local shoot end → CALCULATED/WAITING_FOR_BOOKING_END; missing destination → HELD/WAITING_FOR_PAYOUT_DESTINATION; otherwise READY. Failed/canceled refunds are terminal rather than active holds.
 
+**Executed:** Thirteen explicit combinations of blockers; nine end-time cases at −1/0/+1 seconds across ordinary, spring-DST and fall-DST dates. Readiness and worker use the injected Clock; equality is eligible. PostgreSQL proves a busy booking is skipped and picked up on the next scan, and independent workers claim disjoint booking locks. A separate worker test proves the exact end transition.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use positive entitlement and independently omit: completed shoot, reconciled fee, completed refund, verified destination. Then supply all. Combine missing prerequisites to test precedence.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Zero→CANCELLED first; active refund→HELD/REFUND_IN_PROGRESS; missing fee→HELD/WAITING_FOR_PROVIDER_COST; before end→CALCULATED/WAITING_FOR_BOOKING_END; missing destination→HELD/WAITING_FOR_PAYOUT_DESTINATION; else READY.
-
-
-**Expected database/domain state:** Zero→CANCELLED first; active refund→HELD/REFUND_IN_PROGRESS; missing fee→HELD/WAITING_FOR_PROVIDER_COST; before end→CALCULATED/WAITING_FOR_BOOKING_END; missing destination→HELD/WAITING_FOR_PAYOUT_DESTINATION; else READY.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutService, OwnerFinancialLiabilityService, BookingFinancials
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Defect fixed:** PAYOUT-D4, P1: the worker previously locked payouts before waiting on bookings. It now claims booking IDs with FOR UPDATE OF b SKIP LOCKED and only then reads payout state, matching financial mutation lock order. Two original runs reproduced blocking; no artificial sleeps or claimed live multi-instance verification.
 
 <a id="payout-003"></a>
 #### PAYOUT-003 — Fee reconciliation idempotency and responsibility
 
-**Area:** PAYOUT · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** PAYOUT · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Executed:** Concurrent EUR 1.23 / 1.230 reconciliation produces one authoritative result and one audit; EUR 1.24 correction conflicts without mutation. Null/negative fees and unpaid REQUESTED/CANCELLED bookings are rejected. Owner-caused cancellation creates only a positive PROVIDER_COST liability; EEMA responsibility does not create owner debt. CANCEL/REF evidence covers reconciliation after cancellation/refund and immutable historical financial records.
 
+**Defect fixed:** PAYOUT-D2, P1: a cancelled but unpaid booking previously passed the service's status-only prerequisite. Prior payment now requires paidAt and a positive paid total, consistent with the existing reconciliation worker's candidate selection.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Resolved Eema v1 policy:** NONE means no provider-cost allocation to the owner. EEMA means platform responsibility. OWNER_SETTLEMENT means limited recourse to unpaid settlement only: apply min(actual fee, nonnegative pre-fee entitlement), pay the remainder, and absorb excess at Eema without owner debt. OWNER means explicit responsibility: apply the same capped deduction and create only excess as an OPEN PROVIDER_COST liability. EUR 16 entitlement / EUR 25 fee gives zero payout and EUR 9 platform cost for OWNER_SETTLEMENT, versus EUR 9 owner liability for OWNER. Normal bookings retain their existing NULL responsibility with capped settlement allocation. Fees never reduce scout refunds.
 
+**Policy evidence:** The production allocation helper is tested across all four responsibilities and below/equal/above/zero-entitlement cases. Real PostgreSQL repeats these 16 cases with concurrent reconciliation; actual scout/owner/admin cancellation converges for fee-before, fee-after and concurrent ordering. Repeats create one reconciliation event and at most one provider-cost liability. PAID history remains immutable; a late fee alone cannot create limited-recourse debt through OWNER_PAYOUT_RECOVERY. No redundant allocation columns or general ledger were added.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Paid-history correction:** An already-paid OWNER settlement must not be charged again for cost already deducted at transfer. Derive the historical deduction from immutable gross, commission and net paid, capped at historical provider cost; retain it only while entitlement survives. EUR 16 entitlement / fee 5 / PAID 11 creates no new debt on recalculation. A true reversal to zero retains EUR 11 net recovery and EUR 5 explicit owner cost. NONE/EEMA historical platform costs cannot become limited-recourse recovery debt. Three unit and three PostgreSQL regressions cover these histories.
 
-
-**Exact steps:** Invoke BookingService.reconcileMollieFee on paid booking with fee 1.23; repeat 1.23 then 1.24; negative fee and unpaid booking; repeat owner/admin/scout cancellation fixtures.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Same fee idempotent; conflicting second fee 409; negative/unpaid rejected; owner cancellation creates positive PROVIDER_COST liability, admin responsibility EEMA does not charge owner; payout never negative.
-
-
-**Expected database/domain state:** Same fee idempotent; conflicting second fee 409; negative/unpaid rejected; owner cancellation creates positive PROVIDER_COST liability, admin responsibility EEMA does not charge owner; payout never negative.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutService, OwnerFinancialLiabilityService, BookingFinancials
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Operational boundary:** Automated debt collection and liability netting are not implemented. Review this policy if Eema adopts Mollie Connect, delayed routing, automated payouts or a different merchant-of-record structure. Real Mollie fee/report matching remains staging-only.
 
 <a id="payout-004"></a>
 #### PAYOUT-004 — Destination snapshot on READY
 
-**Area:** PAYOUT · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** PAYOUT · **Priority:** P0 · **Test level:** POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Executed:** Payout first becomes READY using verified A. Pending B does not redirect it. Real verification replaces A with B in the same transaction; repeated calculation keeps the old payout on A with one SNAPSHOTTED trust event. A later eligible payout uses B. Recording the original payout PAID and recalculating preserves its entire historical row. Owner reads reveal only the masked destination and no private transfer reference.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Make payout READY using verified destination A; submit B pending then verify B; recalculate old payout and create future eligible payout.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Old payout keeps destination A even when REPLACED; future payout uses B. Single snapshot trust event on first READY; replacement never redirects READY/PAID history.
-
-
-**Expected database/domain state:** Old payout keeps destination A even when REPLACED; future payout uses B. Single snapshot trust event on first READY; replacement never redirects READY/PAID history.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutService, OwnerFinancialLiabilityService, BookingFinancials
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Defect fixed:** PAYOUT-D3, P1: Hibernate could verify B before flushing A's replacement, violating the one-verified-destination index. Flush A's replacement before marking B VERIFIED; retain atomic rollback and the unique constraint. This proves the payout snapshot dependency; the subsequently completed DEST validation is recorded below.
 
 <a id="payout-005"></a>
 #### PAYOUT-005 — Mark paid records external transfer
 
-**Area:** PAYOUT · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** PAYOUT · **Priority:** P0 · **Test level:** POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** ADMIN records a completed external/manual transfer; the endpoint does not send money. READY with a historically VERIFIED or REPLACED destination can become PAID. Trimmed identical references are idempotent; different references conflict. Blank and over-200-character references are rejected. HELD/CALCULATED/CANCELLED, missing/unverified routing and unauthorized actors cannot record payment.
 
+**Executed:** Concurrent same/different references, one paid event, rollback with audit, client amount ignored, role/object scope, private reference exclusion and immutable paid history. Existing CANCEL/REF tests prove payment recording versus cancellation/refund serialization. Browser proves list/detail amounts, explicit disclaimer, authoritative refetch, reload consistency, held-state controls and two real stale-form 409 conflicts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** ADMIN opens READY payout and enters QA-TRANSFER-RUN; confirm; repeat same trimmed reference, different reference, empty and >200. Attempt all other payout states and wrong roles.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** READY→PAID; paidAt/reference recorded; same reference idempotent, different 409; validation 400; no provider transfer call. PAID immutable; historical destination must be VERIFIED or REPLACED.
-
-
-**Expected database/domain state:** READY→PAID; paidAt/reference recorded; same reference idempotent, different 409; validation 400; no provider transfer call. PAID immutable; historical destination must be VERIFIED or REPLACED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutService, OwnerFinancialLiabilityService, BookingFinancials
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Defects fixed:** PAYOUT-D1, P1: absent UUID filters caused admin financial list HTTP 500; build only supplied filter predicates. PAYOUT-D5, P2: conflict feedback disappeared when refetch hid the action form; render it outside the state-dependent form. Neither fix changes financial authority.
 
 <a id="payout-006"></a>
 #### PAYOUT-006 — Liability settlement and WAIVED
 
-**Area:** PAYOUT · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** PAYOUT · **Priority:** P0 · **Test level:** POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Executed:** Both PROVIDER_COST and OWNER_PAYOUT_RECOVERY use stored positive amounts. ADMIN concurrent settlement changes OPEN to SETTLED with one event; exact retry is harmless. Owner/scout attempts are denied, arbitrary amount input is ignored, and booking/payout rows remain unchanged. Seeded WAIVED conflicts. Database rejects zero liabilities and duplicate booking/type rows. There is no public waive or amount-edit endpoint.
 
+**UI evidence:** Real local settlement confirms that this records an external action without moving money, then refetches and survives reload. A clearly labeled controlled 409/WAIVED response tests preservation of conflict feedback; it is not evidence of an implemented waive workflow. PAYOUT-D1 and PAYOUT-D5 also affect this scenario and are fixed.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create PROVIDER_COST and OWNER_PAYOUT_RECOVERY OPEN fixtures; ADMIN settles twice; attempt owner/scout and seeded WAIVED; include arbitrary amount field.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Stored amount unchanged; OPEN→SETTLED audited once; same settlement idempotent; WAIVED cannot settle. Enum exists but no waive or amount-edit endpoint.
-
-
-**Expected database/domain state:** Stored amount unchanged; OPEN→SETTLED audited once; same settlement idempotent; WAIVED cannot settle. Enum exists but no waive or amount-edit endpoint.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutService, OwnerFinancialLiabilityService, BookingFinancials
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Continuation:** The user-approved allocation policy and paid-history correction passed full regression. DEST-001–004 was subsequently completed; see its execution section and the current DOC continuation gate below.
 
 <a id="family-dest"></a>
 ### DEST scenarios
 
+Executed 2026-09-19 against the current source contract: **4 LOCAL PASS, 0 FAIL, 0 BLOCKED**. See [DEST execution report](qa/DEST_EXECUTION_REPORT.md) and [sanitized evidence](qa/evidence/dest/). Historical generated assumptions and reproduced failures are preserved. Local verification does not prove real bank ownership, email delivery or deployed key custody.
+
 <a id="dest-001"></a>
 #### DEST-001 — Destination submit and validation
 
-**Area:** DEST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DEST · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract:** OWNER submits for their own current identity; submission requires current policies, verified email and VERIFIED owner review. Safe owner history reads do not repeat those mutation prerequisites. Admin review follows admin authorization rather than owner prerequisites. Client owner ID, status, currency and type cannot choose persisted values: the service creates PENDING_VERIFICATION / EUR / IBAN.
 
+**Executed:** Nonblank/max160 holder name; raw IBAN max80 before normalization; valid lowercase/spaces accepted, bad checksum, unsupported current country and wrong length rejected. Raw 80-character whitespace-padded valid input passes; 81 fails. The current country allowlist is authoritative, not a claim to support every SEPA country. All three submission prerequisites are independently denied without a destination or provider call. Owner/scout/admin/anonymous authorization and owner-scoped history are exercised. Same-owner normalized duplicates conflict across historical states; another owner may independently submit the same synthetic fixture.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Verified Owner A submits accountHolderName=QA Owner A and synthetic fixture IBAN from IbanPolicyTest (e.g. NL91ABNA0417164300, never transfer). Try whitespace/lowercase, bad checksum, unsupported country, name blank/160/161 and IBAN 80/81 chars.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** EUR/IBAN only; normalization and country-length/mod97 checks; valid→PENDING_VERIFICATION; invalid 400; owner verification/email/current policies required.
-
-
-**Expected database/domain state:** EUR/IBAN only; normalization and country-length/mod97 checks; valid→PENDING_VERIFICATION; invalid 400; owner verification/email/current policies required.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutDestinationService, PayoutDestinationCrypto, IbanPolicy, AdminPayoutDestinationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Defects fixed:** DEST-D1 (P1), concurrent duplicates returned 500 after racing the fingerprint check. Lock the stable owner row before submission so the loser gets 409 without duplicate state/audit. DEST-D3 (P0), account switching retained another owner's cached history. Key the owner component to current user identity; the browser proves old data disappears and the new owner's authoritative history loads.
 
 <a id="dest-002"></a>
 #### DEST-002 — Encrypted persistence and masked access
 
-**Area:** DEST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DEST · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Executed:** Real submission persists versioned AES-256-GCM ciphertext, keyed fingerprint and last4. Normal owner/admin list/detail responses exclude full bank value, ciphertext and fingerprint. Existing unit tests prove random ciphertext and stable fingerprint; tampered/malformed envelopes fail closed and missing/short configured keys fail initialization. PostgreSQL rejects invalid type/currency/last4/state, orphan owner references and duplicate historical owner/fingerprint rows. Neither browser storage nor sanitized evidence retains revealed bank values.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Inspect row ciphertext/fingerprint and normal owner/admin list/detail DTO; encrypt same IBAN twice; tamper ciphertext in isolated unit fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** AES-256-GCM v1 with random nonce, HMAC fingerprint, last4 only outside reveal; different ciphertext but stable fingerprint; tamper fails closed. Full IBAN never present in logs/normal DTO.
-
-
-**Expected database/domain state:** AES-256-GCM v1 with random nonce, HMAC fingerprint, last4 only outside reveal; different ciphertext but stable fingerprint; tamper fails closed. Full IBAN never present in logs/normal DTO.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutDestinationService, PayoutDestinationCrypto, IbanPolicy, AdminPayoutDestinationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary:** Fictional bank fixtures and test-only keys are used locally. Production provisioning, custody/rotation and actual account-ownership review are operational/staging concerns. No electronic bank-verification claim or new storage scheme is introduced.
 
 <a id="dest-003"></a>
 #### DEST-003 — Review replacement and rejection
 
-**Area:** DEST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DEST · **Priority:** P0 · **Test level:** POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative transitions:** Submit → PENDING_VERIFICATION. Verify pending → VERIFIED and atomically replace the former VERIFIED destination. Reject pending → REJECTED with a required owner-visible reason. Pending/rejected replacements leave current verified routing active. Historical records cannot be resubmitted/restored through these endpoints; stale review conflicts. Review notes/reasons enforce their 1000-character limits.
 
+**Executed:** Real sequential replacement/rejection, exact admin filters, three simultaneous different-destination reviews, verify-versus-reject on one record, rollback of both destination changes when audit fails, and one verified destination per owner. PAYOUT-004's prior regression proves historical READY/PAID routing stays on its original destination after replacement; the full payout suite is reused rather than duplicated. Browser review refetches authoritative state and rejection preserves the original verified destination.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Submit first destination, verify; submit alternate supported fixture, leave pending, reject with reason; submit distinct replacement and verify; repeat verify/reject stale ID and duplicate same IBAN.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Original remains VERIFIED while replacement pending/rejected; new verify makes old REPLACED; exactly one VERIFIED. Same owner fingerprint duplicate conflicts, including previously rejected details; stale review 409.
-
-
-**Expected database/domain state:** Original remains VERIFIED while replacement pending/rejected; new verify makes old REPLACED; exactly one VERIFIED. Same owner fingerprint duplicate conflicts, including previously rejected details; stale review 409.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutDestinationService, PayoutDestinationCrypto, IbanPolicy, AdminPayoutDestinationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Defect fixed:** DEST-D2 (P1), simultaneous verification of different pending records raced the unique index and returned 500. Review now resolves owner identity, locks owner, then locks destination. Preserve the existing atomic replacement flush and database uniqueness rules. No schema change or new review power was added.
 
 <a id="dest-004"></a>
 #### DEST-004 — Audited reveal and ephemeral frontend value
 
-**Area:** DEST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DEST · **Priority:** P0 · **Test level:** POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Executed:** ADMIN-only POST reveal for PENDING_VERIFICATION / VERIFIED / REPLACED; REJECTED conflicts and GET is not supported. Successful response has Cache-Control no-store and Pragma no-cache; the REVEALED audit has the actor and no bank value. Audit failure prevents a successful reveal. Reads/reveal do not emit lifecycle notifications. Role denial preserves state and audit.
 
+**Browser evidence:** Explicit confirmation, reveal/hide, no persistent storage of the value, clearing after review and reload/navigation, rejected-state controls, account switching, and delayed responses released after account switch/logout. Existing API actor checks reject old-session responses. The original harness attempted an intentionally disabled Cancel button during loading; that was corrected, not treated as a missing product feature.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Defect fixed:** DEST-D4 (P1), an already-revealed value survived switching admin accounts without a new actor's deliberate reveal/audit. Key admin detail state to both current user and destination ID so disclosure, forms and cached results cannot cross those contexts.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** ADMIN detail clicks Reveal and explicitly confirms; inspect response headers; hide, navigate, review record, logout and switch ID. Repeat owner/scout/anonymous and REJECTED destination.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** POST reveal no-store and Pragma no-cache; audit REVEALED, no full IBAN in audit; only pending/verified/replaced allowed. Value cleared from component state; nonadmin denied; rejected state 409.
-
-
-**Expected database/domain state:** POST reveal no-store and Pragma no-cache; audit REVEALED, no full IBAN in audit; only pending/verified/replaced allowed. Value cleared from component state; nonadmin denied; rejected state 409.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutDestinationService, PayoutDestinationCrypto, IbanPolicy, AdminPayoutDestinationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Continuation:** DEST is locally complete. Its prior PRICE-DEF-005 continuation blocker was resolved by the approved no-free-booking policy and full regression on 2026-09-19. DOC-001–004 was subsequently executed; see its results and current continuation gate below.
 
 <a id="family-doc"></a>
 ### DOC scenarios
 
+Executed against the current source contract: **4 LOCAL PASS, 0 FAIL, 0 BLOCKED**. Four prior P1 defects remain fixed, and DOC-DEC-001 is resolved by the approved embedded Unicode-name policy. Prior substitution evidence is retained in the execution report. See [DOC execution report](qa/DOC_EXECUTION_REPORT.md) and [sanitized evidence](qa/evidence/doc/). No real provider or legal/tax approval is claimed.
+
 <a id="doc-001"></a>
 #### DOC-001 — Receipt eligibility and ownership
 
-**Area:** DOC · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DOC · **Priority:** P0 · **Test level:** POSTGRESQL, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract:** Authenticated booking SCOUT or ADMIN may download. OWNER and unrelated scouts are denied. Historical reads do not require newly verified email, current policy acceptance or owner trust. First issuance requires CONFIRMED/CANCELLED/REFUNDED plus paidAt, confirmedAt, positive totalPaid and no latePaymentDetectedAt. Previously issued bytes remain downloadable by authorized actors without recalculating current economics.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Download /bookings/{id}/receipt for confirmed+paid, cancelled-after-paid, refunded-after-paid; try REQUESTED, AWAITING_PAYMENT, unpaid EXPIRED and late-paid-refunded. Try scout A/B, owner and admin.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Eligible owner-of-booking SCOUT/admin gets PDF attachment; OWNER denied by role; other scout denied; ineligible 409. First generation requires paidAt, confirmedAt and positive totalPaid with no latePaymentDetectedAt.
-
-
-**Expected database/domain state:** Eligible owner-of-booking SCOUT/admin gets PDF attachment; OWNER denied by role; other scout denied; ineligible 409. First generation requires paidAt, confirmedAt and positive totalPaid with no latePaymentDetectedAt.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** FinancialDocumentService, FinancialDocumentPdfRenderer, LocalPrivateDocumentStorage, S3PrivateDocumentStorage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed:** All three eligible and all five ineligible booking states; missing paid/confirmed timestamps, zero paid total and late-paid history; role/object/anonymous denial both before and after issuance; unverified/stale-policy historical reads. No denied issuance creates a document/object/audit or provider effect. Successful first issue creates one audit; repeated reads return identical bytes. Three barrier-coordinated concurrent request pairs each produce one persisted document, object and audit. HTTP response is an attachment, application/pdf, exact content length and no-store. The approved PRICE-DEF-005 minimum remains enforced upstream; no free-receipt lifecycle was introduced.
 
 <a id="doc-002"></a>
 #### DOC-002 — Receipt content and immutability
 
-**Area:** DOC · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DOC · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL, PDF, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative content:** RCT number, booking ID, paid date/status at issuance, venue metadata at first issue, saved scout contact and monetary/duration/rate/minimum/cap snapshots. Internal commission, provider cost, owner payout, liability, provider IDs and full bank values are excluded. It is a payment record, not a claim of tax-invoice compliance.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Issue receipt, extract PDF text, then change live venue/name/rate and cancel booking; download again and compare SHA256.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Includes RCT number, booking ID, paid date/status at issuance, venue/neighbourhood/shoot/timezone, scout snapshot name/email, hourly/minimum/duration/billable/cap snapshots, venue price and total paid. Excludes commission/provider fee/owner payout/liabilities/IBAN/provider IDs; payment record, not tax invoice. Repeated bytes unchanged.
-
-
-**Expected database/domain state:** Includes RCT number, booking ID, paid date/status at issuance, venue/neighbourhood/shoot/timezone, scout snapshot name/email, hourly/minimum/duration/billable/cap snapshots, venue price and total paid. Excludes commission/provider fee/owner payout/liabilities/IBAN/provider IDs; payment record, not tax invoice. Repeated bytes unchanged.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** FinancialDocumentService, FinancialDocumentPdfRenderer, LocalPrivateDocumentStorage, S3PrivateDocumentStorage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed:** Extract actual generated PDF text and compare exact saved values. Change current venue name/rate/neighbourhood and cancel booking; subsequent file bytes stay identical. Browser receipt download and reload have identical SHA-256 and safe RCT filenames. No fresh lifecycle email or provider payment is issued by download. Initial repeated request identity is protected by PostgreSQL locks/uniqueness, not by a client cache.
 
 <a id="doc-003"></a>
 #### DOC-003 — Payout statement content and scope
 
-**Area:** DOC · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DOC · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL, PDF, BROWSER · **Result:** PASS (local)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract:** Same payout OWNER or ADMIN only. First issuance requires PAID, paidAt and nonblank external transfer reference. CALCULATED/HELD/READY/CANCELLED and legacy missing-reference rows conflict. New statement reads the immutable paid ledger and historical destination last4, not the owner's latest bank details. Owner/venue labels are captured at first issue and stored bytes are authoritative thereafter.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Get statement as owner/admin for PAID, then each nonpaid state; compare PDF ledger with payout; replace bank destination and re-download.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only PAID with paidAt/reference first-issue eligible. Includes PST/booking/payout IDs, external transfer reference, historical masked bank, paidAt, owner/name/email, venue/time and gross/commission/provider/owner amounts. No unrelated liability or full IBAN; immutable repeat, not tax invoice.
-
-
-**Expected database/domain state:** Only PAID with paidAt/reference first-issue eligible. Includes PST/booking/payout IDs, external transfer reference, historical masked bank, paidAt, owner/name/email, venue/time and gross/commission/provider/owner amounts. No unrelated liability or full IBAN; immutable repeat, not tax invoice.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** FinancialDocumentService, FinancialDocumentPdfRenderer, LocalPrivateDocumentStorage, S3PrivateDocumentStorage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed:** Exact PST/booking/payout references, complete transfer reference, masked historical REPLACED destination, gross/commission/provider cost/net payout and disclaimer. Unrelated owner/scout/anonymous denial; no internal liability or encrypted/full bank value. Owner/venue edits do not rewrite issued bytes. Three simultaneous first-download pairs each issue once. Browser statement download/reload preserves bytes and role controls. PAYOUT/DEST replacement suites supply the existing immutable-routing regression.
 
 <a id="doc-004"></a>
 #### DOC-004 — Private storage failure, Unicode and layout
 
-**Area:** DOC · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** DOC · **Priority:** P0 · **Test level:** UNIT, POSTGRESQL, PDF, BROWSER · **Result:** PASS (local; DOC-DEC-001 resolved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Technical results:** Storage failure, actual DB constraint failure after store, and transaction-commit failure return safe errors without issued metadata/audit; rollback attempts deletion of the new private object. Missing already-issued bytes fail without silent regeneration. Local opaque storage is inaccessible through public media routes. S3 request mocks prove private bucket/key, conditional writes and rejection of invalid references; real S3 remains staging-only.
 
+**Defects fixed:** DOC-D1, local ATOMIC_MOVE could overwrite an existing object; completed bytes are now published atomically using a non-replacing hard link. DOC-D2, fixed-character wrapping clipped wide text and the 180-character limit truncated persisted references; layout now measures glyph widths, preserves full values and paginates before the footer. DOC-D3, unsupported controls previously crashed rendering; the approved Unicode policy now rejects unsupported input safely before issuance, superseding the historical character fallback. DOC-D4, late transaction rollback did not clean the file; cleanup now follows transaction completion. All four are P1 and have passing regressions. The subsequent Unicode resolution uses template version 3 for new documents; existing issued files are unchanged.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Verified visuals:** Wide names, complete 200-character transfer reference, maximal stored amounts, control/Unicode input, receipt/statement controls and missing-file error. No clipping/overlap remains in reviewed outputs. Browser delayed response after logout cannot trigger a download. Local publication requires filesystem hard-link support; deployment must verify that capability, private permissions and backups.
 
+**Approved v1 resolution:** Financial documents preserve supported original Unicode names through controlled embedded font rendering; unsupported glyphs fail safely rather than being silently replaced. Bundled/subset PDType0 fonts: Noto Sans Regular/Bold, static Noto Sans SC derivative and Noto Naskh Arabic Regular, OFL1.1 notices retained. Font resources and ICU shaping are application controlled, with no host-font or remote lookup. New template3 applies only at first issue; historical PDFs remain byte-identical.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Executed Unicode evidence:** José García, Zoë François, Daniël Müller, Łukasz Żółć, Νίκος, Алексей, 李雷, محمد and 李雷 García extract unchanged. Arabic connected appearance, CJK/mixed, Greek/Cyrillic, European diacritics and long wrapped fields were rendered and reviewed. Literal markup remains text. Receipt/statement cases retain exact saved money, masked destination and role isolation; unsupported names fail before any document/file/audit is created. Retry, rollback cleanup and repeated concurrent issuance regressions pass. Packaged JAR and production Docker runtime probes verify controlled resource loading and embedded fonts without network access.
 
+**Precise support boundary:** PDFBox3.0.8 lacks full GPOS. ICU supplies standard Arabic presentation shaping and bidi; no universal Unicode/complex-script claim is made. Combining marks, variation selectors, format/join controls and unconfigured glyphs fail safely, without normalization or substitution. No new locale/template/tax semantics. Previously observed `??` output is archived as history, not accepted current behavior.
 
-**Exact steps:** Cause private store failure, DB issue failure after store, then missing stored object after successful issue in isolated fixture. Download with long names, emoji, Unicode and maximal financial values.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** No success PDF on failed issue; cleanup attempted when DB save fails. Existing missing file errors instead of silent document rewrite. Renderer substitutes unsupported codepoints and truncates at 180; manually assess layout/cropped or changed name as product gap.
-
-
-**Expected database/domain state:** No success PDF on failed issue; cleanup attempted when DB save fails. Existing missing file errors instead of silent document rewrite. Renderer substitutes unsupported codepoints and truncates at 180; manually assess layout/cropped or changed name as product gap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** FinancialDocumentService, FinancialDocumentPdfRenderer, LocalPrivateDocumentStorage, S3PrivateDocumentStorage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Historical continuation at DOC completion:** INC-001–002 was next. Its subsequent execution and the current ADMIN decision are recorded below.
 
 <a id="family-inc"></a>
-### INC scenarios
+### INC scenarios - audited 2026-09-20
+
+Execution: `docs/qa/INC_EXECUTION_REPORT.md`; sanitized evidence: `docs/qa/evidence/inc/`. Two scenarios pass focused PostgreSQL and browser execution. Full regression and completion gate are recorded in the report. No live provider result is claimed.
 
 <a id="inc-001"></a>
 #### INC-001 — Incident participants and plain text
 
-**Area:** INC · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** INC · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Active authenticated booking scout, owning OWNER or ADMIN may create/list reports. Unrelated actors receive 403; anonymous/inactive receive 401; missing booking 404. No email verification, policy acceptance, owner review, booking status or date prerequisite applies. Admin intake is API-supported; no new admin report UI is required.
 
+**Executed:** All seven categories for all three permitted actors; all eight booking states; unrelated/anonymous/inactive denial; absent fields/unknown category; blank, angle-bracket markup, 4000/4001, newline and Unicode descriptions. API validates raw Java-character length, then trims outer whitespace. Valid report persists OPEN with one INCIDENT_REPORTED trust event. Participant reads omit internal resolution-note values. Database foreign keys and category/status/description/resolution-shape constraints reject inconsistent rows.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**UI/client:** Real unverified scout without policy acceptances receives backend 400 for markup and 201 for valid Unicode text. Authoritative list survives reload and is visible to the owning owner. INC-DEF-001 fixed a frontend-only verification gate that incorrectly blocked support intake; the exception is limited to incident-report POST. Existing booking/venue verification guards remain. Seven focused client and thirteen AUTH client checks pass.
 
+**Isolation:** No booking, refund, payout, liability, venue, booking policy snapshot or booking lifecycle notification change; no Mollie call. Separate accepted reports remain separate records, without an invented deduplication contract.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** For every IncidentCategory report own booking as Scout A, owning Owner A and ADMIN; try unrelated users; description empty, markup, 4000/4001, newline, Unicode.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Valid reports OPEN (201); unrelated denied; blank/markup/>4000 400; plain text retained. Admin permitted by service; UI location does not define additional booking-status eligibility.
-
-
-**Expected database/domain state:** Valid reports OPEN (201); unrelated denied; blank/markup/>4000 400; plain text retained. Admin permitted by service; UI location does not define additional booking-status eligibility.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** IncidentService, IncidentReport, CreateIncidentRequest, ResolveIncidentRequest
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Evidence:** IncidentIntegrationTest, IncidentBrowserIntegrationTest, inc-client-check.cjs, inc-browser.cjs; historical failed client/browser evidence retained. Disposable PostgreSQL and synthetic fixtures only. No incident email exists to verify.
 
 <a id="inc-002"></a>
 #### INC-002 — Admin incident lifecycle and isolation
 
-**Area:** INC · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** INC · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** ADMIN only. OPEN → UNDER_REVIEW → RESOLVED → CLOSED; all skipped/repeated/reverse actions conflict with 409. No edit/delete/reopen operation. Resolution requires a nonblank plain-text note of at most 2000 Java characters. Admin endpoints expose the note; all participant-list DTOs hide it. No email-verification or policy prerequisite for administration.
 
+**Executed:** Full state/action matrix; all non-admin and anonymous endpoint denials; note blank/markup/2000/2001/newline/Unicode/missing fields; missing incidents; status/category/booking filters and bounded pagination. Successful mutations append exactly one trust event. Injected trust-audit failure rolls back both creation and transition. Nine barrier-coordinated request pairs in independent transactions each produce one 200, one 409 and one audit event. Final persisted state is CLOSED.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Isolation/privacy:** Populated payout/liability rows, booking/refund and venue snapshots, booking audit and policy references remain unchanged. Internal notes are not copied into trust-event notes or participant responses. No provider call or booking lifecycle notification.
 
+**UI:** Eight grouped browser checks include stale start-review 409, explicit conflict feedback and authoritative refetch, resolution/closure/reload, participant note redaction and unrelated-scout denial. Screenshots visually reviewed. No optimistic financial or booking outcome is introduced.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** ADMIN start-review OPEN, resolve with note, close; try every skipped/repeated/reverse transition. Compare participant list and financial/venue rows before/after.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** OPEN→UNDER_REVIEW→RESOLVED→CLOSED only; invalid 409; required plain-text resolution ≤2000. Participant DTO hides admin note; no automatic booking/refund/payout/liability/venue changes, no incident email implemented.
-
-
-**Expected database/domain state:** OPEN→UNDER_REVIEW→RESOLVED→CLOSED only; invalid 409; required plain-text resolution ≤2000. Participant DTO hides admin note; no automatic booking/refund/payout/liability/venue changes, no incident email implemented.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** IncidentService, IncidentReport, CreateIncidentRequest, ResolveIncidentRequest
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Environment and review:** Local PostgreSQL with fresh migrations and Hibernate validation. Elham should assess support-versus-financial-action wording, internal-note terminology and mobile usability. Deployed edge/authentication and monitoring remain staging work. No new product/business/legal decision was needed for this existing contract.
 
 <a id="family-admin"></a>
-### ADMIN scenarios
+### ADMIN scenarios - audited 2026-09-20
+
+Execution report: `docs/qa/ADMIN_EXECUTION_REPORT.md`; evidence: `docs/qa/evidence/admin/`. Approved complete-backlog policy resolves ADMIN-DEC-001. Historical result was10 PASS,0 FAIL,1 BLOCKED because only200 of201 refunds were visible; history is preserved in the report. Current local scenario results:11 PASS,0 FAIL,0 BLOCKED. Database and13 browser checks pass, including202 exceptions across11 UI pages; full command gates and completion status are recorded in the resolution addendum.
+
+Common environment: disposable PostgreSQL with V1–V13 and Hibernate validation, mocked providers, fixed Clock for thresholds, actual production frontend build for representative browser checks. Existing AUTH/POL/TRUST/VEN/PAY/REF/PAYOUT/DEST/INC reports remain dependencies. No legal content, provider result or operational SLA is approved by these software tests.
 
 <a id="admin-001"></a>
 #### ADMIN-001 — Every admin queue pagination and filters
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS (approved complete-backlog policy, 2026-09-20)
 
-**Roles involved:** Admin; anonymous, Scout A and Owner A denial probes
+**Authoritative contract:** Active ADMIN only; no admin email-verification/policy prerequisite. Seven principal paged queues plus booking events and operational exceptions use bounded page sizes up to100. Policies and venue moderation events are non-paged lists. Arbitrary client sort is ignored; repository-defined ordering wins.
 
+**Executed evidence:** All paged queues have over20 fixtures; sizes1/20/100/101, negative/empty/extreme pages, supported filters independently and combined, malformed enums/UUIDs and SCOUT/OWNER/anonymous denial. Browser proves pagination/reload, Clear, and All overriding default status. ADMIN-D2 fixes offset overflow; ADMIN-D4 fixes stale controls and dropped empty default-status parameters.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** For each /admin list route seed 25 records with mixed states; use filter fields independently and combined; page forward/back, reload URL and clear filters; test size 1/20/100/101, page negative, malformed UUID/enum and unsupported sort.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Controlled filters scope results; bounded page size at most 100; empty page not a crash; details match list IDs. Service-defined ordering takes precedence where query fixes it. No generic status or amount edit controls.
-
-
-**Expected database/domain state:** Controlled filters scope results; bounded page size at most 100; empty page not a crash; details match list IDs. Service-defined ordering takes precedence where query fixes it. No generic status or amount edit controls.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Admin*Controller, AdminOperationsService, AdminPagePolicy, useAdminPage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Approved Eema v1: The ADMIN exception queue is a complete pageable operational backlog. Individual requests are bounded, but the total matching backlog is not silently capped. PostgreSQL UNION ALL/count/LIMIT/OFFSET returns only the requested page, with one-statement snapshot consistency. Global order is severity (CRITICAL/WARNING/INFO), detectedAt ascending nulls last, type, source-row UUID. Existing API has no type/severity filters. Stable fixtures of0/1/20/21/200/201/321 refunds and210 mixed exceptions prove complete unique traversal, counts and final/empty pages. Worker/metric batches remain separate and unchanged.
 
 <a id="admin-002"></a>
 #### ADMIN-002 — Booking search and detail composition
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Admin; anonymous, Scout A and Owner A denial probes
+**Authoritative contract:** Booking detail composes persisted booking commission, provider fee, refund/cancellation, payout and liability values. The UI formats stored values without inventing financial calculations. Mollie payment ID input is trimmed.
 
+**Executed evidence:** All BookingStatus, RefundStatus and PaymentCreationStatus values, optional/composite filters, exact stored amounts and linked payout/liability IDs, missing booking404 and unchanged persisted booking. Existing AdminBookingSearchIntegrationTest is reused.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Search bookingId, venueId, scoutId, each BookingStatus, Mollie payment ID (including whitespace), each RefundStatus and PaymentCreationStatus, singly and combined; open detail.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only matching records returned; booking detail composes stored commission, fee, refund, cancellation, payout and liabilities, without calculating replacement money in UI.
-
-
-**Expected database/domain state:** Only matching records returned; booking detail composes stored commission, fee, refund, cancellation, payout and liabilities, without calculating replacement money in UI.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Admin*Controller, AdminOperationsService, AdminPagePolicy, useAdminPage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** No new pricing, refund, payout or admin-remediation capability.
 
 <a id="admin-003"></a>
 #### ADMIN-003 — Booking event timeline payload allowlist
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Admin; anonymous, Scout A and Owner A denial probes
+**Authoritative contract:** Chronological paged booking events expose only allowlisted scalar JSON values. Unknown top-level keys and nested objects/arrays are excluded; immutable stored events are untouched. Missing booking404; nonadmin denied.
 
+**Executed evidence:** 25 events across two pages, synthetic top-level and nested sensitive fields, numeric/currency preservation; independent unit/PostgreSQL/browser reproductions and regressions. ADMIN-D1 fixes shallow allowlist leakage. ADMIN-D5 fixes nonfunctional timeline Retry and browser verifies successful recovery.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create >20 ordered events with permitted payload fields then password/token/iban/unknown keys; request all pages and inspect frontend rendering; put nested sensitive content under an allowlisted key.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Chronological pagination; unallowlisted top-level keys removed. Allowlist is shallow, so nested-value safety must be evaluated separately. Missing booking 404; nonadmin denied.
-
-
-**Expected database/domain state:** Chronological pagination; unallowlisted top-level keys removed. Allowlist is shallow, so nested-value safety must be evaluated separately. Missing booking 404; nonadmin denied.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Admin*Controller, AdminOperationsService, AdminPagePolicy, useAdminPage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Scalar-only output is a privacy boundary, not a destructive rewrite of historical payloads.
 
 <a id="admin-004"></a>
 #### ADMIN-004 — Review mutation stale-state recovery
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Admin; anonymous, Scout A and Owner A denial probes
+**Authoritative contract:** Review mutations retain each domain's existing state machine and refetch authoritative state. Shared admin reads ignore superseded request generations. Sensitive payout destination reveal data is cleared by its existing action/conflict handling.
 
+**Executed evidence:** TRUST/VEN/POL/DEST reports provide their review/conflict evidence; INC real browser again proves stale409/refetch and completed-state controls. The actual hook race reproduced stale overwrite and passes after ADMIN-D3. Filtered-navigation browser was already safe before that fix; no false browser reproduction claim is made.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** For owner verification, venue moderation, payout destination, incident and policy actions load detail in two tabs; execute competing review; submit stale action in first.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Invalid second transition 409 or current endpoint validation code; frontend should refetch authoritative state and clear sensitive input. Record routes that only show generic error and require manual refresh.
-
-
-**Expected database/domain state:** Invalid second transition 409 or current endpoint validation code; frontend should refetch authoritative state and clear sensitive input. Record routes that only show generic error and require manual refresh.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Admin*Controller, AdminOperationsService, AdminPagePolicy, useAdminPage
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** No new review powers, automatic financial actions or policy-content approval.
 
 <a id="admin-005"></a>
 #### ADMIN-005 — Exception PAYOUT_READY_OVERDUE
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** READY payout is overdue only when readyAt is strictly before now minus configured72h default; severity WARNING, linked booking/payout IDs and READY_PAYOUT_NOT_RECORDED_PAID.
 
+**Executed evidence:** Fixed Clock at one second before, exactly at and one second after cutoff; equality is excluded. Real PostgreSQL filtering and queue severity/age order; no mutation/provider call.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed READY older than 72h; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** PAYOUT_READY_OVERDUE severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** PAYOUT_READY_OVERDUE severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Complete backlog pagination follows the approved ADMIN-001 contract.
 
 <a id="admin-006"></a>
 #### ADMIN-006 — Exception PAYOUT_HELD
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Every HELD payout is INFO, without age cutoff. Reason is PAYOUT_ plus WAITING_FOR_BOOKING_END, WAITING_FOR_PROVIDER_COST, REFUND_IN_PROGRESS or WAITING_FOR_PAYOUT_DESTINATION.
 
+**Executed evidence:** All four hold reasons, authoritative payout/booking links, severity and read-only behavior. No arbitrary age test is invented for this condition.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed HELD with each hold reason; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** PAYOUT_HELD severity INFO; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** PAYOUT_HELD severity INFO; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Complete backlog pagination follows ADMIN-001.
 
 <a id="admin-007"></a>
 #### ADMIN-007 — Exception OWNER_LIABILITY_OPEN
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** OPEN owner liability is WARNING without age cutoff; links identify the booking and liability. Reason OWNER_LIABILITY_REQUIRES_RESOLUTION.
 
+**Executed evidence:** Real persisted OPEN liability and linked ID; read leaves it OPEN and booking unchanged; severity/oldest-first ordering checked. Existing PAYOUT liability mutation tests remain separate.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed OPEN liability; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** OWNER_LIABILITY_OPEN severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** OWNER_LIABILITY_OPEN severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Complete backlog pagination follows ADMIN-001. This read does not settle or waive debt.
 
 <a id="admin-008"></a>
 #### ADMIN-008 — Exception REFUND_STUCK
 
-**Area:** ADMIN · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** CREATING/QUEUED/PENDING/PROCESSING refunds are active; REFUND_STUCK is CRITICAL only when refundRequestedAt is strictly older than configured1440min default.
 
+**Executed evidence:** Fixed-clock cutoff minus/equal/plus1second against real PostgreSQL; active status set shared with the fully enumerated late-refund predicate. Reason REFUND_EXCEEDED_STUCK_THRESHOLD and booking link; no provider retry or remediation.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed active refund older than 1440 minutes; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** REFUND_STUCK severity CRITICAL; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** REFUND_STUCK severity CRITICAL; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Historical200-of201 evidence is retained. Approved regression now reaches all201 refunds uniquely with correct totals and a one-item final page at size20.
 
 <a id="admin-009"></a>
 #### ADMIN-009 — Exception PAYMENT_CREATION_STUCK
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** CREATING payment claim is WARNING only when paymentCreationStartedAt is strictly older than configured60min default. Reason PAYMENT_CREATION_EXCEEDED_STUCK_THRESHOLD.
 
+**Executed evidence:** Fixed-clock cutoff equality and both sides; real exception browser follows the correct booking link. Read-only state/provider isolation; no transport replay added.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed CREATING older than 60 minutes; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** PAYMENT_CREATION_STUCK severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** PAYMENT_CREATION_STUCK severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** Complete backlog pagination follows ADMIN-001.
 
 <a id="admin-010"></a>
 #### ADMIN-010 — Exception MOLLIE_FEE_UNRECONCILED
 
-**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Fee exception requires positive totalPaidEur, unreconciled fee and paidAt strictly older than configured1440min default in CONFIRMED, CANCELLED or REFUNDED. REFUNDED support supersedes the generated two-status assumption.
 
+**Executed evidence:** Fixed-clock fee cutoff boundaries include REFUNDED; prior PAYOUT/provider-cost allocation evidence supplies historical fee-state regression. WARNING with AUTHORITATIVE_PROVIDER_FEE_UNAVAILABLE.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed paid CONFIRMED/CANCELLED, fee missing, paidAt older than 1440 minutes; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** MOLLIE_FEE_UNRECONCILED severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** MOLLIE_FEE_UNRECONCILED severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Boundary / decision:** No fee estimate/provider lookup is introduced; actual provider reconciliation is staging work. Complete backlog pagination follows ADMIN-001.
 
 <a id="admin-011"></a>
 #### ADMIN-011 — Exception LATE_PAYMENT_REFUND_IN_PROGRESS
 
-**Area:** ADMIN · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** ADMIN · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** latePaymentDetectedAt plus active CREATING/QUEUED/PENDING/PROCESSING refund creates WARNING without age cutoff; terminal refund states are excluded.
 
+**Executed evidence:** Every RefundStatus with late detection, linked booking and severity/age ordering. Existing PAY/REF financial state-machine evidence reused; read-only queue makes no provider call.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundary / decision:** No new late-payment or refund semantics. Complete backlog pagination follows ADMIN-001.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed latePaymentDetectedAt set and active refund; open /admin/exceptions and GET /admin/operations/exceptions. Test exact cutoff and one second either side where age applies; follow every booking/payout/liability link.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** LATE_PAYMENT_REFUND_IN_PROGRESS severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected database/domain state:** LATE_PAYMENT_REFUND_IN_PROGRESS severity WARNING; correct linked IDs and reason; sort CRITICAL then WARNING then INFO, oldest within severity. Read-only queue performs no remediation. Age checks use strict before cutoff.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminOperationsService#exceptions, OperationalThresholds
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**WHAT ELHAM SHOULD TEST PERSONALLY:** exception urgency/reason wording, linked-record discoverability, historical financial terminology and review/conflict clarity. **PRODUCT / OPERATIONS DECISIONS:** ADMIN-DEC-001 resolved by explicit complete-backlog policy; no new decision. **STAGING ONLY:** deployed monitoring, multi-instance operation and real provider reconciliation. Next domain after successful ADMIN command gates: SEC-001–007.
 
 <a id="family-sec"></a>
-### SEC scenarios
+### SEC scenarios - audited 2026-09-20
+
+Execution report: `docs/qa/SEC_EXECUTION_REPORT.md`; evidence: `docs/qa/evidence/sec/`. Focused local execution passes19 PostgreSQL cases,8 security/correlation/email units,26 session-client cases and6 SEC browser checks; document browser regression passes8 checks. Full required command gates and final continuation status are recorded in the report. Historical pre-fix failures are retained.
 
 <a id="sec-001"></a>
 #### SEC-001 — Object ownership tampering
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Active user and role come from the database for each bearer request. Ownership and ADMIN exceptions remain endpoint-specific; verified email and policy acceptance are not universal read prerequisites.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** For bookings, venue editor/availability/moderation, inquiries, payouts, payout destinations, receipts/statements and incidents replay legitimate request after replacing UUID with another persona’s existing UUID, then nonexistent UUID.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Forbidden ownership requests never expose data or mutate; use endpoint matrix exact 403/404 distinction. ADMIN privilege applies only where service permits (e.g. not owner-only payout history).
-
-
-**Expected database/domain state:** Forbidden ownership requests never expose data or mutate; use endpoint matrix exact 403/404 distinction. ADMIN privilege applies only where service permits (e.g. not owner-only payout history).
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed evidence:** Prior AUTH/VEN/AVL/BK/INQ/PAYOUT/DEST/DOC/INC/ADMIN actor and UUID-tampering matrices are reused in full PostgreSQL regression. New signed-stale-role, admin demotion, inactive-user and forged verification-header checks prove current DB authority and no booking persistence on denial.
 
 <a id="sec-002"></a>
-#### SEC-002 — Input injection matrix
+#### SEC-002 — Input injection and safe error handling
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Inputs follow their actual DTO/domain contracts. Names, policy text, SQL-like quotes, Unicode/emoji, CR/LF and backslashes remain data where allowed. Incident angle brackets remain prohibited. React/email escape HTML.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Independently use <script>alert(1)</script>, HTML, SQL-like quotes, 10k text, Unicode, emoji, CR/LF, quotes and backslashes in name, brief, contact, reason, policy, incident, query filter and filename.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Plain text escaped in React/email; no execution or SQL injection; DTO bounds respected. Incident <> is rejected. Logs must not permit attacker-forged structured entries; record actual sanitation gaps.
-
-
-**Expected database/domain state:** Plain text escaped in React/email; no execution or SQL injection; DTO bounds respected. Incident <> is rejected. Logs must not permit attacker-forged structured entries; record actual sanitation gaps.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed evidence:** New six-value registration/policy/filter corpus, seeded nonempty SQL-filter queries, 10k name rejection and 10k policy-content acceptance, safe malformed-JSON response. Reuse prior brief/contact/reason/incident/filename bounds and TrustNotificationService HTML escaping. Browser proves stored script markup stays literal. Strict firewall CR/LF rejection now returns safe400 (SEC-DEF-003), without relaxing rejection.
 
 <a id="sec-003"></a>
 #### SEC-003 — Token and credential leak audit
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Auth responses and localStorage auth tokens remain intentional existing design. Normal DTOs and application logs must not contain passwords, raw auth/recovery tokens or provider credentials. Debug logging is included in the audit.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** After local full flow, scan captured network/logs/storage for Bearer, JWT-like three-part tokens, verification/reset raw token, password, Mollie/Resend/Gemini/S3 key and full fixture IBAN. Review only counts/redacted snippets.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** No secrets in logs or normal DTOs. Auth token response/storage is intentional current design; verification/reset token only in link/request, never persisted client-side. Refresh token isolated to auth module but accessible to same-origin JS via localStorage.
-
-
-**Expected database/domain state:** No secrets in logs or normal DTOs. Auth token response/storage is intentional current design; verification/reset token only in link/request, never persisted client-side. Refresh token isolated to auth module but accessible to same-origin JS via localStorage.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed evidence:** SEC-DEF-001 independently reproduced synthetic secret leakage through malformed JWT-header messages and unexpected exception causes in units and real HTTP. Fixed logs retain safe error type/request ID only. Registration/recovery token scan passes against normal DTOs and captured logs. Reuse DEST encryption/reveal/no-store and MATCH/PAY/REF safe provider-error evidence. No production credential leak or real provider test is claimed.
 
 <a id="sec-004"></a>
 #### SEC-004 — CORS, security headers and request ID
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Configured origins only; allowed methods GET/POST/PUT/DELETE/OPTIONS/PATCH; allowed Authorization/Content-Type/X-Requested-With/X-Request-ID; expose X-Request-ID and Content-Disposition. nosniff, DENY, no-referrer and API CSP default-src none/frame-ancestors none. HSTS is opt-in and secure-request-only.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Send OPTIONS from allowed localhost origin then unlisted origin, wildcard/null origin; GET API with safe/unsafe/oversized X-Request-ID. Check nosniff, DENY, no-referrer, CSP and HSTS with local HTTP and staging HTTPS.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Configured origins only; allowed Authorization/Content-Type/X-Requested-With/X-Request-ID; expose request ID and Content-Disposition. API CSP default-src none/frame-ancestors none; HSTS only enabled profile/HTTPS. Safe correlation ID propagated, unsafe replaced.
-
-
-**Expected database/domain state:** Configured origins only; allowed Authorization/Content-Type/X-Requested-With/X-Request-ID; expose request ID and Content-Disposition. API CSP default-src none/frame-ancestors none; HSTS only enabled profile/HTTPS. Safe correlation ID propagated, unsafe replaced.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed evidence:** Full filter-chain preflight tests reject unlisted/lookalike/null/wildcard origins, unsupported method/header. Real API responses expose configured headers. Safe correlation IDs survive; unsafe/Unicode/oversized IDs are replaced and MDC clears. CR/LF requests remain firewall-rejected with generic400. Local secure mock requests prove enabled HSTS; actual deployed TLS/edge behavior remains STAGING ONLY.
 
 <a id="sec-005"></a>
 #### SEC-005 — Private document URL and cache isolation
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Receipt/statement downloads remain individually authorized and private. Spring Security already supplies no-store; absence of explicit controller cache code was a stale generated concern. No public URL/storage reference is exposed.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Download authorized PDF, inspect links/header/response; attempt guessed private path via /upload/files and anonymous/unrelated PDF endpoint; use second account after browser back navigation.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** No public private-document URL or storage reference; backend permission enforced for each download. Inspect actual cache headers: document controller does not explicitly set no-store (unlike IBAN reveal); absence is a security review gap.
-
-
-**Expected database/domain state:** No public private-document URL or storage reference; backend permission enforced for each download. Inspect actual cache headers: document controller does not explicitly set no-store (unlike IBAN reveal); absence is a security review gap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed evidence:** Reuse DOC47 PostgreSQL cases: actor matrix, guessed public-upload paths, immutable issuance and cache/header assertions. Document browser rerun passes8 checks including delayed download after logout, private receipt/statement controls and missing-file handling. No cache change or new storage architecture was needed.
 
 <a id="sec-006"></a>
-#### SEC-006 — Anonymous framework and actuator exposure
+#### SEC-006 — Framework and actuator exposure
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Public health includes status and optional probe-group names, without component details. Metrics require ADMIN. Installed Swagger/OpenAPI routes require authentication; they are not assumed absent. Non-exposed env/configprops/heapdump actuator routes remain unavailable.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call /actuator/health, /health/readiness, /health/liveness, /actuator/metrics and an individual metric as each role; attempt Swagger/api-docs and unsupported admin method.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Health public with no details; metrics ADMIN only; other unallowlisted routes require auth. Check full URLs include /api; do not assume Swagger publicly available.
-
-
-**Expected database/domain state:** Health public with no details; metrics ADMIN only; other unallowlisted routes require auth. Check full URLs include /api; do not assume Swagger publicly available.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Executed evidence:** Every role and anonymous health/metrics matrix, individual metric and no identifying gauge tags, authenticated Swagger200 versus anonymous401, disabled actuator404 for authenticated callers and unsupported admin method405/SCOUT403. Generated expectations of health status-only and authenticated Swagger404 were corrected from actual source/execution.
 
 <a id="sec-007"></a>
-#### SEC-007 — Frontend malformed sessions and unverified bypass
+#### SEC-007 — Malformed sessions and local tampering
 
-**Area:** SEC · **Priority:** P0 · **Test level:** SECURITY, API, LOCAL E2E · **Result:** NOT RUN
+**Area:** SEC · **Priority:** P0 · **Result:** PASS (local; full command gates in report)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Cached sessions must have valid token/user shapes and finite positive expiry. Optional legacy cache metadata remains compatible; malformed metadata/storage access fails closed. Local user/role/email edits never override backend authority.
 
+**Executed evidence:** SEC-DEF-002 reproduced malformed cached fullName and missing role in actual parser and browser. Fix passes26 session cases; AUTH13, INC7 and policy6 client regressions pass. Browser verifies malformed-cache sign-in recovery, forged ADMIN denial and logout/reload. No cookie/auth-storage redesign or automatic privileged action was introduced.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Corrupt eema:auth JSON, remove role/token fields, use invalid role, set emailVerified=true locally, tamper booking navigation. Reload and call protected API.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Frontend should recover safely without protected data disclosure; backend checks database role/email independently. getAuthSession performs partial shape validation; malformed stored user may expose UI robustness gap.
-
-
-**Expected database/domain state:** Frontend should recover safely without protected data disclosure; backend checks database role/email independently. getAuthSession performs partial shape validation; malformed stored user may expose UI robustness gap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** SecurityConfig, JwtAuthenticationFilter, GlobalExceptionHandler, frontend API/auth modules
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**WHAT ELHAM SHOULD TEST PERSONALLY:** session/error wording, recovery navigation, role/verification feedback and mobile usability. **PRODUCT / OPERATIONS DECISIONS:** none newly outstanding; existing localStorage design is retained and characterized. **STAGING ONLY:** deployed HTTPS/HSTS, edge CORS, WAF/rate limits, production logging and real provider transport. Local tests do not approve an operational SLA or verify deployed infrastructure.
 
 <a id="family-edge"></a>
 ### EDGE scenarios
 
+Approved v1 policies implemented and fully validated locally: 6 PASS / 0 FAIL / 0 BLOCKED. Focused units: 174; PostgreSQL: 25; representative browser: 4 checks. EDGE-DEF-001 and EDGE-DEC-001/002/003 are resolved. Earlier 3 PASS / 1 FAIL / 2 BLOCKED and original defect evidence are preserved under `docs/qa/evidence/edge/v1/history/`.
+
 <a id="edge-001"></a>
 #### EDGE-001 — Sub-minute and midnight boundary
 
-**Area:** EDGE · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** EDGE · **Priority:** P1 · **Test level:** unit, real PostgreSQL HTTP/concurrency, representative browser · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Source / corrected assumptions:** AVL already fixed midnight carry; PRICE already rejects less than one whole minute. These contracts remain unchanged.
 
+**Executed contract and outcome:** Fixed Clock threshold 23:59:30 yields no interval on that date and permits 00:00 the next date. Sub-minute HTTP input fails with HTTP 400 without persistence, notification or provider interaction. Positive whole-minute durations preserve Duration.toMinutes truncation. This Hibernate/JDBC binding persists milliseconds; PostgreSQL supports microseconds but sub-millisecond ORM round-trip fidelity is not claimed. Frontend uses HH:mm; no arbitrary new precision ban.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Evidence:** `docs/qa/EDGE_EXECUTION_REPORT.md`, `docs/qa/evidence/edge/v1/`, BookingTimePolicyTest and EdgeIntegrationTest; prior AVL/PRICE/MATCH/BK/INQ/CANCEL/PAYOUT/SEC reports. Fresh PostgreSQL V1–V13 and Hibernate validation; fixed Clock, synthetic fixtures, mocked providers.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Set threshold to 23:59:30 local, with current-day 22:00–23:59:59 availability; also request times with seconds/nanos; compare price minutes and next-day clipping.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Lead clip rounds up to minute; current LocalTime.plusMinutes can wrap midnight. Require no past slot offered as valid; record wraparound discrepancy. Price Duration.toMinutes truncates seconds; no invented minimum-second validation.
-
-
-**Expected database/domain state:** Lead clip rounds up to minute; current LocalTime.plusMinutes can wrap midnight. Require no past slot offered as valid; record wraparound discrepancy. Price Duration.toMinutes truncates seconds; no invented minimum-second validation.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Source-specific edge paths; see gaps register
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** local PASS, supported by required complete backend regression and frontend gates. No live provider or deployed infrastructure claim.
 
 <a id="edge-002"></a>
 #### EDGE-002 — DST missing/repeated local times
 
-**Area:** EDGE · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** EDGE · **Priority:** P0 · **Test level:** unit, real PostgreSQL HTTP/concurrency, representative browser · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Source / corrected assumptions:** EDGE-DEC-001 is approved: nonexistent local times are invalid; repeated autumn times use the earlier occurrence. Historical P0 EDGE-DEF-001 reproduced two local reservations aliasing after implicit normalization and a confirmed negative resolved interval. Evidence is retained.
 
+**Executed contract and outcome:** BookingTimePolicy inspects ZoneRules valid offsets, rejects zero offsets with an actionable HTTP 400 and chooses the first/earlier offset explicitly. Resolved end must follow start. Weekly and AVAILABLE availability split around gap portions; matching cannot offer them. Direct booking and inquiry create/offer/accept reject gap endpoints atomically; legacy gap rows cannot be accepted or checked out. Amsterdam spring alias regression repeats three times, and gap inquiry rollback repeats three times. Autumn 02:30–03:30 resolves 00:30Z–02:30Z: 60 wall-clock billed minutes,120 elapsed minutes, consistent lead time, inquiry offer expiry, confirmation/cancellation snapshots and payout eligibility. Approved pricing is unchanged. No occurrence selector, overnight booking or migration.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Evidence:** `docs/qa/EDGE_EXECUTION_REPORT.md`, `docs/qa/evidence/edge/v1/`, BookingTimePolicyTest and EdgeIntegrationTest; prior AVL/PRICE/MATCH/BK/INQ/CANCEL/PAYOUT/SEC reports. Fresh PostgreSQL V1–V13 and Hibernate validation; fixed Clock, synthetic fixtures, mocked providers.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use next Europe/Amsterdam spring transition 02:30 (gap) and fall 02:30 (overlap); run request, availability, confirmation snapshot, cancellation and payout eligibility.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Java atZone normalization/earlier-offset behavior is current authority; UI must state timezone and avoid falsely precise duration claims. Compare elapsed cancellation/lead durations versus LocalTime booking duration; flag ambiguity.
-
-
-**Expected database/domain state:** Java atZone normalization/earlier-offset behavior is current authority; UI must state timezone and avoid falsely precise duration claims. Compare elapsed cancellation/lead durations versus LocalTime booking duration; flag ambiguity.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Source-specific edge paths; see gaps register
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** local PASS, supported by required complete backend regression and frontend gates. No live provider or deployed infrastructure claim.
 
 <a id="edge-003"></a>
-#### EDGE-003 — Matching size, neighbourhood, tags and candidate cap
+#### EDGE-003 — Matching filters and bounded candidate batches
 
-**Area:** EDGE · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** EDGE · **Priority:** P1 · **Test level:** unit, real PostgreSQL HTTP/concurrency, representative browser · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Source / corrected assumptions:** EDGE-DEC-002 is approved: 30 is an internal query batch, not a semantic recall cap. Hard eligibility, visibility, ACTIVE status, budget, production requirements, lead time and exact availability remain authoritative.
 
+**Executed contract and outcome:** SQL fetches at most 30 candidates per query ordered by hourly price ascending, size descending, name ascending and UUID ascending. Continue using raw batch offsets until 30 distinct eligible available venues or exhaustion. Candidate 31 is considered and returned when the first 30 are unavailable. Tests prove first-batch sufficiency causes no later query; 61 unavailable venues yield genuine empty; ties traverse once in stable order; ranker receives only final eligible available candidates. No full-catalogue materialization, hard-filter relaxation or new search infrastructure. AI preference ordering remains provider-dependent.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Evidence:** `docs/qa/EDGE_EXECUTION_REPORT.md`, `docs/qa/evidence/edge/v1/`, BookingTimePolicyTest and EdgeIntegrationTest; prior AVL/PRICE/MATCH/BK/INQ/CANCEL/PAYOUT/SEC reports. Fresh PostgreSQL V1–V13 and Hibernate validation; fixed Clock, synthetic fixtures, mocked providers.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed 31 hard-eligible venues ordered by hourly asc, size desc, name asc; filter minimum size, neighbourhood casing and must-have tags; use structured feature tags contradicted by profile. Make first 30 unavailable but 31st available.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** DB filters and evaluator agree, structured tags cannot bypass facts; max 30 candidates limited before availability filter, so later available venue can be missed. Record candidate truncation product gap.
-
-
-**Expected database/domain state:** DB filters and evaluator agree, structured tags cannot bypass facts; max 30 candidates limited before availability filter, so later available venue can be missed. Record candidate truncation product gap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Source-specific edge paths; see gaps register
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** local PASS, supported by required complete backend regression and frontend gates. No live provider or deployed infrastructure claim.
 
 <a id="edge-004"></a>
-#### EDGE-004 — Suspended request acceptance characterization
+#### EDGE-004 — Suspended request acceptance
 
-**Area:** EDGE · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** EDGE · **Priority:** P1 · **Test level:** unit, real PostgreSQL HTTP/concurrency, representative browser · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Source / corrected assumptions:** VEN-D02 already fixed historical suspended acceptance; EDGE adds regression evidence.
 
+**Executed contract and outcome:** Create REQUESTED while ACTIVE, suspend as ADMIN, then owning OWNER acceptance returns HTTP 409 with identical booking row/audit/notices and no provider call. Prior VEN/BK/AVL venue-lock and inventory races are reused through full regression. Existing accepted commitments and confirmed history remain preserved.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Evidence:** `docs/qa/EDGE_EXECUTION_REPORT.md`, `docs/qa/evidence/edge/v1/`, BookingTimePolicyTest and EdgeIntegrationTest; prior AVL/PRICE/MATCH/BK/INQ/CANCEL/PAYOUT/SEC reports. Fresh PostgreSQL V1–V13 and Hibernate validation; fixed Clock, synthetic fixtures, mocked providers.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create REQUESTED while ACTIVE; suspend as ADMIN; accept existing request as owner before deadlines.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** VEN-D02 reproduced and fixed this gap: acceptance now checks ACTIVE under the venue row lock and returns 409 for a suspended REQUESTED booking. Existing AWAITING_PAYMENT remains payable; CONFIRMED history is preserved. New requests remain blocked. See VEN-010 and docs/qa/VEN_EXECUTION_REPORT.md for PostgreSQL race evidence.
-
-
-**Expected database/domain state:** VEN-D02 reproduced and fixed this gap: acceptance now checks ACTIVE under the venue row lock and returns 409 for a suspended REQUESTED booking. Existing AWAITING_PAYMENT remains payable; CONFIRMED history is preserved. New requests remain blocked. See VEN-010 and docs/qa/VEN_EXECUTION_REPORT.md for PostgreSQL race evidence.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Source-specific edge paths; see gaps register
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** local PASS, supported by required complete backend regression and frontend gates. No live provider or deployed infrastructure claim.
 
 <a id="edge-005"></a>
-#### EDGE-005 — Owner decline after response deadline
+#### EDGE-005 — Owner response deadline for both decisions
 
-**Area:** EDGE · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** EDGE · **Priority:** P1 · **Test level:** unit, real PostgreSQL HTTP/concurrency, representative browser · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Source / corrected assumptions:** EDGE-DEC-003 is approved: ownerResponseExpiresAt applies equally to acceptance and decline. Scheduler timing cannot determine terminal business reason. Historical scheduler-dependent DECLINED versus EXPIRED is retained in evidence.
 
+**Executed contract and outcome:** At deadline minus 1 microsecond decline returns HTTP 200 / DECLINED and REQUEST_DECLINED. At equality and plus 1 microsecond it commits EXPIRED and REQUEST_EXPIRED then returns HTTP 409 using the existing commit-before-conflict exception convention. Repeated commands/worker are idempotent. Real PostgreSQL latch-controlled decline-first and worker-first orderings repeat three times each and yield one committed expiry event, no decline event. Existing acceptance boundaries are retained. Frontend stale HTTP 409 refetch must show Response window expired, preserve conflict feedback, remove controls and survive reload. No new status, reminder or deadline cap.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Evidence:** `docs/qa/EDGE_EXECUTION_REPORT.md`, `docs/qa/evidence/edge/v1/`, BookingTimePolicyTest and EdgeIntegrationTest; prior AVL/PRICE/MATCH/BK/INQ/CANCEL/PAYOUT/SEC reports. Fresh PostgreSQL V1–V13 and Hibernate validation; fixed Clock, synthetic fixtures, mocked providers.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create REQUESTED; make ownerResponseExpiresAt past without running scheduler; decline as owner.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Current declineRequest only checks REQUESTED, not response deadline; can produce DECLINED before scheduler. Compare expiry email/status semantics and document inconsistent deadline enforcement.
-
-
-**Expected database/domain state:** Current declineRequest only checks REQUESTED, not response deadline; can produce DECLINED before scheduler. Compare expiry email/status semantics and document inconsistent deadline enforcement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Source-specific edge paths; see gaps register
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** local PASS, supported by required complete backend regression and frontend gates. No live provider or deployed infrastructure claim.
 
 <a id="edge-006"></a>
 #### EDGE-006 — Unsupported compatibility service paths
 
-**Area:** EDGE · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** EDGE · **Priority:** P1 · **Test level:** unit, real PostgreSQL HTTP/concurrency, representative browser · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Source / corrected assumptions:** HeroFeature is used by the homepage; BookerVerification has no importing production component. Service methods alone do not expose endpoints.
 
+**Executed contract and outcome:** VenueService getAllVenues/deleteVenue have no production controller callers; public GET delegates to getAllActiveVenues. OWNER/ADMIN DELETE returns HTTP 405 without deletion; invented force-confirm/status endpoints return HTTP 404 without booking/event/provider effects. Existing REF endpoint is covered separately. Independently reachable optional Cala BFF remains outside EDGE certification and is tracked by CALA-001.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Evidence:** `docs/qa/EDGE_EXECUTION_REPORT.md`, `docs/qa/evidence/edge/v1/`, BookingTimePolicyTest and EdgeIntegrationTest; prior AVL/PRICE/MATCH/BK/INQ/CANCEL/PAYOUT/SEC reports. Fresh PostgreSQL V1–V13 and Hibernate validation; fixed Clock, synthetic fixtures, mocked providers.
 
+**Acceptance:** local PASS, supported by required complete backend regression and frontend gates. No live provider or deployed infrastructure claim.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Inspect VenueService getAllVenues/deleteVenue call sites, old BookerVerification/HeroFeature imports, unused refund/generic endpoints. Try DELETE /venues/{id} as authorized owner.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Service methods without controller routes are not public features; unsupported delete must not mutate. Record compatibility code and missing tests without adding new UI/API.
-
-
-**Expected database/domain state:** Service methods without controller routes are not public features; unsupported delete must not mutate. Record compatibility code and missing tests without adding new UI/API.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Source-specific edge paths; see gaps register
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**EDGE gate:** 6 PASS / 0 FAIL / 0 BLOCKED. No unresolved EDGE P0/P1 defect or product/business/legal decision. Required full regression and frontend gates passed. Locally clear to proceed automatically to OPS-001–009 under the user’s approved continuation mode.
 
 <a id="family-ops"></a>
 ### OPS scenarios
@@ -5424,33 +3148,33 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 <a id="ops-001"></a>
 #### OPS-001 — Fresh common migrations and Hibernate validation
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** Run mvn verify -Ppostgres-integration with Docker. Separately start same release against disposable empty PG16 with common-only Flyway location; query flyway_schema_history and health.
+**Exact steps:** Start the packaged release against an empty disposable PostgreSQL database with only common migrations; compare exact versions and business-table emptiness, then restart and compare all table hashes.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** V1–V11 common apply once and Hibernate validate succeeds; no development users/policies/venues in common-only DB; rerun produces no extra migration or data.
+**Expected API/backend behavior:** Common V1–V14 apply once; Hibernate validation succeeds; users, venues, bookings and policy_versions remain empty. Restart changes no persisted rows.
 
 
-**Expected database/domain state:** V1–V11 common apply once and Hibernate validate succeeds; no development users/policies/venues in common-only DB; rerun produces no extra migration or data.
+**Expected database/domain state:** Common V1–V14 apply once; Hibernate validation succeeds; users, venues, bookings and policy_versions remain empty. Restart changes no persisted rows.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5462,42 +3186,42 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-002"></a>
 #### OPS-002 — Local dev chain and production exclusion
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** Start local profile against disposable empty DB; inspect V100–V102 plus V1–V11. Start prod-config validation fixture excluding all dev locations.
+**Exact steps:** Start the packaged local profile on a fresh disposable database; assert common1–13/dev100–103, deterministic development seeds and seed login. Audit prod common-only profile and exercise required production configuration rejection/acceptance.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** Local common+dev chain includes seed production profiles/lead times; prod common only. Prod fails missing/weak secrets, local storage, wildcard CORS, invalid/shared buckets as validator specifies; do not provision infrastructure here.
+**Expected API/backend behavior:** Development fixtures belong only to local/dev migration locations. Production validates required configuration; unit validation is not a deployed S3/payment/email check. Neither common nor development migrations supply approved legal policy content.
 
 
-**Expected database/domain state:** Local common+dev chain includes seed production profiles/lead times; prod common only. Prod fails missing/weak secrets, local storage, wildcard CORS, invalid/shared buckets as validator specifies; do not provision infrastructure here.
+**Expected database/domain state:** Development fixtures belong only to local/dev migration locations. Production validates required configuration; unit validation is not a deployed S3/payment/email check. Neither common nor development migrations supply approved legal policy content.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5509,42 +3233,42 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-003"></a>
 #### OPS-003 — Constraint and foreign-key behavior
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** In separate transactions violate blocking overlap, payout booking uniqueness, VERIFIED-per-owner, document aggregate uniqueness, current policy per type and policy/incident referenced-parent delete; rollback each.
+**Exact steps:** Reuse the freshly executed critical-path and financial/inventory domain PostgreSQL suites. Add policy/incident parent-delete rollback and actual restrict-FK catalog assertions.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** Constraint rejects invalid write, previous authoritative row intact; half-open adjacency and overlapping REQUESTED allowed. ON DELETE RESTRICT preserves financial/legal history; use actual migration FK action for every entity.
+**Expected API/backend behavior:** Exclusion, financial identities, destination/document/policy uniqueness and referenced-parent restrictions remain enforced by PostgreSQL. A rejected deletion preserves parent and referencing rows.
 
 
-**Expected database/domain state:** Constraint rejects invalid write, previous authoritative row intact; half-open adjacency and overlapping REQUESTED allowed. ON DELETE RESTRICT preserves financial/legal history; use actual migration FK action for every entity.
+**Expected database/domain state:** Exclusion, financial identities, destination/document/policy uniqueness and referenced-parent restrictions remain enforced by PostgreSQL. A rejected deletion preserves parent and referencing rows.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5556,42 +3280,42 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-004"></a>
 #### OPS-004 — Backup and isolated restore
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** On disposable local DB with paid/cancelled/inquiry/policy/destination/document fixtures run backup commands below; restore into separate eema_qa_restore DB; start same jar against restore on separate port with external delivery disabled; inspect representative records.
+**Exact steps:** Back up synthetic populated PostgreSQL using pg_dump; restore to a separate DB. Copy public/private objects and recover synthetic bank encryption/fingerprint keys. Start the same packaged release, compare all table hashes and constraint definitions, then test documents/media, inquiry, destination reveal, refresh rotation and source isolation.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** Counts/IDs/snapshots/constraints and health agree. Restore private/public object copies and payout encryption/fingerprint keys too; SQL backup alone cannot recover files/encrypted bank access. Never overwrite source DB.
+**Expected API/backend behavior:** Restored rows/IDs and constraints match, allowing equivalent PostgreSQL expression formatting. Receipt/media bytes are identical; authorized access remains enforced; correct keys decrypt and wrong keys fail. Existing restored refresh rotates once; original source stays unchanged. Production backup/secret-escrow/RPO/RTO is staging/operations scope.
 
 
-**Expected database/domain state:** Counts/IDs/snapshots/constraints and health agree. Restore private/public object copies and payout encryption/fingerprint keys too; SQL backup alone cannot recover files/encrypted bank access. Never overwrite source DB.
+**Expected database/domain state:** Restored rows/IDs and constraints match, allowing equivalent PostgreSQL expression formatting. Receipt/media bytes are identical; authorized access remains enforced; correct keys decrypt and wrong keys fail. Existing restored refresh rotates once; original source stays unchanged. Production backup/secret-escrow/RPO/RTO is staging/operations scope.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5603,42 +3327,42 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-005"></a>
 #### OPS-005 — Backend restart and frontend reload
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** Create representative states; restart backend without volume deletion, reload frontend, revisit owner/scout/admin deep links and PDFs.
+**Exact steps:** Restart the actual packaged backend against its existing isolated database/files; compare all table hashes and receipt bytes. Reload scout/owner/admin deep links and fetch the receipt in the browser using the existing session.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** Postgres/volume data, idempotency claims, sessions and document bytes survive ordinary restart. In-memory notification work can be lost; no durable mail outbox exists.
+**Expected API/backend behavior:** Bookings, durable payment creation claims, sessions, policies, inquiry/document/destination rows and file bytes survive ordinary restart. Browser state agrees with PostgreSQL. Pending notification intents survive in PostgreSQL and are dispatched through the transactional outbox under OPS-008.
 
 
-**Expected database/domain state:** Postgres/volume data, idempotency claims, sessions and document bytes survive ordinary restart. In-memory notification work can be lost; no durable mail outbox exists.
+**Expected database/domain state:** Bookings, durable payment creation claims, sessions, policies, inquiry/document/destination rows and file bytes survive ordinary restart. Browser state agrees with PostgreSQL. Pending notification intents survive in PostgreSQL and are dispatched through the transactional outbox under OPS-008.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5650,42 +3374,42 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-006"></a>
 #### OPS-006 — Local reset and reseed rehearsal
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** On disposable test project only follow reset options below; after reset re-register personas/reseed local chain and rebuild needed trust/policy fixtures.
+**Exact steps:** Run scripts/qa/ops-reset-rehearsal.py on a fresh uniquely named local QA Compose project. Assert project volume ownership, reset actual database/public/private volumes, recreate and verify missing markers, exact migrations, deterministic seeds and seed login. Separately verify packaged DB/object-directory reset in the recovery harness.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** Full reset deletes all database/upload-volume data; targeted reset respects FKs; common migrations contain no legal policy content. No automatic PASS carried across reset.
+**Expected API/backend behavior:** Only owned disposable resources are destroyed; shared eema-backend volumes are untouched. Database and file-volume markers disappear;10 venue seeds return; policy_versions stays empty. All owned containers/volumes and temporary keys/files are cleaned.
 
 
-**Expected database/domain state:** Full reset deletes all database/upload-volume data; targeted reset respects FKs; common migrations contain no legal policy content. No automatic PASS carried across reset.
+**Expected database/domain state:** Only owned disposable resources are destroyed; shared eema-backend volumes are untouched. Database and file-volume markers disappear;10 venue seeds return; policy_versions stays empty. All owned containers/volumes and temporary keys/files are cleaned.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5697,42 +3421,42 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-007"></a>
 #### OPS-007 — Fee metric versus exception consistency
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** Seed old unreconciled paid CONFIRMED and CANCELLED rows; run metrics scan and exception query with same thresholds; create >200 exceptions in one category.
+**Exact steps:** With fixed Clock, compare fee gauge and the complete exception queue before/after205 qualifying paid-history rows across CONFIRMED/CANCELLED/REFUNDED. Test cutoff minus/equal/plus one microsecond and assert read-only snapshots.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** Thresholds share OperationalThresholds, but fee gauge currently counts only CONFIRMED whereas queue includes paid CANCELLED; queue caps 200 candidates/category while gauges count full set. Record mismatch, not false equality.
+**Expected API/backend behavior:** Gauge and queue include the same positive-paid unreconciled rows strictly older than the shared cutoff. Equality and later are excluded. Results beyond200 are reachable; querying/scanning changes no booking state.
 
 
-**Expected database/domain state:** Thresholds share OperationalThresholds, but fee gauge currently counts only CONFIRMED whereas queue includes paid CANCELLED; queue caps 200 candidates/category while gauges count full set. Record mismatch, not false equality.
+**Expected database/domain state:** Gauge and queue include the same positive-paid unreconciled rows strictly older than the shared cutoff. Equality and later are excluded. Results beyond200 are reachable; querying/scanning changes no booking state.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5744,89 +3468,63 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="ops-008"></a>
-#### OPS-008 — Email asynchronous failure and restart recovery
+#### OPS-008 — Durable lifecycle notification dispatch and restart recovery
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** UNIT, REAL POSTGRESQL, PACKAGED RESTART · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Approved contract:** Eema v1 requires durable dispatch of important lifecycle notifications through a PostgreSQL transactional outbox. Business transactions never depend on provider email success. Dispatch is at-least-once; actual inbox delivery is not guaranteed.
 
+**Historical record:** The prior implementation lost process-local work after domain commit and JVM death. OPS-008 was BLOCKED pending OPS-DEC-001, despite passing characterization. The decision is now approved; original report/crash evidence remains under `qa/evidence/ops/outbox/history` and prior OPS evidence. Do not rewrite that result as if durability existed previously.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Exact steps:** Commit booking acceptance with dispatch disabled and verify a PENDING outbox row in the same PostgreSQL transaction; rollback and enqueue failure leave neither transition nor intent. Replay event publication and verify one logical message per recipient. Verify V13 upgrade, fresh V14 and Hibernate startup. Inject transient/permanent provider failures, exact retry/lease boundaries, exhaustion, claim death, two-worker competition, SKIP LOCKED progress and stale-worker completion. Simulate accepted-provider/lost-local-completion and retain the same idempotency identity/content on retry. Kill the packaged JVM after commit; restart with a loopback HTTP provider and prove dispatch without a new domain transition. Saturate the real bounded executor using latches. Verify auth credential absence, reconstruction, supersession, expiry and key rotation; inspect safe ADMIN queue and aggregate metrics.
 
+**Expected API/backend and database behavior:** Synchronous BEFORE_COMMIT composition inserts notification intent in the domain transaction. PostgreSQL uniqueness prevents duplicate logical recipient/event rows. Short claimed transactions use SKIP LOCKED and a recoverable lease/fence. External transport never holds a business/database transaction. Defaults: batch size 20, one outstanding batch per instance, 8 attempts, 30-second doubling retry capped at 3600 seconds, 300-second leases and 20-second request timeout. Disabled provider leaves pending attempts untouched. Terminal failures retain history and appear in the existing ADMIN-only exception queue. OPS-DEF-001 executor aliases/backpressure remain preserved.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Payload/security:** Persist only immutable existing email artifacts and aggregate/type/recipient identity, not entire mutable domain objects. Auth messages instead retain a nonsecret nonce, token-hash/user reference and credential-placeholder artifact. Reconstruct raw credentials only in memory from a versioned keyed derivation; enforce existing token expiry/use/account/recipient. Never persist raw auth credentials, credential-bearing URLs, API keys, refresh/access tokens, bank details or provider responses. No email body or recipient is exposed through exceptions/metric labels.
 
+**Provider boundary:** Existing templates/recipients only. Stable per-outbox Resend idempotency header mitigates duplicate acceptance within the provider's documented 24-hour retention. Local completion loss may cause retry/duplicate dispatch; no exactly-once or inbox guarantee. Local tests use stubs only. Real Resend and deployed worker operations remain STAGING ONLY.
 
-**Exact steps:** Mock one recipient send failure, missing entity, event rollback, queue saturation and process restart after commit before delivery. Inspect lifecycle response and emails.
+**Evidence:** [OPS report](qa/OPS_EXECUTION_REPORT.md), [recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), `qa/evidence/ops/outbox`, OperationsNotificationIntegrationTest, OperationsRecoveryIntegrationTest, NotificationOutboxUnitTest, NotificationExecutorBindingTest, existing AUTH/BK/INQ/PAY/REF/TRUST/DEST/ADMIN regression authorities.
 
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** After-commit listeners avoid rolled-back messages; delivery failure must not roll back business success, other recipients attempted where implemented. No persistent retry/outbox guarantee; missing delivery becomes operations follow-up.
-
-
-**Expected database/domain state:** After-commit listeners avoid rolled-back messages; delivery failure must not roll back business success, other recipients attempted where implemented. No persistent retry/outbox guarantee; missing delivery becomes operations follow-up.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Pass/fail criteria:** All locally required crash/transaction/security/claim assertions plus complete backend and applicable frontend gates must pass. No new lifecycle templates, notification preferences or terminal-retry admin powers are part of this change.
 
 <a id="ops-009"></a>
 #### OPS-009 — Reporting pagination and unavailable fee
 
-**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** NOT RUN
+**Area:** OPS · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Operator-controlled disposable QA resources; scout/owner/admin only where actual booking/document/session access is exercised. No generic actor matrix for Flyway or maintenance.
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Local Docker and packaged current release; isolated synthetic fixtures and disabled/mocked providers. Never reset shared local or staging history.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** Mock reporting no fee, EUR fee, non-EUR, malformed body, pagination outside Mollie origin, loop and provider failure; run reconciliation job enabled then disabled.
+**Exact steps:** Mock the real reporting HTTP client for missing token, unavailable fee, valid exact EUR, non-EUR, malformed fee/body, multiple pages, foreign origin, loop and provider failure. Exercise enabled/disabled reconciliation and continuation after per-booking failure/no-fee.
 
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Expected UI behavior:** Where a browser is relevant, role controls and reload reflect persisted booking state and immutable receipt access. Database-only checks have no separate UI contract.
 
 
-**Expected API/backend behavior:** No fee invented; invalid/reporting failure deferred and next booking processed; disabled job no call. Ordinary test payment API does not prove real reporting/fee availability.
+**Expected API/backend behavior:** No fee is invented. Unsafe/invalid reporting is rejected/deferred; the next booking is processed; disabled job makes no provider/query calls. Same-origin pagination retrieves authoritative EUR fees. Real Mollie reporting entitlement/results remain staging-only.
 
 
-**Expected database/domain state:** No fee invented; invalid/reporting failure deferred and next booking processed; disabled job no call. Ordinary test payment API does not prove real reporting/fee availability.
+**Expected database/domain state:** No fee is invented. Unsafe/invalid reporting is rejected/deferred; the next booking is processed; disabled job makes no provider/query calls. Same-origin pagination retrieves authoritative EUR fees. Real Mollie reporting entitlement/results remain staging-only.
 
 
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
+**Expected email/provider behavior:** Providers disabled or mocked; assert calls appropriate to the tested transition. No real provider delivery or settlement claim.
 
 
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
+**Security/authorization expectation:** Preserve existing endpoint authorization and private-document access. Credentials, tokens, dumps and full bank details are excluded from evidence.
 
 
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
@@ -5838,675 +3536,243 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Local/staging requirement:** LOCAL REAL POSTGRES
 
 
-**Source / existing evidence:** Flyway common/dev, ProductionConfigurationValidator, repositories, deployment docs
+**Source / existing evidence:** [OPS execution report](qa/OPS_EXECUTION_REPORT.md), [local recovery runbook](qa/OPS_LOCAL_RECOVERY_RUNBOOK.md), sanitized qa/evidence/ops; existing AUTH/POL/BK/PAY/REF/DEST/PAYOUT/DOC/ADMIN/EDGE reports.
 
 
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Pass/fail criteria:** PASS requires recorded local execution and required regression gates. OPS-DEC-001 now explicitly requires durable outbox dispatch; OPS-008 completion requires the new crash/retry/security assertions and complete regression. Real providers/deployed recovery remain separate staging requirements.
 
 
 <a id="family-job"></a>
 ### JOB scenarios
 
+Internal scheduled entrypoints; no generic user-role, email-verification or policy-acceptance actor matrix. The [JOB execution report](qa/JOB_EXECUTION_REPORT.md) records source audit, corrected assumptions, historical defects and current validation.
+
 <a id="job-001"></a>
 #### JOB-001 — BookingApprovalExpirationJob.expireUnpaidApprovals
 
-**Area:** JOB · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION, CONCURRENCY · **Result:** NOT RUN
+**Area:** JOB · **Priority:** P0 · **Test level:** REAL POSTGRESQL, CONCURRENCY, UNIT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** 60-second default scan; at most 100 REQUESTED rows and 100 AWAITING_PAYMENT rows per invocation. Injected Clock; expiry includes exact deadline. Request batch holds SKIP LOCKED locks transactionally. Approval candidate selection is short-lived and each mutation independently locks/rechecks its booking.
 
+**Exact local checks:** Seed 101 due requests and 101 due approvals plus future/unrelated states. First scan expires 100 of each; later scans drain the remainder without duplicate audit, outbox or counters. Run competing actual workers with one row held by an independent transaction; the free rows progress and the held row expires later. Roll back a batch and verify no state/audit/outbox/counter outcome.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundaries and corrections:** BK/PAY/EDGE expiry policies remain authoritative. Existing REQUEST_EXPIRED and APPROVAL_EXPIRED notifications are durable intents; the worker does not contact a payment provider. Do not claim the approval selector and all its mutations share one transaction.
 
+**Evidence/dependencies:** ScheduledJobsIntegrationTest, existing job/observability tests, prior AUTH/BK/INQ/PAY/REF/PAYOUT/ADMIN/EDGE/OPS reports; `qa/evidence/job/`. Real PostgreSQL V1–V14 and Hibernate validation, fixed Clock, synthetic fixtures, provider stubs and deterministic barriers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**UI/security:** Existing authoritative API reload/refetch and authorization remain covered by their domain reports. There is no new scheduler UI or permission. No raw credentials or financial provider responses are retained in evidence.
 
-
-**Exact steps:** Seed 101 eligible rows (REQUESTED and AWAITING_PAYMENT due at/before now) and one ineligible/future/terminal row. Invoke job, inspect changes and batch count; invoke again; run two workers and observe locks, errors and metrics.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 100 per request/approval query; 60s default. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected database/domain state:** 100 per request/approval query; 60s default. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingApprovalExpirationJob.expireUnpaidApprovals
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** All locally required assertions and full backend regression must pass. Real provider/deployment behavior is separate; no staging result is inferred.
 
 <a id="job-002"></a>
 #### JOB-002 — AvailabilityInquiryExpirationJob.expireOffers
 
-**Area:** JOB · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION, CONCURRENCY · **Result:** NOT RUN
+**Area:** JOB · **Priority:** P0 · **Test level:** REAL POSTGRESQL, CONCURRENCY, UNIT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** 60-second default scan; injected Clock and service transaction select at most 100 OFFERED rows whose offer_expires_at is at/before now, FOR UPDATE SKIP LOCKED. EXPIRED records store the scan instant.
 
+**Exact local checks:** Seed 101 due offers plus a one-microsecond-future offer. Execute the actual job at a fixed advanced clock, verify 100 then the remainder under competing workers. Hold one due row with a latch/independent transaction and prove skip/recovery. Repeat without duplicate OFFER_EXPIRED intent.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundaries and corrections:** INQ offer lifetime and slot-start cap remain unchanged. No new decline, reminder or booking path. Existing inquiry expiry intent is committed with the transition; provider delivery occurs through OPS outbox after commit.
 
+**Evidence/dependencies:** ScheduledJobsIntegrationTest, existing job/observability tests, prior AUTH/BK/INQ/PAY/REF/PAYOUT/ADMIN/EDGE/OPS reports; `qa/evidence/job/`. Real PostgreSQL V1–V14 and Hibernate validation, fixed Clock, synthetic fixtures, provider stubs and deterministic barriers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**UI/security:** Existing authoritative API reload/refetch and authorization remain covered by their domain reports. There is no new scheduler UI or permission. No raw credentials or financial provider responses are retained in evidence.
 
-
-**Exact steps:** Seed 101 eligible rows (OFFERED due at/before now) and one ineligible/future/terminal row. Invoke job, inspect changes and batch count; invoke again; run two workers and observe locks, errors and metrics.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 100 per query; 60s default. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected database/domain state:** 100 per query; 60s default. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AvailabilityInquiryExpirationJob.expireOffers
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** All locally required assertions and full backend regression must pass. Real provider/deployment behavior is separate; no staging result is inferred.
 
 <a id="job-003"></a>
 #### JOB-003 — OwnerPayoutReadinessJob.scan
 
-**Area:** JOB · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION, CONCURRENCY · **Result:** NOT RUN
+**Area:** JOB · **Priority:** P0 · **Test level:** REAL POSTGRESQL, CONCURRENCY, UNIT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** 300-second default scan; at most 100 due CALCULATED/HELD payouts. Transactional booking-first SKIP LOCKED claims preserve PAYOUT lock order. A per-instance keyset cursor walks eligible_at/booking UUID, advances only after commit and wraps at the end. Restart safely revisits earlier rows.
 
+**Exact local checks:** Verify 101-row batches, repeated audit idempotency, equality and busy/disjoint claims from PAYOUT regression. Place 100 persistently HELD rows before a later eligible payout and prove later progress. Roll back an actual scan: no READY/audit outcome and no cursor advancement. Verify no PAID transition or provider money movement.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundaries and corrections:** Only existing readiness is recalculated: end time, fee reconciliation, refunds, destination and stored financial rules remain authoritative. READY/PAID/CANCELLED rows are excluded. Scan position is not a payout claim or financial record; no automatic transfer or new retry SLA.
 
+**Evidence/dependencies:** ScheduledJobsIntegrationTest, existing job/observability tests, prior AUTH/BK/INQ/PAY/REF/PAYOUT/ADMIN/EDGE/OPS reports; `qa/evidence/job/`. Real PostgreSQL V1–V14 and Hibernate validation, fixed Clock, synthetic fixtures, provider stubs and deterministic barriers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**UI/security:** Existing authoritative API reload/refetch and authorization remain covered by their domain reports. There is no new scheduler UI or permission. No raw credentials or financial provider responses are retained in evidence.
 
-
-**Exact steps:** Seed 101 eligible rows (due eligible nonterminal payout rows selected by repository) and one ineligible/future/terminal row. Invoke job, inspect changes and batch count; invoke again; run two workers and observe locks, errors and metrics.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 100; 300s default; transaction encloses SKIP LOCKED. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected database/domain state:** 100; 300s default; transaction encloses SKIP LOCKED. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerPayoutReadinessJob.scan
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** All locally required assertions and full backend regression must pass. Real provider/deployment behavior is separate; no staging result is inferred.
 
 <a id="job-004"></a>
 #### JOB-004 — AuthTokenCleanupJob.cleanup
 
-**Area:** JOB · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION, CONCURRENCY · **Result:** NOT RUN
+**Area:** JOB · **Priority:** P0 · **Test level:** REAL POSTGRESQL, CONCURRENCY, UNIT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** 3600-second default scan; injected Clock, transactional deletion of at most 100 verification and 100 reset tokens. Eligible means used_at nonnull OR expires_at strictly before now. Refresh sessions are not housekeeping targets.
 
+**Exact local checks:** Seed 101 expired tokens per table plus exact-expiry and future-unused tokens. Verify one bounded batch, concurrent remainder cleanup and repeat safety. Separately verify used tokens are removed even before expiry. Refresh-session count remains unchanged. Reuse OPS auth-outbox tests for missing/expired/used token safety.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundaries and corrections:** Exact-expiry retention for one later cleanup pass is deliberate; redemption still rejects expired tokens at equality. Cleanup grants no extra validity and sends no email. Auth tokens remain hash-only; no raw credentials appear in evidence.
 
+**Evidence/dependencies:** ScheduledJobsIntegrationTest, existing job/observability tests, prior AUTH/BK/INQ/PAY/REF/PAYOUT/ADMIN/EDGE/OPS reports; `qa/evidence/job/`. Real PostgreSQL V1–V14 and Hibernate validation, fixed Clock, synthetic fixtures, provider stubs and deterministic barriers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**UI/security:** Existing authoritative API reload/refetch and authorization remain covered by their domain reports. There is no new scheduler UI or permission. No raw credentials or financial provider responses are retained in evidence.
 
-
-**Exact steps:** Seed 101 eligible rows (used/expired verification and reset tokens) and one ineligible/future/terminal row. Invoke job, inspect changes and batch count; invoke again; run two workers and observe locks, errors and metrics.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 100 each; 3600s default; not refresh-token housekeeping. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected database/domain state:** 100 each; 3600s default; not refresh-token housekeeping. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AuthTokenCleanupJob.cleanup
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** All locally required assertions and full backend regression must pass. Real provider/deployment behavior is separate; no staging result is inferred.
 
 <a id="job-005"></a>
 #### JOB-005 — MollieFeeReconciliationJob.reconcile
 
-**Area:** JOB · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION, CONCURRENCY · **Result:** NOT RUN
+**Area:** JOB · **Priority:** P0 · **Test level:** REAL POSTGRESQL, CONCURRENCY, UNIT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** Enabled only by existing configuration; 3600-second default delay and 60-second initial delay. At most 100 read-only provider reporting lookups per invocation, outside database transactions. Candidates are positive-paid unreconciled CONFIRMED/CANCELLED/REFUNDED bookings with a payment ID. Bounded keyset traversal and wrap prevent an unavailable oldest page from hiding later fees.
 
+**Exact local checks:** Verify 101 successful rows with tied paid timestamps drain in bounded batches and unpaid rows remain unchanged. Place 100 unavailable older fees before one available later fee; repeated scans reach the later row and wrap to deferred rows when fees become available. Race independent workers through a reporting barrier; one persisted reconciliation/audit/payout outcome. Reuse disabled, absent/invalid fee, provider error, safe pagination and exact-money regressions.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundaries and corrections:** No fee is invented. Provider lookup may repeat across workers; locked reconciliation is idempotent for the same amount and rejects conflicts. Scan cursor is an optimization, resets on restart, and never replaces authoritative financial state. Real Mollie reporting remains STAGING ONLY.
 
+**Evidence/dependencies:** ScheduledJobsIntegrationTest, existing job/observability tests, prior AUTH/BK/INQ/PAY/REF/PAYOUT/ADMIN/EDGE/OPS reports; `qa/evidence/job/`. Real PostgreSQL V1–V14 and Hibernate validation, fixed Clock, synthetic fixtures, provider stubs and deterministic barriers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**UI/security:** Existing authoritative API reload/refetch and authorization remain covered by their domain reports. There is no new scheduler UI or permission. No raw credentials or financial provider responses are retained in evidence.
 
-
-**Exact steps:** Seed 101 eligible rows (paid CONFIRMED/CANCELLED unreconciled provider fee) and one ineligible/future/terminal row. Invoke job, inspect changes and batch count; invoke again; run two workers and observe locks, errors and metrics.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 100; 3600s default, initial 60s; configuration enabled. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected database/domain state:** 100; 3600s default, initial 60s; configuration enabled. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** MollieFeeReconciliationJob.reconcile
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** All locally required assertions and full backend regression must pass. Real provider/deployment behavior is separate; no staging result is inferred.
 
 <a id="job-006"></a>
 #### JOB-006 — WorkflowObservability.scanStuckStates
 
-**Area:** JOB · **Priority:** P0 · **Test level:** OPERATIONAL, INTEGRATION, CONCURRENCY · **Result:** NOT RUN
+**Area:** JOB · **Priority:** P0 · **Test level:** REAL POSTGRESQL, CONCURRENCY, UNIT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Authoritative contract:** 300-second default scan; full aggregate counts, not a 100-row mutation batch. Payment/refund/fee/overdue cutoffs are strict; HELD/READY/OPEN categories retain their existing predicates. Lifecycle counters increment AFTER_COMMIT.
 
+**Exact local checks:** Seed more than 100 old payment creations, active refunds, HELD/READY/overdue payouts and OPEN liabilities. Concurrent scans produce complete gauges and preserve booking/payout rows byte-for-byte. Reuse OPS complete fee count beyond 200 and ADMIN/shared-threshold equality tests. Rollback/replay tests prove counters reflect committed events.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundaries and corrections:** Metrics do not remediate financial state or contact providers. No user/email/aggregate identifiers become labels. Process counters are operational telemetry, not a durable accounting ledger. Deployed scraping/alerts remain staging operations.
 
+**Evidence/dependencies:** ScheduledJobsIntegrationTest, existing job/observability tests, prior AUTH/BK/INQ/PAY/REF/PAYOUT/ADMIN/EDGE/OPS reports; `qa/evidence/job/`. Real PostgreSQL V1–V14 and Hibernate validation, fixed Clock, synthetic fixtures, provider stubs and deterministic barriers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**UI/security:** Existing authoritative API reload/refetch and authorization remain covered by their domain reports. There is no new scheduler UI or permission. No raw credentials or financial provider responses are retained in evidence.
 
-
-**Exact steps:** Seed 101 eligible rows (old CREATING/active-refund/fee, HELD/READY/overdue and OPEN liabilities) and one ineligible/future/terminal row. Invoke job, inspect changes and batch count; invoke again; run two workers and observe locks, errors and metrics.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** read-only gauges; 300s default. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected database/domain state:** read-only gauges; 300s default. Only eligible rows affected; repeat has no duplicate business event. Do not assume every scheduled job holds a shared transaction: verify actual worker locking scope; counters reflect committed transitions and gauges are read-only.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** WorkflowObservability.scanStuckStates
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** All locally required assertions and full backend regression must pass. Real provider/deployment behavior is separate; no staging result is inferred.
 
 <a id="family-race"></a>
 ### RACE scenarios
 
+The [RACE execution report](qa/RACE_EXECUTION_REPORT.md) reconciles current application-level race evidence with the original SQL-only baseline. All mapped tests passed in the just-completed full PostgreSQL run on unchanged production/test source; no additional run or new test is claimed.
+
 <a id="race-001"></a>
 #### RACE-001 — Booking acceptance
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Three HTTP venue-lock barrier repetitions produce 200/409, one AWAITING_PAYMENT and one UNAVAILABLE booking. Persisted availability excludes the winner and reopens after expiry. Venue-first/booking-second locking and PostgreSQL exclusion are separate authorities.
 
+**Execution mapping:** `VenueDomainIntegrationTest.avlConcurrentAcceptanceReservesOnceAndExpiryReopens`; `PostgresCriticalPathIntegrationTest.overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-002"></a>
 #### RACE-002 — Blocking insert
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Concurrent inquiry/inquiry and inquiry/normal acceptance serialize at the same venue reservation boundary: one reservation, safe 200/409 and no accepted inquiry without a booking. Duplicate same-offer requests create one booking/audit. A separate SQL race proves overlapping AWAITING_PAYMENT/CONFIRMED inserts cannot both commit; adjacent half-open intervals are allowed.
 
+**Execution mapping:** `InquiryIntegrationTest.twoOffersAndNormalAcceptanceShareVenueReservationBoundary`; `InquiryIntegrationTest.concurrentSameOfferCreatesExactlyOneBooking`; `PostgresCriticalPathIntegrationTest.exclusionRejectsOneOverlappingBlockingInsert`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#exclusionRejectsOneOverlappingBlockingInsert. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#exclusionRejectsOneOverlappingBlockingInsert
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-003"></a>
 #### RACE-003 — Refresh rotation
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Concurrent HTTP use of one refresh credential yields 200/401, one revoked original and one live successor. The credential is hashed before the row-lock lookup. No authenticated-role/email-verification/policy prerequisite is invented. Existing auth client single-flight/session-race behavior remains authoritative.
 
+**Execution mapping:** `AuthSessionIntegrationTest.concurrentHttpRefreshHasOneWinner`; `PostgresCriticalPathIntegrationTest.refreshTokenRotationLockAllowsOnlyOneWinner`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#refreshTokenRotationLockAllowsOnlyOneWinner. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#refreshTokenRotationLockAllowsOnlyOneWinner
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-004"></a>
 #### RACE-004 — Payout uniqueness
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Concurrent locked recalculation creates one payout ledger and one audit with exact stored financial inputs. Same manual paid-recording reference is idempotent; different reference conflicts with one PAID audit. No public payout-create API or automatic transfer is inferred from the internal calculation method.
 
+**Execution mapping:** `PayoutIntegrationTest.concurrentRecalculationCreatesOneLedgerAndOneAudit`; `PayoutIntegrationTest.concurrentPaidRecordingIsIdempotentOrConflicts`; `PostgresCriticalPathIntegrationTest.payoutAndDocumentUniqueConstraintsHaveSingleAuthorities`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#payoutAndDocumentUniqueConstraintsHaveSingleAuthorities. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#payoutAndDocumentUniqueConstraintsHaveSingleAuthorities
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-005"></a>
 #### RACE-005 — Verified destination
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Distinct pending destinations for one owner may both be verified in serialized HTTP commands, both returning 200, ending with one VERIFIED and one REPLACED row. Same-record verify/reject has one decision and 200/409. Historical READY/PAID routing stays attached to its valid snapshot. A raw SQL uniqueness race is not the application replacement contract.
 
+**Execution mapping:** `DestinationIntegrationTest.concurrentDistinctVerificationSerializesOwnerRouting`; `DestinationIntegrationTest.sameRecordVerifyRejectHasOneWinner`; `PostgresCriticalPathIntegrationTest.verifiedDestinationPartialIndexAndReplacementSemanticsHold`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#verifiedDestinationPartialIndexAndReplacementSemanticsHold. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#verifiedDestinationPartialIndexAndReplacementSemanticsHold
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-006"></a>
 #### RACE-006 — Policy publication
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Three HTTP competing replacement publications, synchronized after reading the current version, yield one 200/one 409, one current policy and a still-DRAFT losing target. A separate SQL race verifies first-publication uniqueness. Tests use synthetic policy text and do not approve legal content or production publication.
 
+**Execution mapping:** `PolicyIntegrationTest.concurrentServicePublicationHasOneCurrentAndSafeConflict`; `PostgresCriticalPathIntegrationTest.policyPublishRaceLeavesExactlyOneCurrentVersion`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#policyPublishRaceLeavesExactlyOneCurrentVersion. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#policyPublishRaceLeavesExactlyOneCurrentVersion
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-007"></a>
 #### RACE-007 — Document issuance
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Three receipt and three statement concurrent HTTP first-download races return identical immutable bytes with one object/document/audit. Parent locks and document uniqueness serialize issuance. Storage/DB/late-commit failures leave no successful issue and clean up the new object. Existing Unicode-name and historical-read contracts are preserved.
 
+**Execution mapping:** `DocumentIntegrationTest.simultaneousReceiptRequestsIssueOneObjectAndAudit`; `DocumentIntegrationTest.simultaneousStatementRequestsIssueOneObjectAndAudit`; `DocumentIntegrationTest.failedIssuanceNeverSucceedsAndCleansStoredObject`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#payoutAndDocumentUniqueConstraintsHaveSingleAuthorities. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#payoutAndDocumentUniqueConstraintsHaveSingleAuthorities
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="race-008"></a>
 #### RACE-008 — SKIP LOCKED workers
 
-**Area:** RACE · **Priority:** P0 · **Test level:** CONCURRENCY, INTEGRATION, API · **Result:** NOT RUN
+**Area:** RACE · **Priority:** P0 · **Test level:** REAL POSTGRESQL, APPLICATION CONCURRENCY · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Corrected contract and executed outcome:** Actual booking/inquiry/payout workers prove bounded selection, held-row skip/recovery, singular committed outcomes and rollback safety. Outbox workers prove one simultaneous claim, lease equality recovery and stale-fence rejection. Approval candidate locks are short-lived with per-row recheck; fee reporting may overlap read-only lookups. Do not invent a worker HTTP endpoint or require identical claim semantics for every job.
 
+**Execution mapping:** `ScheduledJobsIntegrationTest.bookingWorkersAndBusyRowLeaveOneCommittedTransitionPerBooking`; `ScheduledJobsIntegrationTest.inquiryWorkerSkipsLockedOfferThenRecoversItWithoutDuplicateIntent`; `PayoutIntegrationTest.readinessWorkersClaimDisjointBookingsInIndependentTransactions`; `OperationsNotificationIntegrationTest.twoWorkersCannotSendTheSameClaimSimultaneously`; `OperationsNotificationIntegrationTest.expiredLeaseRecoversAtEqualityAndOldWorkerCannotComplete`. `qa/evidence/race/scenario-mapping.json` and `reused-full-suite.json` link the audited methods to actual successful class results.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Method:** Independent transactions/connections, deterministic barriers/latches and persisted outcomes. Existing domain authorization, outbox and browser/refetch evidence is reused. No arbitrary sleep determines a race result.
 
+**Boundaries:** Synthetic local fixtures and mocked/disabled providers. No real money movement, legal approval or deployed multi-instance/provider guarantee. Actor and side-effect expectations come from the actual domain, not a generic scout/owner matrix.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Run mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest#twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches. Inspect fixture/barrier and assertions in referenced test. Then for service-level race, launch two independent authenticated requests with a barrier and separate DB connections; collect both outcomes and final row/event/provider counts.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected database/domain state:** Single authoritative winner or disjoint worker batches; no duplicate reservation/financial document/payout/current destination/current policy or refresh rotation. A raw SQL race proves constraint/lock behavior only; service transaction retries and HTTP status mapping need separate reproduction.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** PostgresCriticalPathIntegrationTest#twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Acceptance:** Local PASS with current full backend gates and unchanged frontend validation reused. No new P0/P1 defect or product decision. Historical raw SQL tests remain corroboration, not a substitute for application-level evidence.
 
 <a id="family-ux"></a>
 ### UX scenarios
@@ -6514,18 +3780,18 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 <a id="ux-001"></a>
 #### UX-001 — Page design, navigation and state QA: /admin/bookings/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/bookings/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, error, loading, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/bookings/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, error, loading, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6546,10 +3812,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/bookings/[id]/page.tsx](../../Eema-frontend/app/admin/bookings/[id]/page.tsx)
@@ -6557,22 +3823,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R09 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-002"></a>
 #### UX-002 — Page design, navigation and state QA: /admin/bookings
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/bookings directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/bookings directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6593,10 +3863,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/bookings/page.tsx](../../Eema-frontend/app/admin/bookings/page.tsx)
@@ -6604,22 +3874,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R08 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-003"></a>
 #### UX-003 — Page design, navigation and state QA: /admin/exceptions
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/exceptions directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/exceptions directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6640,10 +3914,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/exceptions/page.tsx](../../Eema-frontend/app/admin/exceptions/page.tsx)
@@ -6651,22 +3925,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R11 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-004"></a>
 #### UX-004 — Page design, navigation and state QA: /admin/incidents/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/incidents/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, RESOLVED, UNDER_REVIEW, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/incidents/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, RESOLVED, UNDER_REVIEW, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6687,10 +3965,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/incidents/[id]/page.tsx](../../Eema-frontend/app/admin/incidents/[id]/page.tsx)
@@ -6698,22 +3976,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-005"></a>
 #### UX-005 — Page design, navigation and state QA: /admin/incidents
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/incidents directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/incidents directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6734,10 +4016,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/incidents/page.tsx](../../Eema-frontend/app/admin/incidents/page.tsx)
@@ -6745,22 +4027,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-006"></a>
 #### UX-006 — Page design, navigation and state QA: /admin/liabilities/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/liabilities/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/liabilities/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6781,10 +4067,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/liabilities/[id]/page.tsx](../../Eema-frontend/app/admin/liabilities/[id]/page.tsx)
@@ -6792,22 +4078,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-007"></a>
 #### UX-007 — Page design, navigation and state QA: /admin/liabilities
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/liabilities directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/liabilities directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6828,10 +4118,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/liabilities/page.tsx](../../Eema-frontend/app/admin/liabilities/page.tsx)
@@ -6839,22 +4129,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-008"></a>
 #### UX-008 — Page design, navigation and state QA: /admin/owner-verifications/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/owner-verifications/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/owner-verifications/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6875,10 +4169,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/owner-verifications/[id]/page.tsx](../../Eema-frontend/app/admin/owner-verifications/[id]/page.tsx)
@@ -6886,22 +4180,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-009"></a>
 #### UX-009 — Page design, navigation and state QA: /admin/owner-verifications
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/owner-verifications directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/owner-verifications directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6922,10 +4220,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/owner-verifications/page.tsx](../../Eema-frontend/app/admin/owner-verifications/page.tsx)
@@ -6933,22 +4231,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-010"></a>
 #### UX-010 — Page design, navigation and state QA: /admin
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -6969,10 +4271,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/page.tsx](../../Eema-frontend/app/admin/page.tsx)
@@ -6980,22 +4282,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-011"></a>
 #### UX-011 — Page design, navigation and state QA: /admin/payout-destinations/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/payout-destinations/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING_VERIFICATION, REJECTED, REPLACED, VERIFIED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/payout-destinations/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING_VERIFICATION, REJECTED, REPLACED, VERIFIED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7016,10 +4322,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/payout-destinations/[id]/page.tsx](../../Eema-frontend/app/admin/payout-destinations/[id]/page.tsx)
@@ -7027,22 +4333,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R10 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-012"></a>
 #### UX-012 — Page design, navigation and state QA: /admin/payout-destinations
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/payout-destinations directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING_VERIFICATION, REJECTED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/payout-destinations directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING_VERIFICATION, REJECTED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7063,10 +4373,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/payout-destinations/page.tsx](../../Eema-frontend/app/admin/payout-destinations/page.tsx)
@@ -7074,22 +4384,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-013"></a>
 #### UX-013 — Page design, navigation and state QA: /admin/payouts/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/payouts/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states HELD, READY, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/payouts/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states HELD, READY, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7110,10 +4424,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/payouts/[id]/page.tsx](../../Eema-frontend/app/admin/payouts/[id]/page.tsx)
@@ -7121,22 +4435,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-014"></a>
 #### UX-014 — Page design, navigation and state QA: /admin/payouts
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/payouts directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states HELD, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/payouts directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states HELD, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7157,10 +4475,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/payouts/page.tsx](../../Eema-frontend/app/admin/payouts/page.tsx)
@@ -7168,22 +4486,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-015"></a>
 #### UX-015 — Page design, navigation and state QA: /admin/policies
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/policies directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states DRAFT, PUBLISHED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/policies directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states DRAFT, PUBLISHED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7204,10 +4526,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/policies/page.tsx](../../Eema-frontend/app/admin/policies/page.tsx)
@@ -7215,22 +4537,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-016"></a>
 #### UX-016 — Page design, navigation and state QA: /admin/venues/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/venues/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ACTIVE, PENDING, SUSPENDED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/venues/[id] directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ACTIVE, PENDING, SUSPENDED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7251,10 +4577,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/venues/[id]/page.tsx](../../Eema-frontend/app/admin/venues/[id]/page.tsx)
@@ -7262,22 +4588,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-017"></a>
 #### UX-017 — Page design, navigation and state QA: /admin/venues
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** ADMIN
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /admin/venues directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING, SUSPENDED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /admin/venues directly and from every header/dashboard link as ADMIN; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING, SUSPENDED, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7298,10 +4628,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/admin/venues/page.tsx](../../Eema-frontend/app/admin/venues/page.tsx)
@@ -7309,22 +4639,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-018"></a>
 #### UX-018 — Page design, navigation and state QA: /booked
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /booked directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states AWAITING_PAYMENT, auth, error, loading, missing, not-found, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /booked directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states AWAITING_PAYMENT, auth, error, loading, missing, not-found, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7345,10 +4679,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/booked/page.tsx](../../Eema-frontend/app/booked/page.tsx)
@@ -7356,22 +4690,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-019"></a>
 #### UX-019 — Page design, navigation and state QA: /bookings/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /bookings/[id] directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states AWAITING_PAYMENT, CANCELLED, CONFIRMED, DECLINED, EXPIRED, REFUNDED, REQUESTED, UNAVAILABLE, error, expired, forbidden, idle, loading, not-found, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /bookings/[id] directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states AWAITING_PAYMENT, CANCELLED, CONFIRMED, DECLINED, EXPIRED, REFUNDED, REQUESTED, UNAVAILABLE, error, expired, forbidden, idle, loading, not-found, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7392,10 +4730,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/bookings/[id]/page.tsx](../../Eema-frontend/app/bookings/[id]/page.tsx)
@@ -7403,22 +4741,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R03 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-020"></a>
 #### UX-020 — Page design, navigation and state QA: /forgot-password
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /forgot-password directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /forgot-password directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7439,10 +4781,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/forgot-password/page.tsx](../../Eema-frontend/app/forgot-password/page.tsx)
@@ -7450,22 +4792,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R01 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-021"></a>
 #### UX-021 — Page design, navigation and state QA: /owner/bookings
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/bookings directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states REQUESTED, error, fulfilled, loading, rejected. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/bookings directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states REQUESTED, error, fulfilled, loading, rejected. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7486,10 +4832,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/bookings/page.tsx](../../Eema-frontend/app/owner/bookings/page.tsx)
@@ -7497,22 +4843,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R05 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-022"></a>
 #### UX-022 — Page design, navigation and state QA: /owner/inquiries
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/inquiries directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/inquiries directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OPEN, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7533,10 +4883,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/inquiries/page.tsx](../../Eema-frontend/app/owner/inquiries/page.tsx)
@@ -7544,22 +4894,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-023"></a>
 #### UX-023 — Page design, navigation and state QA: /owner/payout-destination
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/payout-destination directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING_VERIFICATION, REJECTED, REPLACED, VERIFIED, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/payout-destination directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PENDING_VERIFICATION, REJECTED, REPLACED, VERIFIED, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7580,10 +4934,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/payout-destination/page.tsx](../../Eema-frontend/app/owner/payout-destination/page.tsx)
@@ -7591,22 +4945,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R07 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-024"></a>
 #### UX-024 — Page design, navigation and state QA: /owner/payouts/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/payouts/[id] directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PAID, fulfilled, ready, rejected. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/payouts/[id] directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states PAID, fulfilled, ready, rejected. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7627,10 +4985,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/payouts/[id]/page.tsx](../../Eema-frontend/app/owner/payouts/[id]/page.tsx)
@@ -7638,22 +4996,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-025"></a>
 #### UX-025 — Page design, navigation and state QA: /owner/payouts
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/payouts directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, fulfilled, loading, rejected. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/payouts directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, fulfilled, loading, rejected. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7674,10 +5036,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/payouts/page.tsx](../../Eema-frontend/app/owner/payouts/page.tsx)
@@ -7685,22 +5047,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-026"></a>
 #### UX-026 — Page design, navigation and state QA: /owner/venues/[id]
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/venues/[id] directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ACTIVE, PENDING, error, forbidden, loading, not-found. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/venues/[id] directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states ACTIVE, PENDING, error, forbidden, loading, not-found. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7721,10 +5087,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/venues/[id]/page.tsx](../../Eema-frontend/app/owner/venues/[id]/page.tsx)
@@ -7732,22 +5098,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R06 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-027"></a>
 #### UX-027 — Page design, navigation and state QA: /owner/venues/new
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/venues/new directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/venues/new directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7768,10 +5138,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/venues/new/page.tsx](../../Eema-frontend/app/owner/venues/new/page.tsx)
@@ -7779,22 +5149,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-028"></a>
 #### UX-028 — Page design, navigation and state QA: /owner/venues
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/venues directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/venues directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7815,10 +5189,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/venues/page.tsx](../../Eema-frontend/app/owner/venues/page.tsx)
@@ -7826,22 +5200,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-029"></a>
 #### UX-029 — Page design, navigation and state QA: /owner/verification
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** OWNER
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /owner/verification directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states REJECTED, UNVERIFIED, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /owner/verification directly and from every header/dashboard link as OWNER; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states REJECTED, UNVERIFIED, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7862,10 +5240,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/owner/verification/page.tsx](../../Eema-frontend/app/owner/verification/page.tsx)
@@ -7873,22 +5251,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-030"></a>
 #### UX-030 — Page design, navigation and state QA: /
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open / directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open / directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states auth ready and role-gated content. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7909,10 +5291,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/page.tsx](../../Eema-frontend/app/page.tsx)
@@ -7920,22 +5302,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-031"></a>
 #### UX-031 — Page design, navigation and state QA: /policies
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /policies directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, loading, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /policies directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, loading, ready. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -7956,10 +5342,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/policies/page.tsx](../../Eema-frontend/app/policies/page.tsx)
@@ -7967,22 +5353,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R02 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-032"></a>
 #### UX-032 — Page design, navigation and state QA: /reset-password
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /reset-password directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states invalid, success. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /reset-password directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states invalid, success. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -8003,10 +5393,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/reset-password/page.tsx](../../Eema-frontend/app/reset-password/page.tsx)
@@ -8014,22 +5404,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-033"></a>
 #### UX-033 — Page design, navigation and state QA: /scout/bookings
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** BLOCKED
 
 **Roles involved:** SCOUT
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /scout/bookings directly and from every header/dashboard link as SCOUT; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /scout/bookings directly and from every header/dashboard link as SCOUT; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -8050,10 +5444,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/scout/bookings/page.tsx](../../Eema-frontend/app/scout/bookings/page.tsx)
@@ -8061,22 +5455,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** AT-R04 requires actual execution on this route; result remains BLOCKED. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-034"></a>
 #### UX-034 — Page design, navigation and state QA: /scout/inquiries
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** SCOUT
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /scout/inquiries directly and from every header/dashboard link as SCOUT; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OFFERED, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /scout/inquiries directly and from every header/dashboard link as SCOUT; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states OFFERED, error, loading. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -8097,10 +5495,10 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/scout/inquiries/page.tsx](../../Eema-frontend/app/scout/inquiries/page.tsx)
@@ -8108,22 +5506,26 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
 
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
+
 
 <a id="ux-035"></a>
 #### UX-035 — Page design, navigation and state QA: /verify-email
 
-**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** NOT RUN
+**Area:** UX · **Priority:** P2 · **Test level:** MANUAL UX, LOCAL E2E, SECURITY · **Result:** PASS
 
 **Roles involved:** anonymous, SCOUT, OWNER, ADMIN as applicable
 
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Preconditions:** Use the actual route role/auth contract. Verified email and current policies apply only to relevant marketplace mutations, not every page read or public recovery flow.
 
 
 **Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
 
 
-**Exact steps:** 1. Open /verify-email directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; use screen reader for labels/errors/loading/table headings. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states invalid, success, verifying. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
+**Exact steps:** 1. Open /verify-email directly and from every header/dashboard link as anonymous, SCOUT, OWNER, ADMIN as applicable; substitute owned fixture UUID for [id]. 2. Repeat anonymous and wrong-role access. 3. At 375px, 768px and 1440px inspect all cards/forms/tables/gallery/dialogs/financial breakdowns. 4. Keyboard-tab entire page, activate primary/secondary actions, close dialogs, check returned focus; verify labels/errors/loading/table headings structurally; actual screen-reader acceptance uses the shared 11-flow matrix rather than repeating this route mechanically. 5. Delay API 3 seconds; return empty collection or missing detail; then exercise current states invalid, success, verifying. 6. Inject 400/401/403/404/409/500, offline, invalid JSON and valid JSON wrong shape into each page loader; restore and retry. 7. Use long UUID, max venue name/reason, Unicode and large money values; reload and navigate back. 8. Review each design item below and record screenshot/finding.
 
 
 **Expected UI behavior:** Primary action obvious; role/context obvious; status understandable; next step clear; no unnecessary information; consistent copy; precise money labels; destructive actions distinct; mobile usable; polished loading/empty/error; consistent Eema typography, paper/ink/ochre palette and marketplace layout. Visible focus, associated labels/errors, semantic headings/tables, meaningful button names, focus containment/return for dialogs, status not color-only, live loading/status announcement and contrast must be checked.
@@ -8144,16 +5546,20 @@ Run shared fixture `PRICE-011` through Java calculator and actual frontend prici
 **Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
 
 
-**Automation recommendation:** MANUAL ONLY
+**Automation recommendation:** Local route/state automation plus representative real screen-reader acceptance; see qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md.
 
 
-**Local/staging requirement:** LOCAL REAL POSTGRES
+**Local/staging requirement:** Local browser with controlled response injection; real PostgreSQL workflow evidence reused. Shared representative actual-AT acceptance is pending (UX-ENV-001); the normal desktop/manual checklist is the approved execution path.
 
 
 **Source / existing evidence:** [frontend/app/verify-email/page.tsx](../../Eema-frontend/app/verify-email/page.tsx)
 
 
 **Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+
+**Representative AT assignment:** No separate reader run is required on this route. PASS covers the corrected route scope; overall UX acceptance still depends on all 11 shared representatives. See [representative checklist](qa/UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md).
+
+**Execution addendum (2026-09-21):** Automated route checks pass. The domain-wide representative actual-AT gate is BLOCKED by UX-ENV-001; this does not require 35 duplicate reader runs. Browser accessibility-tree/keyboard checks are not actual screen-reader execution. Actual page/loader roles and states supersede generic matrices and Promise implementation labels. See [UX execution report](qa/UX_EXECUTION_REPORT.md) and route evidence. Historical generated wording is retained in evidence; no automatic continuation.
 
 
 <a id="family-uxact"></a>
@@ -32968,7 +30374,7 @@ Apply table to every UI state, notification, PDF and admin action; contradictory
 | Destination verified | owner account | Payout destination verified | `/owner/payout-destination` | [EMAIL-029](#email-029); PROVIDER-002 |
 | Destination rejected | owner account | Your payout destination needs attention | `/owner/payout-destination` | [EMAIL-030](#email-030); PROVIDER-002 |
 
-Unimplemented email paths and delivery guarantees: EMAIL-031 and OPS-008. Do not infer a generic refund-completed email for all refunds from the cancellation-specific completion listener. Verification/reset link tokens are intentionally present in their messages; other lifecycle messages contain no credentials.
+Unimplemented email paths remain EMAIL-031. OPS-008 / OPS-DEC-001 now authorizes durable at-least-once dispatch for existing notifications; old generated after-commit-only descriptions are superseded by its explicit contract. Do not infer a generic refund-completed email for all refunds from the cancellation-specific completion listener. Verification/reset link tokens are intentionally present in their messages; other lifecycle messages contain no credentials.
 
 <a id="automated-coverage"></a>
 ## Existing automated coverage mapped
@@ -33115,24 +30521,24 @@ These are source-observed limitations or focused validation hypotheses, not chan
 
 | Gap | Priority | Source-observed behavior / hypothesis | Reproduction / coverage | Source |
 |---|---|---|---|---|
-| G01 | P0 | Existing REQUESTED booking may be accepted after venue suspension: acceptRequest never checks ACTIVE and internal availability ignores status. | EDGE-004, BK-006, JOURNEY-007 | BookingService#acceptRequest; VenueAvailabilityService#getAvailableIntervalsExcludingBooking |
+| G01 | P0 | Historical gap resolved by VEN-D02; EDGE-004 reconfirms409 under venue lock with unchanged request/audit. Accepted commitments remain preserved. | EDGE-004, BK-006, JOURNEY-007 | BookingService#acceptRequest; VenueAvailabilityService#getAvailableIntervalsExcludingBooking |
 | G02 | P0 | Password reset removes refresh tokens but issued access JWT remains valid until expiry; logout does not revoke refresh tokens. “Old sessions invalid” must distinguish these cases. | AUTH-007, AUTH-015, JOURNEY-008 | AccountRecoveryService; JwtAuthenticationFilter; AuthProvider |
 | G03 | P0 | MEDIA-D01 fixed: both adapters now decode supported images with bounded dimensions/resources and reject fabricated content before storage. Reference shape still does not prove existence/exclusive ownership; EXIF and legacy objects remain unmodified. See MEDIA execution report. | MEDIA-002/003, SEC-002 | StorageService; S3PublicMediaStorage; VenueMediaPolicy |
-| G04 | P1 | Fee gauge counts only CONFIRMED, while exception queue includes paid CANCELLED; counts can disagree despite shared age thresholds. Queue also limits each category to 200 candidates. | OPS-007, ADMIN exception cases | BookingRepository#countOldUnreconciledMollieFees/#findOldUnreconciledMollieFees; AdminOperationsService |
+| G04 | P1 | Historical mismatch/cap superseded by prior fixes. OPS-007 verifies the shared positive-paid CONFIRMED/CANCELLED/REFUNDED predicate and strict cutoff, with205 additional exceptions fully visible and gauge/queue agreement. ADMIN complete-backlog pagination remains authoritative. | OPS-007, ADMIN exception cases | BookingRepository#countOldUnreconciledMollieFees/#findOldUnreconciledMollieFees; AdminOperationsService |
 | G05 | P1 | Refresh single-flight remains per JS module/tab. The pre-launch stale-loser clearing defect is FIXED by generation comparison; simultaneous rotation still has one server winner. Second 401 after a successful refresh does not explicitly clear session. | AUTH-009/010, UXACT expiry cases | lib/api/client.ts; lib/auth/token.ts |
-| G06 | P0 | No browser E2E framework/tests or frontend CI workflow found. Backend mocks cannot be used as a local browser fake-provider server without a separately prepared harness. | All UX/JOURNEY; PROVIDER | Frontend package.json and repository inventory; backend test configurations |
-| G07 | P0 | SQL locking/constraint tests do not prove HTTP/service transaction race handling. Payment-expiry job lacks an enclosing transaction around its initial SKIP LOCKED query; fee job is not SKIP LOCKED; cleanup uses bounded delete rather than worker claiming. | RACE, JOB-001/004/005 | PostgresCriticalPathIntegrationTest; BookingApprovalExpirationJob; MollieFeeReconciliationJob; AuthTokenCleanupJob |
-| G08 | P0 | No durable notification outbox/retry; process death/async saturation after commit can lose delivery. Owner/admin cancellation does not send owner-side notification; generic full-refund and late-refund-completion messages and incident emails are absent. | EMAIL-031, OPS-008 | Event listeners; BookingNotificationService; IncidentService |
+| G06 | P0 | Baseline harness gap corrected: local Chromium/CDP domain harnesses and real PostgreSQL-backed browser tests now exist and execute. UX has passing browser/client checks but required real screen-reader execution is BLOCKED (UX-ENV-001). Frontend CI/provider/JOURNEY launch coverage is not implied by these local runs. | All UX/JOURNEY; PROVIDER | UX and prior domain execution reports; scripts/qa; opt-in browser integration tests |
+| G07 | P0 | JOB portion VERIFIED: actual concurrent scheduler/service tests prove singular committed expiry, rollback-safe counters/outbox, bounded token cleanup and idempotent fee reconciliation. Approval selection has short-lived locks with per-booking locked recheck; reporting lookups may overlap without duplicate financial effects. JOB-DEF-001–004 are fixed, including bounded fee/payout backlog progress. RACE-001–008 are also verified by audited HTTP/service races in the current complete PostgreSQL run. Each contract has its own method mapping; no blanket guarantee for untested races or deployed providers. | RACE, JOB-001/004/005 | PostgresCriticalPathIntegrationTest; BookingApprovalExpirationJob; MollieFeeReconciliationJob; AuthTokenCleanupJob |
+| G08 | P0 | RESOLVED LOCALLY under OPS-DEC-001: PostgreSQL transactional outbox with same-transaction intent, bounded fenced lease claims, retries, auth nonce/placeholder security and failed-delivery visibility. Full regression and packaged crash/restart dispatch passed. Historical process-memory crash loss is preserved. OPS-DEF-001 remains fixed; OPS-DEF-002 non-email refund routing regression is fixed. Real provider behavior remains staging-only; new email paths remain EMAIL-031 scope. | EMAIL-031, OPS-008 | Event listeners; BookingNotificationService; IncidentService |
 | G09 | P0 | Approved legal/business texts, final privacy acknowledgement, insurance and retention/support communication decisions are external prerequisites. No policy content in common migrations; publishing test text is not a legal gate. | POL, JOURNEY-009 | PolicyAcceptanceService; PHASE_A_POLICY_AND_INCIDENT_CONTRACTS.md |
-| G10 | P1 | Cancellation preview has no quote/version token in cancellation request; crossing tier time can alter final economics without a 409. Some review screens have no explicit 409 refetch branch and need actual stale-UI rehearsal. | CANCEL-003, ADMIN-004, UX all details | CancelBookingRequest; BookingCancellation; admin page handlers |
-| G11 | P1 | Owner decline does not check response deadline; before scheduler runs an overdue REQUESTED row can become DECLINED. Booking response/payment deadlines are not capped at shoot start, unlike inquiry offer expiry. | EDGE-005, BK-004/005 | BookingService#declineRequest/createBooking/acceptRequest |
-| G12 | P1 | Lead-time clipping uses LocalTime rounded upward; rounding 23:59 with seconds can wrap to 00:00 on same date. DST overlap/gap times and sub-minute input have implicit Java normalization/truncation. | EDGE-001/002 | VenueAvailabilityService#applyLeadTime; BookingPriceCalculator; VenueBookingLeadTimePolicy |
-| G13 | P1 | Matching is limited to first 30 deterministic candidates before availability filter, so later available venues can be missed. Preferences use ranker prompt/model behavior, not guaranteed deterministic numeric order. Zero candidates skips ranker only, parser can still call Gemini. | EDGE-003, MATCH preference case | VenueFilterBuilder; GeminiAiService; GeminiVenueRanker |
+| G10 | P1 | Cancellation portion RESOLVED: signed preview proof, locked reevaluation, stale-term 409 and frontend refetch/renewed confirmation are locally verified in the CANCEL report (2026-09-19). Other review screens remain under their own ADMIN/UX scenarios. | CANCEL-003, ADMIN-004, UX all details | CancelBookingRequest; BookingCancellation; admin page handlers |
+| G11 | P1 | Historical overdue decline resolved under EDGE-DEC-003: both owner decisions commit EXPIRED at/after the deadline. Scheduler only performs cleanup. Existing response/payment windows are unchanged; inquiry offer expiry remains capped at slot start. | EDGE-005, BK-004/005 | BookingService#declineRequest/createBooking/acceptRequest |
+| G12 | P0 | Historical midnight/sub-minute issues fixed by AVL/PRICE. EDGE v1 rejects nonexistent local times before reservation and requires positive resolved duration; explicit earlier-overlap policy preserves wall-clock pricing. Original P0 alias evidence is retained; all EDGE regression gates passed. | EDGE-001/002 | VenueAvailabilityService#applyLeadTime; BookingPriceCalculator; VenueBookingLeadTimePolicy |
+| G13 | P1 | EDGE-DEC-002 replaces the total candidate cap with bounded deterministic SQL batches until30 eligible available candidates or exhaustion. Preferences remain model-dependent. Genuine zero available candidates skips ranker only; parser may still call Gemini. | EDGE-003, MATCH preference case | VenueFilterBuilder; GeminiAiService; GeminiVenueRanker |
 | G14 | P1 | Source README claims no owner editing, duplicated upload path and only two admin mutations are stale. Current frontend has listing editor, scoped upload and trust/policy/incident actions. Public detail is a panel, not a route. | VEN, API, UX, EDGE-006 | Frontend README backend TODO/admin text versus current routes/components |
 | G15 | P1 | Enum WAIVED has no waiver endpoint; venue delete/getAllVenues service methods have no public controller path; administrative cancellation/refund are API-only. Draft policy editing also has no endpoint. | STATE, EDGE-006, POL-002, REF-001 | Controllers and service call sites |
 | G16 | P0 | Payout destination service has no dedicated OwnerPayoutDestinationServiceTest file; crypto/IBAN and raw SQL uniqueness tests do not cover complete replacement/reveal review workflow. New policy/incident controllers are not automatically covered by older hand-enumerated security-surface tests. | DEST, API all endpoints | src/test/java inventory |
-| G17 | P1 | PDF uses current venue/owner display details at first issuance, then immutable bytes; unsupported Unicode becomes ?, text is truncated at 180 and single-page layout can overflow. Not every document field is booking-time snapshotted. | DOC-002/004 | FinancialDocumentService; FinancialDocumentPdfRenderer |
-| G18 | P0 | Document controller lacks explicit no-store policy; reveal endpoint explicitly has it. Tokens in localStorage remain accessible to same-origin JS. Frontend malformed stored session validation is partial. | SEC-005/007, AUTH | FinancialDocumentController; lib/auth/token.ts |
+| G17 | P1 — resolved locally | First-issuance venue/owner display details remain live, then bytes are immutable. Prior substitution, truncation and overflow were fixed under DOC: controlled embedded Unicode fonts preserve tested original names; unsupported glyph/complex sequences fail safely. Not every field is booking-time snapshotted. | DOC-002/004 — PASS | FinancialDocumentService; FinancialDocumentPdfRenderer; DOC execution report |
+| G18 | P0 | Document and reveal responses have explicit no-store; DOC response tests verify the document header. Remaining session/storage concerns belong to SEC/AUTH. Tokens in localStorage remain accessible to same-origin JS. Frontend malformed stored session validation is partial. | SEC-005/007, AUTH | FinancialDocumentController; lib/auth/token.ts |
 | G19 | P1 | Event payload allowlist filters only keys at first level, not nested values under allowed keys. Generic frontend 403 copy says ADMIN required even for owner/scout ownership denial; short validation text may include backend-provided content. | ADMIN-003, SEC-002, UX | AdminOperationsService#safePayload; lib/api/error-message.ts |
 | G20 | P0 | No universal idempotency key for booking/inquiry/incident creation; UI busy states alone do not guarantee exactly one action under replay/network loss. Concurrent duplicate policy acceptance was reproduced as HTTP 500 and corrected with PostgreSQL conflict-safe inserts; see POL execution evidence for repeated real-transaction checks. | UXACT, POL-006 | Create controllers/services; PolicyAcceptanceService#accept |
 | G21 | P1 | Frontend verification gate applies broadly to required non-GET calls, while backend policy acceptance/incident report/matching do not all have identical verified-email enforcement. Preserve backend actual role matrix and test UI asymmetry. | AUTH-013, API, INC, POL | lib/api/client.ts; VerifiedEmailEnforcementSurfaceTest; controllers |
@@ -33183,7 +30589,7 @@ Allowed status for each row: **PASS / FAIL / BLOCKED / NOT RUN**. All rows below
 | PAYMENT | Mollie TEST create/paid/duplicate/late refund/full/partial/zero cancellation evidence; no duplicate charge/refund; fee reporting limitation has operating procedure. | PAY, REF, CANCEL, PROVIDER-001/005 | NOT RUN | Unassigned / none |
 | TRUST | Owner/venue/bank review verified; suspension acceptance gap resolved or explicit approved rule; audit and participant incident visibility correct. | TRUST, VEN, DEST, INC; G01 | NOT RUN | Unassigned / none |
 | OPERATIONS | Jobs, exception queue/metric divergence, manual transfer recording, liabilities, provider ambiguity and lost email recovery have named operators and exercised runbooks. | JOB, OPS, PAYOUT, EMAIL | NOT RUN | Unassigned / none |
-| UX | Every route tested at 375/768/1440; primary action, status, loading/empty/error, keyboard/focus and financial copy usable; no P0 accessibility defect. | UX, UXACT, copy table | NOT RUN | Unassigned / none |
+| UX | Every route tested at 375/768/1440; 11 representative actual screen-reader flows remain outstanding; no duplicate run per route is required. UXACT remains unstarted. | UX, UXACT, copy table | BLOCKED | UX-ENV-001; see UX execution report |
 | LEGAL/BUSINESS | Approved five policies, privacy semantics, insurance/retention and incident/refund/payout communications confirmed; no development placeholder publication. | POL, EMAIL-031; G09 | NOT RUN | Unassigned / none |
 | INFRASTRUCTURE | Staging HTTPS/origins, production startup validation, DB/migrations, secret management, public/private storage, backup restore and restart validated. | OPS, SEC-004, PROVIDER-004 | NOT RUN | Unassigned / none |
 

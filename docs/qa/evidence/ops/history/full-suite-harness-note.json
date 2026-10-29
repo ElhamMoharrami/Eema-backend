@@ -1,0 +1,5 @@
+{
+  "observation": "The pre-existing PostgresCriticalPathIntegrationTest caches its Spring context after its class-scoped Testcontainer stops. Its scheduled tasks subsequently log connection-refused warnings against the retired container port.",
+  "scope": "Test lifecycle logging, not the active OperationsRecoveryIntegrationTest database or packaged child application. No production datasource or shared database was targeted.",
+  "treatment": "Preserve this limitation; scenario outcomes require actual assertions and final Maven exit status, not absence of expected or harness log errors."
+}

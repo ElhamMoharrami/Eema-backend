@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-20",
+  "domain": "ADMIN",
+  "scenarios": "ADMIN-001\u2013011",
+  "results": {
+    "pass": 10,
+    "fail": 0,
+    "blocked": 1
+  },
+  "blockedScenarios": [
+    "ADMIN-001"
+  ],
+  "decision": "ADMIN-DEC-001: complete backlog with bounded database pagination or explicitly disclosed capped operational preview; awaiting user answer",
+  "fixedDefects": [
+    "ADMIN-D1",
+    "ADMIN-D2",
+    "ADMIN-D3",
+    "ADMIN-D4",
+    "ADMIN-D5"
+  ],
+  "unresolvedConfirmedP0P1": [],
+  "localClearToProceed": false,
+  "nextDomainAfterResolution": "SEC-001\u2013007",
+  "nextDomainStarted": false,
+  "backend": {
+    "unit": {
+      "tests": 1031,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 931,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 11
+    },
+    "package": {
+      "tests": 1031,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  },
+  "browser": {
+    "adminChecksPassed": 9,
+    "incidentRegressionChecksPassed": 8
+  },
+  "database": "Disposable real PostgreSQL; migrations and Hibernate validation passed; no new migration",
+  "providers": "LOCAL MOCKS ONLY; real providers not verified",
+  "temporaryFrontendServer": "stopped",
+  "pdf": "document-check.json",
+  "evidenceNote": "focused-unit.json excludes stale unrelated XML reports and agrees with the six-test command log"
+}

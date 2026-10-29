@@ -1,0 +1,13 @@
+{
+  "sourceSha256": {
+    "src/main/java/com/eema/backend/service/BookingFinancials.java": "2901589f2706aceea6ac80d11760b0ca02b9237402a714fcc2f5f0a5d4d67b4c",
+    "src/main/java/com/eema/backend/service/BookingService.java": "ea939ed6adaaff83a5e30045c85b6f270466e452f0beab161c40c605c4931515",
+    "src/main/java/com/eema/backend/service/PaymentCreationCoordinator.java": "37134a9511f56b3e4ffc331608b7676de26ea99787d0b4eeca7d795334757e0f",
+    "src/main/resources/db/migration/common/V13__positive_booking_price.sql": "d11bc92b1bf39cdaf08e0d5561ee34eaa7e9fc505c53ac4fcbce75dffc31ad02",
+    "src/test/java/com/eema/backend/integration/ZeroPriceIntegrationTest.java": "574cf6daeab41a0be076f1291f7d246653b4706412fd0ba81b1fd667e58debae",
+    "src/test/java/com/eema/backend/service/ZeroPriceCheckoutTest.java": "04adc111d5fe191d091ad34274d180416dc1a88fa5a56e5bbbf996e38ad7c2a4"
+  },
+  "formulaUnchanged": true,
+  "canonicalFixturesUnchanged": true,
+  "assertion": "Calculator and pricing-cases.json untouched by this resolution; no clamp, rate/duration/cap or lifecycle changes"
+}

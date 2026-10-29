@@ -1,0 +1,54 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Owner submission refetches pending state and clears sensitive input",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload preserves masked destination and pending review",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner account switch removes previous owner history and reloads scoped data",
+      "result": "PASS"
+    },
+    {
+      "name": "Revealed bank value is absent from persistent browser storage",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin reveal requires confirmation and Hide clears the value",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin account switch clears a previously revealed value",
+      "result": "PASS"
+    },
+    {
+      "name": "Delayed reveal after account switch does not expose sensitive value",
+      "result": "PASS"
+    },
+    {
+      "name": "Delayed reveal after logout does not expose sensitive value",
+      "result": "PASS"
+    },
+    {
+      "name": "Review refetches authoritative state and clears revealed IBAN",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload does not restore revealed IBAN",
+      "result": "PASS"
+    },
+    {
+      "name": "Rejected destination hides reveal and stale review controls",
+      "result": "PASS"
+    },
+    {
+      "name": "Rejected replacement preserves original verified destination",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local PostgreSQL; no real bank verification or transfer"
+}

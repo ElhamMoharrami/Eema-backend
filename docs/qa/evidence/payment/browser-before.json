@@ -1,0 +1,42 @@
+{
+  "result": "REPRODUCED",
+  "checks": [
+    {
+      "name": "Expiry409 leaves stale Pay now=true",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Controlled navigation and mocked Mollie transport; not real provider execution",
+  "network": [
+    {
+      "path": "/api/bookings/6984e536-6bf3-4d74-8a11-2b00eac8431f",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/6984e536-6bf3-4d74-8a11-2b00eac8431f",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/6984e536-6bf3-4d74-8a11-2b00eac8431f/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/6984e536-6bf3-4d74-8a11-2b00eac8431f/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/6984e536-6bf3-4d74-8a11-2b00eac8431f/checkout",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/6984e536-6bf3-4d74-8a11-2b00eac8431f/checkout",
+      "method": "POST",
+      "status": 409
+    }
+  ]
+}

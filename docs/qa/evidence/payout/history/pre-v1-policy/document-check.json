@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-19",
+  "scenarioCount": 703,
+  "pdfScenarioHeadingCount": 703,
+  "all703ScenarioIdsPreservedInOrder": true,
+  "payoutLocalPass": 6,
+  "pdfPages": 639,
+  "visuallyReviewedPages": [
+    83,
+    84,
+    85,
+    86,
+    87
+  ],
+  "visualResult": "PASS: legible text, intact headings and links, no clipping or overlap on reviewed pages",
+  "pdfSha256": "d1b643244c0452735561c817fa47f7cc2a35bfc7c1e486bcb78bdc3489f45218"
+}

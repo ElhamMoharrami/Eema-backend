@@ -1,0 +1,34 @@
+{
+  "sha256": {
+    "src/main/java/com/eema/backend/service/DocumentFonts.java": "8bd633a7e91091591d39f60a096a78c63406dbf1ac6e593cca40047833ca3e69",
+    "src/main/java/com/eema/backend/service/FinancialDocumentPdfRenderer.java": "caaacd4a04c2c3c893591f8f10b189f1de3bd9a3880e40a43215e57ad558cafa",
+    "src/main/java/com/eema/backend/service/FinancialDocumentService.java": "6a8e6cf555a76619164e8f4afd2ce7911a5808243f940919bf0ef433cb8c96a3",
+    "src/test/java/com/eema/backend/service/DocumentUnicodeTest.java": "f64526f549b1a3dd259989808157cb175a2959c5b66aba7b244d81e0ca9007b9",
+    "src/test/java/com/eema/backend/integration/DocumentIntegrationTest.java": "7907a81cd40320ec22783fbb6362cfbf906e1b8244a26dec094fa9ca586b1499",
+    "src/test/java/com/eema/backend/integration/OwnerTrustIntegrationTest.java": "e076ee15dff301f7593e1d9b61a32b56b4b8f41ec26ff382f7a0abd0ac1dcad1",
+    "scripts/qa/DocumentFontPackageProbe.java": "39d182c3e70e2796f4e115f0712dfb3352ec21f292493f759d6e55dd58fa2a24",
+    "scripts/qa/verify-document-font-package.sh": "fada5abe6d8dfb1142f0516bdfa2429be363da9aa27aa6994329d0a0f00e3029",
+    "pom.xml": "fc89305cc2f1548c807f90374745edd57ed3c24da3cef4ec26ec4e38360a299e",
+    "Dockerfile": "584501e00daa952de01dfac67c231d25e3c18e960afd96275e363fe79e81488b"
+  },
+  "fontManifest": {
+    "NotoNaskhArabic-Regular.ttf": {
+      "bytes": 178388,
+      "sha256": "2f4b88e6ee50fa82c617e2d1d4ba18281cb1c6cd71c3af3ec64970c23995db4b"
+    },
+    "EemaDocumentCJK-Regular.ttf": {
+      "bytes": 10596316,
+      "sha256": "3241a4f982e0f87f77882191427708240cab6357c3080befd019dd0d75b06b2f"
+    },
+    "NotoSans-Bold.ttf": {
+      "bytes": 575740,
+      "sha256": "c976e4b1b99edc88775377fcc21692ca4bfa46b6d6ca6522bfda505b28ff9d6a"
+    },
+    "NotoSans-Regular.ttf": {
+      "bytes": 569208,
+      "sha256": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5"
+    }
+  },
+  "licensing": "OFL1.1 font notices and ICU Unicode3 license bundled; pinned sources in fonts/README.md",
+  "frontendChanged": false
+}

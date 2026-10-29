@@ -38,6 +38,10 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Controlled Arabic presentation shaping and Unicode bidi; no locale/template expansion. -->
+        <dependency>
+            <groupId>com.ibm.icu</groupId><artifactId>icu4j</artifactId><version>78.3</version>
+        </dependency>
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -161,13 +165,6 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
-        </dependency>
-
-        <!-- Resend Java SDK for sending emails -->
-        <dependency>
-            <groupId>com.resend</groupId>
-            <artifactId>resend-java</artifactId>
-            <version>2.1.0</version>
         </dependency>
 
         <dependency>

@@ -1,0 +1,1 @@
+| G18 | P0 | Document controller lacks explicit no-store policy; reveal endpoint explicitly has it. Tokens in localStorage remain accessible to same-origin JS. Frontend malformed stored session validation is partial. | SEC-005/007, AUTH | FinancialDocumentController; lib/auth/token.ts |

@@ -1,0 +1,27 @@
+{
+  "result": "PASS",
+  "build": "docker build --progress plain -t eema-doc-unicode:qa . (unmodified repository Dockerfile)",
+  "imageId": "sha256:1c6260c409d82de5b2e5073543c731c08f3a5f07d87e4c6a7b49073e1dd384af",
+  "runtimeUser": "eema",
+  "network": "none for runtime probe",
+  "tests": {
+    "receiptNames": 9,
+    "statementNames": 9,
+    "embeddedFonts": true,
+    "exactMoneyAndMask": true,
+    "missingRequiredFont": "clear startup failure",
+    "corruptRequiredFont": "clear startup failure"
+  },
+  "dockerBuildTestTotals": [
+    "1029",
+    "0",
+    "0",
+    "0"
+  ],
+  "fontBytes": 11919652,
+  "fontLicenses": "SIL OFL1.1; notices packaged",
+  "icuLicense": "Unicode3.0; packaged",
+  "hostFontsRequired": false,
+  "note": "Image built and probed before the later test-only OwnerTrust harness correction. All production Java/resources/pom/Dockerfile are identical; integration tests are excluded from the production JAR.",
+  "startupFailureProbeEnvironment": "Fresh host JVMs against disposable extracted packaged classes; positive receipt/statement rendering additionally verified inside Docker with network disabled."
+}

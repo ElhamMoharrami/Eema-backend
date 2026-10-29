@@ -1,0 +1,30 @@
+{
+  "checks" : [ "Browser scout/owner/admin deep links and immutable receipt survive actual backend restart", "Ordinary packaged restart preserves every table hash and document bytes", "Forced process death after committed acceptance loses pending in-memory notification; restart preserves booking and processes new events without replaying old delivery", "pg_dump/restore preserves all table hashes, IDs, constraints, paid/cancelled/inquiry/policy/session/destination/document state, files and decryptability; restored session rotation and source isolation verified", "Packaged common-only V1–V13 and Hibernate validation start empty and restart idempotently", "Disposable local V1–V13/V100–V103 seed/login and DB/object-directory reset/reseed passed without touching source/shared data" ],
+  "provider" : "No live provider; synthetic local fixtures and keys only",
+  "result" : "PASS",
+  "publicMediaSha256" : "e6e8c7e9ca69689be9487227209bfc6ff7b2404b816a35aeaf74d48a4402cfbe",
+  "tableHashes" : {
+    "availability_inquiries" : "9cd79b3a6df313519e896c107e11b782cc2a948af6126032cdfe55855d37be91",
+    "booking_events" : "0ecf2d37b3bc54388234809a997e7abbf587661ce4ba7d2b86ab621b5912b721",
+    "booking_policy_versions" : "d9ba5c37264e228b3daba5b824bbb0dab1fc8221c1c215d9c03cb9897c22d44d",
+    "bookings" : "f54bb8ba76ebb544740d486735288ee9822407ec77d09137028ef8d9346d3690",
+    "email_verification_tokens" : "564cce0aeeed38f0e84b22dcafa47cfa3cf162c7ebbe51d60164e9aeb725beb5",
+    "financial_documents" : "dda70c2a638d40e99c6600565131fd7d1a31a0b6a432722c62625590bac4a02d",
+    "flyway_schema_history" : "f4869c2be3c21e7eee35075105a223efa6649789cd7fc82964bb49184a605bc6",
+    "incident_reports" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "marketplace_trust_events" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_financial_liabilities" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_payout_destinations" : "ed07143e353a002440ca87b20cfffdd680894949e998e77c4c8c0c5d1095afa9",
+    "owner_payouts" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_verifications" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "password_reset_tokens" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "policy_acceptances" : "20284e98db232d9b2c8bb59fab9f70f7430e05d2d5a8839c081700652aa91b73",
+    "policy_versions" : "8f0f9df2554245fee4481bb7453f256340c7f77d4a4afb3256113962391080b5",
+    "refresh_tokens" : "61e48c9c9dc3ed11372e3a0ebc432e1c5a24054123a9dff685728ba3d841e0c7",
+    "users" : "a1cef157a60ff619185f305aacf63f7f6d38e1643352599f9f5b234864961288",
+    "venue_availability_overrides" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "venue_operating_hours" : "3963c4dd3650fc87cc5e11cb92849f71ccddb77970216f886e011a858a7b8587",
+    "venues" : "665eeb45e02a9b9048d33b05053e8f9c1f82877913b9cbbf5a32adbf05f0ca3b"
+  },
+  "receiptSha256" : "e2a5b899658450878690cb44cf50383281531604a80ba16cb605b0041e6f3aaa"
+}

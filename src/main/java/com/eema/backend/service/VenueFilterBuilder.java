@@ -27,7 +27,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class VenueFilterBuilder {
 
-    private static final int MAX_CANDIDATES = 30;
+    public static final int CANDIDATE_BATCH_SIZE = 30;
     private static final Set<String> STRUCTURED_FEATURE_TAGS = Set.of(
             "natural-light", "daylight", "blackout", "loading", "loading-access",
             "parking", "accessible", "accessibility", "wheelchair-accessible",
@@ -38,6 +38,11 @@ public class VenueFilterBuilder {
     private final VenueHardRequirementEvaluator hardRequirementEvaluator;
 
     public List<Venue> findCandidateVenues(ParsedBrief brief) {
+        return findCandidateBatch(brief, 0).candidates();
+    }
+
+    public CandidateBatch findCandidateBatch(ParsedBrief brief, int offset) {
+        if (offset < 0) throw new IllegalArgumentException("Candidate offset must be nonnegative");
         if (brief == null) {
             throw new IllegalArgumentException(
                     "Parsed brief must not be null"
@@ -107,9 +112,9 @@ public class VenueFilterBuilder {
         TypedQuery<Venue> query =
                 entityManager.createQuery(cq);
 
-        List<Venue> candidates = query.getResultList().stream()
+        List<Venue> rows = query.setFirstResult(offset).setMaxResults(CANDIDATE_BATCH_SIZE).getResultList();
+        List<Venue> candidates = rows.stream()
                 .filter(candidate -> hardRequirementEvaluator.isEligible(candidate, brief))
-                .limit(MAX_CANDIDATES)
                 .toList();
 
         log.info(
@@ -117,8 +122,10 @@ public class VenueFilterBuilder {
                 candidates.size()
         );
 
-        return candidates;
+        return new CandidateBatch(candidates, Math.addExact(offset, rows.size()), rows.size() == CANDIDATE_BATCH_SIZE);
     }
+
+    public record CandidateBatch(List<Venue> candidates, int nextOffset, boolean hasMore) {}
 
     private void addActiveFilter(
             CriteriaBuilder cb,
@@ -338,7 +345,8 @@ public class VenueFilterBuilder {
                 ),
                 cb.asc(
                         venue.get("name")
-                )
+                ),
+                cb.asc(venue.get("id"))
         );
     }
 

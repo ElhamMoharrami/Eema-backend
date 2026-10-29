@@ -50,8 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             var claims = jwtService.validateToken(token);
             UUID userId = jwtService.extractUserId(claims);
 
-            // Load user from database (optional - we trust the JWT claims)
-            // But we still check if user exists and is active
+            // Database identity, active state and current role are authoritative.
             var userOptional = userRepository.findById(userId);
 
             if (userOptional.isPresent() && userOptional.get().isActive()) {
@@ -72,7 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception e) {
             // Log the exception but don't throw - just continue unauthenticated
-            log.debug("Failed to process JWT token: {}", e.getMessage());
+            log.debug("Failed to process JWT token: errorType={}", e.getClass().getSimpleName());
             // SecurityContext remains empty
         }
 

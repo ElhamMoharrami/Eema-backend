@@ -15,15 +15,12 @@ import java.util.*;
 
 @Service @RequiredArgsConstructor
 public class AdminOperationsService {
-    private static final List<RefundStatus> ACTIVE_REFUNDS = List.of(
-            RefundStatus.CREATING, RefundStatus.QUEUED, RefundStatus.PENDING, RefundStatus.PROCESSING);
     private static final Set<String> SAFE_EVENT_KEYS = Set.of(
             "amount", "amountEur", "currency", "provider", "paymentId", "refundId", "payoutId",
             "liabilityId", "type", "from", "to", "reason", "source", "policyTier",
             "refundPercentage", "refundAmountEur", "retainedAmountEur", "commissionEur",
             "ownerPayoutEur", "mollieFeeEur", "ownerResponseExpiresAt", "paymentExpiresAt",
             "externalTransferReference", "documentId", "documentNumber", "templateVersion");
-    private static final int EXCEPTION_CANDIDATE_LIMIT = 200;
 
     private final BookingRepository bookings;
     private final BookingEventRepository events;
@@ -32,6 +29,7 @@ public class AdminOperationsService {
     private final OwnerPayoutService payoutService;
     private final OwnerFinancialLiabilityService liabilityService;
     private final OperationalThresholds thresholds;
+    private final OperationalExceptionRepository exceptions;
 
     @Transactional(readOnly = true)
     public Page<AdminBookingSummaryDto> searchBookings(UUID bookingId, UUID venueId, UUID scoutId,
@@ -67,38 +65,9 @@ public class AdminOperationsService {
 
     @Transactional(readOnly = true)
     public Page<OperationalExceptionDto> exceptions(Pageable pageable) {
-        OffsetDateTime now = OffsetDateTime.now();
-        Pageable candidates = PageRequest.of(0, EXCEPTION_CANDIDATE_LIMIT);
-        List<OperationalExceptionDto> result = new ArrayList<>();
-        payouts.findByStatusOrderByCreatedAtAsc(OwnerPayoutStatus.HELD, candidates).forEach(p -> result.add(
-                item(OperationalExceptionType.PAYOUT_HELD, OperationalExceptionSeverity.INFO, p.getBookingId(),
-                        p.getId(), null, p.getUpdatedAt(), "PAYOUT_" + p.getHoldReason())));
-        payouts.findByStatusAndReadyAtBeforeOrderByReadyAtAsc(OwnerPayoutStatus.READY,
-                thresholds.payoutCutoff(now), candidates).forEach(p -> result.add(item(
-                        OperationalExceptionType.PAYOUT_READY_OVERDUE, OperationalExceptionSeverity.WARNING,
-                        p.getBookingId(), p.getId(), null, p.getReadyAt(), "READY_PAYOUT_NOT_RECORDED_PAID")));
-        liabilities.findByStatusOrderByCreatedAtAsc(OwnerFinancialLiabilityStatus.OPEN, candidates).forEach(l -> result.add(
-                item(OperationalExceptionType.OWNER_LIABILITY_OPEN, OperationalExceptionSeverity.WARNING,
-                        l.getBookingId(), null, l.getId(), l.getCreatedAt(), "OWNER_LIABILITY_REQUIRES_RESOLUTION")));
-        bookings.findStuckRefunds(ACTIVE_REFUNDS, thresholds.refundCutoff(now), candidates).forEach(b -> result.add(
-                item(OperationalExceptionType.REFUND_STUCK, OperationalExceptionSeverity.CRITICAL,
-                        b.getId(), null, null, b.getRefundRequestedAt(), "REFUND_EXCEEDED_STUCK_THRESHOLD")));
-        bookings.findStuckPaymentCreations(PaymentCreationStatus.CREATING, thresholds.paymentCutoff(now), candidates)
-                .forEach(b -> result.add(item(OperationalExceptionType.PAYMENT_CREATION_STUCK,
-                        OperationalExceptionSeverity.WARNING, b.getId(), null, null,
-                        b.getPaymentCreationStartedAt(), "PAYMENT_CREATION_EXCEEDED_STUCK_THRESHOLD")));
-        bookings.findOldUnreconciledMollieFees(thresholds.feeCutoff(now), candidates).forEach(b -> result.add(
-                item(OperationalExceptionType.MOLLIE_FEE_UNRECONCILED, OperationalExceptionSeverity.WARNING,
-                        b.getId(), null, null, b.getPaidAt(), "AUTHORITATIVE_PROVIDER_FEE_UNAVAILABLE")));
-        bookings.findLatePaymentRefundsInProgress(ACTIVE_REFUNDS, candidates).forEach(b -> result.add(
-                item(OperationalExceptionType.LATE_PAYMENT_REFUND_IN_PROGRESS, OperationalExceptionSeverity.WARNING,
-                        b.getId(), null, null, b.getLatePaymentDetectedAt(), "LATE_PAYMENT_REQUIRES_REFUND_COMPLETION")));
-        result.sort(Comparator.comparingInt((OperationalExceptionDto e) -> severityRank(e.severity()))
-                .thenComparing(OperationalExceptionDto::detectedAt, Comparator.nullsLast(Comparator.naturalOrder())));
-        Pageable bounded = AdminPagePolicy.bounded(pageable);
-        int from = Math.min((int) bounded.getOffset(), result.size());
-        int to = Math.min(from + bounded.getPageSize(), result.size());
-        return new PageImpl<>(result.subList(from, to), bounded, result.size());
+        OffsetDateTime now = thresholds.now();
+        return exceptions.findPage(AdminPagePolicy.bounded(pageable), thresholds.payoutCutoff(now),
+                thresholds.refundCutoff(now), thresholds.paymentCutoff(now), thresholds.feeCutoff(now));
     }
 
     private Booking booking(UUID id) { return bookings.findById(id).orElseThrow(() -> new NotFoundException("Booking not found: " + id)); }
@@ -106,12 +75,7 @@ public class AdminOperationsService {
     private Map<String, Object> safePayload(BookingEventPayload payload) {
         if (payload == null || payload.getData() == null) return Map.of();
         Map<String, Object> safe = new LinkedHashMap<>();
-        payload.getData().forEach((key, value) -> { if (SAFE_EVENT_KEYS.contains(key)) safe.put(key, value); });
+        payload.getData().forEach((key, value) -> { if (SAFE_EVENT_KEYS.contains(key) && (value == null || value instanceof String || value instanceof Number || value instanceof Boolean)) safe.put(key, value); });
         return Collections.unmodifiableMap(safe);
     }
-    private OperationalExceptionDto item(OperationalExceptionType type, OperationalExceptionSeverity severity,
-            UUID bookingId, UUID payoutId, UUID liabilityId, OffsetDateTime detectedAt, String reason) {
-        return new OperationalExceptionDto(type, severity, bookingId, payoutId, liabilityId, detectedAt, reason);
-    }
-    private int severityRank(OperationalExceptionSeverity s) { return switch (s) { case CRITICAL -> 0; case WARNING -> 1; case INFO -> 2; }; }
 }

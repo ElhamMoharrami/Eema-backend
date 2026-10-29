@@ -1,0 +1,15 @@
+{
+  "tests": 2,
+  "cases": [
+    {
+      "name": "firstReadyDestinationSurvivesRealReplacementAndPaidRecalculation",
+      "result": "FAIL",
+      "errorType": "org.springframework.dao.DataIntegrityViolationException"
+    },
+    {
+      "name": "readinessWorkerSkipsBusyBookingAndProcessesItOnNextScan",
+      "result": "FAIL",
+      "errorType": "java.util.concurrent.TimeoutException"
+    }
+  ]
+}

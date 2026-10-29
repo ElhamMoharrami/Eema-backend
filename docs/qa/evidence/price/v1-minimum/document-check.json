@@ -1,0 +1,15 @@
+{
+  "scenarioIds": 703,
+  "unchangedOrder": true,
+  "pdfPages": 636,
+  "visuallyReviewedPages": [
+    1,
+    88,
+    89,
+    90,
+    91
+  ],
+  "review": "Updated DOC results and decision gate readable; adjacent sections intact; no clipping or overlap",
+  "pdfSha256": "54f76b07347358b6d11a5e3e5776c15880d07dc27f4ca785a1ea1bc89452fcb7",
+  "note": "Shared PDF subsequently regenerated after DOC; PRICE-phase verification preserved in history/price-phase-document-check.json"
+}

@@ -1,0 +1,38 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Scout downloads real PDF with safe RCT filename",
+      "result": "PASS"
+    },
+    {
+      "name": "Receipt reload downloads identical stored bytes",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner booking view does not offer scout receipt",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner downloads real statement with safe PST filename",
+      "result": "PASS"
+    },
+    {
+      "name": "Statement reload downloads identical stored bytes",
+      "result": "PASS"
+    },
+    {
+      "name": "Unpaid request has no receipt download control",
+      "result": "PASS"
+    },
+    {
+      "name": "Missing stored receipt shows error without false download",
+      "result": "PASS"
+    },
+    {
+      "name": "Delayed receipt response after logout cannot trigger a download",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local PostgreSQL and private filesystem only; no live provider or transfer"
+}

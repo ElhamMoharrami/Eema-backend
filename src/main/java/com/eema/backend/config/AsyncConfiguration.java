@@ -10,7 +10,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 public class AsyncConfiguration {
-    @Bean(name = {"applicationTaskExecutor", "notificationExecutor"})
+    // Unqualified @Async resolves this alias when the scheduler is also an Executor.
+    @Bean(name = {"applicationTaskExecutor", "notificationExecutor", "taskExecutor"})
     Executor notificationExecutor(@Value("${app.async.core-pool-size:2}") int core,
                                   @Value("${app.async.max-pool-size:4}") int max,
                                   @Value("${app.async.queue-capacity:100}") int capacity) {

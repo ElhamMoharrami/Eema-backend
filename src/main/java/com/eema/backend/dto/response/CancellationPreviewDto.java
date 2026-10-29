@@ -13,6 +13,7 @@ public record CancellationPreviewDto(
         BigDecimal refundAmountEur,
         BigDecimal retainedAmountEur,
         OffsetDateTime cancellationDeadline,
-        boolean canCancel
+        boolean canCancel,
+        String previewToken
 ) {
 }

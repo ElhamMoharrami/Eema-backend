@@ -1,0 +1,60 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "UX-015 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 20,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-015 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 42,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-015 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 25,
+        "visited": 25,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "policy content expands by keyboard",
+      "result": "PASS"
+    },
+    {
+      "name": "expanded policy content is keyboard focusable",
+      "result": "PASS"
+    },
+    {
+      "name": "reveal inline confirmation focuses action",
+      "result": "PASS"
+    },
+    {
+      "name": "inline confirmation does not falsely claim modal",
+      "result": "PASS"
+    },
+    {
+      "name": "reveal cancel restores opener focus",
+      "result": "PASS"
+    },
+    {
+      "name": "held loading status exposed as live region",
+      "result": "PASS"
+    },
+    {
+      "name": "held loader recovers into authoritative table",
+      "result": "PASS"
+    }
+  ],
+  "screenReader": "Browser AX tree and keyboard only; no spoken screen-reader execution"
+}

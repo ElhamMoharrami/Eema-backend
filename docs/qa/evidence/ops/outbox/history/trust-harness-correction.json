@@ -1,0 +1,6 @@
+{
+  "classification": "Obsolete test fault boundary",
+  "failure": "OwnerTrustIntegrationTest.notificationRunsAfterCommitAndFailureCannotRollBackTrust injected an exception into the template renderer; rendering intentionally moved before commit for durable intent.",
+  "correction": "Inject provider transport failure outside transactions and assert committed VERIFIED/audit state plus two pending attempted outbox rows. Preserve enqueue failures as rollback-worthy.",
+  "action": "Stopped only the owned regression process group; complete required regression will be restarted."
+}

@@ -79,15 +79,16 @@ public class BookingNotificationService {
         boolean refundInitiated = booking.getRefundStatus()
                 != com.eema.backend.entity.enums.RefundStatus.NONE;
         String refundLine = refundInitiated
-                ? "A refund of €" + money(booking.getCancellationRefundAmountEur())
-                + " has been initiated. It is not yet completed."
+                ? "Your refund amount is €" + money(booking.getCancellationRefundAmountEur())
+                + ". View the booking for its current refund status."
                 : "No refund is due under the cancellation policy.";
         String actorLine = switch (booking.getCancelledByActorType()) {
             case OWNER -> "The venue owner cancelled this booking. We are sorry for the disruption. ";
-            case ADMIN -> "Eema cancelled this booking for the recorded operational reason. ";
+            case ADMIN -> "Eema cancelled this booking. ";
             default -> "Your booking has been cancelled. ";
         };
-        String scoutMessage = actorLine + refundLine;
+        String scoutMessage = actorLine + refundLine
+                + (booking.getCancellationReason() == null ? "" : " Reason: " + booking.getCancellationReason());
         attempt("BOOKING_CANCELLED", "scout", bookingId, () -> emailService.send(
                 booking.getScoutContact().getEmail(), "Your Eema booking was cancelled",
                 text(booking.getScoutContact().getName(), scoutMessage, details(booking, venueName),
@@ -96,9 +97,10 @@ public class BookingNotificationService {
                         detailsHtml(booking, venueName), "View booking", url)));
 
         if (booking.getCancelledByActorType() == com.eema.backend.entity.enums.ActorType.SCOUT) {
-            String ownerMessage = "The scout cancelled this booking under policy tier "
-                    + booking.getCancellationPolicyTier()
-                    + ". Your cancellation settlement is provisional until provider fee reconciliation.";
+            String ownerMessage = "The scout cancelled this booking. The refund is €"
+                    + money(booking.getCancellationRefundAmountEur()) + ", and the retained amount is €"
+                    + money(booking.getCancellationRetainedAmountEur())
+                    + ". View the booking for your payout details.";
             attempt("BOOKING_CANCELLED", "owner", bookingId, () -> emailService.send(
                     booking.getOwnerContact().getEmail(), "A scout cancelled an Eema booking",
                     text(booking.getOwnerContact().getName(), ownerMessage, details(booking, venueName),
@@ -265,9 +267,10 @@ public class BookingNotificationService {
     private void attempt(String notificationType, String recipientType, UUID bookingId, Runnable delivery) {
         try {
             delivery.run();
-            log.info("Booking notification processed: bookingId={}, notificationType={}, recipientType={}",
+            log.info("Booking notification prepared: bookingId={}, notificationType={}, recipientType={}",
                     bookingId, notificationType, recipientType);
         } catch (RuntimeException exception) {
+            if (emailService.isCapturing()) throw exception;
             log.error("Booking notification failed: bookingId={}, notificationType={}, recipientType={}, errorType={}",
                     bookingId, notificationType, recipientType, exception.getClass().getSimpleName());
         }

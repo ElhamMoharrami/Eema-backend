@@ -1,0 +1,47 @@
+{
+  "tests": 10,
+  "failures": 10,
+  "notes": "Six names fail extraction; remaining ASCII/Latin cases fail required font embedding. Prior visual substitution evidence retained.",
+  "cases": [
+    {
+      "case": "storedNamesSurviveExtraction{String}[1]",
+      "failure": "expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[2]",
+      "failure": "expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[3]",
+      "failure": "expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[4]",
+      "failure": "expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[5]",
+      "failure": "Name missing from extraction: Łukasz Żółć ==> expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[6]",
+      "failure": "Name missing from extraction: Νίκος ==> expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[7]",
+      "failure": "Name missing from extraction: Алексей ==> expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[8]",
+      "failure": "Name missing from extraction: 李雷 ==> expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[9]",
+      "failure": "Name missing from extraction: محمد ==> expected: <true> but was: <false>"
+    },
+    {
+      "case": "storedNamesSurviveExtraction{String}[10]",
+      "failure": "Name missing from extraction: 李雷 García ==> expected: <true> but was: <false>"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "domain": "OPS-001\u2013009",
+  "scenarios": {
+    "pass": 9,
+    "fail": 0,
+    "blocked": 0
+  },
+  "unit": 1078,
+  "postgres": {
+    "reported": 1009,
+    "executed": 996,
+    "skipped": 13,
+    "failures": 0,
+    "errors": 0
+  },
+  "packageUnit": 1078,
+  "frontend": [
+    "typecheck",
+    "lint",
+    "build",
+    "diff check"
+  ],
+  "decisionsResolved": [
+    "OPS-DEC-001"
+  ],
+  "defectsResolved": [
+    "OPS-DEF-001",
+    "OPS-DEF-002"
+  ],
+  "realProvidersVerified": false,
+  "nextDomain": "JOB-001\u2013006",
+  "pdf": "PASS: 625 pages, 703 scenario IDs/order, representative visual inspection"
+}

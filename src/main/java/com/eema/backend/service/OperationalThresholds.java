@@ -6,6 +6,8 @@ import java.time.OffsetDateTime;
 
 @Component
 public class OperationalThresholds {
+    private final java.time.Clock clock;
+    public OffsetDateTime now() { return OffsetDateTime.now(clock); }
     private final long paymentStuckMinutes;
     private final long refundStuckMinutes;
     private final long feeStuckMinutes;
@@ -15,7 +17,8 @@ public class OperationalThresholds {
             @Value("${app.workflow-observability.payment-creating-stuck-minutes:60}") long paymentStuckMinutes,
             @Value("${app.workflow-observability.refund-stuck-minutes:1440}") long refundStuckMinutes,
             @Value("${app.workflow-observability.fee-unreconciled-minutes:1440}") long feeStuckMinutes,
-            @Value("${app.workflow-observability.payout-ready-overdue-hours:72}") long payoutOverdueHours) {
+            @Value("${app.workflow-observability.payout-ready-overdue-hours:72}") long payoutOverdueHours, java.time.Clock clock) {
+        this.clock = clock;
         this.paymentStuckMinutes = paymentStuckMinutes;
         this.refundStuckMinutes = refundStuckMinutes;
         this.feeStuckMinutes = feeStuckMinutes;

@@ -1,0 +1,18 @@
+{
+  "commands": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check": "PASS"
+  },
+  "browser": {
+    "result": "PASS",
+    "checks": 12
+  },
+  "screenshotsVisuallyReviewed": [
+    "owner-pending.png",
+    "admin-masked.png",
+    "owner-replacement.png"
+  ],
+  "sensitiveEvidence": "No full bank values or auth credentials retained"
+}

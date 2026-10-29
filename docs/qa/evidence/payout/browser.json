@@ -1,0 +1,46 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Admin list loads authoritative stored amounts",
+      "result": "PASS"
+    },
+    {
+      "name": "Manual transfer is recorded once and authoritative PAID state is refetched",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload retains paid reference and removes recording action",
+      "result": "PASS"
+    },
+    {
+      "name": "Held payout has no payment recording action",
+      "result": "PASS"
+    },
+    {
+      "name": "Real 409 retains visible conflict feedback after authoritative state changes to PAID",
+      "result": "PASS"
+    },
+    {
+      "name": "Real 409 retains visible conflict feedback after authoritative state changes to PAID",
+      "result": "PASS"
+    },
+    {
+      "name": "Controlled liability 409 retains visible conflict after WAIVED refetch",
+      "result": "PASS"
+    },
+    {
+      "name": "Liability settlement preserves stored amount, refetches and survives reload",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner sees authoritative amount and masked destination without private transfer reference or admin action",
+      "result": "PASS"
+    },
+    {
+      "name": "Different owner cannot read payout detail",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local PostgreSQL and controlled provider; no bank transfer"
+}

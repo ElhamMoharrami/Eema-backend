@@ -1,0 +1,15 @@
+{
+  "review": "PASS",
+  "screenshots": [
+    "stale-decline-expired.png",
+    "spring-availability.png",
+    "gap-inquiry-error.png"
+  ],
+  "findings": [
+    "Expired status and retained conflict feedback are visible; obsolete owner controls are absent.",
+    "First-occurrence convention wraps legibly beside the calendar heading.",
+    "Safe intervals and disabled invalid request are visible.",
+    "Clock-change validation message is readable and inquiry does not report success."
+  ],
+  "fixtures": "Synthetic local actors only"
+}

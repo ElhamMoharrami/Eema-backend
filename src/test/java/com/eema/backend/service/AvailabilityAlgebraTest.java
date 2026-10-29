@@ -87,7 +87,7 @@ class AvailabilityAlgebraTest {
     @Test void exactMinuteBoundaryAndJavaGapOverlapResolutionAreExplicit(){
         at("2026-09-14T08:00:00Z");LocalDate d=LocalDate.of(2026,9,14);
         assertTrue(lead.isSatisfied(venue,d,t("12:00")));assertFalse(lead.isSatisfied(venue,d,t("11:59")));
-        assertEquals(Instant.parse("2026-03-29T01:30:00Z"),lead.bookingStart(venue,LocalDate.of(2026,3,29),t("02:30")));
+        assertThrows(com.eema.backend.exception.BadRequestException.class,()->lead.bookingStart(venue,LocalDate.of(2026,3,29),t("02:30")));
         assertEquals(Instant.parse("2026-10-25T00:30:00Z"),lead.bookingStart(venue,LocalDate.of(2026,10,25),t("02:30")));
     }
 }

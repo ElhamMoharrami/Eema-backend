@@ -1,0 +1,19 @@
+{
+  "domain": "UX",
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 35
+  },
+  "executedChecks": {
+    "client": 56,
+    "flows": 26,
+    "accessibility": 112,
+    "long-layout": 105,
+    "browser": 619
+  },
+  "blocker": "UX-ENV-001",
+  "autoContinue": false,
+  "nextUnfinished": "UX",
+  "followingUnstarted": "UXACT-001\u2013019"
+}

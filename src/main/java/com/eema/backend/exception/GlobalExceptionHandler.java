@@ -197,6 +197,14 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(CancellationTermsChangedException.class)
+    public ResponseEntity<Map<String, Object>> handleCancellationTermsChanged(
+            CancellationTermsChangedException ex, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "timestamp", Instant.now(), "status", 409, "error", "Conflict",
+                "code", "CANCELLATION_TERMS_CHANGED", "message", ex.getMessage(), "path", getPath(request)));
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponse> handleConflict(
             ConflictException ex,
@@ -404,16 +412,21 @@ public class GlobalExceptionHandler {
                 "Bad Gateway", "Venue matching is temporarily unavailable. Please try again.", request));
     }
 
+    @ExceptionHandler(org.springframework.security.web.firewall.RequestRejectedException.class)
+    public ResponseEntity<ErrorResponse> handleRejectedRequest(WebRequest request) {
+        return response(HttpStatus.BAD_REQUEST, buildErrorResponse(HttpStatus.BAD_REQUEST,
+                "Bad Request", "Invalid request", request));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(
             Exception ex,
             WebRequest request
     ) {
 
-        log.error(
-                "Unexpected application error",
-                ex
-        );
+        // SDK/database exception messages and causes can contain secrets or untrusted input.
+        log.error("Unexpected application error: errorType={}, requestId={}",
+                ex.getClass().getSimpleName(), org.slf4j.MDC.get("requestId"));
 
         return response(
                 HttpStatus.INTERNAL_SERVER_ERROR,

@@ -18,31 +18,31 @@ class TrustNotificationServiceTest {
     private final TrustNotificationService service=new TrustNotificationService(verifications,venues,payoutDestinations,users,email,app);
     private final User owner=User.builder().id(UUID.randomUUID()).email("owner@example.com").role(UserRole.OWNER).build();
     @Test void sendsVerificationApprovalAndSafeRejectionReason(){OwnerVerification v=OwnerVerification.builder().id(UUID.randomUUID()).owner(owner).build();when(verifications.findById(v.getId())).thenReturn(Optional.of(v));
-        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_APPROVED,v.getId(),null));
-        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_REJECTED,v.getId(),"Need venue authority evidence"));
+        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_APPROVED,v.getId(),null,UUID.randomUUID()));
+        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_REJECTED,v.getId(),"Need venue authority evidence",UUID.randomUUID()));
         verify(email).send(eq(owner.getEmail()),contains("approved"),anyString(),anyString());
         verify(email).send(eq(owner.getEmail()),contains("attention"),contains("Need venue authority evidence"),contains("Need venue authority evidence"));}
     @Test void submissionAndRejectionUseOwnerLinkAndEscapeReviewText(){
         OwnerVerification v=OwnerVerification.builder().id(UUID.randomUUID()).owner(owner).build();
         when(verifications.findById(v.getId())).thenReturn(Optional.of(v));
-        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_SUBMITTED,v.getId(),null));
+        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_SUBMITTED,v.getId(),null,UUID.randomUUID()));
         verify(email).send(eq(owner.getEmail()),eq("Owner verification submitted"),contains("https://app.eema.example/owner/verification"),contains("https://app.eema.example/owner/verification"));
-        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_REJECTED,v.getId(),"QA <script>alert('test')</script> & reason"));
+        service.send(new TrustNotificationEvent(TrustEventType.OWNER_VERIFICATION_REJECTED,v.getId(),"QA <script>alert('test')</script> & reason",UUID.randomUUID()));
         verify(email).send(eq(owner.getEmail()),contains("attention"),contains("<script>"),contains("&lt;script&gt;"));
     }
     @Test void sendsApprovalChangesAndSuspensionMessages(){Venue v=Venue.builder().id(UUID.randomUUID()).owner(owner).name("Canal Studio").build();when(venues.findById(v.getId())).thenReturn(Optional.of(v));
-        service.send(new TrustNotificationEvent(TrustEventType.VENUE_APPROVED,v.getId(),null));
-        service.send(new TrustNotificationEvent(TrustEventType.VENUE_CHANGES_REQUESTED,v.getId(),"Add safety rules"));
-        service.send(new TrustNotificationEvent(TrustEventType.VENUE_SUSPENDED,v.getId(),"Safety review"));
+        service.send(new TrustNotificationEvent(TrustEventType.VENUE_APPROVED,v.getId(),null,UUID.randomUUID()));
+        service.send(new TrustNotificationEvent(TrustEventType.VENUE_CHANGES_REQUESTED,v.getId(),"Add safety rules",UUID.randomUUID()));
+        service.send(new TrustNotificationEvent(TrustEventType.VENUE_SUSPENDED,v.getId(),"Safety review",UUID.randomUUID()));
         verify(email).send(eq(owner.getEmail()),eq("Your venue is live"),anyString(),anyString());
         verify(email).send(eq(owner.getEmail()),contains("Changes requested"),contains("Add safety rules"),contains("Add safety rules"));
         verify(email).send(eq(owner.getEmail()),contains("suspended"),contains("Safety review"),contains("Safety review"));}
     @Test void venueSubmissionAndReactivationUseOwnerLinkAndEscapeReason(){
         Venue v=Venue.builder().id(UUID.randomUUID()).owner(owner).name("QA Venue").build();
         when(venues.findById(v.getId())).thenReturn(Optional.of(v));
-        service.send(new TrustNotificationEvent(TrustEventType.VENUE_SUBMITTED,v.getId(),null));
-        service.send(new TrustNotificationEvent(TrustEventType.VENUE_REACTIVATED,v.getId(),null));
-        service.send(new TrustNotificationEvent(TrustEventType.VENUE_CHANGES_REQUESTED,v.getId(),"QA <b>reason</b>"));
+        service.send(new TrustNotificationEvent(TrustEventType.VENUE_SUBMITTED,v.getId(),null,UUID.randomUUID()));
+        service.send(new TrustNotificationEvent(TrustEventType.VENUE_REACTIVATED,v.getId(),null,UUID.randomUUID()));
+        service.send(new TrustNotificationEvent(TrustEventType.VENUE_CHANGES_REQUESTED,v.getId(),"QA <b>reason</b>",UUID.randomUUID()));
         verify(email).send(eq(owner.getEmail()),eq("Venue submitted for review"),contains("/owner/venues/"+v.getId()),anyString());
         verify(email).send(eq(owner.getEmail()),eq("Your venue is live again"),contains("/owner/venues/"+v.getId()),anyString());
         verify(email).send(eq(owner.getEmail()),contains("Changes requested"),contains("<b>reason</b>"),contains("&lt;b&gt;reason&lt;/b&gt;"));

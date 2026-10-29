@@ -1,0 +1,31 @@
+{
+  "result" : "PASS",
+  "publicMediaSha256" : "e6e8c7e9ca69689be9487227209bfc6ff7b2404b816a35aeaf74d48a4402cfbe",
+  "tableHashes" : {
+    "availability_inquiries" : "b8ff910729f73ad94266fffea1831ba857038ecef97e1ad3fdf7f40d4f4d6eb9",
+    "booking_events" : "f42a75a96ee469ec31772b6a818dc8d4858964495409c514b3c76e45d201af78",
+    "booking_policy_versions" : "3458ff09b320d40d3f2e5490ec1f1c0bc8dcfcf551aa083b48dcc48b6602e516",
+    "bookings" : "e88014db3cb583580d4214949e73342ccc4859f0542cc2827ddac0dfdceab678",
+    "email_verification_tokens" : "99cecb30f02e62f291ff5bc3a68872237b70cd1dd819135ef5d3ad449ef6caaa",
+    "financial_documents" : "964b1b32ec807a836b7fbbd2307558964578183f910b6337d61e2599ed9ffbfb",
+    "flyway_schema_history" : "ad21016563c1c3c8137e8f3eff4d058567d4759dd286ccacde1eb0ee70dd30ec",
+    "incident_reports" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "marketplace_trust_events" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "notification_outbox" : "400341b42393eb66d2ad6fecb519c2f7436692292b96ab987ec589fa4e59ae4f",
+    "owner_financial_liabilities" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_payout_destinations" : "85c93792f99ec7d910e035ec9e4f30de2bca1f27dcdb8d9ba04f32ba3215965a",
+    "owner_payouts" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_verifications" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "password_reset_tokens" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "policy_acceptances" : "0589518aac35fea288ecf3bd267b98d5ba6b88aacb0576faa4848f15beca710d",
+    "policy_versions" : "1618651bdf4c39c8770fe8ef58746bd94d752c79ca032edb6e6f8e78c7a09c93",
+    "refresh_tokens" : "a0fe5160972d4a6ceaaacd20cec4c42abdef44c541239ccf7f0747ed7a77791b",
+    "users" : "5d434fcda7473d37e21f6c0339ab2e7aa393b86233ed8a39a9b9e5128f2d0cc9",
+    "venue_availability_overrides" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "venue_operating_hours" : "2acba966ba7b5ecc5d869c693af502e080a2ba4ade48a718ad453d180d8022aa",
+    "venues" : "c130006dad497acb675b221fd739f2c6e94881689ffaacd80ed9700d9c8ac5e8"
+  },
+  "receiptSha256" : "fac4b8380376f33f17d228b362347472b979acdecac04ad00892c4b916ed421d",
+  "checks" : [ "Ordinary packaged restart preserves every table hash and document bytes", "Forced JVM death after acceptance retains pending intent; packaged restart initializes bounded scheduler and dispatches the pre-crash message through loopback HTTP with stable idempotency identity", "pg_dump/restore preserves all table hashes, IDs, constraints, paid/cancelled/inquiry/policy/session/destination/document state, files and decryptability; restored session rotation and source isolation verified", "Packaged common-only V1–V14 and Hibernate validation start empty and restart idempotently", "Disposable local V1–V14/V100–V103 seed/login and DB/object-directory reset/reseed passed without touching source/shared data" ],
+  "provider" : "No live provider; synthetic local fixtures and keys only"
+}

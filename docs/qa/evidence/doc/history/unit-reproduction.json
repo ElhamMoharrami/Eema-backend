@@ -1,0 +1,65 @@
+[
+  {
+    "suite": "PrivateDocumentImmutabilityTest",
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "failedCases": [
+      {
+        "case": "simultaneousStoreHasOneWinnerAndLeavesNoTemporaryFile",
+        "message": "expected: <1> but was: <2>"
+      },
+      {
+        "case": "existingReferenceCannotBeOverwritten",
+        "message": "Expected java.lang.IllegalStateException to be thrown, but nothing was thrown."
+      }
+    ]
+  },
+  {
+    "suite": "DocumentRendererBoundaryTest",
+    "tests": 3,
+    "failures": 2,
+    "errors": 1,
+    "skipped": 0,
+    "failedCases": [
+      {
+        "case": "unsupportedControlAndUnicodeInputDoesNotCrash",
+        "message": "U+0085 ('.notdef') is not available in the font Helvetica, encoding: WinAnsiEncoding"
+      },
+      {
+        "case": "completeTransferReferenceSurvivesRendering",
+        "message": "Persisted transfer reference must not be truncated ==> expected: <true> but was: <false>"
+      },
+      {
+        "case": "validWideNamesAndMaximumAmountsStayInsidePage",
+        "message": "Visible document text extends outside safe page bounds: 118 glyphs ==> expected: <true> but was: <false>"
+      }
+    ]
+  },
+  {
+    "suite": "S3PrivateDocumentStorageTest",
+    "tests": 6,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "failedCases": [
+      {
+        "case": "invalidKeysNeverCallProvider{String}[1]",
+        "message": "Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown."
+      },
+      {
+        "case": "invalidKeysNeverCallProvider{String}[2]",
+        "message": "Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown."
+      },
+      {
+        "case": "invalidKeysNeverCallProvider{String}[3]",
+        "message": "Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown."
+      },
+      {
+        "case": "invalidKeysNeverCallProvider{String}[4]",
+        "message": "Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown."
+      }
+    ]
+  }
+]

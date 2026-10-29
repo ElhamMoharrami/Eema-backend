@@ -1,0 +1,41 @@
+{
+  "domain": "OPS",
+  "scenarios": "OPS-001\u2013009",
+  "pass": 8,
+  "fail": 0,
+  "blocked": 1,
+  "fixed": [
+    "OPS-DEF-001"
+  ],
+  "openDecisions": [
+    "OPS-DEC-001"
+  ],
+  "nextUntested": "JOB-001\u2013006",
+  "nextStarted": false,
+  "unit": {
+    "tests": 1067,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "postgres": {
+    "tests": 991,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 13
+  },
+  "package": {
+    "tests": 1067,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "browserChecks": 4,
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  },
+  "diffCheck": "PASS both repositories",
+  "providers": "LOCAL ONLY; real providers not verified"
+}

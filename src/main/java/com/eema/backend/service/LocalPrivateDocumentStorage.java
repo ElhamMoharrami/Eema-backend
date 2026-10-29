@@ -24,8 +24,9 @@ public class LocalPrivateDocumentStorage implements PrivateDocumentStorage {
             Path temporary = Files.createTempFile(target.getParent(), ".document-", ".tmp");
             try {
                 Files.write(temporary, content, StandardOpenOption.TRUNCATE_EXISTING);
-                try { Files.move(temporary, target, StandardCopyOption.ATOMIC_MOVE); }
-                catch (AtomicMoveNotSupportedException e) { Files.move(temporary, target); }
+                // Publish completed bytes atomically without replacing an existing reference.
+                // ATOMIC_MOVE may overwrite its target even without REPLACE_EXISTING.
+                Files.createLink(target, temporary);
             } finally { Files.deleteIfExists(temporary); }
             return reference;
         } catch (FileAlreadyExistsException e) {

@@ -1,0 +1,26 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.OperationsIntegrationTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    },
+    {
+      "name": "com.eema.backend.integration.OperationsNotificationIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    }
+  ],
+  "totals": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

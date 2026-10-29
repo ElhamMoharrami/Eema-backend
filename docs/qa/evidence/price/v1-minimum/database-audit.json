@@ -1,0 +1,8 @@
+{
+  "localDatabase": "existing stopped development database, started for read-only aggregate audit",
+  "bookingRows": 0,
+  "belowMinimumRows": 0,
+  "schema": "common V1\u2013V11 and dev V100\u2013V103; no migrations applied during audit",
+  "model": "venue_price_eur is the immutable original price in every state; refunds/cancellations change separate amounts; no legitimate zero-price seed booking found",
+  "deploymentBoundary": "Other deployed databases not supplied; migration must fail rather than rewrite any historical zero rows"
+}

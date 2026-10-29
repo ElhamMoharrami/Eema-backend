@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "scenarios": {
+    "pass": 8,
+    "fail": 0,
+    "blocked": 0
+  },
+  "sourceChanges": false,
+  "newTests": 0,
+  "regression": "Reused current unchanged-source full JOB gates:1078 unit,1010 executed PostgreSQL,13 opt-in browser skips,clean package and frontend OPS gates.",
+  "pdfMarker": "Already executed exactly once this turn; do not repeat.",
+  "next": "UX inventory/audit under authorized automatic continuation",
+  "pdf": "PASS: 622 pages,703 scenario IDs/order,representative visual inspection"
+}

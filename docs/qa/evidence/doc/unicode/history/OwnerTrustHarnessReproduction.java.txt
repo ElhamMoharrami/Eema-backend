@@ -1,0 +1,15 @@
+import static org.mockito.Mockito.*;
+import java.util.concurrent.*;
+public class OwnerTrustHarnessReproduction {
+ interface Repository { String findById(); String findByIdForUpdate(); }
+ public static void main(String[] args)throws Exception{
+  Repository repository=mock(Repository.class);
+  var pool=Executors.newSingleThreadExecutor();
+  try{
+   Repository configuring=doAnswer(inv->"barrier answer").when(repository);
+   pool.submit(()->repository.findById()).get(5,TimeUnit.SECONDS);
+   try{configuring.findByIdForUpdate();throw new AssertionError("Expected async stubbing interference");}
+   catch(org.mockito.exceptions.misusing.UnfinishedStubbingException expected){System.out.println("REPRODUCED: asynchronous read consumes shared repository stubbing before the lock method is configured");}
+  }finally{pool.shutdownNow();}
+ }
+}

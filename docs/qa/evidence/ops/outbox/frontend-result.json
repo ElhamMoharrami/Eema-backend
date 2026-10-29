@@ -1,0 +1,7 @@
+{
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "build": "PASS",
+  "diffCheck": "PASS",
+  "change": "Existing Admin Operations exception type and label only; no notification workflow or user preferences added."
+}

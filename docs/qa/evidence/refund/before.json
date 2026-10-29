@@ -1,0 +1,13 @@
+{
+  "test": "RefundClaimContractTest",
+  "tests": 13,
+  "failures": 8,
+  "errors": 0,
+  "reproduced": [
+    "Admin retry accepted exact one-hour boundary",
+    "FAILED/CANCELED minted new identity",
+    "Unpaid/zero amount was eligible; negative amount threw wrong boundary error",
+    "HTTP 409/429 treated as definitive rejection"
+  ],
+  "rawLog": "/tmp/ref-before.log"
+}

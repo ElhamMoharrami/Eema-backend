@@ -1,0 +1,12 @@
+{
+  "reason": "Stopped the ongoing full PostgreSQL run after an independent service probe exposed an already-paid provider-cost accounting defect. No completed full PostgreSQL PASS is claimed for this attempt.",
+  "unitTestsPassed": 994,
+  "browserChecksPassed": 12,
+  "financialProbe": {
+    "entitlement": "16.00",
+    "feeAlreadyApplied": "5.00",
+    "paidPayout": "11.00",
+    "expectedProviderLiability": "0.00",
+    "actualProviderLiability": "5.00"
+  }
+}

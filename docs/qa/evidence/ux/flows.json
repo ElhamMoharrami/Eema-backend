@@ -1,0 +1,110 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "forgot failure",
+      "result": "PASS"
+    },
+    {
+      "name": "forgot malformed",
+      "result": "PASS"
+    },
+    {
+      "name": "forgot success",
+      "result": "PASS"
+    },
+    {
+      "name": "reset 400",
+      "result": "PASS"
+    },
+    {
+      "name": "reset 500",
+      "result": "PASS"
+    },
+    {
+      "name": "reset 200",
+      "result": "PASS"
+    },
+    {
+      "name": "verify 400",
+      "result": "PASS"
+    },
+    {
+      "name": "verify 500",
+      "result": "PASS"
+    },
+    {
+      "name": "verify 200",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/bookings",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/payouts",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/payout-destinations",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/liabilities",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/exceptions",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/owner-verifications",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/venues",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/incidents",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/policies",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /policies",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/payouts?status=READY&page=0",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/payouts?status=HELD&page=0",
+      "result": "PASS"
+    },
+    {
+      "name": "navigation /admin/liabilities?status=OPEN&page=0",
+      "result": "PASS"
+    },
+    {
+      "name": "independent timeline failure and retry preserves booking facts",
+      "result": "PASS"
+    },
+    {
+      "name": "no marketplace mutations from read-only flows",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Synthetic intercepted transport only"
+}

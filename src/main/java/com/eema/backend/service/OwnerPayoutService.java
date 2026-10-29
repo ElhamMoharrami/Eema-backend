@@ -29,21 +29,22 @@ public class OwnerPayoutService {
     private final BookingFinancials financials;
     private final OwnerPayoutDestinationRepository destinations;
     private final MarketplaceTrustAuditService trustAudit;
+    private final Clock clock;
 
     @Transactional
     public OwnerPayout recalculateForBooking(UUID bookingId) {
         Booking booking = bookings.findByIdForUpdate(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking not found: " + bookingId));
-        return recalculate(booking, OffsetDateTime.now());
+        return recalculate(booking, OffsetDateTime.now(clock));
     }
 
     @Transactional
     public OwnerPayout evaluateReadiness(UUID payoutId) {
-        OwnerPayout payout = payouts.findByIdForUpdate(payoutId)
+        UUID bookingId = payouts.findBookingIdById(payoutId)
                 .orElseThrow(() -> new NotFoundException("Owner payout not found: " + payoutId));
-        Booking booking = bookings.findByIdForUpdate(payout.getBookingId())
-                .orElseThrow(() -> new NotFoundException("Booking not found: " + payout.getBookingId()));
-        return recalculate(booking, OffsetDateTime.now());
+        Booking booking = bookings.findByIdForUpdate(bookingId)
+                .orElseThrow(() -> new NotFoundException("Booking not found: " + bookingId));
+        return recalculate(booking, OffsetDateTime.now(clock));
     }
 
     @Transactional(readOnly = true)
@@ -80,6 +81,11 @@ public class OwnerPayoutService {
         if (admin == null || admin.getRole() != UserRole.ADMIN) throw new ForbiddenException("Only administrators can mark payouts paid");
         String normalized = reference == null ? null : reference.trim();
         if (normalized == null || normalized.isEmpty()) throw new BadRequestException("External transfer reference is required");
+        UUID bookingId = payouts.findBookingIdById(id)
+                .orElseThrow(() -> new NotFoundException("Owner payout not found: " + id));
+        // All payout mutations share the booking lock, including cancellation and fee reconciliation.
+        bookings.findByIdForUpdate(bookingId)
+                .orElseThrow(() -> new NotFoundException("Booking not found: " + bookingId));
         OwnerPayout payout = payouts.findByIdForUpdate(id)
                 .orElseThrow(() -> new NotFoundException("Owner payout not found: " + id));
         if (payout.getStatus() == OwnerPayoutStatus.PAID) {
@@ -91,7 +97,7 @@ public class OwnerPayoutService {
                 && payout.getPayoutDestination().getStatus() != PayoutDestinationStatus.REPLACED))
             throw new ConflictException("Payout has no historically valid verified destination");
         payout.setStatus(OwnerPayoutStatus.PAID);
-        payout.setPaidAt(OffsetDateTime.now());
+        payout.setPaidAt(OffsetDateTime.now(clock));
         payout.setExternalTransferReference(normalized);
         payout.setHoldReason(null);
         append(payout.getBookingId(), BookingEventType.PAYOUT_MARKED_PAID, admin.getId(), actorName(admin),
@@ -105,15 +111,31 @@ public class OwnerPayoutService {
                 && booking.getStatus() != BookingStatus.CANCELLED) return null;
         Venue venue = venues.findById(booking.getVenueId()).orElseThrow(() -> new NotFoundException("Venue not found"));
         UUID ownerId = venue.getOwner().getId();
-        OffsetDateTime eligibleAt = booking.getShootDate().atTime(booking.getEndTime())
-                .atZone(ZoneId.of(venue.getTimezone())).toOffsetDateTime();
+        OffsetDateTime eligibleAt = BookingTimePolicy.interval(booking.getShootDate(), booking.getStartTime(), booking.getEndTime(),
+                ZoneId.of(venue.getTimezone())).end();
 
         Economics economics = economics(booking);
+        if (booking.getProviderCostResponsibility() == ProviderCostResponsibility.OWNER
+                && booking.isCancellationProviderCostReconciled()) {
+            createLiability(ownerId, booking.getId(), OwnerFinancialLiabilityType.PROVIDER_COST,
+                    financials.allocateProviderCost(
+                            existing.filter(p -> p.getStatus() == OwnerPayoutStatus.PAID)
+                                    .map(p -> appliedProviderCostAtTransfer(p).min(financials.ownerEntitlementBeforeProviderCost(booking)))
+                                    .orElseGet(() -> financials.ownerEntitlementBeforeProviderCost(booking)),
+                            booking.getCancellationProviderCostEur(), ProviderCostResponsibility.OWNER).ownerLiability(),
+                    "Provider cost owed after owner-caused cancellation");
+        }
+
         if (existing.isPresent() && existing.get().getStatus() == OwnerPayoutStatus.PAID) {
             OwnerPayout paid = existing.get();
             if (paid.getPayoutAmountEur().compareTo(economics.payout()) != 0
                     || booking.getStatus() == BookingStatus.REFUNDED) {
-                BigDecimal recovery = financials.money(paid.getPayoutAmountEur().subtract(economics.payout()).max(BigDecimal.ZERO));
+                // Recover reversed entitlement, never a new fee deduction from an already transferred payout.
+                // Only the deduction actually taken at transfer belongs in this historical basis.
+                BigDecimal remaining = financials.allocateProviderCost(
+                        financials.ownerEntitlementBeforeProviderCost(booking), appliedProviderCostAtTransfer(paid),
+                        booking.getProviderCostResponsibility()).ownerPayout();
+                BigDecimal recovery = financials.money(paid.getPayoutAmountEur().subtract(remaining).max(BigDecimal.ZERO));
                 createLiability(ownerId, booking.getId(), OwnerFinancialLiabilityType.OWNER_PAYOUT_RECOVERY,
                         recovery, "Financial reversal occurred after the owner payout was recorded as paid");
             }
@@ -154,13 +176,15 @@ public class OwnerPayoutService {
             if (payout.getStatus() == OwnerPayoutStatus.CANCELLED) append(booking.getId(), BookingEventType.PAYOUT_CANCELLED,
                     null, "SYSTEM", ActorType.SYSTEM, Map.of("payoutId", payout.getId()));
         }
-        if (booking.getProviderCostResponsibility() == ProviderCostResponsibility.OWNER
-                && booking.isCancellationProviderCostReconciled()) {
-            createLiability(ownerId, booking.getId(), OwnerFinancialLiabilityType.PROVIDER_COST,
-                    financials.money(booking.getCancellationProviderCostEur()),
-                    "Provider cost owed after owner-caused cancellation");
-        }
         return payout;
+    }
+
+    private BigDecimal appliedProviderCostAtTransfer(OwnerPayout paid) {
+        // Raw provider cost may have been platform-borne. Credit only the historical owner deduction.
+        // For explicit OWNER liability, that credit survives only while the underlying entitlement survives.
+        return financials.money(paid.getGrossRetainedAmountEur().subtract(paid.getCommissionEur())
+                .subtract(paid.getPayoutAmountEur()).max(BigDecimal.ZERO))
+                .min(financials.money(paid.getProviderCostEur()));
     }
 
     private Economics economics(Booking b) {
@@ -172,10 +196,8 @@ public class OwnerPayoutService {
                 ? financials.money(b.getMollieFeeEur()) : financials.money(BigDecimal.ZERO);
         BigDecimal amount = b.getOwnerPayoutEur() == null ? BigDecimal.ZERO : b.getOwnerPayoutEur();
         if (b.getStatus() == BookingStatus.REFUNDED
-                || b.getProviderCostResponsibility() == ProviderCostResponsibility.OWNER
-                || b.getProviderCostResponsibility() == ProviderCostResponsibility.EEMA
                 || b.getLatePaymentDetectedAt() != null) amount = BigDecimal.ZERO;
-        return new Economics(gross, commission, provider, financials.money(amount));
+        return new Economics(gross, commission, provider, financials.money(amount.max(BigDecimal.ZERO)));
     }
 
     private State state(Booking b, BigDecimal amount, OffsetDateTime eligibleAt, OffsetDateTime now, boolean hasVerifiedDestination) {

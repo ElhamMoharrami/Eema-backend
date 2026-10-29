@@ -18,11 +18,22 @@ public class MollieFeeReconciliationJob {
     private final MollieFeeReportingClient reportingClient;
     private final BookingService bookingService;
 
+    // Scan position is an optimization, never financial authority. Restart begins at the oldest row.
+    private record Cursor(java.time.OffsetDateTime time, java.util.UUID id) {}
+    private Cursor cursor;
+
     @Scheduled(fixedDelayString = "${app.mollie.fee-reconciliation-delay-ms:3600000}",
             initialDelayString = "${app.mollie.fee-reconciliation-initial-delay-ms:60000}")
-    public void reconcile() {
+    public synchronized void reconcile() {
         if (!properties.mollie().feeReconciliationEnabled()) return;
-        for (Booking booking : bookingRepository.findPendingFeeReconciliation(PageRequest.of(0, 100))) {
+        var page = PageRequest.of(0, 100);
+        var batch = cursor == null ? bookingRepository.findPendingFeeReconciliation(page)
+                : bookingRepository.findPendingFeeReconciliationAfter(cursor.time(), cursor.id(), page);
+        if (batch.isEmpty() && cursor != null) {
+            cursor = null;
+            batch = bookingRepository.findPendingFeeReconciliation(page);
+        }
+        for (Booking booking : batch) {
             try {
                 reportingClient.findAuthoritativePaymentFee(booking.getMolliePaymentId())
                         .ifPresent(fee -> bookingService.reconcileMollieFee(booking.getId(), fee));
@@ -30,6 +41,10 @@ public class MollieFeeReconciliationJob {
                 log.warn("Mollie fee reconciliation deferred: bookingId={}, paymentId={}, errorType={}",
                         booking.getId(), booking.getMolliePaymentId(), e.getClass().getSimpleName());
             }
+        }
+        if (!batch.isEmpty()) {
+            Booking last = batch.getLast();
+            cursor = new Cursor(last.getPaidAt() == null ? last.getCreatedAt() : last.getPaidAt(), last.getId());
         }
     }
 }

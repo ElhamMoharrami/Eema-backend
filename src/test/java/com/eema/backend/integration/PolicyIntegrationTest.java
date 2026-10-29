@@ -165,7 +165,8 @@ class PolicyIntegrationTest extends AuthPostgresSupport {
         assertEquals(200,receipt.getStatus());assertEquals("application/pdf",receipt.getContentType());assertTrue(receipt.getContentAsByteArray().length>100);
         jdbc.update("update bookings set mollie_payment_id=? where id=?","tr_policy_"+booking,booking);
         when(mollie.createRefund(anyString(),eq(booking),any(),any())).thenAnswer(inv->new com.eema.backend.dto.response.MollieRefundResponse("re_policy_qa","queued",inv.getArgument(0),new com.eema.backend.dto.response.MolliePaymentResponse.Amount(inv.getArgument(2).toString(),"EUR")));
-        request(post("/api/bookings/"+booking+"/cancel"),scout,null,200);
+        String previewToken=read("/bookings/"+booking+"/cancellation-preview",access(scout),200).path("previewToken").asText();
+        request(post("/api/bookings/"+booking+"/cancel"),scout,Map.of("previewToken",previewToken),200);
         assertEquals("QUEUED",read("/bookings/"+booking,access(scout),200).path("refundStatus").asText());
         verify(mollie).createRefund(anyString(),eq(booking),any(),any());
 

@@ -32,6 +32,7 @@ public class BookingAvailabilityValidator {
         catch (DateTimeException | NullPointerException exception) {
             throw new BadRequestException("Venue timezone is invalid");
         }
+        BookingTimePolicy.interval(date, start, end, zone);
         if (date == null || date.isBefore(LocalDate.now(clock.withZone(zone)))) {
             throw new BadRequestException("shootDate must be today or later in the venue timezone");
         }

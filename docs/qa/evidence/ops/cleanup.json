@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "ownedAppBrowserFrontendPortsReleased": [
+    3018,
+    18091,
+    18092,
+    18093,
+    9244
+  ],
+  "disposableComposeContainersRemaining": 0,
+  "disposableComposeVolumesRemaining": 0,
+  "temporaryRecoveryKeysAndFilesRemaining": 0,
+  "temporaryBrowserProfilesRemaining": 0,
+  "sharedProject": "Not reset or modified"
+}

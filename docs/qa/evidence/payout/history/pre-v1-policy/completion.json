@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-19",
+  "domain": "PAYOUT",
+  "scenarios": [
+    "PAYOUT-001",
+    "PAYOUT-002",
+    "PAYOUT-003",
+    "PAYOUT-004",
+    "PAYOUT-005",
+    "PAYOUT-006"
+  ],
+  "scenarioResults": {
+    "PASS": 6,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "fixedDefects": {
+    "P1": 4,
+    "P2": 1
+  },
+  "unresolvedReproducedPayoutDefects": 0,
+  "commands": {
+    "mvn test": {
+      "result": "PASS",
+      "tests": 973,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mvn verify -Ppostgres-integration": {
+      "result": "PASS",
+      "tests": 723,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 7,
+      "executed": 716
+    },
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 973,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check (backend and frontend)": "PASS"
+  },
+  "browser": {
+    "result": "PASS",
+    "checks": 10,
+    "realProviderVerified": false,
+    "controlledClientCase": "liability 409 followed by WAIVED response"
+  },
+  "locallyComplete": true,
+  "automaticContinuation": false,
+  "stopReason": "Unresolved allocation of provider fees exceeding owner entitlement; inherited zero-price policy also remains outside technical clearance.",
+  "nextDomain": "DEST-001\u2013004",
+  "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
+  "pdfPages": 639
+}

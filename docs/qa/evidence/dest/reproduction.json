@@ -1,0 +1,34 @@
+{
+  "totals": {
+    "tests": 27,
+    "failures": 6,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "test": "concurrentSameOwnerSubmissionIsConflictNot500",
+      "message": "expected: <[200, 409]> but was: <[200, 500]>"
+    },
+    {
+      "test": "concurrentSameOwnerSubmissionIsConflictNot500",
+      "message": "expected: <[200, 409]> but was: <[200, 500]>"
+    },
+    {
+      "test": "concurrentSameOwnerSubmissionIsConflictNot500",
+      "message": "expected: <[200, 409]> but was: <[200, 500]>"
+    },
+    {
+      "test": "concurrentDistinctVerificationSerializesOwnerRouting",
+      "message": "expected: <[200, 200]> but was: <[500, 200]>"
+    },
+    {
+      "test": "concurrentDistinctVerificationSerializesOwnerRouting",
+      "message": "expected: <[200, 200]> but was: <[200, 500]>"
+    },
+    {
+      "test": "concurrentDistinctVerificationSerializesOwnerRouting",
+      "message": "expected: <[200, 200]> but was: <[200, 500]>"
+    }
+  ]
+}

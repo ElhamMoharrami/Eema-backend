@@ -23,11 +23,12 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 import java.util.Optional;
+import java.util.Objects;
 import com.eema.backend.event.LatePaymentRefundInitiatedEvent;
 import com.eema.backend.event.CancellationRefundCompletedEvent;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @org.springframework.beans.factory.annotation.Autowired)
 public class RefundCoordinator {
     private static final Duration IDEMPOTENCY_WINDOW = Duration.ofHours(1);
     private final BookingRepository bookingRepository;
@@ -36,6 +37,13 @@ public class RefundCoordinator {
     private final BookingStateMachine stateMachine;
     private final ApplicationEventPublisher eventPublisher;
     private final OwnerPayoutService ownerPayoutService;
+    private final java.time.Clock clock;
+
+    RefundCoordinator(BookingRepository bookings, BookingEventRepository events, BookingFinancials financials,
+                      BookingStateMachine states, ApplicationEventPublisher publisher, OwnerPayoutService payouts) {
+        this(bookings, events, financials, states, publisher, payouts, java.time.Clock.systemUTC());
+    }
+
 
     @Transactional
     public Claim claim(UUID bookingId, UUID adminId, String adminName) {
@@ -43,26 +51,29 @@ public class RefundCoordinator {
         if (booking.getStatus() != BookingStatus.CONFIRMED) {
             throw new ConflictException("Only confirmed bookings can be refunded");
         }
-        if (booking.getMolliePaymentId() == null) throw new ConflictException("Booking has no Mollie payment");
-        if (booking.getRefundStatus() == RefundStatus.REFUNDED) throw new ConflictException("Booking is already refunded");
-        if (booking.getRefundStatus() != RefundStatus.NONE && booking.getRefundStatus() != RefundStatus.FAILED
-                && booking.getRefundStatus() != RefundStatus.CANCELED && booking.getRefundStatus() != RefundStatus.CREATING) {
-            throw new ConflictException("A refund is already in progress");
+        if (!MollieResponseValidation.paymentId(booking.getMolliePaymentId()) || booking.getPaidAt() == null
+                || booking.getTotalPaidEur() == null || booking.getTotalPaidEur().signum() <= 0) {
+            throw new ConflictException("Only successfully paid bookings can be refunded");
         }
-        OffsetDateTime now = OffsetDateTime.now();
         if (booking.getRefundStatus() == RefundStatus.CREATING) {
-            if (booking.getRefundRequestedAt().plus(IDEMPOTENCY_WINDOW).isBefore(now)) {
-                throw new ConflictException("Refund creation requires manual reconciliation before retry");
+            if (booking.getRefundIdempotencyKey() == null || booking.getRefundAmountEur() == null
+                    || booking.getRefundAmountEur().signum() <= 0
+                    || booking.getRefundAmountEur().compareTo(booking.getTotalPaidEur()) > 0) {
+                throw new ConflictException("Refund claim requires manual reconciliation");
             }
+            requireReplayWindow(booking);
         } else {
+            if (booking.getRefundStatus() != RefundStatus.NONE || booking.getRefundIdempotencyKey() != null) {
+                throw new ConflictException("Existing refund requires reconciliation; a new refund cannot be created");
+            }
             booking.setRefundStatus(RefundStatus.CREATING);
             booking.setRefundIdempotencyKey(UUID.randomUUID());
             booking.setRefundAmountEur(financials.money(booking.getTotalPaidEur()));
-            booking.setRefundRequestedAt(now);
+            booking.setRefundRequestedAt(OffsetDateTime.now(clock));
             append(bookingId, BookingEventType.REFUND_REQUESTED, adminId, adminName, ActorType.ADMIN,
                     Map.of("amount", booking.getRefundAmountEur(), "currency", "EUR"));
+            ownerPayoutService.recalculateForBooking(bookingId);
         }
-        ownerPayoutService.recalculateForBooking(bookingId);
         return new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(), booking.getRefundIdempotencyKey());
     }
 
@@ -83,15 +94,26 @@ public class RefundCoordinator {
                 || booking.getRefundStatus() == RefundStatus.PROCESSING) {
             throw new ConflictException("A refund is already in progress or completed");
         }
-        if (booking.getRefundStatus() != RefundStatus.CREATING) {
+        if (booking.getRefundIdempotencyKey() != null) {
+            if (booking.getRefundAmountEur() == null || booking.getRefundAmountEur().compareTo(normalized) != 0) {
+                throw new ConflictException("Cancellation refund amount cannot be changed");
+            }
+            if (booking.getRefundStatus() != RefundStatus.CREATING) {
+                throw new ConflictException("Failed cancellation refund requires manual reconciliation");
+            }
+            requireReplayWindow(booking);
+        } else {
+            if (booking.getMolliePaymentId() == null) throw new ConflictException("Booking has no Mollie payment");
+            if (booking.getCancellationRefundAmountEur() == null
+                    || booking.getCancellationRefundAmountEur().compareTo(normalized) != 0) {
+                throw new ConflictException("Refund must match the persisted cancellation obligation");
+            }
             booking.setRefundStatus(RefundStatus.CREATING);
             booking.setRefundIdempotencyKey(UUID.randomUUID());
             booking.setRefundAmountEur(normalized);
-            booking.setRefundRequestedAt(OffsetDateTime.now());
+            booking.setRefundRequestedAt(OffsetDateTime.now(clock));
             append(bookingId, BookingEventType.REFUND_REQUESTED, actorId, actorName, actorType,
                     Map.of("amount", normalized, "currency", "EUR", "reason", "booking_cancellation"));
-        } else if (booking.getRefundAmountEur().compareTo(normalized) != 0) {
-            throw new ConflictException("Cancellation refund amount cannot be changed");
         }
         return new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(),
                 booking.getRefundIdempotencyKey());
@@ -108,6 +130,7 @@ public class RefundCoordinator {
                 || booking.getMolliePaymentId() == null) {
             return Optional.empty();
         }
+        requireReplayWindow(booking);
         return Optional.of(new Claim(bookingId, booking.getMolliePaymentId(),
                 booking.getRefundAmountEur(), booking.getRefundIdempotencyKey()));
     }
@@ -129,8 +152,18 @@ public class RefundCoordinator {
             return Optional.empty();
         }
 
-        OffsetDateTime now = OffsetDateTime.now();
-        if (booking.getRefundStatus() != RefundStatus.CREATING) {
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        if (booking.getRefundStatus() == RefundStatus.CREATING) {
+            requireReplayWindow(booking);
+            if (booking.getRefundIdempotencyKey() == null || booking.getRefundAmountEur() == null
+                    || booking.getRefundAmountEur().signum() <= 0
+                    || booking.getRefundAmountEur().compareTo(booking.getTotalPaidEur()) > 0) {
+                throw new ConflictException("Refund claim requires manual reconciliation");
+            }
+        } else {
+            if (booking.getRefundStatus() != RefundStatus.NONE || booking.getRefundIdempotencyKey() != null) {
+                throw new ConflictException("Failed late-payment refund requires manual reconciliation");
+            }
             booking.setRefundStatus(RefundStatus.CREATING);
             booking.setRefundIdempotencyKey(UUID.randomUUID());
             booking.setRefundAmountEur(financials.money(booking.getTotalPaidEur()));
@@ -161,6 +194,13 @@ public class RefundCoordinator {
     @Transactional
     public void recordProviderState(Claim claim, MollieRefundResponse refund) {
         Booking booking = locked(claim.bookingId());
+        if (!Objects.equals(claim.paymentId(), booking.getMolliePaymentId())
+                || claim.idempotencyKey() == null
+                || !claim.idempotencyKey().equals(booking.getRefundIdempotencyKey())
+                || claim.amount() == null || booking.getRefundAmountEur() == null
+                || claim.amount().compareTo(booking.getRefundAmountEur()) != 0) {
+            throw new IllegalStateException("Refund claim does not match booking");
+        }
         validate(booking, refund);
         booking.setMollieRefundId(refund.id());
         applyStatus(booking, providerStatus(refund.status()));
@@ -168,9 +208,9 @@ public class RefundCoordinator {
 
     @Transactional
     public void reconcile(String paymentId, MollieRefundResponse refund) {
-        Booking booking = bookingRepository.findByMolliePaymentId(paymentId)
+        UUID bookingId = bookingRepository.findIdByMolliePaymentId(paymentId)
                 .orElseThrow(() -> new NotFoundException("Booking not found for Mollie payment"));
-        booking = locked(booking.getId());
+        Booking booking = locked(bookingId);
         if (booking.getMollieRefundId() == null) return;
         validate(booking, refund);
         applyStatus(booking, providerStatus(refund.status()));
@@ -188,14 +228,23 @@ public class RefundCoordinator {
         }
         if (!booking.getMolliePaymentId().equals(refund.paymentId())) throw new IllegalStateException("Refund payment does not match booking");
         if (booking.getMollieRefundId() != null && !booking.getMollieRefundId().equals(refund.id())) throw new IllegalStateException("Refund ID does not match booking");
-        if (!"EUR".equalsIgnoreCase(refund.amount().currency())
-                || financials.money(new BigDecimal(refund.amount().value())).compareTo(booking.getRefundAmountEur()) != 0) {
+        if (!refund.id().matches("re_[A-Za-z0-9_-]+") || booking.getRefundAmountEur() == null
+                || MollieResponseValidation.eurAmount(refund.amount()).compareTo(booking.getRefundAmountEur()) != 0) {
             throw new IllegalStateException("Refund amount does not match booking");
+        }
+        providerStatus(refund.status());
+    }
+
+    private void requireReplayWindow(Booking booking) {
+        if (booking.getRefundRequestedAt() == null
+                || !OffsetDateTime.now(clock).isBefore(booking.getRefundRequestedAt().plus(IDEMPOTENCY_WINDOW))) {
+            throw new ConflictException("Refund creation requires manual reconciliation before retry");
         }
     }
 
     private void applyStatus(Booking booking, RefundStatus target) {
-        if (booking.getRefundStatus() == target) return;
+        // Concurrent provider retrievals may arrive out of order; completion is terminal.
+        if (!booking.getRefundStatus().canProgressTo(target)) return;
         RefundStatus previous = booking.getRefundStatus();
         booking.setRefundStatus(target);
         if (target == RefundStatus.REFUNDED) {
@@ -207,7 +256,7 @@ public class RefundCoordinator {
                 stateMachine.requireTransition(booking.getStatus(), BookingStatus.REFUNDED);
                 booking.setStatus(BookingStatus.REFUNDED);
             }
-            booking.setRefundedAt(OffsetDateTime.now());
+            booking.setRefundedAt(OffsetDateTime.now(clock));
             if (!cancellation) {
                 booking.setOwnerPayoutEur(BigDecimal.ZERO.setScale(2));
             }
@@ -229,7 +278,11 @@ public class RefundCoordinator {
     }
 
     private RefundStatus providerStatus(String status) {
-        try { return RefundStatus.valueOf(status.toUpperCase()); }
+        try {
+            RefundStatus result = RefundStatus.valueOf(status.toUpperCase(java.util.Locale.ROOT));
+            if (result == RefundStatus.NONE || result == RefundStatus.CREATING) throw new IllegalArgumentException();
+            return result;
+        }
         catch (Exception e) { throw new IllegalStateException("Unsupported Mollie refund status"); }
     }
 

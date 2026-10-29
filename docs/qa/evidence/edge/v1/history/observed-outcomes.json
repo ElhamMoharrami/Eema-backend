@@ -1,0 +1,51 @@
+{
+  "springAlias": {
+    "date": "2027-03-28",
+    "timezone": "Europe/Amsterdam",
+    "localIntervals": [
+      "02:00\u201302:30",
+      "03:00\u201303:30"
+    ],
+    "persistedStates": [
+      "AWAITING_PAYMENT",
+      "AWAITING_PAYMENT"
+    ],
+    "bothResolveTo": "01:00\u201301:30Z",
+    "separateScouts": true
+  },
+  "springNegativeDuration": {
+    "localInterval": "02:30\u201303:00",
+    "persistedState": "CONFIRMED",
+    "selectedMinutes": 30,
+    "resolvedElapsedMinutes": -30,
+    "resolvedStart": "01:30Z",
+    "payoutEligibleAt": "01:00Z"
+  },
+  "autumn": {
+    "date": "2026-10-25",
+    "localInterval": "02:30\u201303:30",
+    "selectedMinutes": 60,
+    "resolvedElapsedMinutes": 120,
+    "startOffset": "earlier"
+  },
+  "matching": {
+    "hardEligible": 31,
+    "candidateLimit": 30,
+    "availableAmongFirst30": 0,
+    "availableBeyondCap": 1,
+    "returnedMatches": 0,
+    "parserCalls": 1,
+    "rankerCalls": 0
+  },
+  "overdueDecline": {
+    "boundaryMicroseconds": [
+      -1,
+      0,
+      1
+    ],
+    "declineFirst": "DECLINED",
+    "workerFirstAtEquality": "EXPIRED; later decline409"
+  },
+  "precision": "PostgreSQL TIME default microseconds; current Hibernate/JDBC binding retains milliseconds; exact sub-millisecond round-trip not claimed",
+  "evidence": "EdgeIntegrationTest assertions; local characterization is not launch acceptance"
+}

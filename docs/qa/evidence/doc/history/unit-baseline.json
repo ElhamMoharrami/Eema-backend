@@ -1,0 +1,45 @@
+[
+  {
+    "suite": "PrivateDocumentImmutabilityTest",
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "case": "simultaneousStoreHasOneWinnerAndLeavesNoTemporaryFile",
+        "result": "FAIL",
+        "message": "expected: <1> but was: <2>"
+      },
+      {
+        "case": "existingReferenceCannotBeOverwritten",
+        "result": "FAIL",
+        "message": "Expected java.lang.IllegalStateException to be thrown, but nothing was thrown."
+      }
+    ]
+  },
+  {
+    "suite": "DocumentRendererBoundaryTest",
+    "tests": 3,
+    "failures": 2,
+    "errors": 1,
+    "skipped": 0,
+    "cases": [
+      {
+        "case": "unsupportedControlAndUnicodeInputDoesNotCrash",
+        "result": "FAIL",
+        "message": "U+0085 ('.notdef') is not available in the font Helvetica, encoding: WinAnsiEncoding"
+      },
+      {
+        "case": "completeTransferReferenceSurvivesRendering",
+        "result": "FAIL",
+        "message": "Persisted transfer reference must not be truncated ==> expected: <true> but was: <false>"
+      },
+      {
+        "case": "validWideNamesAndMaximumAmountsStayInsidePage",
+        "result": "FAIL",
+        "message": "Visible document text extends outside safe page bounds: 118 glyphs ==> expected: <true> but was: <false>"
+      }
+    ]
+  }
+]

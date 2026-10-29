@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-15",
+  "scope": "Sanitized pre-fix reproductions; not final results",
+  "reproductions": [
+    {
+      "case": "checkoutDiscoveredExpiryIsDurable",
+      "expected": "EXPIRED after 409",
+      "observed": "AWAITING_PAYMENT"
+    },
+    {
+      "case": "fractionalCentMismatchCannotConfirm",
+      "expected": "125.504 rejected for 125.50 booking",
+      "observed": "HTTP200 confirmed"
+    },
+    {
+      "case": "fetchedPaymentMustMatchIncomingReference",
+      "expected": "mismatched callback/fetched ID rejected",
+      "observed": "HTTP200 applied"
+    },
+    {
+      "case": "inFlightCreateAfterDeadlineRetainsRefundAssociation",
+      "expected": "validated payment ID retained with EXPIRED",
+      "observed": "stored ID null"
+    },
+    {
+      "case": "lateAmbiguousRefundStopsOutsideReplayWindow",
+      "expected": "no old-claim provider replay",
+      "observed": "HTTP200 replay"
+    },
+    {
+      "case": "lateDuplicateCannotRewriteCompletedRefundEconomics",
+      "expected": "ownerPayoutEur remains0.00",
+      "observed": "100.40"
+    },
+    {
+      "case": "ambiguousLateRefundReplaysSameIdentityWithinWindow[provider5xx]",
+      "expected": "same refund key twice",
+      "observed": "second invocation used another key"
+    },
+    {
+      "case": "lateDuplicateCannotRewriteCompletedRefundEconomics[stale response]",
+      "expected": "REFUNDED terminal",
+      "observed": "QUEUED"
+    },
+    {
+      "case": "browser expired checkout",
+      "expected": "authoritative refetch removes Pay now",
+      "observed": "stale Pay now remained",
+      "evidence": "browser-before.json"
+    },
+    {
+      "case": "paidDuplicateAfterConfirmedCancellationIsNotALatePayment",
+      "expected": "CANCELLED/NON_REFUNDABLE, retained125.50, commission25.10, owner100.40, no new refund",
+      "observed": "duplicate callback queued full125.50 refund, rewrote refund percentage0 to100 and retained/commission/owner to0"
+    }
+  ],
+  "source_log_sha256": {
+    "pay-before-final.log": "d082f33794e1dd85a79c1068e467e180e78f6936d412b3f0ecb046b990357208",
+    "pay-late-before.log": "f0651b67f331c44dbc234bfecdf349856df93a294989a1af11a2881842bbeb91",
+    "pay-refund-boundaries-before.log": "9f780c3e5e3bd47b596ee79aa7d3c7d345b3e03df46d068ff736d0580a837429",
+    "pay-browser-before.log": "6a22d58e32be3e9d76c25c6789740d47e83a850a8c71259df99481be2cf60a33",
+    "pay-cancel-duplicate-before.log": "52fbe9ad64413a70d6aaddc51d337aac5f223967d7305c47e556395a05dc881f"
+  }
+}

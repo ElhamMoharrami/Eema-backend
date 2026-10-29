@@ -1,0 +1,16 @@
+{
+  "reviewed": [
+    "Arabic joined name محمد in receipt",
+    "CJK/Latin mixed 李雷 García",
+    "Polish Łukasz Żółć",
+    "Greek Νίκος",
+    "Cyrillic Алексей",
+    "Zoë François",
+    "Daniël Müller",
+    "100-character repeated CJK/Latin name wrapping",
+    "Arabic owner payout statement: connected original name, exact ledger, masked destination"
+  ],
+  "result": "PASS: original names visible, connected Arabic, no replacement/boxes/clipping or overlap",
+  "extraction": "All 10 parameterized ASCII/required-name cases preserve input text",
+  "scope": "Unsupported marks/control/glyph sequences fail safely; no universal Unicode claim"
+}

@@ -1,0 +1,936 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "name": "UX-001 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 15,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-001 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 50,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-001 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 15,
+        "visited": 15,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-002 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 24,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-002 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 33,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-002 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 24,
+        "visited": 24,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-003 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 14,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-003 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 17,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-003 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 14,
+        "visited": 14,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-004 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-004 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 26,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-004 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-005 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 21,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-005 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 27,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-005 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 21,
+        "visited": 21,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-006 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-006 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 26,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-006 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-007 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 22,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-007 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 29,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-007 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 22,
+        "visited": 22,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-008 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-008 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 24,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-008 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-009 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 19,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-009 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 24,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-009 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 19,
+        "visited": 19,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-010 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 19,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-010 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 21,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-010 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 19,
+        "visited": 19,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-011 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-011 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 28,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-011 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-012 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 20,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-012 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 26,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-012 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 20,
+        "visited": 20,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-013 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-013 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 36,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-013 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-014 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 22,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-014 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 30,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-014 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 22,
+        "visited": 22,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-015 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 20,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-015 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 42,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-015 keyboard traversal",
+      "result": "FAIL",
+      "detail": {
+        "expected": 30,
+        "visited": 25,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-016 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-016 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 46,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-016 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 17,
+        "visited": 17,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-017 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 20,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-017 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 27,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-017 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 20,
+        "visited": 20,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-018 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 7,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-018 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 24,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-018 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 8,
+        "visited": 8,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-019 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-019 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 31,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-019 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-020 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 9,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-020 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 10,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-020 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 9,
+        "visited": 9,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-021 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 15,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-021 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 37,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-021 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 15,
+        "visited": 15,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-022 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 13,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-022 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 18,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-022 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 13,
+        "visited": 13,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-023 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 11,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-023 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 15,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-023 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 11,
+        "visited": 11,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-024 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-024 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 25,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-024 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-025 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-025 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 21,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-025 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-026 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 47,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-026 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 76,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-026 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 55,
+        "visited": 55,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-027 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 17,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-027 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 28,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-027 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 22,
+        "visited": 22,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-028 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 12,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-028 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 17,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-028 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-029 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 10,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-029 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 13,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-029 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 10,
+        "visited": 10,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-030 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 13,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-030 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 22,
+        "minimum": 4.61259899056382,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-030 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 12,
+        "visited": 12,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-031 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-031 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 23,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-031 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 11,
+        "visited": 11,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-032 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 7,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-032 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 7,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-032 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 7,
+        "visited": 7,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-033 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 9,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-033 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 28,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-033 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 9,
+        "visited": 9,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-034 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-034 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 12,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-034 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 6,
+        "visited": 6,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "UX-035 accessible control names",
+      "result": "PASS",
+      "detail": {
+        "controls": 6,
+        "missing": []
+      }
+    },
+    {
+      "name": "UX-035 active small-text contrast",
+      "result": "PASS",
+      "detail": {
+        "count": 8,
+        "minimum": 4.994401591014915,
+        "failures": []
+      }
+    },
+    {
+      "name": "UX-035 keyboard traversal",
+      "result": "PASS",
+      "detail": {
+        "expected": 6,
+        "visited": 6,
+        "unnamed": 0
+      }
+    },
+    {
+      "name": "reveal inline confirmation focuses action",
+      "result": "PASS"
+    },
+    {
+      "name": "inline confirmation does not falsely claim modal",
+      "result": "PASS"
+    },
+    {
+      "name": "reveal cancel restores opener focus",
+      "result": "PASS"
+    },
+    {
+      "name": "held loading status exposed as live region",
+      "result": "PASS"
+    },
+    {
+      "name": "held loader recovers into authoritative table",
+      "result": "PASS"
+    }
+  ],
+  "screenReader": "Browser AX tree and keyboard only; no spoken screen-reader execution"
+}

@@ -2,26 +2,22 @@ package com.eema.backend.service;
 
 import com.eema.backend.event.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.*;
 
-@Component @RequiredArgsConstructor @Slf4j
+@Component @RequiredArgsConstructor
 public class AccountEmailEventListener {
     private final AccountEmailNotificationService notifications;
+    private final NotificationOutboxWriter outbox;
 
-    @Async("notificationExecutor")
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void verificationRequested(EmailVerificationRequestedEvent event) {
-        try { notifications.sendVerification(event.userId(), event.rawToken()); }
-        catch (RuntimeException exception) { log.error("Verification email delivery failed: userId={}, errorType={}", event.userId(), exception.getClass().getSimpleName()); }
+        outbox.auth(event.userId(),"EMAIL_VERIFICATION",event.rawToken(),
+                () -> notifications.sendVerification(event.userId(),NotificationOutboxWriter.TOKEN_PLACEHOLDER));
     }
-
-    @Async("notificationExecutor")
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void passwordResetRequested(PasswordResetRequestedEvent event) {
-        try { notifications.sendPasswordReset(event.userId(), event.rawToken()); }
-        catch (RuntimeException exception) { log.error("Password-reset email delivery failed: userId={}, errorType={}", event.userId(), exception.getClass().getSimpleName()); }
+        outbox.auth(event.userId(),"PASSWORD_RESET",event.rawToken(),
+                () -> notifications.sendPasswordReset(event.userId(),NotificationOutboxWriter.TOKEN_PLACEHOLDER));
     }
 }

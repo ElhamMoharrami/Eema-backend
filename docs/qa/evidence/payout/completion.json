@@ -1,0 +1,82 @@
+{
+  "date": "2026-09-19",
+  "domain": "PAYOUT",
+  "scenarios": [
+    "PAYOUT-001",
+    "PAYOUT-002",
+    "PAYOUT-003",
+    "PAYOUT-004",
+    "PAYOUT-005",
+    "PAYOUT-006"
+  ],
+  "scenarioResults": {
+    "PASS": 6,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "fixedDefects": {
+    "P1": 4,
+    "P2": 1,
+    "P0": 1
+  },
+  "unresolvedReproducedPayoutDefects": 0,
+  "commands": {
+    "mvn test": {
+      "result": "PASS",
+      "tests": 997,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 997
+    },
+    "mvn verify -Ppostgres-integration": {
+      "result": "PASS",
+      "tests": 792,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8,
+      "executed": 784
+    },
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 997,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": 997
+    },
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check (backend and frontend)": "PASS"
+  },
+  "browser": {
+    "result": "PASS",
+    "checks": 10,
+    "realProviderVerified": false,
+    "controlledClientCase": "liability 409 followed by WAIVED response"
+  },
+  "locallyComplete": true,
+  "automaticContinuation": false,
+  "stopReason": "Current run stops before DOC due to inherited PRICE-DEF-005 zero-price decision; PAYOUT fee allocation is resolved",
+  "nextDomain": "DOC-001\u2013004",
+  "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
+  "pdfPages": 637,
+  "accountingPolicy": "User-approved Eema v1: OWNER_SETTLEMENT limited to unpaid entitlement; OWNER explicit excess liability; EEMA/NONE no owner cost",
+  "policyNewUnitCases": 19,
+  "policyNewPostgresCases": 33,
+  "frontendPolicyChange": "Existing fee label corrected only; no new accounting UI or arithmetic",
+  "browserPolicyUpdate": "Prior ten-check interaction evidence reused; frontend build/typecheck/lint rerun",
+  "policyEvidence": "v1-policy/",
+  "status": "COMPLETE",
+  "paidHistoryDefect": "PAYOUT-V1-D1 fixed and fully regressed",
+  "continuedToDomain": "DEST-001\u2013004 (complete)",
+  "pdfSha256": "aee200b7d4d836b04461927b4a2f8343a1ed2e60f3fae15ea58d64c216f7bfd8",
+  "subsequentPriceDecision": {
+    "date": "2026-09-19",
+    "defect": "PRICE-DEF-005",
+    "status": "RESOLVED",
+    "evidence": "../price/v1-minimum/completion.json",
+    "note": "Prior stopReason is historical; authorized DOC continuation is now clear."
+  }
+}

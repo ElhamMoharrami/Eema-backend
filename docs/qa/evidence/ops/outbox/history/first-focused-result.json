@@ -1,0 +1,9 @@
+{
+  "tests": 13,
+  "passed": 12,
+  "failures": 0,
+  "errors": 1,
+  "classification": "QA fixture error",
+  "cause": "Expired-token fixture placed expiry before its database creation timestamp; the existing expiry-after-creation constraint correctly rejected it. Corrected by advancing injected time before setting equality expiry.",
+  "productionDefect": false
+}

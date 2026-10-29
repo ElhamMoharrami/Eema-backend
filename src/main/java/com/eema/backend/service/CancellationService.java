@@ -55,23 +55,36 @@ public class CancellationService {
         }
 
         BookingCancellationCoordinator.CancellationResult result = coordinator.cancel(
-                bookingId, actor, request == null ? null : request.reason(), clock.now());
+                bookingId, actor, request == null ? null : request.reason(), request == null ? null : request.previewToken());
         if (result.refundClaim() != null) {
             refunds.requestCancellationRefund(result.refundClaim());
         }
         return bookingService.getBookingForCurrentUser(bookingId);
     }
 
+    private void validatePaymentAssociation(Booking booking, MolliePaymentResponse payment) {
+        if (payment == null || !booking.getMolliePaymentId().equals(payment.id()) || payment.status() == null) {
+            throw new BadRequestException("Provider payment response does not match booking");
+        }
+    }
+
     private void handleOpenPayment(Booking booking) {
         try {
             MolliePaymentResponse payment = mollie.getPayment(booking.getMolliePaymentId());
+            validatePaymentAssociation(booking, payment);
             String status = payment.status() == null ? "" : payment.status().toLowerCase();
             if ("paid".equals(status)) {
                 bookingService.processPaidPayment(payment);
                 return;
             }
             if (!TERMINAL_UNPAID_PAYMENT_STATES.contains(status)) {
-                mollie.cancelPayment(booking.getMolliePaymentId());
+                MolliePaymentResponse cancelled = mollie.cancelPayment(booking.getMolliePaymentId());
+                validatePaymentAssociation(booking, cancelled);
+                if ("paid".equals(cancelled.status())) {
+                    bookingService.processPaidPayment(cancelled);
+                } else if (!TERMINAL_UNPAID_PAYMENT_STATES.contains(cancelled.status())) {
+                    throw new BadRequestException("Provider payment cancellation is not confirmed; retry after checking payment state");
+                }
             }
         } catch (RestClientException exception) {
             throw new BadRequestException(

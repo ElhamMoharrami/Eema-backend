@@ -1,0 +1,88 @@
+{
+  "result": "PASS",
+  "source": "../job/full-postgres-tests.json",
+  "sourceUnchangedSinceExecution": true,
+  "note": "Counts describe complete reused classes, not unique RACE scenarios. Actual application-level race methods were audited separately. No new test run is claimed.",
+  "classes": [
+    {
+      "name": "com.eema.backend.integration.InquiryIntegrationTest",
+      "tests": "94",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "25.604"
+    },
+    {
+      "name": "com.eema.backend.integration.PolicyIntegrationTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "46.255"
+    },
+    {
+      "name": "com.eema.backend.integration.ScheduledJobsIntegrationTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "64.121"
+    },
+    {
+      "name": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "25.032"
+    },
+    {
+      "name": "com.eema.backend.integration.OperationsNotificationIntegrationTest",
+      "tests": "19",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "19.822"
+    },
+    {
+      "name": "com.eema.backend.integration.DocumentIntegrationTest",
+      "tests": "47",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "29.162"
+    },
+    {
+      "name": "com.eema.backend.integration.DestinationIntegrationTest",
+      "tests": "35",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "47.092"
+    },
+    {
+      "name": "com.eema.backend.integration.VenueDomainIntegrationTest",
+      "tests": "154",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "44.229"
+    },
+    {
+      "name": "com.eema.backend.integration.PayoutIntegrationTest",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "20.326"
+    },
+    {
+      "name": "com.eema.backend.integration.AuthSessionIntegrationTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "33.217"
+    }
+  ]
+}

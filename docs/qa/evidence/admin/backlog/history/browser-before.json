@@ -1,0 +1,42 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Admin queue paginates 25 real records",
+      "result": "PASS"
+    },
+    {
+      "name": "Page query survives reload",
+      "result": "PASS"
+    },
+    {
+      "name": "Older response cannot overwrite newer filtered results",
+      "result": "PASS"
+    },
+    {
+      "name": "Clear synchronizes form controls with cleared URL",
+      "result": "PASS"
+    },
+    {
+      "name": "All overrides the default queue status and returns active venues",
+      "result": "PASS"
+    },
+    {
+      "name": "Timeline removes both top-level and nested secret payloads",
+      "result": "PASS"
+    },
+    {
+      "name": "Timeline paginates authoritative events",
+      "result": "PASS"
+    },
+    {
+      "name": "Timeline retry makes another request and recovers",
+      "result": "PASS"
+    },
+    {
+      "name": "Exception links identify the authoritative booking",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local PostgreSQL and private filesystem only; no live provider or transfer"
+}

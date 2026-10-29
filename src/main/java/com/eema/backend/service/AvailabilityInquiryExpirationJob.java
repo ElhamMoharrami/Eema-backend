@@ -10,6 +10,8 @@ import java.time.OffsetDateTime;
 public class AvailabilityInquiryExpirationJob {
     private final AvailabilityInquiryService service;
 
+    private final java.time.Clock clock;
+
     @Scheduled(fixedDelayString = "${app.availability-inquiry.expiration-scan-delay-ms:60000}")
-    public void expireOffers() { service.expireOffers(OffsetDateTime.now()); }
+    public void expireOffers() { service.expireOffers(OffsetDateTime.now(clock)); }
 }

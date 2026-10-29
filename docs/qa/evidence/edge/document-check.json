@@ -1,0 +1,14 @@
+{
+  "pages": 625,
+  "scenarioIds": 703,
+  "sameOrder": true,
+  "sha256": "458cbe438e38ea6a68ad8d4d6cdec5b9a8c24e522ce025610c4cf9d3c5f7e87a",
+  "reviewedPages": [
+    97,
+    98,
+    99,
+    616
+  ],
+  "visualResult": "PASS",
+  "result": "Final EDGE 6 PASS and approved policy/defect resolution, with historical evidence retained; all required gates passed."
+}

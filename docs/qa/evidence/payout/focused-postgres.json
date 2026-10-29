@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-19",
+  "command": "focused-postgres",
+  "totals": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "suite": "com.eema.backend.integration.PayoutIntegrationTest",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ]
+}

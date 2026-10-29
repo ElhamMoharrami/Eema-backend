@@ -1,20 +1,18 @@
 package com.eema.backend.service;
 
-import com.eema.backend.event.BookingPaidEvent;
+import com.eema.backend.event.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.transaction.event.*;
 
-@Component
-@RequiredArgsConstructor
+@Component @RequiredArgsConstructor
 public class BookingPaidEventListener {
-    private final BookingNotificationService notificationService;
+    private final BookingNotificationService notifications;
+    private final NotificationOutboxWriter outbox;
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void bookingPaid(BookingPaidEvent event) {
-        notificationService.sendPaymentReceived(event.bookingId());
+        outbox.record("BOOKING",event.bookingId(),"PAYMENT_RECEIVED","BOOKING:"+event.bookingId()+":PAYMENT_RECEIVED",
+                () -> notifications.sendPaymentReceived(event.bookingId()));
     }
 }

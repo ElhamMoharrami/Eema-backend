@@ -1,0 +1,11 @@
+# Controlled financial-document fonts
+
+Noto Sans Regular/Bold and Noto Naskh Arabic Regular are unmodified hinted TrueType fonts from https://github.com/notofonts/noto-fonts at ffebf8c1ee449e544955a7e813c54f9b73848eac (`hinted/ttf/<family>/<file>`). Their copyright/license is included as OFL-Noto.txt.
+
+EemaDocumentCJK-Regular.ttf is a static weight400 instance of `Sans/Variable/TTF/Subset/NotoSansSC-VF.ttf` from https://github.com/notofonts/noto-cjk at f8d157532fbfaeda587e826d4cd5b21a49186f7c. FontTools4.62.1 `instantiateVariableFont(font, {"wght":400}, inplace=True)` produced it; name IDs1/4/16 were renamed "Eema Document CJK", ID6 "EemaDocumentCJK-Regular". No character subset or hand-mapped characters were added. Original font copyright metadata retained; OFL-CJK.txt accompanies the derivative. This is a bounded SC CJK fallback, not a claim of all CJK/Unicode coverage. Checksums and exact sizes are in manifest.json.
+
+Both font sources use SIL Open Font License1.1. The license permits redistribution/bundling, embedding and modification with notices/license retained; fonts are not sold separately. PDF documents are not required to use OFL. The derived font has a distinct name. All four resources are private classpath data, outside static/public web roots; no external runtime font lookup or user-selected path exists.
+
+PDFBox embeds/subsets these fonts per PDDocument. Immutable bytes are cached, but document-bound PDFont instances are not shared. Resources are validated at renderer startup. The JAR and existing multi-stage Docker COPY include this directory.
+
+PDFBox3.0.8 lacks full GPOS/Arabic shaping. ICU4J78.3 (Unicode license) supplies standard Arabic presentation shaping and bidi visual ordering; PDFBox partial GSUB is disabled to keep measurements consistent. Original logical text is retained in ActualText. Required unmarked Arabic name محمد is verified by extraction and rendered inspection. No general RTL template, translation or tax change is included. Combining marks, join/bidi controls and other control characters fail safely because this route cannot guarantee their positioning/semantics; unsupported glyphs also fail. No normalization/transliteration/substitution occurs. Future fuller shaping can expand supported sequences deliberately. See the DOC execution report for concrete test evidence and limitations.

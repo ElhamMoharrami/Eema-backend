@@ -48,8 +48,8 @@ class PriceIntegrationTest extends InquirySupport {
  @Test void inquiryPriceIsCapturedAtAcceptanceNotOffer()throws Exception{
   UUID v=inquiryVenue();pricing(v,"100",60,null);UUID i=open(v,scout);offer(i,owner,date,"18:00","20:00",200);pricing(v,"19.99",1,null);UUID b=uuid(inquiryAction(i,"accept",scout,200));assertEquals(0,new BigDecimal("39.98").compareTo(detail(b).path("venuePriceEur").decimalValue()));pricing(v,"999",240,"1000");assertEquals(0,new BigDecimal("39.98").compareTo(detail(b).path("venuePriceEur").decimalValue()));
  }
- @Test void zeroPriceIsReachableAndCheckoutCurrentlyPassesZeroToAdapter()throws Exception{
-  UUID v=inquiryVenue();pricing(v,"0.01",1,null);UUID b=create(v,scout,"09:00","09:01");assertEquals(0,detail(b).path("venuePriceEur").decimalValue().signum());action(b,"accept",owner,200);checkoutExercised=true;when(mollie.createPayment(eq(b),eq(new BigDecimal("0.00")),any())).thenReturn(new MolliePaymentResponse("tr_"+b,"open",new MolliePaymentResponse.Amount("0.00","EUR"),new MolliePaymentResponse.MollieLinks(new MolliePaymentResponse.MollieLink("https://checkout.example.test/qa")),Map.of("bookingId",b.toString())));req(post("/api/bookings/"+b+"/checkout"),scout,null,201);verify(mollie).createPayment(eq(b),eq(new BigDecimal("0.00")),any());
+ @Test void zeroPriceIsRejectedBeforeBookingPersistence()throws Exception{
+  UUID v=inquiryVenue();pricing(v,"0.01",1,null);var error=req(post("/api/bookings"),scout,body(v,"09:00","09:01"),400);assertTrue(error.path("message").asText().contains("minimum bookable amount"));assertEquals(0,rows("bookings","venue_id",v));verifyNoInteractions(mollie);
  }
  @ParameterizedTest @ValueSource(strings={"hourlyRateEur","minimumBookingMinutes","fullDayRateEur"})
  void pricingHttpValidationAndDatabaseConstraints(String field)throws Exception{

@@ -1,0 +1,109 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "name": "invalid JSON",
+      "result": "PASS"
+    },
+    {
+      "name": "null",
+      "result": "PASS"
+    },
+    {
+      "name": "array",
+      "result": "PASS"
+    },
+    {
+      "name": "empty",
+      "result": "PASS"
+    },
+    {
+      "name": "missing role",
+      "result": "FAIL"
+    },
+    {
+      "name": "invalid role",
+      "result": "FAIL"
+    },
+    {
+      "name": "missing name",
+      "result": "FAIL"
+    },
+    {
+      "name": "object name",
+      "result": "FAIL"
+    },
+    {
+      "name": "missing id",
+      "result": "FAIL"
+    },
+    {
+      "name": "number email",
+      "result": "FAIL"
+    },
+    {
+      "name": "string user",
+      "result": "FAIL"
+    },
+    {
+      "name": "array user",
+      "result": "FAIL"
+    },
+    {
+      "name": "object access token",
+      "result": "FAIL"
+    },
+    {
+      "name": "blank access token",
+      "result": "FAIL"
+    },
+    {
+      "name": "number refresh token",
+      "result": "FAIL"
+    },
+    {
+      "name": "missing expiry",
+      "result": "FAIL"
+    },
+    {
+      "name": "negative expiry",
+      "result": "FAIL"
+    },
+    {
+      "name": "string expiry",
+      "result": "FAIL"
+    },
+    {
+      "name": "missing active",
+      "result": "FAIL"
+    },
+    {
+      "name": "string verified",
+      "result": "FAIL"
+    },
+    {
+      "name": "missing verified",
+      "result": "FAIL"
+    },
+    {
+      "name": "bad generation",
+      "result": "FAIL"
+    },
+    {
+      "name": "bad timestamp",
+      "result": "FAIL"
+    },
+    {
+      "name": "valid current session retained",
+      "result": "PASS"
+    },
+    {
+      "name": "valid legacy session retained",
+      "result": "PASS"
+    },
+    {
+      "name": "unavailable storage fails closed",
+      "result": "FAIL"
+    }
+  ]
+}

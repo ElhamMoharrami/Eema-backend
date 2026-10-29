@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-19",
+  "domain": "CANCEL",
+  "scenarios": [
+    "CANCEL-001",
+    "CANCEL-002",
+    "CANCEL-003",
+    "CANCEL-004",
+    "CANCEL-005",
+    "CANCEL-006",
+    "CANCEL-007",
+    "CANCEL-008",
+    "CANCEL-009",
+    "CANCEL-010",
+    "CANCEL-011",
+    "CANCEL-012",
+    "CANCEL-013",
+    "CANCEL-014"
+  ],
+  "scenarioResults": {
+    "PASS": 14,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "localClearance": "PASS",
+  "newProductionDefects": 0,
+  "newProductionFixes": 0,
+  "unresolvedLocalDefects": 0,
+  "addedCoverage": {
+    "boundaryCases": 30,
+    "postgresCases": 6,
+    "browserChecks": 2
+  },
+  "unit": {
+    "tests": 945,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "postgres": {
+    "tests": 698,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 6
+  },
+  "postgresExecuted": 692,
+  "package": {
+    "tests": 945,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "focusedPostgres": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "journeys": 1,
+    "checks": 8,
+    "result": "PASS"
+  },
+  "commands": {
+    "mvn test": "PASS",
+    "mvn verify -Ppostgres-integration": "PASS",
+    "mvn clean package": "PASS",
+    "backend git diff --check": "PASS",
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "frontend git diff --check": "PASS"
+  },
+  "setupAttemptsNotCountedAsPass": [
+    "Concurrent Maven booter-file collision",
+    "Sandbox Docker access denial",
+    "SIGTERM before full regression completed",
+    "Ordinary detached process did not survive command session"
+  ],
+  "provider": "LOCAL MOCKS ONLY; real providers and deployed behavior remain STAGING ONLY",
+  "nextUnfinishedDomain": "PAYOUT",
+  "nextScenarios": "PAYOUT-001 through PAYOUT-006",
+  "nextDomainStarted": false
+}

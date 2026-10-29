@@ -1,0 +1,5 @@
+{
+  "result": "HARNESS TIMEOUT",
+  "browser": "4 PASS",
+  "reason": "After-crash packaged startup took 91 seconds under concurrent local rehearsal load, beyond harness 90-second health deadline; application started normally. Increased readiness timeout to 240 seconds, with readiness polling, not a race sleep."
+}

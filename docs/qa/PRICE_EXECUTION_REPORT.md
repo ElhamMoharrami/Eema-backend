@@ -1,6 +1,6 @@
 # PRICE execution report
 
-Executed 2026-09-15. Source audit/inventory below was recorded before modifications. Canonical scenarios: 11 PASS, 0 FAIL, 0 BLOCKED. Separate paid-launch decision: zero-price handling remains open.
+**Updated 2026-09-19: PRICE-001–011 remain 11 PASS, 0 FAIL, 0 BLOCKED. PRICE-DEF-005 is RESOLVED under the user-approved Eema v1 policy: free bookings are unsupported; final booking price below EUR 0.01 is rejected.** The 2026-09-15 execution and then-unresolved decision are preserved as historical evidence below; the final addendum supersedes that decision status.
 
 ## Authoritative architecture before changes
 
@@ -73,7 +73,7 @@ Pure math, adapter formatting mocks and document rendering have no lifecycle/pro
 | PRICE-DEF-002 | P1 configuration consistency | Immediate saved DTO agrees with reload; fractional input returned raw decimals then PG rounded them | Create 19.999/hour,50.005 cap; immediate/reload differed and could change a quote | Fixed: normalize rate/cap at create/update before returning DTO, preserving existing storage semantics |
 | PRICE-DEF-003 | P1 safe amount boundary | Unsupported numeric amount rejected as pricing error before persistence; DB overflow surfaced as misleading availability conflict | Valid maximum rate with minimum10,080 produced NUMERIC(10,2) overflow; API returned409 time unavailable | Fixed: calculator rejects final price over99,999,999.99 with safe400; cap applied first; no commercial maximum added |
 | PRICE-DEF-004 | P1 interval boundary | Persistable positive selected duration; calculator accepted sub-minute interval with duration0 | 09:00–09:00:30 produced zero duration, incompatible with booking constraint | Fixed: reject under one whole minute; no overnight change |
-| PRICE-DEF-005 | P1 unresolved accounting risk | Defined zero-price checkout policy required; valid config can create0.00 and adapter receives0.00 | .01/hour,min1,selected1 minute →0.00; real HTTP/PG creation, acceptance and mocked checkout reproduce | Open decision: minimum transaction amount or deliberate free-booking flow; neither invented here. Mock acceptance does not prove Mollie accepts zero |
+| PRICE-DEF-005 | P1 accounting risk (previously unresolved) | Defined zero-price checkout policy required; valid config can create0.00 and adapter receives0.00 | .01/hour,min1,selected1 minute →0.00; real HTTP/PG creation, acceptance and mocked checkout reproduce | Resolved 2026-09-19: approved v1 rejects final prices below EUR 0.01 before persistence/payment creation. The prior open decision and successful zero-price mock reproduction remain historical evidence |
 
 Initial failed probes were intentional reproductions, not final validation failures: Java sub-minute guard (1/106), PostgreSQL fractional response and overflow (2/2), and frontend cent differences. Sanitized evidence records these separately from final passing tests.
 
@@ -140,3 +140,50 @@ Each normal request/edit race and inquiry accept/edit race passed three repetiti
 Defect totals: **five findings; four fixed; one open accounting decision**. Backend changes are limited to safe calculator duration/amount bounds and venue rate/cap normalization; frontend change is confined to indicative pricing arithmetic. No dependency, migration, commission formula, cancellation tier, payout rule, booking commitment rule or inquiry price-lock policy was added. Pre-existing changes from earlier domains remain intact.
 
 Final sanitized command totals and source hashes: [verification.json](evidence/price/verification.json). Screenshots and rerun commands: [evidence index](evidence/price/README.md). Master plan: [Markdown](../EEMA_COMPLETE_TEST_MASTER_PLAN.md) / [PDF](../EEMA_COMPLETE_TEST_MASTER_PLAN.pdf).
+
+
+## Approved Eema v1 zero-price decision — RESOLVED
+
+The user resolved PRICE-DEF-005: **Free bookings are not supported. A calculated booking total below €0.01 is rejected before booking persistence/payment creation.** Canonical PRICE-001–011 expectations and exact-minute/HALF_UP/cap arithmetic are unchanged. Prior unresolved-decision evidence is preserved under `evidence/price/v1-minimum/history/` and in the historical sections above.
+
+Source audit before implementation: both BookingService creation paths obtain final price from BookingPriceCalculator before saving or publishing events. Inquiry acceptance invokes creation within its existing transaction and only then marks ACCEPTED. PaymentCreationCoordinator claims the stored amount, including durable retries, without recomputing venue pricing. Existing IllegalArgumentException/BadRequestException map to the standard HTTP 400 envelope; generic price validation has no dedicated machine code. Frontend normal request and inquiry error handling must display this existing response safely. Current DTO cap minimum 0.01 and cent normalization prevent a valid stored cap becoming zero; the final amount guard also covers defensive raw-cap edge cases.
+
+Database audit: the available local development database has zero booking rows (aggregate-only inspection), and development seeds create no bookings. Original venue price remains the original positive snapshot even for cancellations/refunds; zero total-paid, retained amounts or payouts are separate legitimate fields. Add common V13 with a validated venue_price_eur >=0.01 constraint, leaving applied migrations unchanged. It must fail safely if another environment contains historical zeros; never clamp/delete/rewrite history. Fresh PostgreSQL migrations and Hibernate validation will execute in integration tests.
+
+Strategy: add focused tests of zero rejection, exact one-cent acceptance including PRICE-008, inquiry rollback with unchanged OFFERED row, legacy checkout across NOT_STARTED/CREATING/CREATED, database enforcement across booking states, and no rows/events/notifications/inventory/provider effects. Keep calculator fixtures unchanged. Existing zero-price characterization will be archived and superseded by the approved rejection expectation (it is not a canonical PRICE scenario). Then run all required backend regressions/build. Inspect existing frontend error presentation; change it only if the new safe validation is hidden or misleading. Real Mollie minimum acceptance remains staging-only and is not inferred from local mocks.
+
+
+### Resolution and verified behavior
+
+Both independently added before-fix PostgreSQL assertions failed with actual success (normal request 201, inquiry acceptance 200). After correction, final amounts are checked immediately after the shared calculator and before save, policy snapshot, audit or notification. Inquiry acceptance rolls back with the entire OFFERED row unchanged. Checkout validates only the stored original amount before a new claim, retry or cached checkout response. Standard HTTP 400 carries the safe minimum-bookable-amount message; the response path identifies the booking for operational diagnosis. No unavailable-time or provider-failure error is substituted.
+
+Eight new PostgreSQL cases pass: no-side-effect zero request (including unchanged availability), one-cent creation at rates 0.30 and 0.60, atomic inquiry rejection and successful one-cent retry, legacy zero checkout for all three creation states, and constraint rejection across every booking state. Three new focused service cases reject zero, negative and sub-cent corrupt snapshots before a claim/provider call. The canonical PRICE-008 arithmetic remains 0.005 HALF_UP →0.01 and creates a valid booking. Required complete regression reruns existing tests, but no canonical PRICE expectation or shared formula fixture was rewritten.
+
+The isolated legacy checkout fixture temporarily removes only the new constraint, restores a positive value, then restores the validated constraint in finally. This simulates pre-migration/corrupt history without weakening production protection. No production/development historical row was edited. The local database used for aggregate audit was returned to its original stopped state. V13 intentionally fails on incompatible rows elsewhere; deployment must inspect such rows rather than auto-clamp/delete financial history.
+
+Frontend production code is unchanged: InstantQuote and inquiry acceptance already render the safe backend validation through apiErrorMessage. A direct execution of the actual transpiled ApiError/error formatter preserves the exact new message. No free checkout or frontend pricing authority was added. Existing frontend build/browser evidence is retained; no fresh frontend build is claimed for this backend-only change.
+
+- `mvn test`: PASS — 1000 executed, 0 skipped, 1000 reported, zero failures/errors.
+- `mvn verify -Ppostgres-integration`: PASS — 792 executed, 8 skipped, 800 reported, zero failures/errors.
+- `mvn clean package`: PASS — 1000 executed, 0 skipped, 1000 reported, zero failures/errors.
+- `git diff --check`: PASS. Focused unit suite: 7 PASS; focused PostgreSQL suite: 8 PASS.
+
+### WHAT ELHAM SHOULD TEST PERSONALLY
+
+Review whether the minimum-bookable-total message is understandable when a tiny-rate preview displays EUR 0.00. No manual financial arithmetic, database or rollback checks are requested.
+
+### PRODUCT / OPERATIONS DECISIONS
+
+PRICE-DEF-005 is resolved exactly as approved. Intentional complimentary bookings remain a separate future product feature. Existing future-policy questions in the historical report do not alter current exact-minute/rounding/offer semantics. No new unresolved P0/P1 or pricing ambiguity was found.
+
+### STAGING ONLY
+
+Real provider amount acceptance and real payment/email delivery remain unverified locally. Inspect deployed historical original prices before applying V13; the migration never rewrites them. Fresh local migrations and Hibernate schema validation passed.
+
+PRICE is locally green and the previous zero-price continuation blocker is removed. NEXT UNTESTED DOMAIN: DOC-001–004, authorized for continuation after this complete regression. Sanitized current evidence is under `evidence/price/v1-minimum/`; historical defect evidence remains intact.
+
+PDF verification: regenerated 637 pages, preserved all 703 scenario IDs in order, visually reviewed pages 1, 73, 74 and 88. No clipping/overlap. Current checksum is in `evidence/price/v1-minimum/document-check.json`.
+
+Subsequent continuation: DOC-001–004 executed after this resolution. Three scenarios pass; DOC-004 is blocked on DOC-DEC-001 (unsupported-name rendering policy). See [DOC execution report](DOC_EXECUTION_REPORT.md). PRICE remains green; INC has not started.
+
+Subsequent DOC policy resolution: DOC-001–004 are now4 LOCAL PASS after the approved embedded Unicode-name implementation and full regression. The earlier DOC decision stop above is historical. See [DOC execution report](DOC_EXECUTION_REPORT.md). Next unfinished domain remains INC-001–002.

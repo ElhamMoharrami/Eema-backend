@@ -1,0 +1,30 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Malformed cached session recovers: invalid JSON",
+      "result": "PASS"
+    },
+    {
+      "name": "Malformed cached session recovers: object display name",
+      "result": "PASS"
+    },
+    {
+      "name": "Malformed cached session recovers: missing role",
+      "result": "PASS"
+    },
+    {
+      "name": "Stored markup is rendered as text without execution",
+      "result": "PASS"
+    },
+    {
+      "name": "Locally forged role does not disclose admin data",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload after logout shows authentication gate",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Local only; no live provider"
+}

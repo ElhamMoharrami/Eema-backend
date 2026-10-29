@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-15",
+  "provider": "All Mollie transport mocked; no real collection/refund",
+  "unit": [
+    "[INFO] Tests run: 803, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] BUILD SUCCESS"
+  ],
+  "postgres_before_final_duplicate_probe": [
+    "[WARNING] Tests run: 620, Failures: 0, Errors: 0, Skipped: 5",
+    "[INFO] BUILD SUCCESS"
+  ],
+  "browser": {
+    "command": "mvn verify -Ppostgres-integration -Dit.test=PaymentBrowserIntegrationTest -Deema.payment.browser=true",
+    "result": "PASS",
+    "suites": 1,
+    "checks": 7,
+    "screenshots": "Animations completed before capture; final repeat passed",
+    "provider": "Controlled navigation and mocked Mollie transport"
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  },
+  "pdf": {
+    "pages": 647,
+    "pay_pages": [
+      74,
+      75,
+      76
+    ],
+    "text_and_page74_visual_review": "PASS",
+    "sha256": "2958e1a223678ff58b80d022facb7175fb3e430046b9074dae969cc2c008ccd9",
+    "source_sha256": "d1c3099534f0d81c199b1a9c42fc0051726d0fd3553aa01c37ae6c40e3e347d3"
+  },
+  "postgres_final": {
+    "completed": 621,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 5,
+    "executed": 616,
+    "payment_cases": 90,
+    "provider": "mocked"
+  },
+  "diff_check": {
+    "backend": "PASS",
+    "frontend": "PASS"
+  },
+  "clean_package": {
+    "result": "PASS",
+    "unit_tests": 803,
+    "failures": 0,
+    "errors": 0,
+    "note": "Sandbox wrapper initially returned143 after Maven success; rerun outside sandbox completed cleanly."
+  },
+  "command_log_sha256": {
+    "pay-unit-final.log": "b856d97409241c5c7ecb9002d27a8fcc32adefcab4b7be5aa5b65bf80323d54d",
+    "pay-postgres-final.log": "8ea6406517fa92baf31b603f712356079d000fef85992e3a0d60af7a287a2db0",
+    "pay-browser-validated-final.log": "ef7a7bfcf3ef5c910ac1dab0af6f49c2527f5e3995962204ee01bdabaae781d1",
+    "pay-package-verified.log": "1354d1c5e49aafdc35e626a77948f635b4168c8b5aafafe827b0d928f6365629",
+    "pay-typecheck.log": "d9dd29a4c1870c7075110b06bc6fe77786715d45ea4fddc996006f5bb0e5e243",
+    "pay-lint.log": "a1620a9315e1963f6a00c62c5c2cea73c0464af400783004836adf6593d6108b",
+    "pay-build.log": "ad5c6bb67adc0a90db2ea4e9e179142ede58a44073ca6bf47b1459ea0eb89440"
+  }
+}

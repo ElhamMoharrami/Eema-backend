@@ -1,0 +1,27 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.service.AdminBoundaryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    },
+    {
+      "name": "com.eema.backend.service.AdminOperationsServiceTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failedTests": []
+    }
+  ],
+  "totals": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "command": "mvn test -Dtest=AdminBoundaryTest,AdminOperationsServiceTest"
+}

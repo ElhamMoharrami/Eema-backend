@@ -1,0 +1,18 @@
+{
+  "totals": {
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "name": "inquiryAcceptanceUsesCurrentPriceAndRollsBackAtomically",
+      "failure": "expected: <400> but was: <200>"
+    },
+    {
+      "name": "roundedZeroRequestHasNoPersistenceReservationOrLifecycleEffects",
+      "failure": "expected: <400> but was: <201>"
+    }
+  ]
+}

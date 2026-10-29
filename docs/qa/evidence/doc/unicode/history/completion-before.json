@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-19",
+  "domain": "DOC",
+  "scenarios": [
+    "DOC-001",
+    "DOC-002",
+    "DOC-003",
+    "DOC-004"
+  ],
+  "results": {
+    "PASS": 3,
+    "FAIL": 0,
+    "BLOCKED": 1
+  },
+  "technicalChecks": "PASS",
+  "blockedScenario": "DOC-004",
+  "decision": "DOC-DEC-001: acceptable name/script rendering in financial records; existing unsupported-script substitution is not product approval",
+  "fixedDefects": {
+    "P1": 4
+  },
+  "unresolvedReproducedP0P1Defects": 0,
+  "commands": {
+    "unit": {
+      "tests": 1011,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "postgres": {
+      "tests": 834,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 9
+    },
+    "package": {
+      "tests": 1011,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "focusedUnitCases": 21,
+  "focusedPostgresCases": 33,
+  "browserChecks": 8,
+  "frontendProductionChanged": false,
+  "realProviderVerified": false,
+  "locallyClearToProceed": false,
+  "nextUntestedDomain": "INC-001\u2013002 (not started)",
+  "automaticContinuation": false,
+  "documentVerification": {
+    "scenarioIds": 703,
+    "unchangedOrder": true,
+    "pdfPages": 636,
+    "visuallyReviewedPages": [
+      1,
+      88,
+      89,
+      90,
+      91
+    ],
+    "review": "Updated DOC results and decision gate readable; adjacent sections intact; no clipping or overlap",
+    "pdfSha256": "54f76b07347358b6d11a5e3e5776c15880d07dc27f4ca785a1ea1bc89452fcb7"
+  },
+  "cleanup": "DOC browser server stopped; temporary Chrome profile, auth fixture and disposable document root removed; development PostgreSQL returned to stopped state"
+}

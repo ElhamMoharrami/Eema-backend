@@ -28,8 +28,7 @@ public class BookingCancellationPolicy {
     }
 
     public void snapshotAtConfirmation(Booking booking, ZoneId venueZone, OffsetDateTime confirmedAt) {
-        OffsetDateTime shootStart = booking.getShootDate().atTime(booking.getStartTime())
-                .atZone(venueZone).toOffsetDateTime();
+        OffsetDateTime shootStart = BookingTimePolicy.resolve(booking.getShootDate(), booking.getStartTime(), venueZone);
         booking.setCancellationPolicyVersion(VERSION);
         booking.setGracePeriodEndsAt(confirmedAt.plus(GRACE));
         booking.setFullRefundUntil(shootStart.minus(FULL_WINDOW));

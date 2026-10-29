@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-19",
+  "scenarioIds": 703,
+  "unchangedOrder": true,
+  "pdfExtractedIdsMatch": true,
+  "pdfPages": 636,
+  "visuallyReviewedPages": [
+    1,
+    88,
+    89,
+    90,
+    91,
+    627,
+    628,
+    629
+  ],
+  "review": "DOC result, original-script examples, safe-failure boundary and gap-table corrections readable; no clipping/overlap. Final rerender changed only page628; all other reviewed PNGs were byte-identical.",
+  "pdfSha256": "e3091205f6373190e499edfcf5c3dc4334062d9a28c85c5f4d21ea2f82360c81",
+  "latestEvidence": "unicode/document-check.json"
+}

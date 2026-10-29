@@ -32,7 +32,8 @@ class BookingCancellationCoordinatorTest {
     private final BookingFinancials financials = new BookingFinancials();
     private final BookingCancellationPolicy policy = new BookingCancellationPolicy(financials);
     private final BookingCancellationCoordinator coordinator = new BookingCancellationCoordinator(
-            bookings, venues, events, policy, financials, new BookingStateMachine(), refunds, publisher, payouts);
+            bookings, venues, events, policy, financials, new BookingStateMachine(), refunds, publisher, payouts, mock(CancellationPreviewProof.class),
+            Clock.fixed(Instant.parse("2026-06-01T10:00:00Z"), ZoneOffset.UTC));
     private final UUID bookingId = UUID.randomUUID();
     private final UUID scoutId = UUID.randomUUID();
     private final UUID ownerId = UUID.randomUUID();
@@ -54,14 +55,14 @@ class BookingCancellationCoordinatorTest {
     @Test
     void scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund() {
         User scout = user(scoutId, UserRole.SCOUT);
-        assertThat(coordinator.cancel(bookingId, scout, null, now).refundClaim()).isNull();
+        assertThat(coordinator.cancel(bookingId, scout, null, (String) null).refundClaim()).isNull();
         assertThat(booking.getStatus()).isEqualTo(BookingStatus.CANCELLED);
         assertThat(booking.getCancellationPolicyTier())
                 .isEqualTo(CancellationPolicyTier.PRE_PAYMENT_WITHDRAWAL);
         verifyNoInteractions(refunds);
 
         booking.setStatus(BookingStatus.AWAITING_PAYMENT);
-        assertThat(coordinator.cancel(bookingId, scout, null, now).refundClaim()).isNull();
+        assertThat(coordinator.cancel(bookingId, scout, null, (String) null).refundClaim()).isNull();
     }
 
     @Test
@@ -71,24 +72,24 @@ class BookingCancellationCoordinatorTest {
                 bookingId, "tr_1", new BigDecimal("1000.00"), UUID.randomUUID());
         when(refunds.claimCancellation(eq(bookingId), eq(new BigDecimal("1000.00")),
                 eq(ownerId), anyString(), eq(ActorType.OWNER))).thenReturn(claim);
-        assertThat(coordinator.cancel(bookingId, user(ownerId, UserRole.OWNER), "Venue unavailable", now)
+        assertThat(coordinator.cancel(bookingId, user(ownerId, UserRole.OWNER), "Venue unavailable", (String) null)
                 .refundClaim()).isSameAs(claim);
         assertThat(booking.getOwnerPayoutEur()).isZero();
         assertThat(booking.getProviderCostResponsibility()).isEqualTo(ProviderCostResponsibility.OWNER);
 
         booking.setStatus(BookingStatus.CONFIRMED);
         assertThrows(ForbiddenException.class, () -> coordinator.cancel(
-                bookingId, user(UUID.randomUUID(), UserRole.OWNER), "Reason", now));
+                bookingId, user(UUID.randomUUID(), UserRole.OWNER), "Reason", (String) null));
     }
 
     @Test
     void adminRequiresReasonAndReceivesFullRefundPolicy() {
         prepareConfirmed();
         User admin = user(UUID.randomUUID(), UserRole.ADMIN);
-        assertThrows(ConflictException.class, () -> coordinator.cancel(bookingId, admin, " ", now));
+        assertThrows(ConflictException.class, () -> coordinator.cancel(bookingId, admin, " ", (String) null));
         when(refunds.claimCancellation(eq(bookingId), any(), eq(admin.getId()), anyString(), eq(ActorType.ADMIN)))
                 .thenReturn(new RefundCoordinator.Claim(bookingId, "tr_1", new BigDecimal("1000.00"), UUID.randomUUID()));
-        coordinator.cancel(bookingId, admin, "Safety issue", now);
+        coordinator.cancel(bookingId, admin, "Safety issue", (String) null);
         assertThat(booking.getCancellationPolicyTier()).isEqualTo(CancellationPolicyTier.ADMIN_FULL_REFUND);
         assertThat(booking.getProviderCostResponsibility()).isEqualTo(ProviderCostResponsibility.EEMA);
     }

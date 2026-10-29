@@ -14,10 +14,12 @@ public class AuthTokenCleanupJob {
     private final EmailVerificationTokenRepository verificationTokens;
     private final PasswordResetTokenRepository resetTokens;
 
+    private final java.time.Clock clock;
+
     @Scheduled(fixedDelayString = "${app.auth-recovery.cleanup-delay-ms:3600000}")
     @Transactional
     public void cleanup() {
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         verificationTokens.deleteAllInBatch(verificationTokens.findCleanupCandidates(now, PageRequest.of(0, 100)));
         resetTokens.deleteAllInBatch(resetTokens.findCleanupCandidates(now, PageRequest.of(0, 100)));
     }

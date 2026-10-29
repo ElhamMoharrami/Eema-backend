@@ -1,0 +1,16 @@
+{
+  "totals": {
+    "tests": 848,
+    "failures": 0,
+    "errors": 1,
+    "skipped": 9
+  },
+  "failed": [
+    {
+      "suite": "com.eema.backend.integration.OwnerTrustIntegrationTest",
+      "case": "competingAdminReviewsHaveOneWinner",
+      "type": "org.mockito.exceptions.misusing.UnfinishedStubbingException"
+    }
+  ],
+  "note": "The shared repository stubbing race was independently reproduced and corrected in the test harness; this first run is not reported as PASS."
+}

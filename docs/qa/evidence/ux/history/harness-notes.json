@@ -1,0 +1,11 @@
+{
+  "notes": [
+    "Initial focused probe used an incomplete CDP Enter activation; corrected to a focused explicit activation for reproduction.",
+    "Chrome cleanup ENOTEMPTY was handled after successful evidence persistence.",
+    "The first final accessibility rerun waited for mixed-case text although innerText reflects CSS uppercase; corrected to case-insensitive matching. CDP requests now have a 15-second deadline and close rejection.",
+    "Flow probe waits were likewise corrected for uppercase button labels.",
+    "One read-only host inspection permission review timed out; the permitted single retry succeeded. No unsafe-action finding.",
+    "The stricter distinct-focus traversal initially counted five closed policy disclosure bodies as tabbable; browser AX correctly hid them. The harness now excludes closed contents and separately opens/focuses a disclosure by keyboard."
+  ],
+  "results": "Harness failures are not product defects or passing executions."
+}

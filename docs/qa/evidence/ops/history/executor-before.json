@@ -1,0 +1,9 @@
+{
+  "tests": 1,
+  "failures": 1,
+  "errors": 0,
+  "observedThread": "SimpleAsyncTaskExecutor-1",
+  "expected": "eema-async-* bounded configured executor",
+  "defect": "OPS-DEF-001",
+  "severity": "P1"
+}

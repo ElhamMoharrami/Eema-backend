@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "domain": "JOB-001\u2013006",
+  "scenarios": {
+    "pass": 6,
+    "fail": 0,
+    "blocked": 0
+  },
+  "unit": 1078,
+  "postgres": {
+    "tests": 1023,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 13
+  },
+  "packageUnit": 1078,
+  "defectsResolved": [
+    "JOB-DEF-001",
+    "JOB-DEF-002",
+    "JOB-DEF-003",
+    "JOB-DEF-004"
+  ],
+  "realProvidersVerified": false,
+  "next": "Assess RACE under authorized automatic continuation.",
+  "pdfMarker": "Already executed once this turn; do not repeat.",
+  "pdf": "PASS: 625 pages, 703 IDs in order, representative visual check"
+}

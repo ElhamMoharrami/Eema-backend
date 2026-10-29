@@ -7,6 +7,8 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:eema}
     driver-class-name: org.postgresql.Driver
   jpa:
+    # Do not reuse pre-lock entities across service transactions in an HTTP request.
+    open-in-view: false
     hibernate:
       ddl-auto: validate
     show-sql: false
@@ -116,6 +118,16 @@ app:
     fee-reconciliation-enabled: ${MOLLIE_FEE_RECONCILIATION_ENABLED:false}
     fee-reconciliation-delay-ms: ${MOLLIE_FEE_RECONCILIATION_DELAY_MS:3600000}
     fee-reconciliation-initial-delay-ms: ${MOLLIE_FEE_RECONCILIATION_INITIAL_DELAY_MS:60000}
+  # PostgreSQL dispatch intent is always recorded, even when sending is disabled.
+  notification-outbox:
+    enabled: ${NOTIFICATION_OUTBOX_ENABLED:true}
+    batch-size: ${NOTIFICATION_OUTBOX_BATCH_SIZE:20}
+    max-attempts: ${NOTIFICATION_OUTBOX_MAX_ATTEMPTS:8}
+    lease-seconds: ${NOTIFICATION_OUTBOX_LEASE_SECONDS:300}
+    initial-backoff-seconds: ${NOTIFICATION_OUTBOX_INITIAL_BACKOFF_SECONDS:30}
+    max-backoff-seconds: ${NOTIFICATION_OUTBOX_MAX_BACKOFF_SECONDS:3600}
+    poll-delay-ms: ${NOTIFICATION_OUTBOX_POLL_DELAY_MS:10000}
+    initial-delay-ms: ${NOTIFICATION_OUTBOX_INITIAL_DELAY_MS:10000}
   resend:
     enabled: ${EMAIL_NOTIFICATIONS_ENABLED:false}
     api-key: ${RESEND_API_KEY:}

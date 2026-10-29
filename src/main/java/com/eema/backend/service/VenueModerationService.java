@@ -41,8 +41,8 @@ public class VenueModerationService {
         venue.setStatus(VenueStatus.PENDING);
         venue.setSubmittedForReviewAt(OffsetDateTime.now());
         venue.setReviewedAt(null); venue.setReviewedBy(null); venue.setModerationReason(null);
-        append(venue, TrustEventType.VENUE_SUBMITTED, owner, ActorType.OWNER, null);
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_SUBMITTED, venue.getId(), null));
+        UUID notificationEventId=append(venue, TrustEventType.VENUE_SUBMITTED, owner, ActorType.OWNER, null);
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_SUBMITTED, venue.getId(), null,notificationEventId));
         return ownerDto(venue);
     }
 
@@ -73,31 +73,31 @@ public class VenueModerationService {
         venue.setStatus(VenueStatus.PENDING);
         venue.setSubmittedForReviewAt(OffsetDateTime.now());
         venue.setReviewedAt(null); venue.setReviewedBy(null); venue.setModerationReason(null);
-        append(venue, TrustEventType.VENUE_SUBMITTED, owner, ActorType.OWNER, "Production-critical listing details changed");
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_SUBMITTED, venue.getId(), null));
+        UUID notificationEventId=append(venue, TrustEventType.VENUE_SUBMITTED, owner, ActorType.OWNER, "Production-critical listing details changed");
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_SUBMITTED, venue.getId(), null,notificationEventId));
     }
 
     @Transactional
     public AdminVenueModerationDto requestChanges(UUID id,String reason){
         User admin=requireAdmin();Venue v=locked(id);requireStatus(v,VenueStatus.PENDING);
         v.setStatus(VenueStatus.DRAFT); reviewed(v,admin,reason);
-        append(v,TrustEventType.VENUE_CHANGES_REQUESTED,admin,ActorType.ADMIN,reason);
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_CHANGES_REQUESTED,v.getId(),reason));
+        UUID notificationEventId=append(v,TrustEventType.VENUE_CHANGES_REQUESTED,admin,ActorType.ADMIN,reason);
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_CHANGES_REQUESTED,v.getId(),reason,notificationEventId));
         return adminDto(v);
     }
     @Transactional
     public AdminVenueModerationDto suspend(UUID id,String reason){
         User admin=requireAdmin();Venue v=locked(id);requireStatus(v,VenueStatus.ACTIVE);
         v.setStatus(VenueStatus.SUSPENDED);reviewed(v,admin,reason);
-        append(v,TrustEventType.VENUE_SUSPENDED,admin,ActorType.ADMIN,reason);
-        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_SUSPENDED,v.getId(),reason));
+        UUID notificationEventId=append(v,TrustEventType.VENUE_SUSPENDED,admin,ActorType.ADMIN,reason);
+        events.publishEvent(new TrustNotificationEvent(TrustEventType.VENUE_SUSPENDED,v.getId(),reason,notificationEventId));
         return adminDto(v);
     }
     private AdminVenueModerationDto activate(UUID id,VenueStatus source,TrustEventType type,String note){
         User admin=requireAdmin();Venue v=locked(id);requireStatus(v,source);
         if(!ownerVerifications.isVerified(v.getOwner().getId())) throw new ConflictException("Venue owner is not verified");
         requireReady(v);v.setStatus(VenueStatus.ACTIVE);reviewed(v,admin,clean(note));
-        append(v,type,admin,ActorType.ADMIN,clean(note));events.publishEvent(new TrustNotificationEvent(type,v.getId(),clean(note)));
+        UUID notificationEventId=append(v,type,admin,ActorType.ADMIN,clean(note));events.publishEvent(new TrustNotificationEvent(type,v.getId(),clean(note),notificationEventId));
         return adminDto(v);
     }
     private void requireReady(Venue v){List<String> issues=readiness.readinessIssues(v);if(!issues.isEmpty())throw new ConflictException("Venue is not production-ready: "+String.join(", ",issues));}
@@ -106,7 +106,7 @@ public class VenueModerationService {
     private Venue get(UUID id){return venues.findById(id).orElseThrow(()->new NotFoundException("Venue not found"));}
     private User requireAdmin(){User u=currentUsers.getCurrentUser();if(u.getRole()!=UserRole.ADMIN)throw new ForbiddenException("ADMIN access required");return u;}
     private void reviewed(Venue v,User admin,String reason){v.setReviewedAt(OffsetDateTime.now());v.setReviewedBy(admin);v.setModerationReason(reason);}
-    private void append(Venue v,TrustEventType type,User actor,ActorType actorType,String note){audit.append(TrustSubjectType.VENUE,v.getId(),type,actor.getId(),actorType,note);}
+    private UUID append(Venue v,TrustEventType type,User actor,ActorType actorType,String note){return audit.append(TrustSubjectType.VENUE,v.getId(),type,actor.getId(),actorType,note);}
     private String clean(String s){return s==null||s.isBlank()?null:s.trim();}
     private VenueModerationDto ownerDto(Venue v){return new VenueModerationDto(v.getId(),v.getStatus(),v.getSubmittedForReviewAt(),v.getReviewedAt(),v.getModerationReason(),readiness.readinessIssues(v));}
     private AdminVenueModerationDto adminDto(Venue v){return new AdminVenueModerationDto(v.getId(),v.getOwner().getId(),v.getName(),v.getNeighbourhood(),v.getStatus(),v.getSubmittedForReviewAt(),v.getReviewedAt(),v.getReviewedBy()==null?null:v.getReviewedBy().getId(),v.getModerationReason(),readiness.readinessIssues(v),v.getCreatedAt(),v.getUpdatedAt());}

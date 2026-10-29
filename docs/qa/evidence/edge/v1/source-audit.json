@@ -1,0 +1,28 @@
+{
+  "temporalAuthority": "BookingTimePolicy",
+  "temporalCallers": [
+    "VenueBookingLeadTimePolicy",
+    "BookingAvailabilityValidator",
+    "AvailabilityInquiryService",
+    "BookingService",
+    "VenueAvailabilityService",
+    "BookingCancellationPolicy",
+    "OwnerPayoutService"
+  ],
+  "checkoutDefense": "PaymentCreationCoordinator validates stored booking interval before cached checkout or claim/provider call",
+  "remainingAtZone": "VenueAvailabilityService converts an already-resolved Instant to local display/threshold; no implicit local-time normalization remains",
+  "matchingQueryBound": 30,
+  "matchingAvailableBound": 30,
+  "matchingOrder": [
+    "hourlyRateEur ASC",
+    "sizeM2 DESC",
+    "name ASC",
+    "id ASC"
+  ],
+  "continuation": "offset advances by raw SQL batch size; eligible available candidates deduplicated by UUID",
+  "deadline": "locked DECLINED only before deadline; EXPIRED at/after deadline via existing noRollbackFor exception",
+  "migrationAdded": false,
+  "pricingFormulaChanged": false,
+  "frontendAuthorityAdded": false,
+  "testClockController": "TestComponent, explicit import in opt-in browser test only"
+}

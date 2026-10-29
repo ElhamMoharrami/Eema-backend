@@ -17,6 +17,8 @@ public class FinancialDocumentPdfRenderer {
     private static final DateTimeFormatter DAY = DateTimeFormatter.ofPattern("dd MMM uuuu", Locale.ENGLISH);
     private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
 
+    public FinancialDocumentPdfRenderer() { DocumentFonts.validateResources(); }
+
     public byte[] bookingReceipt(String number, Booking b, Venue venue) {
         List<Row> rows = new ArrayList<>();
         rows.add(new Row("Reference", number)); rows.add(new Row("Issued for booking", b.getId().toString()));
@@ -54,42 +56,86 @@ public class FinancialDocumentPdfRenderer {
 
     private byte[] render(String title, String number, List<Row> rows) {
         try (PDDocument document = new PDDocument(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            PDPage page = new PDPage(PDRectangle.A4); document.addPage(page);
-            PDFont regular = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-            PDFont bold = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
-            try (PDPageContentStream content = new PDPageContentStream(document, page)) {
-                float y = 790;
-                text(content, bold, 22, 52, y, "Eema"); y -= 34;
-                text(content, bold, 17, 52, y, title); y -= 20;
-                text(content, regular, 9, 52, y, "Document reference: " + number); y -= 28;
-                for (Row row : rows) {
-                    if (row.section) { y -= 8; text(content, bold, 12, 52, y, row.label); y -= 18; continue; }
-                    text(content, bold, 9, 52, y, row.label);
-                    List<String> valueLines = lines(row.value, 62);
-                    for (int i = 0; i < valueLines.size(); i++) text(content, regular, 9, 235, y - (i * 12), valueLines.get(i));
-                    y -= Math.max(16, valueLines.size() * 12);
-                }
-                text(content, regular, 8, 52, 48, DISCLAIMER);
+            try (PageWriter page = new PageWriter(document, new DocumentFonts(document), title, number)) {
+                for (Row row : rows) page.row(row);
             }
             document.getDocumentInformation().setTitle(title);
             document.getDocumentInformation().setSubject("Eema payment record");
             document.save(out); return out.toByteArray();
         } catch (IOException e) { throw new IllegalStateException("Could not render financial document", e); }
     }
-    private void text(PDPageContentStream c, PDFont font, float size, float x, float y, String value) throws IOException {
-        c.beginText(); c.setFont(font, size); c.newLineAtOffset(x, y); c.showText(safe(value)); c.endText();
+
+    private final class PageWriter implements AutoCloseable {
+        private final PDDocument document;
+        private final DocumentFonts fonts;
+        private final String title, number;
+        private PDPageContentStream content;
+        private float y;
+
+        PageWriter(PDDocument document, DocumentFonts fonts, String title, String number) throws IOException {
+            this.document = document; this.fonts = fonts;
+            this.title = title; this.number = number; nextPage();
+        }
+        private void nextPage() throws IOException {
+            close();
+            PDPage page = new PDPage(PDRectangle.A4); document.addPage(page);
+            content = new PDPageContentStream(document, page);
+            y = 790;
+            text(content, fonts, true, 22, 52, y, "Eema"); y -= 34;
+            text(content, fonts, true, 17, 52, y, title); y -= 20;
+            text(content, fonts, false, 9, 52, y, "Document reference: " + number); y -= 28;
+        }
+        void row(Row row) throws IOException {
+            if (row.section) {
+                if (y < 118) nextPage();
+                y -= 8; text(content, fonts, true, 12, 52, y, row.label); y -= 18; return;
+            }
+            List<String> valueLines = lines(row.value, fonts, 9, PDRectangle.A4.getWidth() - 52 - 235);
+            for (int i = 0; i < valueLines.size(); i++) {
+                boolean continued = y < 80;
+                if (continued) nextPage();
+                if (i == 0 || continued) text(content, fonts, true, 9, 52, y, row.label);
+                text(content, fonts, false, 9, 235, y, valueLines.get(i)); y -= 12;
+            }
+            y -= 4;
+        }
+        @Override public void close() throws IOException {
+            if (content != null) {
+                try { text(content, fonts, false, 8, 52, 48, DISCLAIMER); }
+                finally { content.close(); content = null; }
+            }
+        }
     }
-    private String safe(String value) {
-        if (value == null || value.isBlank()) return "-";
-        StringBuilder result = new StringBuilder();
-        value.codePoints().limit(180).forEach(cp -> result.append(cp >= 32 && cp <= 255 ? (char) cp : '?'));
-        return result.toString().replace('\n', ' ').replace('\r', ' ');
+
+    private void text(PDPageContentStream c, DocumentFonts fonts, boolean bold, float size, float x, float y, String value) throws IOException {
+        String visual = fonts.visual(value);
+        // ActualText retains the authoritative logical string for consumers supporting marked content.
+        var properties = new org.apache.pdfbox.cos.COSDictionary();
+        properties.setString(org.apache.pdfbox.cos.COSName.ACTUAL_TEXT, value == null || value.isEmpty() ? "-" : value);
+        c.beginMarkedContent(org.apache.pdfbox.cos.COSName.getPDFName("Span"), org.apache.pdfbox.pdmodel.documentinterchange.markedcontent.PDPropertyList.create(properties));
+        c.beginText(); c.newLineAtOffset(x, y);
+        PDFont current = null; StringBuilder run = new StringBuilder();
+        for (int cp : visual.codePoints().toArray()) {
+            PDFont selected = fonts.font(cp, bold);
+            if (selected != current && !run.isEmpty()) { c.setFont(current, size); c.showText(run.toString()); run.setLength(0); }
+            current = selected; run.appendCodePoint(cp);
+        }
+        if (!run.isEmpty()) { c.setFont(current, size); c.showText(run.toString()); }
+        c.endText(); c.endMarkedContent();
     }
-    private List<String> lines(String value, int width) {
-        String normalized = safe(value); List<String> lines = new ArrayList<>();
-        for (int start = 0; start < normalized.length(); start += width)
-            lines.add(normalized.substring(start, Math.min(start + width, normalized.length())));
-        return lines.isEmpty() ? List.of("-") : lines;
+    private List<String> lines(String value, DocumentFonts fonts, float size, float width) throws IOException {
+        String original = value == null || value.isEmpty() ? "-" : value;
+        fonts.visual(original); // Fail before emitting a partial field; never normalize or truncate names.
+        List<String> lines = new ArrayList<>(); StringBuilder line = new StringBuilder();
+        for (int cp : original.codePoints().toArray()) {
+            String candidate = line.toString() + Character.toString(cp);
+            if (!line.isEmpty() && fonts.width(candidate, false, size) > width) {
+                lines.add(line.toString()); line.setLength(0);
+            }
+            line.appendCodePoint(cp);
+        }
+        if (!line.isEmpty()) lines.add(line.toString());
+        return lines;
     }
     private String eur(BigDecimal value) { return "EUR " + value.setScale(2).toPlainString(); }
     private String minutes(Integer value) { return value + " minutes"; }
