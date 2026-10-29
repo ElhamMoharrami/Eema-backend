@@ -1,6 +1,7 @@
 package com.eema.backend.config;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,15 +35,17 @@ public record AppProperties(
     public record CorsProperties(@NotEmpty List<String> allowedOrigins) {
     }
 
-    public record MollieProperties(@NotBlank String apiKey, @NotBlank String redirectUrl, @NotBlank String webhookUrl) {
+    public record MollieProperties(String apiKey, String redirectUrl, String webhookUrl,
+                                   String reportingAccessToken, boolean feeReconciliationEnabled,
+                                   long feeReconciliationDelayMs, long feeReconciliationInitialDelayMs) {
     }
 
-    public record ResendProperties(@NotBlank String apiKey, @NotBlank String fromEmail) {
+    public record ResendProperties(String apiKey, String fromEmail) {
     }
 
-    public record CalendlyProperties(@NotBlank String baseUrl) {
+    public record CalendlyProperties(String baseUrl) {
     }
 
-    public record CommissionProperties(@DecimalMin(value = "0.0", inclusive = false) BigDecimal percentage) {
+    public record CommissionProperties(@DecimalMin("0.0") @DecimalMax("100.0") BigDecimal percentage) {
     }
 }

@@ -1,0 +1,20 @@
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'PAYMENT_STARTED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'PAYMENT_REFUNDED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'OWNER_CONFIRMED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'OWNER_REJECTED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'SCOUT_CANCELLED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'OWNER_CANCELLED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'ADMIN_CANCELLED';
+ALTER TYPE booking_event_type ADD VALUE IF NOT EXISTS 'BOOKING_COMPLETED';
+
+ALTER TABLE bookings
+    ADD COLUMN IF NOT EXISTS mollie_fee_reconciled BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE booking_events
+    ADD CONSTRAINT chk_booking_events_actor_id
+    CHECK (
+        (actor_type IN ('SCOUT', 'OWNER', 'ADMIN') AND actor_id IS NOT NULL)
+        OR (actor_type IN ('SYSTEM', 'WEBHOOK') AND actor_id IS NULL)
+    ) NOT VALID;
+
+ALTER TABLE booking_events VALIDATE CONSTRAINT chk_booking_events_actor_id;

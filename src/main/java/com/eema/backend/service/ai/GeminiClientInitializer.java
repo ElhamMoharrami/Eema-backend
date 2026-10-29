@@ -10,7 +10,7 @@ import jakarta.annotation.PostConstruct;
 /**
  * Validates that the Gemini API key is present at application startup.
  * Logs an INFO message confirming the key is present (without exposing the key value).
- * Throws an IllegalStateException if the key is missing or blank.
+ * Matching remains optional; the service reports a controlled error when invoked without a key.
  */
 @Component
 public class GeminiClientInitializer {
@@ -28,9 +28,9 @@ public class GeminiClientInitializer {
     public void validateApiKeyPresence() {
         String apiKey = properties.getApiKey();
         if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException("Gemini API key is not configured. Set app.gemini.api-key.");
+            log.warn("Gemini integration is disabled because no API key is configured");
+            return;
         }
-        // Avoid logging the actual key; just confirm presence
-        log.info("Gemini API key loaded (length={})", apiKey.length());
+        log.info("Gemini integration is configured");
     }
 }

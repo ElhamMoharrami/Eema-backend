@@ -5,6 +5,7 @@ import com.eema.backend.dto.response.BookingDto;
 import com.eema.backend.entity.User;
 import com.eema.backend.service.BookingService;
 import com.eema.backend.service.CurrentUserService;
+import com.eema.backend.service.RefundService;
 
 import jakarta.validation.Valid;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/bookings")
@@ -23,6 +25,7 @@ public class BookingController {
 
     private final BookingService bookingService;
     private final CurrentUserService currentUserService;
+    private final RefundService refundService;
 
     @PostMapping
     public ResponseEntity<BookingDto> createBooking(@Valid @RequestBody CreateBookingRequest request) {
@@ -42,5 +45,25 @@ public class BookingController {
         List<BookingDto> bookings = bookingService.getBookingsForUser(user.getId(), user.getRole());
 
         return ResponseEntity.ok(bookings);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingDto> getBooking(@PathVariable UUID id) {
+        return ResponseEntity.ok(bookingService.getBookingForCurrentUser(id));
+    }
+
+    @PostMapping("/{id}/confirm")
+    public ResponseEntity<BookingDto> confirmBooking(@PathVariable UUID id) {
+        return ResponseEntity.ok(bookingService.confirmBooking(id));
+    }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<BookingDto> cancelBooking(@PathVariable UUID id) {
+        return ResponseEntity.ok(bookingService.cancelBooking(id));
+    }
+
+    @PostMapping("/{id}/refund")
+    public ResponseEntity<BookingDto> refundBooking(@PathVariable UUID id) {
+        return ResponseEntity.accepted().body(refundService.requestFullRefund(id));
     }
 }

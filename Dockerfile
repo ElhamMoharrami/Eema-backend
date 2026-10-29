@@ -10,7 +10,7 @@ RUN mvn dependency:go-offline
 
 COPY src ./src
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre-alpine
@@ -21,6 +21,10 @@ COPY --from=build /app/target/*-SNAPSHOT.jar app.jar
 
 RUN mkdir -p uploads/venues uploads/owners
 
+RUN addgroup -S eema && adduser -S eema -G eema && chown -R eema:eema /app
+
+USER eema
+
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

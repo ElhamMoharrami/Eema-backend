@@ -1,6 +1,9 @@
 package com.eema.backend.entity;
 
 import com.eema.backend.entity.enums.BookingStatus;
+import com.eema.backend.entity.enums.PaymentCreationStatus;
+import com.eema.backend.entity.enums.RefundStatus;
+import com.eema.backend.entity.enums.OwnerPayoutStatus;
 
 import jakarta.persistence.*;
 
@@ -99,6 +102,13 @@ public class Booking {
     )
     private BigDecimal mollieFeeEur;
 
+    @Builder.Default
+    @Column(name = "mollie_fee_reconciled", nullable = false)
+    private boolean mollieFeeReconciled = false;
+
+    @Column(name = "mollie_fee_reconciled_at")
+    private OffsetDateTime mollieFeeReconciledAt;
+
     @Column(
             name = "owner_payout_eur",
             precision = 10,
@@ -123,6 +133,48 @@ public class Booking {
             unique = true
     )
     private String molliePaymentId;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_creation_status", nullable = false, length = 20)
+    private PaymentCreationStatus paymentCreationStatus = PaymentCreationStatus.NOT_STARTED;
+
+    @Column(name = "payment_idempotency_key", unique = true)
+    private UUID paymentIdempotencyKey;
+
+    @Column(name = "payment_creation_started_at")
+    private OffsetDateTime paymentCreationStartedAt;
+
+    @Column(name = "mollie_checkout_url", length = 1000)
+    private String mollieCheckoutUrl;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "refund_status", nullable = false, length = 20)
+    private RefundStatus refundStatus = RefundStatus.NONE;
+
+    @Column(name = "refund_idempotency_key", unique = true)
+    private UUID refundIdempotencyKey;
+
+    @Column(name = "mollie_refund_id", unique = true)
+    private String mollieRefundId;
+
+    @Column(name = "refund_amount_eur", precision = 10, scale = 2)
+    private BigDecimal refundAmountEur;
+
+    @Column(name = "refund_requested_at")
+    private OffsetDateTime refundRequestedAt;
+
+    @Column(name = "refunded_at")
+    private OffsetDateTime refundedAt;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "owner_payout_status", nullable = false, length = 30)
+    private OwnerPayoutStatus ownerPayoutStatus = OwnerPayoutStatus.CALCULATED_NOT_PAID;
+
+    @Column(name = "owner_payout_paid_at")
+    private OffsetDateTime ownerPayoutPaidAt;
 
     // --------------------------------------------------
     // CONTACT SNAPSHOTS

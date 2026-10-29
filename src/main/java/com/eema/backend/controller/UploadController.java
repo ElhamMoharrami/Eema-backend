@@ -1,6 +1,6 @@
 package com.eema.backend.controller;
 
-import com.eema.backend.service.StorageService;
+import com.eema.backend.service.FileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -9,17 +9,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/upload")
+@RequestMapping("/upload")
 @RequiredArgsConstructor
 public class UploadController {
 
-    private final StorageService storageService;
+    private final FileStorage storageService;
 
     /**
      * Upload a venue photo.
@@ -28,22 +29,18 @@ public class UploadController {
      * @return JSON with upload status and file URL
      */
     @PostMapping("/venue-photo")
+    @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<Map<String, String>> uploadVenuePhoto(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", "File cannot be empty"));
         }
 
-        try {
-            String fileUrl = storageService.store(file);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "File uploaded successfully");
-            response.put("url", fileUrl);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "Failed to upload file: " + e.getMessage()));
-        }
+        String fileUrl = storageService.store(file);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "File uploaded successfully");
+        response.put("url", fileUrl);
+        return ResponseEntity.ok(response);
     }
 
     /**

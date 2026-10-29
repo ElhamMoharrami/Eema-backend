@@ -2,6 +2,9 @@ package com.eema.backend.dto.response;
 
 import com.eema.backend.entity.BookingContactSnapshot;
 import com.eema.backend.entity.enums.BookingStatus;
+import com.eema.backend.entity.enums.PaymentCreationStatus;
+import com.eema.backend.entity.enums.RefundStatus;
+import com.eema.backend.entity.enums.OwnerPayoutStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,10 +28,19 @@ public record BookingDto(
         BigDecimal commissionPercentage,
         BigDecimal commissionEur,
         BigDecimal mollieFeeEur,
+        boolean mollieFeeReconciled,
+        OffsetDateTime mollieFeeReconciledAt,
         BigDecimal ownerPayoutEur,
+        OwnerPayoutStatus ownerPayoutStatus,
         BigDecimal totalPaidEur,
 
         String molliePaymentId,
+        PaymentCreationStatus paymentCreationStatus,
+        RefundStatus refundStatus,
+        String mollieRefundId,
+        BigDecimal refundAmountEur,
+        OffsetDateTime refundRequestedAt,
+        OffsetDateTime refundedAt,
 
         BookingContactSnapshot scoutContact,
         BookingContactSnapshot ownerContact,

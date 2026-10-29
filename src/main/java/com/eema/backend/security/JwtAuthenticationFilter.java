@@ -1,7 +1,6 @@
 package com.eema.backend.security;
 
 import com.eema.backend.entity.User;
-import com.eema.backend.entity.enums.UserRole;
 import com.eema.backend.mapper.UserMapper;
 import com.eema.backend.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -49,9 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             // Validate token and extract claims
             var claims = jwtService.validateToken(token);
-            UUID userId = jwtService.extractUserId(token);
-            String email = jwtService.extractEmail(token);
-            UserRole role = jwtService.extractRole(token);
+            UUID userId = jwtService.extractUserId(claims);
 
             // Load user from database (optional - we trust the JWT claims)
             // But we still check if user exists and is active
@@ -60,9 +57,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (userOptional.isPresent() && userOptional.get().isActive()) {
                 User user = userOptional.get();
                 var userDetails = org.springframework.security.core.userdetails.User
-                        .withUsername(email)
+                        .withUsername(user.getEmail())
                         .password("") // password not needed as we trust the token
-                        .authorities("ROLE_" + role.name())
+                        .authorities("ROLE_" + user.getRole().name())
                         .build();
 
                 UsernamePasswordAuthenticationToken authentication =

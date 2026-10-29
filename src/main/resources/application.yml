@@ -1,8 +1,6 @@
 spring:
   application:
     name: eema
-  profiles:
-    active: local
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/eema}
     username: ${SPRING_DATASOURCE_USERNAME:eema}
@@ -17,7 +15,7 @@ spring:
         format_sql: true
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: classpath:db/migration/common
     baseline-on-migrate: true
 
 server:
@@ -29,19 +27,19 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: health
   endpoint:
     health:
-      show-details: always
+      show-details: never
 
 logging:
   level:
     root: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.springframework.web.client.RestTemplate: DEBUG
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    org.springframework.web.client.RestTemplate: INFO
     com.eema.backend.service.ai: INFO
-    org.apache.http.wire: DEBUG
+    org.apache.http.wire: WARN
 
 app:
   jwt:
@@ -50,20 +48,24 @@ app:
     refresh-token-expiry-days: 7
   storage:
     upload-dir: ${UPLOAD_DIR:/tmp/uploads}
-    file-url-prefix: ${FILE_URL_PREFIX:/api/files/}
+    file-url-prefix: ${FILE_URL_PREFIX:/api/upload/files/}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
   admin-email-allowlist: ${ADMIN_EMAIL_ALLOWLIST:}
   gemini:
-    api-key: ${GEMINI_API_KEY}
+    api-key: ${GEMINI_API_KEY:}
   commission:
     percentage: ${COMMISSION_PERCENTAGE:20.00}
   mollie:
-    api-key: ${MOLLIE_API_KEY:REDACTED_EXPOSED_CREDENTIAL}
+    api-key: ${MOLLIE_API_KEY:}
     redirect-url: ${MOLLIE_REDIRECT_URL:http://localhost:3000/booked}
-    webhook-url: ${MOLLIE_WEBHOOK_URL}
+    webhook-url: ${MOLLIE_WEBHOOK_URL:}
+    reporting-access-token: ${MOLLIE_REPORTING_ACCESS_TOKEN:}
+    fee-reconciliation-enabled: ${MOLLIE_FEE_RECONCILIATION_ENABLED:false}
+    fee-reconciliation-delay-ms: ${MOLLIE_FEE_RECONCILIATION_DELAY_MS:3600000}
+    fee-reconciliation-initial-delay-ms: ${MOLLIE_FEE_RECONCILIATION_INITIAL_DELAY_MS:60000}
   resend:
-    api-key: ${RESEND_API_KEY}
-    from-email: ${RESEND_FROM_EMAIL}
+    api-key: ${RESEND_API_KEY:}
+    from-email: ${RESEND_FROM_EMAIL:}
   calendly:
-    base-url: ${CALENDLY_BASE_URL}
+    base-url: ${CALENDLY_BASE_URL:}

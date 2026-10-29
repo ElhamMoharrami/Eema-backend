@@ -79,6 +79,8 @@ public class SecurityConfig {
                         // -------------------------
 
                         .requestMatchers(HttpMethod.GET, "/venues", "/venues/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/upload/files/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
 
                         // -------------------------
                         // EVERYTHING ELSE

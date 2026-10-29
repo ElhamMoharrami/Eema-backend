@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
@@ -25,6 +26,9 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findByStatus(BookingStatus status);
 
     Optional<Booking> findByMolliePaymentId(String molliePaymentId);
+
+    @Query(value = "select * from bookings where mollie_fee_reconciled = false and mollie_payment_id is not null and status in ('PAID', 'CONFIRMED') order by paid_at", nativeQuery = true)
+    List<Booking> findPendingFeeReconciliation(Pageable pageable);
 
     boolean existsByMolliePaymentId(String molliePaymentId);
 

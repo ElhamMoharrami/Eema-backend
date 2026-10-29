@@ -126,7 +126,7 @@ public class AuthService {
         String tokenHash = jwtService.hashRefreshToken(request.refreshToken());
 
         // Find refresh token by hash
-        RefreshToken refreshToken = refreshTokenRepository.findByTokenHash(tokenHash)
+        RefreshToken refreshToken = refreshTokenRepository.findByTokenHashForUpdate(tokenHash)
                 .orElseThrow(() -> new UnauthorizedException("Invalid refresh token"));
 
         // Validate token is not revoked and expiration

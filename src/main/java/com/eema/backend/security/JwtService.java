@@ -60,6 +60,7 @@ public class JwtService {
     private Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
+                .requireIssuer("eema")
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -120,6 +121,10 @@ public class JwtService {
         Claims claims = parseClaims(token);
         String userIdStr = claims.getSubject();
         return UUID.fromString(userIdStr);
+    }
+
+    public UUID extractUserId(Claims claims) {
+        return UUID.fromString(claims.getSubject());
     }
 
     /**
