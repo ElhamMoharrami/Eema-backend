@@ -1,6 +1,7 @@
 package com.eema.backend.mapper;
 
 import com.eema.backend.dto.request.CreateVenueRequest;
+import com.eema.backend.dto.request.UpdateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.Venue;
@@ -41,6 +42,7 @@ public class VenueMapper {
                 safeList(venue.getPhotoPaths()),
                 venue.getClipUrl(),
                 venue.getDescription(),
+                venue.getTimezone(),
                 venue.getStatus(),
                 venue.getCreatedAt(),
                 venue.getUpdatedAt()
@@ -107,7 +109,7 @@ public class VenueMapper {
      * Update existing Venue entity.
      */
     public void updateEntityFromDto(
-            CreateVenueRequest request,
+            UpdateVenueRequest request,
             Venue venue
     ) {
 
@@ -129,6 +131,8 @@ public class VenueMapper {
 
         venue.setDescription(request.description());
         venue.setClipUrl(request.clipUrl());
+        venue.setTimezone(request.timezone());
+        venue.setPhotoPaths(List.copyOf(request.photoPaths()));
     }
 
 

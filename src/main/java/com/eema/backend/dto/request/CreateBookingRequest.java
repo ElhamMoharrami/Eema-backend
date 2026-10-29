@@ -1,12 +1,12 @@
 package com.eema.backend.dto.request;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public record CreateBookingRequest(
@@ -15,8 +15,13 @@ public record CreateBookingRequest(
         UUID venueId,
 
         @NotNull(message = "shootDate is required")
-        @FutureOrPresent(message = "shootDate must be today or later")
         LocalDate shootDate,
+
+        @NotNull(message = "startTime is required")
+        LocalTime startTime,
+
+        @NotNull(message = "endTime is required")
+        LocalTime endTime,
 
         @NotBlank(message = "rawBrief cannot be blank")
         @Size(max = 1000)

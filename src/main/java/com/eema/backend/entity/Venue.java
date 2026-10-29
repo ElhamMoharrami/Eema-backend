@@ -69,6 +69,10 @@ public class Venue {
     @Column(columnDefinition = "text")
     private String description;
 
+    @Builder.Default
+    @Column(nullable = false, length = 100)
+    private String timezone = "Europe/Amsterdam";
+
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(

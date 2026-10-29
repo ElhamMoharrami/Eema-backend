@@ -1,12 +1,16 @@
 package com.eema.backend.service;
 
 import com.eema.backend.config.AppProperties;
+import com.eema.backend.config.BookingWorkflowProperties;
 import com.eema.backend.dto.response.MolliePaymentResponse;
+import com.eema.backend.dto.request.CreateBookingRequest;
+import com.eema.backend.dto.request.ScoutContactRequest;
 import com.eema.backend.entity.Booking;
 import com.eema.backend.entity.User;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.UserRole;
+import com.eema.backend.entity.enums.VenueStatus;
 import com.eema.backend.exception.ForbiddenException;
 import com.eema.backend.exception.ConflictException;
 import com.eema.backend.repository.BookingEventRepository;
@@ -21,9 +25,14 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.context.ApplicationEventPublisher;
 import com.eema.backend.event.BookingPaidEvent;
+import com.eema.backend.event.BookingLifecycleEvent;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +43,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class BookingServiceTest {
@@ -47,6 +58,7 @@ class BookingServiceTest {
     @Spy BookingStateMachine stateMachine = new BookingStateMachine();
     @Spy BookingFinancials financials = new BookingFinancials();
     @Mock ApplicationEventPublisher eventPublisher;
+    @Mock BookingAvailabilityValidator availabilityValidator;
     BookingService service;
 
     private UUID bookingId;
@@ -56,7 +68,8 @@ class BookingServiceTest {
     @BeforeEach
     void setUp() {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
-                appProperties, currentUserService, stateMachine, financials, eventPublisher);
+                appProperties, currentUserService, stateMachine, financials, eventPublisher, availabilityValidator,
+                new BookingWorkflowProperties(24, 60000));
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()
@@ -151,6 +164,153 @@ class BookingServiceTest {
 
         booking.setStatus(BookingStatus.PAID);
         assertThrows(ConflictException.class, () -> service.cancelBooking(bookingId));
+    }
+
+    @Test
+    void databaseConflictFromConcurrentAttemptCannotCreateSecondBooking() {
+        User owner = User.builder().id(UUID.randomUUID()).email("owner@example.com").fullName("Owner").role(UserRole.OWNER).build();
+        User scout = User.builder().id(scoutId).email("scout@example.com").role(UserRole.SCOUT).build();
+        Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).name("Venue").status(VenueStatus.ACTIVE)
+                .timezone("Europe/Amsterdam").dayRateEur(new BigDecimal("100.00")).build();
+        when(venueRepository.findById(venue.getId())).thenReturn(Optional.of(venue));
+        when(userRepository.findById(scoutId)).thenReturn(Optional.of(scout));
+        when(bookingRepository.saveAndFlush(any(Booking.class)))
+                .thenThrow(new DataIntegrityViolationException("exclusion constraint"));
+        CreateBookingRequest request = new CreateBookingRequest(venue.getId(), LocalDate.now().plusDays(1),
+                java.time.LocalTime.of(9, 0), java.time.LocalTime.of(17, 0), "Brief",
+                new ScoutContactRequest("Scout", "scout@example.com", null));
+
+        assertThrows(ConflictException.class, () -> service.createBooking(request, scoutId));
+        verifyNoInteractions(bookingEventRepository);
+    }
+
+    @Test
+    void requestAcceptPaymentEndsConfirmedWithoutSecondOwnerAction() {
+        User owner = ownerForBooking();
+        prepareRequestedBooking(owner);
+
+        assertEquals(BookingStatus.AWAITING_PAYMENT, service.acceptRequest(bookingId).status());
+        service.processPaidPayment(paidPayment("tr_expected", "100.00"));
+        assertEquals(BookingStatus.CONFIRMED, booking.getStatus());
+        service.processPaidPayment(paidPayment("tr_expected", "100.00"));
+        verify(eventPublisher, times(1)).publishEvent(new BookingPaidEvent(bookingId));
+    }
+
+    @Test
+    void scoutCreatesRequestWithSelectedTimesWithoutStartingPayment() {
+        User owner = ownerForBooking();
+        User scout = User.builder().id(scoutId).email("scout@example.com").role(UserRole.SCOUT).build();
+        Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).name("Venue").status(VenueStatus.ACTIVE)
+                .timezone("Europe/Amsterdam").dayRateEur(new BigDecimal("100.00")).build();
+        when(venueRepository.findById(venue.getId())).thenReturn(Optional.of(venue));
+        when(userRepository.findById(scoutId)).thenReturn(Optional.of(scout));
+        when(bookingRepository.saveAndFlush(any(Booking.class))).thenAnswer(invocation -> {
+            Booking saved = invocation.getArgument(0);
+            saved.setId(bookingId);
+            return saved;
+        });
+        CreateBookingRequest request = new CreateBookingRequest(venue.getId(), LocalDate.now().plusDays(1),
+                LocalTime.of(10, 0), LocalTime.of(14, 0), "Brief",
+                new ScoutContactRequest("Scout", "scout@example.com", null));
+
+        var result = service.createBooking(request, scoutId);
+        assertEquals(BookingStatus.REQUESTED, result.status());
+        assertEquals(LocalTime.of(10, 0), result.startTime());
+        assertEquals(LocalTime.of(14, 0), result.endTime());
+        assertEquals(null, result.molliePaymentId());
+    }
+
+    @Test
+    void ownerCanDeclineRequestAndDoubleAcceptanceIsRejected() {
+        User owner = ownerForBooking();
+        prepareRequestedBooking(owner);
+        assertEquals(BookingStatus.DECLINED, service.declineRequest(bookingId).status());
+
+        booking.setStatus(BookingStatus.REQUESTED);
+        service.acceptRequest(bookingId);
+        assertThrows(ConflictException.class, () -> service.acceptRequest(bookingId));
+        verify(eventPublisher, times(1)).publishEvent(new BookingLifecycleEvent(
+                bookingId, BookingLifecycleEvent.Type.REQUEST_ACCEPTED));
+    }
+
+    @Test
+    void unauthorizedOwnerCannotAcceptRequest() {
+        User actualOwner = ownerForBooking();
+        prepareRequestedBooking(actualOwner);
+        when(currentUserService.getCurrentUser()).thenReturn(
+                User.builder().id(UUID.randomUUID()).email("other@example.com").role(UserRole.OWNER).build());
+        assertThrows(ForbiddenException.class, () -> service.acceptRequest(bookingId));
+    }
+
+    @Test
+    void approvedRequestExpiresAndLatePaymentIsMarkedForRefund() {
+        User owner = ownerForBooking();
+        prepareRequestedBooking(owner);
+        service.acceptRequest(bookingId);
+        OffsetDateTime afterDeadline = booking.getPaymentExpiresAt().plusSeconds(1);
+        service.expireApproval(bookingId, afterDeadline);
+        assertEquals(BookingStatus.EXPIRED, booking.getStatus());
+        var outcome = service.processPaidPayment(paidPayment("tr_expected", "100.00"));
+        assertEquals(BookingService.PaidPaymentResult.LATE_PAYMENT, outcome.result());
+        assertEquals(BookingStatus.EXPIRED, booking.getStatus());
+        assertEquals(new BigDecimal("100.00"), booking.getTotalPaidEur());
+        verify(eventPublisher, never()).publishEvent(any(BookingPaidEvent.class));
+    }
+
+    @Test
+    void paymentAfterDeadlineExpiresBookingEvenBeforeSchedulerRuns() {
+        booking.setStatus(BookingStatus.AWAITING_PAYMENT);
+        booking.setPaymentExpiresAt(OffsetDateTime.now().minusSeconds(1));
+        when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
+
+        var outcome = service.processPaidPayment(paidPayment("tr_expected", "100.00"));
+
+        assertEquals(BookingService.PaidPaymentResult.LATE_PAYMENT, outcome.result());
+        assertEquals(BookingStatus.EXPIRED, booking.getStatus());
+        verify(eventPublisher, never()).publishEvent(any(BookingPaidEvent.class));
+    }
+
+    @Test
+    void acceptedInquiryBookingPublishesOnlyAcceptedBookingLifecycleEmail() {
+        User owner = ownerForBooking();
+        User scout = User.builder().id(scoutId).email("scout@example.com").fullName("Scout")
+                .role(UserRole.SCOUT).build();
+        Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).name("Studio")
+                .timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE)
+                .dayRateEur(new BigDecimal("100.00")).build();
+        when(venueRepository.findById(venue.getId())).thenReturn(Optional.of(venue));
+        when(userRepository.findById(scoutId)).thenReturn(Optional.of(scout));
+        when(bookingRepository.findBlockingBookings(venue.getId(), LocalDate.now().plusDays(3))).thenReturn(java.util.List.of());
+        when(bookingRepository.saveAndFlush(any(Booking.class))).thenAnswer(invocation -> {
+            Booking saved = invocation.getArgument(0);
+            saved.setId(bookingId);
+            return saved;
+        });
+
+        var result = service.createApprovedExceptionBooking(venue.getId(), scoutId,
+                LocalDate.now().plusDays(3), LocalTime.of(7, 0), LocalTime.of(9, 0), "Exception time");
+
+        assertEquals(BookingStatus.AWAITING_PAYMENT, result.status());
+        verify(eventPublisher, times(1)).publishEvent(new BookingLifecycleEvent(
+                bookingId, BookingLifecycleEvent.Type.REQUEST_ACCEPTED));
+    }
+
+    private User ownerForBooking() {
+        return User.builder().id(UUID.randomUUID()).email("owner@example.com").fullName("Owner").role(UserRole.OWNER).build();
+    }
+
+    private void prepareRequestedBooking(User owner) {
+        booking.setStatus(BookingStatus.REQUESTED);
+        booking.setShootDate(LocalDate.now().plusDays(2));
+        booking.setStartTime(LocalTime.of(9, 0));
+        booking.setEndTime(LocalTime.of(17, 0));
+        booking.setMolliePaymentId("tr_expected");
+        booking.setScoutContact(com.eema.backend.entity.BookingContactSnapshot.builder().name("Scout").email("scout@example.com").build());
+        booking.setOwnerContact(com.eema.backend.entity.BookingContactSnapshot.builder().name("Owner").email("owner@example.com").build());
+        when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
+        when(venueRepository.findById(booking.getVenueId())).thenReturn(Optional.of(
+                Venue.builder().id(booking.getVenueId()).owner(owner).timezone("Europe/Amsterdam").build()));
+        when(currentUserService.getCurrentUser()).thenReturn(owner);
     }
 
     private MolliePaymentResponse paidPayment(String id, String amount) {

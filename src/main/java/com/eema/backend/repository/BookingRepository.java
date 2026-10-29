@@ -14,7 +14,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.time.LocalDate;
 import org.springframework.data.domain.Pageable;
+import com.eema.backend.entity.enums.PaymentCreationStatus;
+import com.eema.backend.entity.enums.RefundStatus;
+import java.time.OffsetDateTime;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
@@ -31,6 +35,35 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findPendingFeeReconciliation(Pageable pageable);
 
     boolean existsByMolliePaymentId(String molliePaymentId);
+
+    @Query("""
+            select b from Booking b
+            where b.venueId = :venueId and b.shootDate = :date
+              and b.status in (com.eema.backend.entity.enums.BookingStatus.PENDING,
+                               com.eema.backend.entity.enums.BookingStatus.REQUESTED,
+                               com.eema.backend.entity.enums.BookingStatus.AWAITING_PAYMENT,
+                               com.eema.backend.entity.enums.BookingStatus.PAID,
+                               com.eema.backend.entity.enums.BookingStatus.CONFIRMED)
+            order by b.startTime
+            """)
+    List<Booking> findBlockingBookings(@Param("venueId") UUID venueId, @Param("date") LocalDate date);
+
+    List<Booking> findByStatusAndPaymentExpiresAtBefore(BookingStatus status, java.time.OffsetDateTime cutoff);
+
+    long countByPaymentCreationStatusAndPaymentCreationStartedAtBefore(
+            PaymentCreationStatus status, OffsetDateTime cutoff);
+
+    long countByRefundStatusInAndRefundRequestedAtBefore(
+            List<RefundStatus> statuses, OffsetDateTime cutoff);
+
+    @Query("""
+            select count(b) from Booking b
+            where b.status in (com.eema.backend.entity.enums.BookingStatus.PAID,
+                               com.eema.backend.entity.enums.BookingStatus.CONFIRMED)
+              and b.mollieFeeReconciled = false
+              and b.paidAt < :cutoff
+            """)
+    long countOldUnreconciledMollieFees(@Param("cutoff") OffsetDateTime cutoff);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""

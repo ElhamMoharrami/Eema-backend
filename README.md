@@ -111,6 +111,18 @@ Restart the backend, create and pay a booking with a Resend-approved scout and o
 
 Email links use `{APP_FRONTEND_BASE_URL}/bookings/{bookingId}`. The frontend must provide that booking-detail route; this backend task does not add it.
 
+### Request-to-book workflow
+
+Scouts submit `POST /api/bookings` with `venueId`, `shootDate`, `startTime`, `endTime`, `rawBrief`, and `scoutContact`. Owners then use `POST /api/bookings/{id}/accept` or `/decline`. After acceptance, the requesting scout starts Mollie checkout with `POST /api/bookings/{id}/checkout` (no request body). The former `POST /api/checkout` create-and-pay contract is no longer available.
+
+Accepted requests default to a 24-hour payment window. Configure it with `BOOKING_PAYMENT_WINDOW_HOURS`; `BOOKING_EXPIRATION_SCAN_DELAY_MS` controls how often expired approvals are released.
+
+### Workflow operations
+
+Actuator health remains public, while `/api/actuator/metrics` and individual metric endpoints require authentication. Workflow metrics use aggregate counters/gauges without booking IDs or user data as labels. Relevant names begin with `eema.workflow` and cover approval/inquiry expiration, late payments, automatic refunds, stuck payment/refund creation, and old unreconciled Mollie fees.
+
+The read-only stuck-state scan emits an aggregate warning when work exceeds the configured thresholds. Tune it with `WORKFLOW_OBSERVABILITY_SCAN_DELAY_MS`, `PAYMENT_CREATING_STUCK_MINUTES`, `REFUND_STUCK_MINUTES`, and `FEE_UNRECONCILED_MINUTES`. The scan never changes booking or provider state.
+
 ### Logs, stop, and common checks
 
 ```bash

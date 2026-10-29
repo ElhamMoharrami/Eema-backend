@@ -9,10 +9,14 @@ public class BookingStateMachine {
 
     public void requireTransition(BookingStatus current, BookingStatus target) {
         boolean valid = switch (current) {
+            case REQUESTED -> target == BookingStatus.AWAITING_PAYMENT || target == BookingStatus.DECLINED
+                    || target == BookingStatus.CANCELLED;
+            case AWAITING_PAYMENT -> target == BookingStatus.CONFIRMED || target == BookingStatus.EXPIRED
+                    || target == BookingStatus.CANCELLED;
             case PENDING -> target == BookingStatus.PAID || target == BookingStatus.CANCELLED;
             case PAID -> target == BookingStatus.CONFIRMED || target == BookingStatus.REFUNDED;
             case CONFIRMED -> target == BookingStatus.REFUNDED;
-            case CANCELLED, REFUNDED -> false;
+            case DECLINED, EXPIRED, CANCELLED, REFUNDED -> false;
         };
 
         if (!valid) {

@@ -26,9 +26,16 @@ public class PaymentCreationCoordinator {
     private final BookingFinancials financials;
 
     @Transactional
-    public Claim claim(UUID bookingId) {
+    public Claim claim(UUID bookingId, UUID scoutId) {
         Booking booking = locked(bookingId);
-        if (booking.getStatus() != BookingStatus.PENDING) throw new BadRequestException("Only pending bookings can be paid");
+        if (!booking.getScoutId().equals(scoutId)) throw new com.eema.backend.exception.ForbiddenException("Only the requesting scout can pay this booking");
+        boolean legacyPending = booking.getStatus() == BookingStatus.PENDING;
+        if (!legacyPending && booking.getStatus() != BookingStatus.AWAITING_PAYMENT) {
+            throw new BadRequestException("Only owner-approved bookings can be paid");
+        }
+        if (!legacyPending && (booking.getPaymentExpiresAt() == null || !booking.getPaymentExpiresAt().isAfter(OffsetDateTime.now()))) {
+            throw new ConflictException("The approved payment window has expired");
+        }
         if (booking.getPaymentCreationStatus() == PaymentCreationStatus.CREATED) {
             return Claim.created(response(booking));
         }
@@ -50,6 +57,13 @@ public class PaymentCreationCoordinator {
     public CheckoutResponse complete(Claim claim, MolliePaymentResponse payment) {
         Booking booking = locked(claim.bookingId());
         if (booking.getPaymentCreationStatus() == PaymentCreationStatus.CREATED) return response(booking);
+        boolean legacyPending = booking.getStatus() == BookingStatus.PENDING;
+        if (!legacyPending && booking.getStatus() != BookingStatus.AWAITING_PAYMENT) {
+            throw new ConflictException("Booking is no longer eligible for payment");
+        }
+        if (!legacyPending && (booking.getPaymentExpiresAt() == null || !booking.getPaymentExpiresAt().isAfter(OffsetDateTime.now()))) {
+            throw new ConflictException("The approved payment window has expired");
+        }
         if (!claim.idempotencyKey().equals(booking.getPaymentIdempotencyKey())) throw new ConflictException("Payment creation claim changed");
         if (payment.id() == null || payment.id().isBlank() || payment.links() == null
                 || payment.links().checkout() == null || payment.links().checkout().href() == null) {
@@ -72,8 +86,10 @@ public class PaymentCreationCoordinator {
     }
 
     private CheckoutResponse response(Booking b) {
+        long expiresIn = b.getPaymentExpiresAt() == null ? 300L
+                : Math.max(0L, Duration.between(OffsetDateTime.now(), b.getPaymentExpiresAt()).toSeconds());
         return new CheckoutResponse(b.getId(), b.getMollieCheckoutUrl(), b.getMolliePaymentId(),
-                financials.money(b.getVenuePriceEur()), 300L);
+                financials.money(b.getVenuePriceEur()), expiresIn);
     }
 
     public record Claim(UUID bookingId, BigDecimal amount, UUID idempotencyKey, CheckoutResponse existing) {

@@ -17,6 +17,7 @@ public record VenueDto(
         List<String> photoPaths,
         String clipUrl,
         String description,
+        String timezone,
         VenueStatus status,
         OffsetDateTime createdAt,
         OffsetDateTime updatedAt

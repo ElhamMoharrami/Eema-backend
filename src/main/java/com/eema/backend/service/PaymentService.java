@@ -18,8 +18,8 @@ public class PaymentService {
     private final PaymentCreationCoordinator coordinator;
     private final MollieProviderClient mollie;
 
-    public CheckoutResponse createPayment(UUID bookingId) {
-        PaymentCreationCoordinator.Claim claim = coordinator.claim(bookingId);
+    public CheckoutResponse createPayment(UUID bookingId, UUID scoutId) {
+        PaymentCreationCoordinator.Claim claim = coordinator.claim(bookingId, scoutId);
         if (claim.alreadyCreated()) return claim.existing();
         try {
             MolliePaymentResponse payment = mollie.createPayment(

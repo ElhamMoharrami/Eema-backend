@@ -42,6 +42,28 @@ public class RefundService {
         }
     }
 
+    public void requestLatePaymentRefund(UUID bookingId) {
+        coordinator.claimLatePayment(bookingId).ifPresent(claim -> {
+            try {
+                MollieRefundResponse refund = mollie.createFullRefund(
+                        claim.paymentId(), bookingId, claim.amount(), claim.idempotencyKey());
+                coordinator.recordProviderState(claim, refund);
+                log.info("Late-payment refund created: bookingId={}, refundId={}, status={}",
+                        bookingId, refund.id(), refund.status());
+            } catch (HttpStatusCodeException exception) {
+                coordinator.markRejected(bookingId);
+                log.warn("Mollie rejected late-payment refund: bookingId={}, status={}",
+                        bookingId, exception.getStatusCode().value());
+                throw new BadRequestException("Late-payment refund could not be initiated");
+            } catch (RestClientException exception) {
+                // CREATING and the persisted idempotency key are intentionally retained.
+                log.warn("Late-payment refund response was ambiguous: bookingId={}, errorType={}",
+                        bookingId, exception.getClass().getSimpleName());
+                throw new BadRequestException("Late-payment refund is pending reconciliation");
+            }
+        });
+    }
+
     public void reconcileForPayment(String paymentId) {
         // No refund is a normal payment-webhook condition.
         bookingService.findRefundReference(paymentId).ifPresent(reference -> {

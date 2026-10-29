@@ -7,6 +7,7 @@ import com.resend.services.emails.model.SendEmailRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /** Thin provider adapter. Business email content belongs outside this class. */
 @Service
@@ -16,6 +17,7 @@ public class EmailService {
     private final Resend resendClient;
     private final String fromEmail;
 
+    @Autowired
     public EmailService(AppProperties properties) {
         AppProperties.ResendProperties resend = properties.resend();
         this.enabled = resend != null && resend.enabled();

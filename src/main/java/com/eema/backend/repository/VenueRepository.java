@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Lock;
+import jakarta.persistence.LockModeType;
+import java.util.Optional;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,4 +38,8 @@ public interface VenueRepository extends JpaRepository<Venue, UUID> {
     List<Venue> findByOwnerId(UUID ownerId);
 
     Page<Venue> findByStatus(VenueStatus status, Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select v from Venue v where v.id = :id")
+    Optional<Venue> findByIdForUpdate(@Param("id") UUID id);
 }

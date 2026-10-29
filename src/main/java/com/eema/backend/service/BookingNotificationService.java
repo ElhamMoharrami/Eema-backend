@@ -5,6 +5,7 @@ import com.eema.backend.entity.Booking;
 import com.eema.backend.entity.BookingContactSnapshot;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.BookingStatus;
+import com.eema.backend.event.BookingLifecycleEvent;
 import com.eema.backend.repository.BookingRepository;
 import com.eema.backend.repository.VenueRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -39,27 +41,163 @@ public class BookingNotificationService {
         }
         String venueName = venueRepository.findById(booking.getVenueId()).map(Venue::getName).orElse("your selected venue");
         String url = bookingUrl(bookingId);
-        attempt("scout", bookingId, () -> sendScout(booking, venueName, url));
-        attempt("owner", bookingId, () -> sendOwner(booking, venueName, url));
+        attempt("PAYMENT_RECEIVED", "scout", bookingId, () -> sendScout(booking, venueName, url));
+        attempt("PAYMENT_RECEIVED", "owner", bookingId, () -> sendOwner(booking, venueName, url));
     }
 
-    private void attempt(String recipientType, UUID bookingId, Runnable delivery) {
+    @Transactional(readOnly = true)
+    public void sendLatePaymentRefundInitiated(UUID bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElse(null);
+        if (booking == null || booking.getStatus() != BookingStatus.EXPIRED
+                || booking.getLatePaymentDetectedAt() == null
+                || booking.getRefundStatus() == com.eema.backend.entity.enums.RefundStatus.NONE) {
+            log.warn("Late-payment email skipped: booking state is not eligible, bookingId={}", bookingId);
+            return;
+        }
+        BookingContactSnapshot scout = booking.getScoutContact();
+        String venueName = venueRepository.findById(booking.getVenueId()).map(Venue::getName)
+                .orElse("your selected venue");
+        String url = bookingUrl(bookingId);
+        String message = "Your payment was received after the payment window expired. "
+                + "The booking was not confirmed, and a full refund has been initiated.";
+        String text = "Hello %s,\n\n%s\n\n%s\n\nView booking: %s"
+                .formatted(value(scout.getName()), message, details(booking, venueName), url);
+        attempt("LATE_PAYMENT_REFUND", "scout", bookingId, () -> emailService.send(scout.getEmail(),
+                "Your late Eema payment is being refunded", text,
+                html("Your payment is being refunded", scout.getName(), message,
+                        detailsHtml(booking, venueName), "View booking", url)));
+    }
+
+    @Transactional(readOnly = true)
+    public void sendLifecycle(UUID bookingId, BookingLifecycleEvent.Type type) {
+        Booking booking = bookingRepository.findById(bookingId).orElse(null);
+        if (booking == null) {
+            log.warn("Booking lifecycle notification skipped: bookingId={}, notificationType={}", bookingId, type);
+            return;
+        }
+        Venue venue = venueRepository.findById(booking.getVenueId()).orElse(null);
+        String venueName = venue == null ? "your selected venue" : venue.getName();
+        String timezone = venue == null ? "Venue local time" : venue.getTimezone();
+        String url = bookingUrl(bookingId);
+        BookingStatus expectedStatus = switch (type) {
+            case REQUEST_SUBMITTED -> BookingStatus.REQUESTED;
+            case REQUEST_ACCEPTED -> BookingStatus.AWAITING_PAYMENT;
+            case REQUEST_DECLINED -> BookingStatus.DECLINED;
+            case APPROVAL_EXPIRED -> BookingStatus.EXPIRED;
+        };
+        if (booking.getStatus() != expectedStatus) {
+            log.info("Stale booking notification skipped: bookingId={}, notificationType={}", bookingId, type);
+            return;
+        }
+        switch (type) {
+            case REQUEST_SUBMITTED -> sendRequestSubmitted(booking, venueName, timezone, url);
+            case REQUEST_ACCEPTED -> sendRequestAccepted(booking, venueName, timezone, url);
+            case REQUEST_DECLINED -> sendRequestDeclined(booking, venueName, timezone, url);
+            case APPROVAL_EXPIRED -> sendApprovalExpired(booking, venueName, timezone, url);
+        }
+    }
+
+    private void sendRequestSubmitted(Booking booking, String venue, String timezone, String url) {
+        String bookingDetails = lifecycleDetails(booking, venue, timezone, "REQUESTED");
+        String acknowledgement = "Your request was sent to the venue owner. This is not yet a confirmed or paid booking.";
+        attempt("REQUEST_SUBMITTED", "scout", booking.getId(), () -> emailService.send(
+                booking.getScoutContact().getEmail(), "Your request was sent",
+                text(booking.getScoutContact().getName(), acknowledgement, bookingDetails, "View booking", url),
+                html("Your request was sent", booking.getScoutContact().getName(), acknowledgement,
+                        lifecycleDetailsHtml(booking, venue, timezone, "REQUESTED"), "View booking", url)));
+
+        BookingContactSnapshot scout = booking.getScoutContact();
+        String scoutLine = "Scout: %s (%s%s)".formatted(value(scout.getName()), value(scout.getEmail()),
+                scout.getPhone() == null || scout.getPhone().isBlank() ? "" : ", " + scout.getPhone());
+        String brief = "Brief: " + (booking.getRawBrief() == null || booking.getRawBrief().isBlank()
+                ? "No brief provided" : booking.getRawBrief());
+        String ownerMessage = "A scout submitted a new booking request. Review it before the requested time is reserved for payment.";
+        String extraHtml = lifecycleDetailsHtml(booking, venue, timezone, "REQUESTED")
+                + "<p>" + esc(scoutLine) + "</p><p>" + esc(brief) + "</p>";
+        attempt("REQUEST_SUBMITTED", "owner", booking.getId(), () -> emailService.send(
+                booking.getOwnerContact().getEmail(), "New booking request",
+                text(booking.getOwnerContact().getName(), ownerMessage,
+                        bookingDetails + "\n" + scoutLine + "\n" + brief, "Review booking", url),
+                html("New booking request", booking.getOwnerContact().getName(), ownerMessage,
+                        extraHtml, "Review booking", url)));
+    }
+
+    private void sendRequestAccepted(Booking booking, String venue, String timezone, String url) {
+        String deadline = booking.getPaymentExpiresAt() == null ? "See booking for deadline"
+                : booking.getPaymentExpiresAt().atZoneSameInstant(ZoneId.of(timezone))
+                .format(DateTimeFormatter.ofPattern("d MMMM uuuu 'at' HH:mm z", Locale.ENGLISH));
+        String message = "Your booking request was accepted. Pay before %s to secure the booking; checkout starts from the booking page."
+                .formatted(deadline);
+        deliverScout(booking, "REQUEST_ACCEPTED", "Your booking request was accepted", message,
+                lifecycleDetails(booking, venue, timezone, "AWAITING_PAYMENT") + "\nPayment deadline: " + deadline,
+                lifecycleDetailsHtml(booking, venue, timezone, "AWAITING_PAYMENT") + rowTable("Payment deadline", deadline),
+                "Pay now", url);
+    }
+
+    private void sendRequestDeclined(Booking booking, String venue, String timezone, String url) {
+        deliverScout(booking, "REQUEST_DECLINED", "Your booking request was declined",
+                "The venue owner declined this booking request. No payment was taken.",
+                lifecycleDetails(booking, venue, timezone, "DECLINED"),
+                lifecycleDetailsHtml(booking, venue, timezone, "DECLINED"), "View booking", url);
+    }
+
+    private void sendApprovalExpired(Booking booking, String venue, String timezone, String url) {
+        deliverScout(booking, "APPROVAL_EXPIRED", "Your payment window expired",
+                "The booking was not confirmed and the slot was released. You may make a new request if it is still available.",
+                lifecycleDetails(booking, venue, timezone, "EXPIRED"),
+                lifecycleDetailsHtml(booking, venue, timezone, "EXPIRED"), "View booking", url);
+    }
+
+    private void deliverScout(Booking booking, String type, String subject, String message,
+                              String details, String detailsHtml, String action, String url) {
+        attempt(type, "scout", booking.getId(), () -> emailService.send(booking.getScoutContact().getEmail(), subject,
+                text(booking.getScoutContact().getName(), message, details, action, url),
+                html(subject, booking.getScoutContact().getName(), message, detailsHtml, action, url)));
+    }
+
+    private String lifecycleDetails(Booking b, String venue, String timezone, String status) {
+        return "Venue: %s\nBooking reference: %s\nShoot date: %s\nTime: %s–%s (%s)\nStatus: %s"
+                .formatted(venue, b.getId(), b.getShootDate().format(DATE), b.getStartTime().format(TIME),
+                        b.getEndTime().format(TIME), timezone, status);
+    }
+
+    private String lifecycleDetailsHtml(Booking b, String venue, String timezone, String status) {
+        return "<table role=\"presentation\" style=\"border-collapse:collapse;width:100%\">" +
+                row("Venue", venue) + row("Booking reference", b.getId().toString()) +
+                row("Shoot date", b.getShootDate().format(DATE)) +
+                row("Time", b.getStartTime().format(TIME) + "–" + b.getEndTime().format(TIME) + " (" + timezone + ")") +
+                row("Status", status) + "</table>";
+    }
+
+    private String rowTable(String label, String value) {
+        return "<table role=\"presentation\" style=\"border-collapse:collapse;width:100%\">" + row(label, value) + "</table>";
+    }
+
+    private String text(String name, String message, String details, String action, String url) {
+        return "Hello %s,\n\n%s\n\n%s\n\n%s: %s".formatted(value(name), message, details, action, url);
+    }
+
+    private void attempt(String notificationType, String recipientType, UUID bookingId, Runnable delivery) {
         try {
             delivery.run();
-            log.info("Payment notification processed: bookingId={}, recipientType={}", bookingId, recipientType);
+            log.info("Booking notification processed: bookingId={}, notificationType={}, recipientType={}",
+                    bookingId, notificationType, recipientType);
         } catch (RuntimeException exception) {
-            log.error("Payment notification failed: bookingId={}, recipientType={}, errorType={}",
-                    bookingId, recipientType, exception.getClass().getSimpleName());
+            log.error("Booking notification failed: bookingId={}, notificationType={}, recipientType={}, errorType={}",
+                    bookingId, notificationType, recipientType, exception.getClass().getSimpleName());
         }
     }
 
     private void sendScout(Booking b, String venue, String url) {
         BookingContactSnapshot scout = b.getScoutContact();
-        String text = "Hello %s,\n\nYour payment has been received. Your booking is now paid and may still be awaiting venue confirmation.\n\n%s\n\nView booking: %s"
-                .formatted(value(scout.getName()), details(b, venue), url);
-        emailService.send(scout.getEmail(), "Payment received for your Eema booking", text,
-                html("Your payment has been received", scout.getName(),
-                        "Your booking is now paid and may still be awaiting venue confirmation.", detailsHtml(b, venue), "View booking", url));
+        boolean confirmed = b.getStatus() == BookingStatus.CONFIRMED;
+        String message = confirmed ? "Your payment has been received and your booking is confirmed."
+                : "Your payment has been received. Your booking is now paid and may still be awaiting venue confirmation.";
+        String text = "Hello %s,\n\n%s\n\n%s\n\nView booking: %s"
+                .formatted(value(scout.getName()), message, details(b, venue), url);
+        emailService.send(scout.getEmail(), confirmed ? "Your Eema booking is confirmed" : "Payment received for your Eema booking", text,
+                html(confirmed ? "Your booking is confirmed" : "Your payment has been received", scout.getName(),
+                        message, detailsHtml(b, venue), "View booking", url));
     }
 
     private void sendOwner(Booking b, String venue, String url) {
@@ -67,17 +205,20 @@ public class BookingNotificationService {
         BookingContactSnapshot scout = b.getScoutContact();
         String scoutDetails = "Scout: %s (%s%s)".formatted(value(scout.getName()), value(scout.getEmail()),
                 scout.getPhone() == null || scout.getPhone().isBlank() ? "" : ", " + scout.getPhone());
-        String text = "Hello %s,\n\nA new paid booking requires your review.\n\n%s\n%s\n\nReview booking: %s"
-                .formatted(value(owner.getName()), details(b, venue), scoutDetails, url);
-        emailService.send(owner.getEmail(), "New paid booking for your Eema venue", text,
-                html("New paid booking", owner.getName(), "A new paid booking requires your review.",
-                        detailsHtml(b, venue) + "<p>" + esc(scoutDetails) + "</p>", "Review booking", url));
+        boolean confirmed = b.getStatus() == BookingStatus.CONFIRMED;
+        String message = confirmed ? "The scout has paid and the booking is confirmed. No further acceptance is required."
+                : "A new paid booking requires your review.";
+        String text = "Hello %s,\n\n%s\n\n%s\n%s\n\nView booking: %s"
+                .formatted(value(owner.getName()), message, details(b, venue), scoutDetails, url);
+        emailService.send(owner.getEmail(), confirmed ? "Confirmed booking for your Eema venue" : "New paid booking for your Eema venue", text,
+                html(confirmed ? "Booking confirmed" : "New paid booking", owner.getName(), message,
+                        detailsHtml(b, venue) + "<p>" + esc(scoutDetails) + "</p>", "View booking", url));
     }
 
     private String details(Booking b, String venue) {
-        return "Venue: %s\nBooking reference: %s\nShoot date: %s\nTime: %s–%s\nAmount: €%s\nStatus: PAID"
+        return "Venue: %s\nBooking reference: %s\nShoot date: %s\nTime: %s–%s\nAmount: €%s\nStatus: %s"
                 .formatted(venue, b.getId(), b.getShootDate().format(DATE), b.getStartTime().format(TIME),
-                        b.getEndTime().format(TIME), money(b.getTotalPaidEur()));
+                        b.getEndTime().format(TIME), money(b.getTotalPaidEur()), b.getStatus());
     }
 
     private String detailsHtml(Booking b, String venue) {
@@ -85,7 +226,7 @@ public class BookingNotificationService {
                 row("Venue", venue) + row("Booking reference", b.getId().toString()) +
                 row("Shoot date", b.getShootDate().format(DATE)) +
                 row("Time", b.getStartTime().format(TIME) + "–" + b.getEndTime().format(TIME)) +
-                row("Amount", "€" + money(b.getTotalPaidEur())) + row("Status", "PAID") + "</table>";
+                row("Amount", "€" + money(b.getTotalPaidEur())) + row("Status", b.getStatus().name()) + "</table>";
     }
 
     private String html(String heading, String name, String intro, String details, String action, String url) {

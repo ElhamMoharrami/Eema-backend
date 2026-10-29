@@ -57,6 +57,16 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.confirmBooking(id));
     }
 
+    @PostMapping("/{id}/accept")
+    public ResponseEntity<BookingDto> acceptRequest(@PathVariable UUID id) {
+        return ResponseEntity.ok(bookingService.acceptRequest(id));
+    }
+
+    @PostMapping("/{id}/decline")
+    public ResponseEntity<BookingDto> declineRequest(@PathVariable UUID id) {
+        return ResponseEntity.ok(bookingService.declineRequest(id));
+    }
+
     @PostMapping("/{id}/cancel")
     public ResponseEntity<BookingDto> cancelBooking(@PathVariable UUID id) {
         return ResponseEntity.ok(bookingService.cancelBooking(id));

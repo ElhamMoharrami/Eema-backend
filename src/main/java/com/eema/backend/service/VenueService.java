@@ -1,6 +1,7 @@
 package com.eema.backend.service;
 
 import com.eema.backend.dto.request.CreateVenueRequest;
+import com.eema.backend.dto.request.UpdateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.ArrayList;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,8 @@ public class VenueService {
     private final UserRepository userRepository;
     private final VenueMapper venueMapper;
     private final CurrentUserService currentUserService;
+    private final VenueMediaPolicy mediaPolicy;
+    private final FileStorage fileStorage;
 
     @Transactional
     public VenueDto createVenue(
@@ -58,6 +63,8 @@ public class VenueService {
                     "Only users with OWNER role can create venues"
             );
         }
+
+        mediaPolicy.validateClipUrl(request.clipUrl());
 
         Venue venue =
                 venueMapper.toEntity(request);
@@ -133,11 +140,11 @@ public class VenueService {
     @Transactional
     public VenueDto updateVenue(
             UUID id,
-            CreateVenueRequest request
+            UpdateVenueRequest request
     ) {
 
         Venue venue =
-                venueRepository.findById(id)
+                venueRepository.findByIdForUpdate(id)
                         .orElseThrow(() ->
                                 new NotFoundException(
                                         "Venue not found"
@@ -155,10 +162,12 @@ public class VenueService {
             );
         }
 
-        venueMapper.updateEntityFromDto(
-                request,
-                venue
-        );
+        List<String> validatedPhotos = mediaPolicy.validatePhotos(request.photoPaths());
+        mediaPolicy.validateClipUrl(request.clipUrl());
+        mediaPolicy.validateTimezone(request.timezone());
+
+        venueMapper.updateEntityFromDto(request, venue);
+        venue.setPhotoPaths(validatedPhotos);
 
         Venue updatedVenue =
                 venueRepository.save(venue);
@@ -172,6 +181,37 @@ public class VenueService {
         return venueMapper.toDto(
                 updatedVenue
         );
+    }
+
+    @Transactional
+    public VenueDto uploadAndAttachPhoto(UUID id, MultipartFile file) {
+        Venue venue = venueRepository.findByIdForUpdate(id)
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
+        User user = currentUserService.getCurrentUser();
+        if (!isAdmin(user) && !isVenueOwner(user, venue)) {
+            throw new ForbiddenException("Only the venue owner or admin can add venue photos");
+        }
+        List<String> photos = new ArrayList<>(venue.getPhotoPaths() == null ? List.of() : venue.getPhotoPaths());
+        if (photos.size() >= VenueMediaPolicy.MAX_PHOTOS) {
+            throw new com.eema.backend.exception.BadRequestException(
+                    "A venue can have at most " + VenueMediaPolicy.MAX_PHOTOS + " photos");
+        }
+        String reference = fileStorage.store(file);
+        try {
+            if (!mediaPolicy.isStoredReference(reference)) throw new IllegalStateException("Storage returned an invalid media reference");
+            photos.add(reference);
+            venue.setPhotoPaths(mediaPolicy.validatePhotos(photos));
+            Venue saved = venueRepository.saveAndFlush(venue);
+            log.info("Venue photo attached: venueId={}, userId={}", id, user.getId());
+            return venueMapper.toDto(saved);
+        } catch (RuntimeException exception) {
+            try { fileStorage.delete(reference); }
+            catch (RuntimeException cleanupFailure) {
+                log.error("Failed to clean up unattached upload: venueId={}, errorType={}",
+                        id, cleanupFailure.getClass().getSimpleName());
+            }
+            throw exception;
+        }
     }
 
     @Transactional

@@ -48,6 +48,10 @@ public record BookingDto(
         OffsetDateTime createdAt,
         OffsetDateTime paidAt,
         OffsetDateTime confirmedAt,
-        OffsetDateTime cancelledAt
+        OffsetDateTime cancelledAt,
+        OffsetDateTime acceptedAt,
+        OffsetDateTime paymentExpiresAt,
+        OffsetDateTime declinedAt,
+        OffsetDateTime expiredAt
 ) {
 }

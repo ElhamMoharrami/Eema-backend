@@ -41,4 +41,17 @@ class RefundServiceTest {
         assertThrows(BadRequestException.class, () -> service.requestFullRefund(bookingId));
         verify(coordinator).markRejected(bookingId);
     }
+
+    @Test
+    void latePaymentProviderFailureRetainsCoordinatorStateForSafeRetry() {
+        UUID bookingId = UUID.randomUUID();
+        RefundCoordinator.Claim claim = new RefundCoordinator.Claim(
+                bookingId, "tr_late", new BigDecimal("100.00"), UUID.randomUUID());
+        when(coordinator.claimLatePayment(bookingId)).thenReturn(java.util.Optional.of(claim));
+        when(mollie.createFullRefund(anyString(), eq(bookingId), any(), eq(claim.idempotencyKey())))
+                .thenThrow(new org.springframework.web.client.ResourceAccessException("timeout"));
+
+        assertThrows(BadRequestException.class, () -> service.requestLatePaymentRefund(bookingId));
+        verify(coordinator, never()).markRejected(bookingId);
+    }
 }

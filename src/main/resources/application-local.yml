@@ -31,6 +31,12 @@ server:
     include-binding-errors: never
 
 app:
+  availability-inquiry:
+    offer-valid-hours: ${AVAILABILITY_INQUIRY_OFFER_VALID_HOURS:48}
+    expiration-scan-delay-ms: ${AVAILABILITY_INQUIRY_EXPIRATION_SCAN_DELAY_MS:60000}
+  booking-workflow:
+    payment-window-hours: ${BOOKING_PAYMENT_WINDOW_HOURS:24}
+    expiration-scan-delay-ms: ${BOOKING_EXPIRATION_SCAN_DELAY_MS:60000}
   jwt:
     secret: ${JWT_SECRET:bG9jYWwtZGV2ZWxvcG1lbnQtb25seS1qd3Qtc2VjcmV0LTMyaA==}
     access-token-expiry-minutes: 15

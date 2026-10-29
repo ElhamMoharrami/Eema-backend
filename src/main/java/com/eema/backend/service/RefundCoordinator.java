@@ -13,6 +13,7 @@ import com.eema.backend.entity.BookingEventPayload;
 import com.eema.backend.entity.enums.ActorType;
 import com.eema.backend.entity.enums.BookingEventType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Optional;
+import com.eema.backend.event.LatePaymentRefundInitiatedEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class RefundCoordinator {
     private final BookingEventRepository eventRepository;
     private final BookingFinancials financials;
     private final BookingStateMachine stateMachine;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Claim claim(UUID bookingId, UUID adminId, String adminName) {
@@ -57,6 +61,40 @@ public class RefundCoordinator {
                     Map.of("amount", booking.getRefundAmountEur(), "currency", "EUR"));
         }
         return new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(), booking.getRefundIdempotencyKey());
+    }
+
+    @Transactional
+    public Optional<Claim> claimLatePayment(UUID bookingId) {
+        Booking booking = locked(bookingId);
+        if (booking.getStatus() != BookingStatus.EXPIRED || booking.getLatePaymentDetectedAt() == null) {
+            throw new ConflictException("Booking is not an expired late payment");
+        }
+        if (booking.getMolliePaymentId() == null) throw new ConflictException("Booking has no Mollie payment");
+
+        if (booking.getRefundStatus() == RefundStatus.REFUNDED
+                || booking.getRefundStatus() == RefundStatus.QUEUED
+                || booking.getRefundStatus() == RefundStatus.PENDING
+                || booking.getRefundStatus() == RefundStatus.PROCESSING) {
+            return Optional.empty();
+        }
+
+        OffsetDateTime now = OffsetDateTime.now();
+        if (booking.getRefundStatus() != RefundStatus.CREATING) {
+            booking.setRefundStatus(RefundStatus.CREATING);
+            booking.setRefundIdempotencyKey(UUID.randomUUID());
+            booking.setRefundAmountEur(financials.money(booking.getTotalPaidEur()));
+            booking.setRefundRequestedAt(now);
+            append(bookingId, BookingEventType.REFUND_REQUESTED, null, "SYSTEM", ActorType.SYSTEM,
+                    Map.of("amount", booking.getRefundAmountEur(), "currency", "EUR", "reason", "late_payment"));
+            append(bookingId, BookingEventType.LATE_PAYMENT_REFUND_REQUESTED, null, "SYSTEM", ActorType.SYSTEM,
+                    Map.of("amount", booking.getRefundAmountEur(), "currency", "EUR"));
+        }
+        if (booking.getLatePaymentNotificationAt() == null) {
+            booking.setLatePaymentNotificationAt(now);
+            eventPublisher.publishEvent(new LatePaymentRefundInitiatedEvent(bookingId));
+        }
+        return Optional.of(new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(),
+                booking.getRefundIdempotencyKey()));
     }
 
     @Transactional
@@ -100,10 +138,18 @@ public class RefundCoordinator {
         RefundStatus previous = booking.getRefundStatus();
         booking.setRefundStatus(target);
         if (target == RefundStatus.REFUNDED) {
-            stateMachine.requireTransition(booking.getStatus(), BookingStatus.REFUNDED);
-            booking.setStatus(BookingStatus.REFUNDED);
+            boolean lateExpiredPayment = booking.getStatus() == BookingStatus.EXPIRED
+                    && booking.getLatePaymentDetectedAt() != null;
+            if (!lateExpiredPayment) {
+                stateMachine.requireTransition(booking.getStatus(), BookingStatus.REFUNDED);
+                booking.setStatus(BookingStatus.REFUNDED);
+            }
             booking.setRefundedAt(OffsetDateTime.now());
             booking.setOwnerPayoutEur(BigDecimal.ZERO.setScale(2));
+            if (lateExpiredPayment) {
+                append(booking.getId(), BookingEventType.LATE_PAYMENT_REFUND_COMPLETED,
+                        null, "Mollie", ActorType.WEBHOOK, Map.of());
+            }
         }
         Map<String, Object> payload = new java.util.HashMap<>();
         payload.put("from", previous.name());

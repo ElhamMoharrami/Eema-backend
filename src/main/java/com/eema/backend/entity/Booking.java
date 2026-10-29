@@ -250,4 +250,22 @@ public class Booking {
 
     @Column(name = "cancelled_at")
     private OffsetDateTime cancelledAt;
+
+    @Column(name = "accepted_at")
+    private OffsetDateTime acceptedAt;
+
+    @Column(name = "payment_expires_at")
+    private OffsetDateTime paymentExpiresAt;
+
+    @Column(name = "declined_at")
+    private OffsetDateTime declinedAt;
+
+    @Column(name = "expired_at")
+    private OffsetDateTime expiredAt;
+
+    @Column(name = "late_payment_detected_at")
+    private OffsetDateTime latePaymentDetectedAt;
+
+    @Column(name = "late_payment_notification_at")
+    private OffsetDateTime latePaymentNotificationAt;
 }

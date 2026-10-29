@@ -1,6 +1,7 @@
 package com.eema.backend.controller;
 
 import com.eema.backend.dto.request.CreateVenueRequest;
+import com.eema.backend.dto.request.UpdateVenueRequest;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/venues")
@@ -75,5 +77,20 @@ public class VenueController {
         UUID ownerId = user.getId();
         List<VenueDto> venues = venueService.getVenuesByOwner(ownerId);
         return ResponseEntity.ok(venues);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    public ResponseEntity<VenueDto> updateVenue(@PathVariable UUID id,
+                                                 @Valid @RequestBody UpdateVenueRequest request) {
+        return ResponseEntity.ok(venueService.updateVenue(id, request));
+    }
+
+    @PostMapping(value = "/{id}/photos", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    public ResponseEntity<VenueDto> uploadAndAttachPhoto(@PathVariable UUID id,
+                                                         @RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(venueService.uploadAndAttachPhoto(id, file));
     }
 }

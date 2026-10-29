@@ -35,7 +35,10 @@ public class WebhookService {
         log.info("Mollie payment fetched: paymentId={}, status={}", payment.id(), payment.status());
 
         if ("paid".equalsIgnoreCase(payment.status())) {
-            bookingService.processPaidPayment(payment);
+            BookingService.PaidPaymentOutcome outcome = bookingService.processPaidPayment(payment);
+            if (outcome.result() == BookingService.PaidPaymentResult.LATE_PAYMENT) {
+                refundService.requestLatePaymentRefund(outcome.bookingId());
+            }
         }
 
         if (!"paid".equalsIgnoreCase(payment.status())) {

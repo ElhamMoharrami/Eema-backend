@@ -5,6 +5,7 @@ import com.eema.backend.entity.Booking;
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.PaymentCreationStatus;
 import com.eema.backend.exception.ConflictException;
+import com.eema.backend.exception.BadRequestException;
 import com.eema.backend.repository.BookingRepository;
 import org.junit.jupiter.api.Test;
 
@@ -23,12 +24,13 @@ class PaymentCreationCoordinatorTest {
     @Test
     void concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent() {
         UUID id = UUID.randomUUID();
-        Booking booking = Booking.builder().id(id).status(BookingStatus.PENDING)
+        UUID scoutId = UUID.randomUUID();
+        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.PENDING)
                 .venuePriceEur(new BigDecimal("100.00")).build();
         when(repository.findByIdForUpdate(id)).thenReturn(Optional.of(booking));
 
-        PaymentCreationCoordinator.Claim first = coordinator.claim(id);
-        PaymentCreationCoordinator.Claim concurrent = coordinator.claim(id);
+        PaymentCreationCoordinator.Claim first = coordinator.claim(id, scoutId);
+        PaymentCreationCoordinator.Claim concurrent = coordinator.claim(id, scoutId);
         assertEquals(first.idempotencyKey(), concurrent.idempotencyKey());
         assertEquals(PaymentCreationStatus.CREATING, booking.getPaymentCreationStatus());
 
@@ -44,10 +46,30 @@ class PaymentCreationCoordinatorTest {
     @Test
     void refusesUnsafeRetryOutsideMollieReplayWindow() {
         UUID id = UUID.randomUUID();
-        Booking booking = Booking.builder().id(id).status(BookingStatus.PENDING)
+        UUID scoutId = UUID.randomUUID();
+        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.PENDING)
                 .venuePriceEur(BigDecimal.TEN).paymentCreationStatus(PaymentCreationStatus.CREATING)
                 .paymentIdempotencyKey(UUID.randomUUID()).paymentCreationStartedAt(OffsetDateTime.now().minusHours(2)).build();
         when(repository.findByIdForUpdate(id)).thenReturn(Optional.of(booking));
-        assertThrows(ConflictException.class, () -> coordinator.claim(id));
+        assertThrows(ConflictException.class, () -> coordinator.claim(id, scoutId));
+    }
+
+    @Test
+    void checkoutBeforeOwnerApprovalIsRejected() {
+        UUID id = UUID.randomUUID();
+        UUID scoutId = UUID.randomUUID();
+        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.REQUESTED).build();
+        when(repository.findByIdForUpdate(id)).thenReturn(Optional.of(booking));
+        assertThrows(BadRequestException.class, () -> coordinator.claim(id, scoutId));
+    }
+
+    @Test
+    void checkoutAfterApprovalExpirationIsRejected() {
+        UUID id = UUID.randomUUID();
+        UUID scoutId = UUID.randomUUID();
+        Booking booking = Booking.builder().id(id).scoutId(scoutId).status(BookingStatus.AWAITING_PAYMENT)
+                .paymentExpiresAt(OffsetDateTime.now().minusMinutes(1)).build();
+        when(repository.findByIdForUpdate(id)).thenReturn(Optional.of(booking));
+        assertThrows(ConflictException.class, () -> coordinator.claim(id, scoutId));
     }
 }

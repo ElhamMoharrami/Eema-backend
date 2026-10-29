@@ -24,10 +24,13 @@ public class StorageService implements FileStorage {
 
     private final Path rootLocation;
     private final String fileUrlPrefix;
+    private final VenueMediaPolicy mediaPolicy;
 
     public StorageService(AppProperties appProperties) {
         this.rootLocation = Paths.get(appProperties.storage().uploadDir()).toAbsolutePath().normalize();
-        this.fileUrlPrefix = appProperties.storage().fileUrlPrefix();
+        String configuredPrefix = appProperties.storage().fileUrlPrefix();
+        this.fileUrlPrefix = configuredPrefix.endsWith("/") ? configuredPrefix : configuredPrefix + "/";
+        this.mediaPolicy = new VenueMediaPolicy(appProperties);
 
         try {
             Files.createDirectories(rootLocation);
@@ -84,7 +87,7 @@ public class StorageService implements FileStorage {
                 throw new IllegalArgumentException("Invalid file path");
             }
             Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
+            if (resource.exists() && resource.isReadable()) {
                 return resource;
             } else {
                 throw new RuntimeException("Could not read file: " + filename);
@@ -92,6 +95,15 @@ public class StorageService implements FileStorage {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void delete(String storageReference) {
+        String filename = mediaPolicy.filename(storageReference);
+        Path target = rootLocation.resolve(filename).normalize();
+        if (!target.startsWith(rootLocation)) throw new IllegalArgumentException("Invalid storage path");
+        try { Files.deleteIfExists(target); }
+        catch (IOException exception) { throw new IllegalStateException("Failed to delete stored upload", exception); }
     }
 
     public void deleteAll() {

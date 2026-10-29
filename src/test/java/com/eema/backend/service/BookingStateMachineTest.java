@@ -12,6 +12,10 @@ class BookingStateMachineTest {
 
     @Test
     void permitsDefinedTransitions() {
+        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.AWAITING_PAYMENT));
+        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.DECLINED));
+        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.AWAITING_PAYMENT, BookingStatus.CONFIRMED));
+        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.AWAITING_PAYMENT, BookingStatus.EXPIRED));
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PENDING, BookingStatus.PAID));
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PENDING, BookingStatus.CANCELLED));
         assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.PAID, BookingStatus.CONFIRMED));

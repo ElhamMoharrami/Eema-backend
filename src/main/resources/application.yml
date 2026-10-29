@@ -27,7 +27,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: health,metrics
   endpoint:
     health:
       show-details: never
@@ -42,6 +42,17 @@ logging:
     org.apache.http.wire: WARN
 
 app:
+  workflow-observability:
+    scan-delay-ms: ${WORKFLOW_OBSERVABILITY_SCAN_DELAY_MS:300000}
+    payment-creating-stuck-minutes: ${PAYMENT_CREATING_STUCK_MINUTES:60}
+    refund-stuck-minutes: ${REFUND_STUCK_MINUTES:1440}
+    fee-unreconciled-minutes: ${FEE_UNRECONCILED_MINUTES:1440}
+  availability-inquiry:
+    offer-valid-hours: ${AVAILABILITY_INQUIRY_OFFER_VALID_HOURS:48}
+    expiration-scan-delay-ms: ${AVAILABILITY_INQUIRY_EXPIRATION_SCAN_DELAY_MS:60000}
+  booking-workflow:
+    payment-window-hours: ${BOOKING_PAYMENT_WINDOW_HOURS:24}
+    expiration-scan-delay-ms: ${BOOKING_EXPIRATION_SCAN_DELAY_MS:60000}
   jwt:
     secret: ${JWT_SECRET}
     access-token-expiry-minutes: 15
