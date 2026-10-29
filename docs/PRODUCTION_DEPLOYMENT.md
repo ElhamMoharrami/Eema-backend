@@ -1,5 +1,7 @@
 # Eema production deployment
 
+For the provider-neutral staging environment inventory, provisioning order, first-ADMIN procedure, and sandbox integration setup, see [STAGING_DEPLOYMENT.md](STAGING_DEPLOYMENT.md).
+
 Eema expects an HTTPS frontend, an HTTPS backend API, and an HTTPS Mollie webhook. A reverse proxy or load balancer should terminate TLS and forward standard `Forwarded`/`X-Forwarded-*` headers. The backend uses Spring's forwarded-header support.
 
 Docker Compose in this repository is for local development, not production. Deploy the immutable backend image on a managed container platform with at least two replicas only after PostgreSQL and S3-compatible storage are shared external services.

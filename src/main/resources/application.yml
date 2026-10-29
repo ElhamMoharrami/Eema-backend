@@ -26,7 +26,7 @@ spring:
         size: ${SCHEDULER_POOL_SIZE:2}
 
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     context-path: /api
   forward-headers-strategy: framework
