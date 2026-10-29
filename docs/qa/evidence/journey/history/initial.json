@@ -1,0 +1,56 @@
+{
+  "reported": "12",
+  "failures": "1",
+  "errors": "0",
+  "cases": [
+    {
+      "name": "suspensionPreservesPaidHistoryAndRejectsOldRequestUntilReactivation",
+      "result": "FAIL"
+    },
+    {
+      "name": "cancellationJourney(String, String, String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "cancellationJourney(String, String, String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "cancellationJourney(String, String, String)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "cancellationJourney(String, String, String)[4]",
+      "result": "PASS"
+    },
+    {
+      "name": "cancellationJourney(String, String, String)[5]",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiryAcceptanceThroughConfirmationDoesNotExpandCalendar",
+      "result": "PASS"
+    },
+    {
+      "name": "adminIncidentAndLiabilityOperationsStayAuditedAndScoped",
+      "result": "PASS"
+    },
+    {
+      "name": "scoutAndOwnerOnboardingThroughReceiptAndRecordedPayout",
+      "result": "PASS"
+    },
+    {
+      "name": "passwordRecoveryRetainsBookingAndEstablishedJwtSemantics",
+      "result": "PASS"
+    },
+    {
+      "name": "policyReplacementPreservesPaidReceiptAndResumesNewCommitment",
+      "result": "PASS"
+    },
+    {
+      "name": "competingRequestsKeepWinnerAndDenyStaleLoserCheckout",
+      "result": "PASS"
+    }
+  ],
+  "diagnosis": "Harness expected 404 for anonymous suspended venue detail; established VenueService contract returns 403. No product change."
+}

@@ -173,7 +173,7 @@ class OperationsNotificationIntegrationTest extends BookingCoreSupport {
         UUID marker=UUID.randomUUID();
         upgrade.update("insert into users(id,email,password_hash,full_name,role) values(?,?,'synthetic-hash','QA migration marker','SCOUT')",marker,"migration@example.test");
         String before=upgrade.queryForObject("select row_to_json(u)::text from users u where id=?",String.class,marker);
-        var migration=org.flywaydb.core.Flyway.configure().dataSource(ds).locations("classpath:db/migration/common").load().migrate();
+        var migration=org.flywaydb.core.Flyway.configure().dataSource(ds).locations("classpath:db/migration/common").target("14").load().migrate();
         assertEquals(1,migration.migrationsExecuted);assertEquals(before,upgrade.queryForObject("select row_to_json(u)::text from users u where id=?",String.class,marker));
         assertEquals(0,upgrade.queryForObject("select count(*) from notification_outbox",Integer.class));
         assertEquals(3,upgrade.queryForObject("select count(*) from pg_indexes where tablename='notification_outbox' and indexname in ('notification_due_idx','notification_lease_idx','notification_failed_idx')",Integer.class));

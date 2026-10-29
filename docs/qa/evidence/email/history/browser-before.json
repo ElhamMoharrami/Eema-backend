@@ -1,0 +1,63 @@
+{
+  "scope": "Actual production frontend and real browser; synthetic intercepted auth/domain responses, no real provider or backend transition",
+  "checks": [
+    {
+      "route": "/bookings/10000000-0000-0000-0000-000000000001",
+      "role": "SCOUT",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/10000000-0000-0000-0000-000000000001",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "role": "SCOUT",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "role": "OWNER",
+      "result": "FAIL",
+      "error": "Browser timeout: authenticated CTA content"
+    },
+    {
+      "route": "/owner/venues/10000000-0000-0000-0000-000000000001",
+      "role": "OWNER",
+      "result": "FAIL",
+      "error": "Browser timeout: authenticated CTA content"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "role": "OWNER",
+      "result": "FAIL",
+      "error": "Browser timeout: authenticated CTA content"
+    },
+    {
+      "route": "/verify-email",
+      "result": "FAIL",
+      "error": "Browser timeout: token action success"
+    },
+    {
+      "route": "/reset-password",
+      "result": "FAIL",
+      "error": "Browser timeout: token action success"
+    }
+  ],
+  "errors": [],
+  "result": "FAIL"
+}

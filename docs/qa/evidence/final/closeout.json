@@ -1,0 +1,77 @@
+{
+  "total": 703,
+  "pass": 698,
+  "fail": 0,
+  "blockedStagingExternal": 5,
+  "blockedDecisionRequired": 0,
+  "deferredIndexed": 0,
+  "deferredSeparateATRequirements": 11,
+  "localTechnicalValidationComplete": true,
+  "productionReadinessClaimed": false,
+  "unresolvedLocalP0P1": [],
+  "providerReportSha256": "b7dd9adc7f03bdccd877531da1cf0b4f5edc8cb1acf4f74f8688435fbd4ac6ae",
+  "backendGates": {
+    "unit": {
+      "reported": 1981,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1981,
+      "logSha256": "3779ae1ee842394a1803d024b003a2458a3dcd221160a12f517d402547dca61e"
+    },
+    "postgres": {
+      "reported": 1084,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 13,
+      "passed": 1071,
+      "logSha256": "83efd8dc8d7f14ccff6c1a67ec3026e91ef3067ef355df5236320b0baf59d939"
+    },
+    "package": {
+      "reported": 1981,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1981,
+      "logSha256": "fcb7c207e0e400e77a0595b1fe030684dfe7c3333ec174b7dd8e7171bc81ab7f"
+    }
+  },
+  "frontendGates": {
+    "typecheck": {
+      "result": "PASS",
+      "logSha256": "d9dd29a4c1870c7075110b06bc6fe77786715d45ea4fddc996006f5bb0e5e243"
+    },
+    "lint": {
+      "result": "PASS",
+      "logSha256": "f210152ca9cc47490cac552467fa5d7c8f27c013ff2bc11b2141628240b3e0fa",
+      "warnings": 19,
+      "errors": 0
+    },
+    "build": {
+      "result": "PASS",
+      "logSha256": "6f99211cbd081d64bc1a189d332192128e199176d0dbac9ef2734db62bc34258"
+    },
+    "runtime": {
+      "node": "22.22.1",
+      "next": "16.3.5",
+      "react": "19.3.0",
+      "eslint": "9.39.5",
+      "bundler": "webpack"
+    },
+    "tree": {
+      "result": "PASS",
+      "logSha256": "dcd4dbf8354086a89bc6a0830da6d55e245e5e41dccfba4d70e3f97969ac03e6"
+    },
+    "browser": "PASS",
+    "browserChecks": {
+      "browser/browser.json": 1006,
+      "browser/accessibility.json": 112,
+      "actions/browser-actions.json": 75,
+      "expiry-browser.json": 10,
+      "session-browser.json": 1,
+      "email-browser.json": 9,
+      "cala-http.json": 4
+    },
+    "clientHarnessesPassed": 9
+  }
+}

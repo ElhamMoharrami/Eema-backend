@@ -1,0 +1,36 @@
+{
+  "domain": "CALA",
+  "scenarioIds": [
+    "CALA-001"
+  ],
+  "localFocusedChecks": 18,
+  "localHttpChecks": 3,
+  "frontendGates": "PASS",
+  "backendUnitTests": 1078,
+  "backendPostgresGate": "PASS",
+  "backendCleanPackage": "PASS",
+  "provider": "BLOCKED \u2014 STAGING/EXTERNAL (preserved unchanged)",
+  "nextLocallyExecutableDomain": "EMAIL-001\u2013031",
+  "remainingDomains": [
+    "EMAIL",
+    "JOURNEY",
+    "INPUT",
+    "API",
+    "STATE",
+    "AUTO"
+  ],
+  "realScreenReader": "DEFERRED / NOT EXECUTED",
+  "decisionsRequired": [],
+  "backendHarnessCleanup": "PASS focused 14 cases",
+  "counts": {
+    "PASS": 1,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "resolvedDefects": [
+    "CALA-DEF-001",
+    "CALA-DEF-002",
+    "CALA-DEF-003",
+    "CALA-DEF-004"
+  ]
+}

@@ -1,0 +1,219 @@
+[
+  {
+    "id": "EMAIL-001",
+    "title": "Registration verification",
+    "baselineExpected": "Recipient=active registering/resending account; subject exactly “Verify your Eema email”; CTA uses configured frontend base + /verify-email?token=…. Critical content: Raw token only in transactional link; expiry; account not yet verified. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-002",
+    "title": "Password reset",
+    "baselineExpected": "Recipient=active existing account; subject exactly “Reset your Eema password”; CTA uses configured frontend base + /reset-password?token=…. Critical content: Generic request response, reset link and expiry; no plaintext password. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-003",
+    "title": "Request submitted scout",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your request was sent”; CTA uses configured frontend base + /bookings/{id}. Critical content: REQUESTED, not paid/confirmed, owner response deadline. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-004",
+    "title": "Request submitted owner",
+    "baselineExpected": "Recipient=owner contact snapshot; subject exactly “New booking request”; CTA uses configured frontend base + /bookings/{id}. Critical content: Scout contact/brief, unreserved slot and response deadline. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-005",
+    "title": "Request accepted",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your booking request was accepted”; CTA uses configured frontend base + /bookings/{id}. Critical content: AWAITING_PAYMENT, payment deadline and Pay now CTA. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-006",
+    "title": "Request declined",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your booking request was declined”; CTA uses configured frontend base + /bookings/{id}. Critical content: DECLINED, no payment taken. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-007",
+    "title": "Request expired",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your booking request expired”; CTA uses configured frontend base + /bookings/{id}. Critical content: No response by deadline; EXPIRED, not owner decline. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-008",
+    "title": "Request unavailable",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “The requested time is no longer available”; CTA uses configured frontend base + /bookings/{id}. Critical content: Another reservation; UNAVAILABLE, not deliberate decline. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-009",
+    "title": "Payment window expired",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your payment window expired”; CTA uses configured frontend base + /bookings/{id}. Critical content: Slot released, not confirmed. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-010",
+    "title": "Payment confirmed scout",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your Eema booking is confirmed”; CTA uses configured frontend base + /bookings/{id}. Critical content: Confirmed paid snapshot and correct date/time/contact. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-011",
+    "title": "Payment confirmed owner",
+    "baselineExpected": "Recipient=owner contact snapshot; subject exactly “Confirmed booking for your Eema venue”; CTA uses configured frontend base + /bookings/{id}. Critical content: Confirmed booking, no claim payout already transferred. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-012",
+    "title": "Late payment",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your late Eema payment is being refunded”; CTA uses configured frontend base + /bookings/{id}. Critical content: EXPIRED/not confirmed, full refund initiated not completed. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-013",
+    "title": "Cancellation scout notification",
+    "baselineExpected": "Recipient=scout contact snapshot for all cancellation actors; subject exactly “Your Eema booking was cancelled”; CTA uses configured frontend base + /bookings/{id}. Critical content: Refund initiated versus no refund due; correct owner/admin/scout semantics. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-014",
+    "title": "Scout cancellation owner notification",
+    "baselineExpected": "Recipient=owner contact snapshot only when SCOUT cancelled; subject exactly “A scout cancelled an Eema booking”; CTA uses configured frontend base + /bookings/{id}. Critical content: Settlement provisional pending fee reconciliation. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-015",
+    "title": "Cancellation refund completed",
+    "baselineExpected": "Recipient=scout contact snapshot; subject exactly “Your Eema refund has been processed”; CTA uses configured frontend base + /bookings/{id}. Critical content: Authoritative REFUNDED provider status; bank settlement timing may vary. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-016",
+    "title": "Inquiry created",
+    "baselineExpected": "Recipient=current venue owner account; subject exactly “New availability inquiry”; CTA uses configured frontend base + /owner/inquiries. Critical content: Requested date/time, scout and message; not booking confirmation. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-017",
+    "title": "Inquiry offered",
+    "baselineExpected": "Recipient=current scout account; subject exactly “The owner offered you a time”; CTA uses configured frontend base + /scout/inquiries. Critical content: Offered/original intervals, timezone, expiry, Review offer CTA. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-018",
+    "title": "Inquiry declined",
+    "baselineExpected": "Recipient=current scout account; subject exactly “Your availability inquiry was declined”; CTA uses configured frontend base + /scout/inquiries. Critical content: No booking/payment created. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-019",
+    "title": "Inquiry offer expired",
+    "baselineExpected": "Recipient=current scout account; subject exactly “Your availability offer expired”; CTA uses configured frontend base + /scout/inquiries. Critical content: One-off offer no longer accept-able. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-020",
+    "title": "Owner verification submitted",
+    "baselineExpected": "Recipient=owner account; subject exactly “Owner verification submitted”; CTA uses configured frontend base + /owner/verification. Critical content: Manual review pending. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-021",
+    "title": "Owner verification approved",
+    "baselineExpected": "Recipient=owner account; subject exactly “Your Eema owner verification was approved”; CTA uses configured frontend base + /owner/verification. Critical content: Can submit ready venue; not automatic bank verification. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-022",
+    "title": "Owner verification rejected",
+    "baselineExpected": "Recipient=owner account; subject exactly “Your Eema owner verification needs attention”; CTA uses configured frontend base + /owner/verification. Critical content: Safe owner-visible reason. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-023",
+    "title": "Venue submitted",
+    "baselineExpected": "Recipient=venue owner account; subject exactly “Venue submitted for review”; CTA uses configured frontend base + /owner/venues/{id}. Critical content: PENDING not live. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-024",
+    "title": "Venue approved",
+    "baselineExpected": "Recipient=venue owner account; subject exactly “Your venue is live”; CTA uses configured frontend base + /owner/venues/{id}. Critical content: ACTIVE. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-025",
+    "title": "Venue changes requested",
+    "baselineExpected": "Recipient=venue owner account; subject exactly “Changes requested for your venue”; CTA uses configured frontend base + /owner/venues/{id}. Critical content: DRAFT, safe reason. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-026",
+    "title": "Venue suspended",
+    "baselineExpected": "Recipient=venue owner account; subject exactly “Your venue was suspended”; CTA uses configured frontend base + /owner/venues/{id}. Critical content: No longer publicly bookable; no claim existing bookings cancelled. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-027",
+    "title": "Venue reactivated",
+    "baselineExpected": "Recipient=venue owner account; subject exactly “Your venue is live again”; CTA uses configured frontend base + /owner/venues/{id}. Critical content: ACTIVE after revalidation. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-028",
+    "title": "Destination submitted",
+    "baselineExpected": "Recipient=owner account; subject exactly “Payout destination submitted”; CTA uses configured frontend base + /owner/payout-destination. Critical content: Pending manual review; no full IBAN. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-029",
+    "title": "Destination verified",
+    "baselineExpected": "Recipient=owner account; subject exactly “Payout destination verified”; CTA uses configured frontend base + /owner/payout-destination. Critical content: May be used for future eligible payouts, not paid. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-030",
+    "title": "Destination rejected",
+    "baselineExpected": "Recipient=owner account; subject exactly “Your payout destination needs attention”; CTA uses configured frontend base + /owner/payout-destination. Critical content: Safe reason, no full IBAN. Escape user content; no keys/password/full IBAN; no false money claim. Token in verification/reset link is the intentional exception to no-secrets-in-mail.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  },
+  {
+    "id": "EMAIL-031",
+    "title": "Unsupported notification events remain explicit gaps",
+    "baselineExpected": "No dedicated lifecycle email is currently implemented for these events. Owner gets cancellation email only for SCOUT cancellation; incidents have no email. Do not invent delivery requirements as current behavior; business owner decides needed communications.",
+    "result": "PASS",
+    "scope": "Local template/transaction/CTA contract; real inbox delivery remains external"
+  }
+]

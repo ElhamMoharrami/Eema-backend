@@ -1,0 +1,198 @@
+[
+  {
+    "id": "INPUT-001",
+    "dto": "AcceptPoliciesRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-002",
+    "dto": "CancelBookingRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-003",
+    "dto": "CreateAvailabilityInquiryRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-004",
+    "dto": "CreateAvailabilityOverrideRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-005",
+    "dto": "CreateBookingRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-006",
+    "dto": "CreateIncidentRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-007",
+    "dto": "CreatePayoutDestinationRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-008",
+    "dto": "CreatePolicyVersionRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-009",
+    "dto": "CreateVenueRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-010",
+    "dto": "EmailAddressRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-011",
+    "dto": "LoginRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-012",
+    "dto": "MarkOwnerPayoutPaidRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-013",
+    "dto": "MatchRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-014",
+    "dto": "OfferAvailabilityInquiryRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-015",
+    "dto": "OptionalNoteRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-016",
+    "dto": "OwnerVerificationApproveRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-017",
+    "dto": "OwnerVerificationSubmitRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-018",
+    "dto": "ReasonRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-019",
+    "dto": "RefreshRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-020",
+    "dto": "RegisterRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-021",
+    "dto": "ResetPasswordRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-022",
+    "dto": "ResolveIncidentRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-023",
+    "dto": "ScoutContactRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-024",
+    "dto": "UpdateVenueAvailabilitySettingsRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-025",
+    "dto": "UpdateVenueRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-026",
+    "dto": "UpdateWeeklyAvailabilityRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-027",
+    "dto": "VerifyEmailRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "INPUT-028",
+    "dto": "WeeklyIntervalRequest",
+    "status": "PASS",
+    "proof": "Explicit DTO835 boundary table, focused PostgreSQL6 and migration1, plus current domain integration suites",
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  }
+]

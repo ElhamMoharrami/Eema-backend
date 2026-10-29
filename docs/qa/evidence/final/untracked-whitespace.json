@@ -1,0 +1,21 @@
+[
+  {
+    "repository": "Eema-backend",
+    "trackedDiffCheck": "PASS",
+    "untrackedFilesChecked": 202,
+    "warnings": [
+      {
+        "path": "docs/qa/evidence/ux/history/before-private-alpha-deferral/representative-at-results.csv",
+        "warning": "Existing historical CRLF normalization warning; preserved unchanged"
+      }
+    ],
+    "result": "PASS"
+  },
+  {
+    "repository": "Eema-frontend",
+    "trackedDiffCheck": "PASS",
+    "untrackedFilesChecked": 1,
+    "warnings": [],
+    "result": "PASS"
+  }
+]

@@ -1,6 +1,8 @@
 # UX execution report
 
-**UX-001–035: 24 PASS / 0 FAIL / 11 BLOCKED under the approved representative acceptance model. Domain: BLOCKED.** Automated coverage of all 35 routes remains PASS (918 executed checks). The 11 selected route scenarios retain distinct actual screen-reader acceptance work; the other 24 no longer require duplicate manual execution of shared patterns. Their PASS does not certify actual AT or close the shared domain acceptance gate. **UX-ENV-001 remains open** until all 11 representatives pass. This corrects test scope, not product behavior or an accessibility waiver. UXACT has not started.
+**UX-001–035: 35 PASS / 0 FAIL / 0 BLOCKED for the current private-alpha/local scope.** Separately: **11 representative AT flows DEFERRED / NOT EXECUTED** (not 11 additional master-plan scenarios). UX-ENV-001 is closed as **DEFERRED BY EXPLICIT PRODUCT/LAUNCH-SCOPE DECISION**, not technically passed.
+
+For the current private-alpha/local validation gate, real assistive-technology execution is deferred by explicit scope decision. Existing automated accessibility, keyboard, browser, responsive and Chromium accessibility-tree checks remain required and pass. This does not constitute real screen-reader testing or accessibility certification.
 
 ## Audit, inventory and corrected assumptions
 
@@ -8,47 +10,47 @@ Read the complete plan and previous execution reports earlier in this continuing
 
 Public recovery/verification does not require login, verified email or current-policy acceptance. Policy content currently requires login. Admin operations use ADMIN authority without a blanket marketplace-policy prerequisite. Static admin home/new-listing form have no invented result loaders. Promise `fulfilled/rejected` values are implementation details, not user-facing domain states. Inline confirmations are not automatically modal dialogs. Recovery endpoints return MessageResponse JSON; explicit empty mutations retain their existing empty-response contract.
 
-The generated MANUAL ONLY label is corrected: deterministic layout, response, labels, keyboard and role-state checks are automated; subjective clarity remains human review. Actual screen-reader execution is retained as a shared domain gate, using 11 distinct representatives rather than every route/state permutation. Simulated responses do not prove provider or database behavior.
+The generated MANUAL ONLY label is corrected: deterministic layout, response, labels, keyboard and role-state checks are automated; subjective clarity remains human review. Actual screen-reader execution is deferred to future accessibility/public-launch acceptance, using the preserved representative matrix. Simulated responses do not prove provider or database behavior.
 
 ## Scenario results
 
 | Scenario | Route | Executed browser/client portion | Overall |
 |---|---|---|---|
-| UX-001 | `/admin/bookings/[id]` | PASS; see route checks | BLOCKED: AT-R09 actual AT pending |
-| UX-002 | `/admin/bookings` | PASS; see route checks | BLOCKED: AT-R08 actual AT pending |
-| UX-003 | `/admin/exceptions` | PASS; see route checks | BLOCKED: AT-R11 actual AT pending |
-| UX-004 | `/admin/incidents/[id]` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-005 | `/admin/incidents` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-006 | `/admin/liabilities/[id]` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-007 | `/admin/liabilities` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-008 | `/admin/owner-verifications/[id]` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-009 | `/admin/owner-verifications` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-010 | `/admin` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-011 | `/admin/payout-destinations/[id]` | PASS; see route checks | BLOCKED: AT-R10 actual AT pending |
-| UX-012 | `/admin/payout-destinations` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-013 | `/admin/payouts/[id]` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-014 | `/admin/payouts` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-015 | `/admin/policies` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-016 | `/admin/venues/[id]` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-017 | `/admin/venues` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-018 | `/booked` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-019 | `/bookings/[id]` | PASS; see route checks | BLOCKED: AT-R03 actual AT pending |
-| UX-020 | `/forgot-password` | PASS; see route checks | BLOCKED: AT-R01 actual AT pending |
-| UX-021 | `/owner/bookings` | PASS; see route checks | BLOCKED: AT-R05 actual AT pending |
-| UX-022 | `/owner/inquiries` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-023 | `/owner/payout-destination` | PASS; see route checks | BLOCKED: AT-R07 actual AT pending |
-| UX-024 | `/owner/payouts/[id]` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-025 | `/owner/payouts` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-026 | `/owner/venues/[id]` | PASS; see route checks | BLOCKED: AT-R06 actual AT pending |
-| UX-027 | `/owner/venues/new` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-028 | `/owner/venues` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-029 | `/owner/verification` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-030 | `/` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-031 | `/policies` | PASS; see route checks | BLOCKED: AT-R02 actual AT pending |
-| UX-032 | `/reset-password` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-033 | `/scout/bookings` | PASS; see route checks | BLOCKED: AT-R04 actual AT pending |
-| UX-034 | `/scout/inquiries` | PASS; see route checks | PASS: route scope; shared AT gate pending |
-| UX-035 | `/verify-email` | PASS; see route checks | PASS: route scope; shared AT gate pending |
+| UX-001 | `/admin/bookings/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-002 | `/admin/bookings` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-003 | `/admin/exceptions` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-004 | `/admin/incidents/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-005 | `/admin/incidents` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-006 | `/admin/liabilities/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-007 | `/admin/liabilities` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-008 | `/admin/owner-verifications/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-009 | `/admin/owner-verifications` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-010 | `/admin` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-011 | `/admin/payout-destinations/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-012 | `/admin/payout-destinations` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-013 | `/admin/payouts/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-014 | `/admin/payouts` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-015 | `/admin/policies` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-016 | `/admin/venues/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-017 | `/admin/venues` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-018 | `/booked` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-019 | `/bookings/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-020 | `/forgot-password` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-021 | `/owner/bookings` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-022 | `/owner/inquiries` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-023 | `/owner/payout-destination` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-024 | `/owner/payouts/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-025 | `/owner/payouts` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-026 | `/owner/venues/[id]` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-027 | `/owner/venues/new` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-028 | `/owner/venues` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-029 | `/owner/verification` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-030 | `/` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-031 | `/policies` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-032 | `/reset-password` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-033 | `/scout/bookings` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-034 | `/scout/inquiries` | PASS; see route checks | PASS: current private-alpha/local scope |
+| UX-035 | `/verify-email` | PASS; see route checks | PASS: current private-alpha/local scope |
 
 ## Authoritative contract and coverage reused
 
@@ -85,38 +87,41 @@ Frontend `npm run typecheck`, `npm run lint`, `npm run build`, and both reposito
 
 Backend source was unchanged in UX. The latest complete JOB/RACE regression is reused: `mvn test` **1,078 PASS**; `mvn verify -Ppostgres-integration` **1,023 reported / 1,010 executed / 13 opt-in browser skips**, zero failures/errors; `mvn clean package` **1,078 PASS**. The additional UX `mvn verify -Ppostgres-integration -Dit.test=AdminBrowserIntegrationTest -Deema.admin.browser=true` completed successfully with the unit suite and one enabled PostgreSQL/browser test. Fresh migrations through common V14 and Hibernate startup validation succeeded there. No concurrency authority changed; prior JOB/RACE/OPS results remain applicable.
 
-## UX-ENV-001: required screen-reader execution
+## UX-ENV-001 disposition and historical evidence
 
-The initial Orca attempt could not connect to AT-SPI. A private accessibility bus subsequently started, but neither Wayland nor X11 graphical Chrome initialized a usable debugging endpoint in that isolated setup. Xvfb, Xephyr, Weston and Cage are unavailable. Temporary private settings/profile attempts were cleaned up; the user's desktop preferences were not changed. `screen-reader-environment.json` records the available/failed capabilities.
+Explicit user scope decision supersedes the prior representative gate. Historical Orca/private-bus/graphical-browser attempts did not produce a usable AT/browser session. Actual AT execution was never completed. Previous 35-BLOCKED and 24-PASS/11-BLOCKED classifications remain in `evidence/ux/history/`; the immediately preceding state is in `before-private-alpha-deferral/`. No failure evidence was deleted and no screen-reader PASS is claimed.
 
-Chromium AX-tree and keyboard results do not certify real screen-reader announcements, browse mode, errors, headings or dialog interaction. The original 35 repeated requirements are superseded by the user-approved representative matrix. Eleven selected scenarios remain BLOCKED by pending real AT acceptance; the remaining 24 have passing route-level evidence. UX as a domain remains BLOCKED until all representatives pass. The current tool inventory provides browser automation, not control and observation of Orca on the normal desktop. No further isolated graphical environment was attempted. Elham can execute the supplied checklist in the normal desktop browser/Orca session; actual results remain unrecorded.
+## Re-audit and validation for scope correction
+
+Reviewed every UX route against stored browser, accessibility and long-content results: all 35 have passing route-specific evidence, including three long-content viewports. All five evidence groups remain PASS, 918 checks total. `evidence/ux/scope-reaudit.json` records per-scenario counts and source-evidence hashes. Form semantics, keyboard traversal, focus, errors/loading, labels, contrast, responsive/Unicode handling and Chromium AX checks stay required. Existing real-API/admin and prior domain workflow evidence remains applicable. No production code changed and no reproduced non-AT requirement was converted from untested to PASS. All five P2 fixes remain intact.
+
+Documentation/status/count/703-ID checks and both repository diff checks run for this correction. Existing backend/frontend gate results above are reused; no new test/build run or actual AT run is claimed for this documentation-only decision.
 
 ## WHAT ELHAM SHOULD TEST PERSONALLY
 
-Review terminology, confidence in booking/payment/payout wording, destructive-action clarity, the denser mobile admin navigation and reading comfort after contrast/wrapping changes. No manual reproduction of financial arithmetic, authorization matrices, locks, tokens or provider idempotency is requested.
+Current subjective review remains terminology, booking/payment/payout clarity, consequential actions, dense mobile navigation and reading comfort. The preserved [real AT checklist](UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md) and `evidence/ux/representative-at-results.csv` are future validation assets.
 
 ## PRODUCT / OPERATIONS DECISIONS
 
-No new product/business/legal decision was inferred. UX-ENV-001 is an unmet execution requirement. Existing legal text and launch/provider prerequisites remain separate. No new workflow, payment path, notification template or administrative power was added.
+Resolved current scope: actual screen-reader execution is deferred for private alpha/local validation. This is not a technical pass and introduces no product feature or accessibility regression. No unresolved current UX decision or known P0/P1 defect remains.
+
+## POST-ALPHA / PUBLIC-LAUNCH ACCESSIBILITY
+
+**Perform representative real assistive-technology testing before broader/public launch.** All items below are DEFERRED / NOT EXECUTED:
+
+- Representative NVDA/Windows testing.
+- Representative VoiceOver/macOS/iOS testing where applicable.
+- Orca/Linux where useful.
+- Actual spoken announcement validation.
+- Browse-mode/navigation validation.
+- Accessibility review against the target WCAG standard.
+
+No WCAG certification or real-reader compatibility is claimed. These future requirements are visible launch items, not current local/private-alpha blockers.
 
 ## STAGING ONLY
 
-Real provider delivery/payments/storage, deployed edge/session behavior and production browser/device integration remain unverified locally. Real assistive-technology execution needs an appropriate environment but does not inherently require production or live providers. Broader compatibility follow-up should include a representative Windows/NVDA browser combination; every browser/reader permutation is not a local launch blocker.
+Real providers and deployed edge/device behavior remain separately unverified. Actual AT testing is a later-phase acceptance item, not inherently staging-only.
 
-## Documentation and continuation
+## Continuation
 
-Updated this report, scenario inventory, master-plan UX wording/statuses and PDF; retained all 703 scenario IDs/order and historical defect evidence. PDF extraction and changed-page visual checks are recorded separately.
-
-**Locally clear to proceed automatically: NO. NEXT UNFINISHED DOMAIN: UX (UX-ENV-001).** The following unstarted domain is UXACT-001–019; it has not been executed or modified by this pass.
-
-## Approved representative AT acceptance correction (2026-09-21)
-
-Before implementation: selected UX-001–035, dependent on existing UX automation plus AUTH/POL/BK/VEN/DEST/ADMIN workflow evidence. No production behavior, schema or pricing/state authority changes are required for this correction. Historical 35-BLOCKED classification is retained in `evidence/ux/history/representative-at-before/`.
-
-See [the 11-flow manual checklist](UX_ASSISTIVE_TECHNOLOGY_CHECKLIST.md), [blank evidence template](evidence/ux/representative-at-results.csv), and `evidence/ux/representative-at-matrix.json`. Each flow names its unique component family and concrete actions. Normal Linux desktop plus Orca and Firefox/Chrome is the immediate target. This session cannot control and observe the actual desktop reader; no announcement is fabricated. The checklist is the explicitly authorized fallback, not a request for a product decision.
-
-All 11 actual-AT results are pending (BLOCKED); this is one shared acceptance gate, not 35 duplicated manual journeys. For each representative, check common navigation/name/focus/feedback criteria plus its distinct actions. N/A is only for an absent control/pattern, with a reason; unavailable fixtures or unexecuted flows remain BLOCKED. The reader must be active and its actual announcements observed. AX-tree results cannot fill these fields.
-
-Validation for this documentation-only correction: verify 35 unique route mappings, 11 distinct representatives, evidence/result counts, unchanged 703 master scenario IDs/order, regenerate/extract/visually inspect PDF, and both repositories' diff checks. No new application tests or builds are claimed; prior validated code and the 918-check evidence are unchanged.
-
-On an observed defect, record severity and a concrete reproduction, fix clear existing-behavior defects, rerun affected automated checks and that real-AT representative, then frontend typecheck/lint/build/diff check. Preserve failed evidence. After all 11 actual passes and any fixes are validated, mark UX locally complete and continue to UXACT-001–019 under the existing automatic-continuation authorization. Until then, STOP.
+**Locally clear to proceed: YES under the approved private-alpha/local scope. NEXT UNTESTED DOMAIN: UXACT-001–019.** Continue under existing higher-autonomy rules; stop on real defects/decisions/dependencies, not the deferred AT item.

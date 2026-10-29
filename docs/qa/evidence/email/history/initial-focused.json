@@ -1,0 +1,248 @@
+[
+  {
+    "suite": "EmailTemplateContractTest",
+    "tests": "35",
+    "failures": "17",
+    "errors": "0",
+    "cases": [
+      {
+        "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[1]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[2]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[3]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[4]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "confirmedAndLatePaymentAndCompletedRefundHaveDifferentMoneyClaims",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[1]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[2]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[3]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[1]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[2]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[3]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[4]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[5]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[6]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[7]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[8]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[9]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[10]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[11]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[1]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[2]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[3]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[4]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[5]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[6]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[7]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "accountLinksEncodeTokensAndUseCurrentRecipient{int}[1]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "accountLinksEncodeTokensAndUseCurrentRecipient{int}[2]",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "nonRefundableCancellationNeverClaimsMoneyIsBeingReturned",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[1]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[2]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[3]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[4]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[5]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      },
+      {
+        "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[6]",
+        "result": "FAIL",
+        "errorType": "org.opentest4j.AssertionFailedError"
+      }
+    ]
+  },
+  {
+    "suite": "NotificationOutboxUnitTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "7",
+    "cases": [
+      {
+        "name": "tokenCanBeReconstructedFromNonceOnlyWithRootKeyAndHashRemainsOneWay",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "templateCaptureHasNoProviderAndClearsAfterCompositionFailure",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[1]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[2]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[3]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[4]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[5]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[6]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[7]",
+        "result": "ERROR",
+        "errorType": "java.net.SocketException"
+      },
+      {
+        "name": "schedulerNeverQueuesAnotherBatchWhileOneIsOutstanding",
+        "result": "PASS",
+        "errorType": null
+      },
+      {
+        "name": "retryBackoffIsBounded",
+        "result": "PASS",
+        "errorType": null
+      }
+    ]
+  }
+]

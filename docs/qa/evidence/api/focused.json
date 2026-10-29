@@ -1,0 +1,157 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.ApiSurfaceIntegrationTest",
+      "reported": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyAdminRouteDeniesAnonymousScoutAndOwnerWithoutWrites(String)[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "explicitNinetyRouteInventoryMatchesAllApplicationControllers",
+          "result": "PASS"
+        }
+      ]
+    }
+  ]
+}

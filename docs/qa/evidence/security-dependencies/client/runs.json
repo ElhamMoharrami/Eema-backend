@@ -1,0 +1,74 @@
+[
+  {
+    "script": "cala-contract-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "1dc167e76fb5cdad121547f051b9883c43eba54f369a8219ace8c8f751f9ce60",
+    "evidence": "docs/qa/evidence/security-dependencies/client/cala-contract-check.json",
+    "evidenceSha256": "335972e5c03bd4db642943470ddb6b306102ea26352ae7c60891aaf8a5a07b4c"
+  },
+  {
+    "script": "auth-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "9495f3fbf76ec4262b3c7ff885326024c2c36c3d6e98383f86526d9cb4b7591c",
+    "evidence": "docs/qa/evidence/security-dependencies/client/auth-client-check.json",
+    "evidenceSha256": "9495f3fbf76ec4262b3c7ff885326024c2c36c3d6e98383f86526d9cb4b7591c"
+  },
+  {
+    "script": "sec-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "ac21e78b8c08c2bd35b335370952a4477185f34b75a2aee086ba82fac42693ff",
+    "evidence": "docs/qa/evidence/security-dependencies/client/sec-client-check.json",
+    "evidenceSha256": "13a2591325315ff30f972d5333e318555fa796b605828a986bc05d515118d152"
+  },
+  {
+    "script": "uxact-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "d6228517be501ba2d523012b61a7cea5994034fb0452aea9573af6a3d2e67351",
+    "evidence": "docs/qa/evidence/security-dependencies/client/uxact-client-check.json",
+    "evidenceSha256": "d6228517be501ba2d523012b61a7cea5994034fb0452aea9573af6a3d2e67351"
+  },
+  {
+    "script": "state-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "83fa27d4b8825c850734521d669f9436255c6cf475c2c9bb0b63acc311efcf5e",
+    "evidence": "docs/qa/evidence/security-dependencies/client/state-client-check.json",
+    "evidenceSha256": "4f93360ff32201f3fda9c075cd742ba8cd4418ad5d893b004eaa2b7c3df53692"
+  },
+  {
+    "script": "ux-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "a9461eda3b0915d6fa1b4c536776f256bdd4e2c748faa5cdcdf4cd2819cd2b0b",
+    "evidence": "docs/qa/evidence/security-dependencies/client/ux-client-check.json",
+    "evidenceSha256": "f0172deff509be7135808bd750a74ad0856def18fb952426548dc5a4a89cb985"
+  },
+  {
+    "script": "policy-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "18521663434ebff0fcf2e914ee6b23d2a9bcba8efd4d7e122aae2c408f616001",
+    "evidence": "docs/qa/evidence/security-dependencies/client/policy-client-check.json",
+    "evidenceSha256": "18521663434ebff0fcf2e914ee6b23d2a9bcba8efd4d7e122aae2c408f616001"
+  },
+  {
+    "script": "inc-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "2100a6c23aca21bc54d884cc2ef12572707037fda3a63fbbfc5417f656a113e4",
+    "evidence": "docs/qa/evidence/security-dependencies/client/inc-client-check.json",
+    "evidenceSha256": "2100a6c23aca21bc54d884cc2ef12572707037fda3a63fbbfc5417f656a113e4"
+  },
+  {
+    "script": "admin-client-check",
+    "exitCode": 0,
+    "evidenceCopies": [],
+    "logSha256": "aa55f375de48bf838bc86f7c4e491ae2abaac59bf737c1793a9e1f3580ad2ec3",
+    "evidence": "docs/qa/evidence/security-dependencies/client/admin-client-check.json",
+    "evidenceSha256": "7f649d5c8f7e8b21a10fdad3c89e985f4afb49aa9814b591ae7e81423ea9dcda"
+  }
+]

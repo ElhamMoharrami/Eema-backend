@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "originalAndReplayCalls": 1,
+  "crossActorMutationCalls": 0,
+  "newSessionPreserved": true,
+  "scope": "Actual browser/client. Synthetic API; no transfer/provider."
+}

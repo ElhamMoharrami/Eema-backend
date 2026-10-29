@@ -1,0 +1,8 @@
+{
+  "dedicatedFrontend3026": "Stopped after browser checks",
+  "testcontainers": "docker ps returned no running containers after final gates",
+  "sharedProductionData": "Not modified",
+  "providerReport": "Original SHA256 preserved",
+  "sourceHashChecks": 691,
+  "result": "PASS"
+}

@@ -1,0 +1,6 @@
+{
+  "exitCode": 1,
+  "assertionsPassed": 10,
+  "underlyingError": "CDP connection closed during intentional Browser.close",
+  "applicationAssertionsFailed": 0
+}

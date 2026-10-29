@@ -1,0 +1,129 @@
+[
+  {
+    "suite": "EmailTemplateContractTest",
+    "tests": 35,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[1]",
+      "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[2]",
+      "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[3]",
+      "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[4]",
+      "confirmedAndLatePaymentAndCompletedRefundHaveDifferentMoneyClaims",
+      "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[1]",
+      "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[2]",
+      "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[3]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[1]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[2]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[3]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[4]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[5]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[6]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[7]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[8]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[9]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[10]",
+      "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[11]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[1]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[2]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[3]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[4]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[5]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[6]",
+      "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[7]",
+      "accountLinksEncodeTokensAndUseCurrentRecipient{int}[1]",
+      "accountLinksEncodeTokensAndUseCurrentRecipient{int}[2]",
+      "nonRefundableCancellationNeverClaimsMoneyIsBeingReturned",
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[1]",
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[2]",
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[3]",
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[4]",
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[5]",
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[6]"
+    ]
+  },
+  {
+    "suite": "BookingNotificationServiceTest",
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "missingBookingProducesNoEmail",
+      "usesSnapshotRecipientsAndRendersConfirmedDetails",
+      "requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+      "scoutFailureStillAttemptsOwner",
+      "oneRecipientFailureDoesNotPreventOtherRecipientAttempt",
+      "scoutReceivesDeclineAndApprovalExpiryMessages",
+      "authoritativeCancellationRefundCompletionUsesProcessedCopy",
+      "ownerAndScoutAreNotifiedWhenRequestIsSubmitted",
+      "scoutAcceptanceEmailContainsDeadlinePayCtaAndDeepLink",
+      "cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+      "lifecycleEmailFailureIsContained",
+      "latePaymentMessageSaysNotConfirmedAndRefundInitiated"
+    ]
+  },
+  {
+    "suite": "AccountEmailNotificationServiceTest",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "resetUsesAuthoritativeEmailAndFrontendResetRoute",
+      "verificationUsesAuthoritativeEmailAndFrontendVerificationRoute"
+    ]
+  },
+  {
+    "suite": "AvailabilityInquiryNotificationServiceTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "scoutReceivesOfferWithDeadlineAndExistingScoutRoute",
+      "providerFailureDoesNotEscapeNotificationBoundary",
+      "ownerReceivesNewInquiryWithExistingOwnerRoute",
+      "scoutReceivesDeclineAndOfferExpiry"
+    ]
+  },
+  {
+    "suite": "TrustNotificationServiceTest",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "venueSubmissionAndReactivationUseOwnerLinkAndEscapeReason",
+      "sendsVerificationApprovalAndSafeRejectionReason",
+      "submissionAndRejectionUseOwnerLinkAndEscapeReviewText",
+      "sendsApprovalChangesAndSuspensionMessages"
+    ]
+  },
+  {
+    "suite": "NotificationOutboxUnitTest",
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "tokenCanBeReconstructedFromNonceOnlyWithRootKeyAndHashRemainsOneWay",
+      "templateCaptureHasNoProviderAndClearsAfterCompositionFailure",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[1]",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[2]",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[3]",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[4]",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[5]",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[6]",
+      "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[7]",
+      "schedulerNeverQueuesAnotherBatchWhileOneIsOutstanding",
+      "retryBackoffIsBounded"
+    ]
+  },
+  {
+    "suite": "EmailServiceTest",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "cases": [
+      "disabledDeliveryNeverCallsProvider",
+      "enabledEmailRequiresCredentials",
+      "disabledEmailNeedsNoCredentials"
+    ]
+  }
+]

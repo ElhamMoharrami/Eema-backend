@@ -5,4 +5,4 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
-public record UpdateWeeklyAvailabilityRequest(@NotNull @Size(max = 50) List<@Valid WeeklyIntervalRequest> intervals) {}
+public record UpdateWeeklyAvailabilityRequest(@NotNull @Size(max = 50) List<@NotNull @Valid WeeklyIntervalRequest> intervals) {}

@@ -309,6 +309,15 @@ class VenueDomainIntegrationTest extends AuthPostgresSupport {
         assertEquals(6,request(get("/api/admin/venues/"+v+"/events"),admin,null,200).size());
         assertFalse(app.resend().enabled());
     }
+    @Test void replayedSubmissionHasNoSecondLifecycle() throws Exception {
+        UUID venue = ready();
+        submit(venue, owner, 200);
+        String committed = row(venue);
+        submit(venue, owner, 409);
+        unchanged(venue, committed, 1, 1);
+        assertEquals("PENDING", status(venue));
+    }
+
     @Test void submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions()throws Exception{
         UUID incomplete=draft();String before=row(incomplete);submit(incomplete,owner,409);unchanged(incomplete,before,0,0);
         UUID v=ready();before=row(v);submit(v,other,403);unchanged(v,before,0,0);

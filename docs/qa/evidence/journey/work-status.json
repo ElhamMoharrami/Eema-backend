@@ -1,0 +1,9 @@
+{
+  "domain": "JOURNEY",
+  "pass": 9,
+  "fail": 0,
+  "blocked": 0,
+  "newProductionChanges": false,
+  "newMigrations": false,
+  "next": "INPUT-001\u2013028"
+}

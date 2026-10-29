@@ -1,0 +1,29 @@
+{
+  "freshGates": [
+    {
+      "command": "mvn test",
+      "result": "PASS",
+      "reported": 1113,
+      "executed": 1113,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "logSha256": "1926bdf1e65e953ed0c09d8415d8eb642f97c11872f30500ac3183c937e20781"
+    },
+    {
+      "command": "mvn clean package",
+      "result": "PASS",
+      "reported": 1113,
+      "executed": 1113,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "logSha256": "c54f200ae27c5f77e5f9e8d49f0bf34b0c7490e2f2a9f61828037c985c93c0f7"
+    }
+  ],
+  "focusedCases": 71,
+  "browserCases": 9,
+  "reusedGates": "reused-regression.json",
+  "productionChanges": false,
+  "migrations": 0
+}

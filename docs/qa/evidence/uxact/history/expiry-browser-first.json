@@ -1,0 +1,61 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "scenario": "UXACT-15",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-15",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-16",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-16",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-17",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-17",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-18",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-18",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-19",
+      "result": "FAIL",
+      "error": "Browser timeout: button Download receipt",
+      "operations": 0,
+      "refreshes": 0
+    }
+  ],
+  "scope": "Synthetic API expiration, actual production browser/components; no real provider."
+}

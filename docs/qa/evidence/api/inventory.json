@@ -1,0 +1,3295 @@
+[
+  {
+    "id": "API-001",
+    "method": "GET",
+    "path": "/admin/bookings",
+    "reports": [
+      "ADMIN"
+    ],
+    "testClass": "AdminDomainIntegrationTest",
+    "methods": [
+      "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+      "detailReadsExactStoredFinancialValuesWithoutWrites",
+      "timelineOrdersPagesAndRejectsNestedSensitivePayloads"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "detailReadsExactStoredFinancialValuesWithoutWrites",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "timelineOrdersPagesAndRejectsNestedSensitivePayloads",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-002",
+    "method": "GET",
+    "path": "/admin/bookings/{id}",
+    "reports": [
+      "ADMIN"
+    ],
+    "testClass": "AdminDomainIntegrationTest",
+    "methods": [
+      "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+      "detailReadsExactStoredFinancialValuesWithoutWrites",
+      "timelineOrdersPagesAndRejectsNestedSensitivePayloads"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "detailReadsExactStoredFinancialValuesWithoutWrites",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "timelineOrdersPagesAndRejectsNestedSensitivePayloads",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-003",
+    "method": "GET",
+    "path": "/admin/bookings/{id}/events",
+    "reports": [
+      "ADMIN"
+    ],
+    "testClass": "AdminDomainIntegrationTest",
+    "methods": [
+      "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+      "detailReadsExactStoredFinancialValuesWithoutWrites",
+      "timelineOrdersPagesAndRejectsNestedSensitivePayloads"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "detailReadsExactStoredFinancialValuesWithoutWrites",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "timelineOrdersPagesAndRejectsNestedSensitivePayloads",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-004",
+    "method": "GET",
+    "path": "/admin/incidents",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "adminEndpointsRejectAllOtherActors",
+      "lifecycleAuditPrivacyAndFinancialIsolation",
+      "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+      "adminFiltersMissingRecordsAndBoundedPagination"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminEndpointsRejectAllOtherActors",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+        "passedInvocations": 4
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminFiltersMissingRecordsAndBoundedPagination",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-005",
+    "method": "GET",
+    "path": "/admin/incidents/{id}",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "adminEndpointsRejectAllOtherActors",
+      "lifecycleAuditPrivacyAndFinancialIsolation",
+      "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+      "adminFiltersMissingRecordsAndBoundedPagination"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminEndpointsRejectAllOtherActors",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+        "passedInvocations": 4
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminFiltersMissingRecordsAndBoundedPagination",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-006",
+    "method": "POST",
+    "path": "/admin/incidents/{id}/start-review",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "adminEndpointsRejectAllOtherActors",
+      "lifecycleAuditPrivacyAndFinancialIsolation",
+      "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+      "adminFiltersMissingRecordsAndBoundedPagination"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminEndpointsRejectAllOtherActors",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+        "passedInvocations": 4
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminFiltersMissingRecordsAndBoundedPagination",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-007",
+    "method": "POST",
+    "path": "/admin/incidents/{id}/resolve",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "adminEndpointsRejectAllOtherActors",
+      "lifecycleAuditPrivacyAndFinancialIsolation",
+      "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+      "adminFiltersMissingRecordsAndBoundedPagination"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminEndpointsRejectAllOtherActors",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+        "passedInvocations": 4
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminFiltersMissingRecordsAndBoundedPagination",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-008",
+    "method": "POST",
+    "path": "/admin/incidents/{id}/close",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "adminEndpointsRejectAllOtherActors",
+      "lifecycleAuditPrivacyAndFinancialIsolation",
+      "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+      "adminFiltersMissingRecordsAndBoundedPagination"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminEndpointsRejectAllOtherActors",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+        "passedInvocations": 4
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "adminFiltersMissingRecordsAndBoundedPagination",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-009",
+    "method": "GET",
+    "path": "/admin/operations/exceptions",
+    "reports": [
+      "ADMIN",
+      "OPS"
+    ],
+    "testClass": "AdminDomainIntegrationTest",
+    "methods": [
+      "completeRefundBacklogBoundaries",
+      "mixedBacklogHasStableGlobalOrderAndNoMissingSourceRows",
+      "strictExceptionCutoffs"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "completeRefundBacklogBoundaries",
+        "passedInvocations": 7
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "mixedBacklogHasStableGlobalOrderAndNoMissingSourceRows",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "strictExceptionCutoffs",
+        "passedInvocations": 3
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-010",
+    "method": "GET",
+    "path": "/admin/liabilities",
+    "reports": [
+      "PAYOUT",
+      "ADMIN"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "adminListsAcceptOmittedAndPartialFilters",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "onlyReadyCanBeRecordedPaid",
+      "concurrentPaidRecordingIsIdempotentOrConflicts"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "adminListsAcceptOmittedAndPartialFilters",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "concurrentPaidRecordingIsIdempotentOrConflicts",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-011",
+    "method": "GET",
+    "path": "/admin/liabilities/{id}",
+    "reports": [
+      "PAYOUT",
+      "ADMIN"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "adminListsAcceptOmittedAndPartialFilters",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "onlyReadyCanBeRecordedPaid",
+      "concurrentPaidRecordingIsIdempotentOrConflicts"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "adminListsAcceptOmittedAndPartialFilters",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "concurrentPaidRecordingIsIdempotentOrConflicts",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-012",
+    "method": "POST",
+    "path": "/admin/liabilities/{id}/settle",
+    "reports": [
+      "PAYOUT",
+      "ADMIN"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "adminListsAcceptOmittedAndPartialFilters",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "onlyReadyCanBeRecordedPaid",
+      "concurrentPaidRecordingIsIdempotentOrConflicts"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "adminListsAcceptOmittedAndPartialFilters",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "concurrentPaidRecordingIsIdempotentOrConflicts",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-013",
+    "method": "GET",
+    "path": "/admin/payouts",
+    "reports": [
+      "PAYOUT",
+      "ADMIN"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "adminListsAcceptOmittedAndPartialFilters",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "onlyReadyCanBeRecordedPaid",
+      "concurrentPaidRecordingIsIdempotentOrConflicts"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "adminListsAcceptOmittedAndPartialFilters",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "concurrentPaidRecordingIsIdempotentOrConflicts",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-014",
+    "method": "GET",
+    "path": "/admin/payouts/{id}",
+    "reports": [
+      "PAYOUT",
+      "ADMIN"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "adminListsAcceptOmittedAndPartialFilters",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "onlyReadyCanBeRecordedPaid",
+      "concurrentPaidRecordingIsIdempotentOrConflicts"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "adminListsAcceptOmittedAndPartialFilters",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "concurrentPaidRecordingIsIdempotentOrConflicts",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-015",
+    "method": "POST",
+    "path": "/admin/payouts/{id}/mark-paid",
+    "reports": [
+      "PAYOUT",
+      "ADMIN"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "adminListsAcceptOmittedAndPartialFilters",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope",
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "onlyReadyCanBeRecordedPaid",
+      "concurrentPaidRecordingIsIdempotentOrConflicts"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "adminListsAcceptOmittedAndPartialFilters",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "concurrentPaidRecordingIsIdempotentOrConflicts",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-016",
+    "method": "GET",
+    "path": "/admin/owner-verifications",
+    "reports": [
+      "TRUST"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+      "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+      "queueFiltersProjectionAndDatabaseConstraints"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "queueFiltersProjectionAndDatabaseConstraints",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-017",
+    "method": "GET",
+    "path": "/admin/owner-verifications/{id}",
+    "reports": [
+      "TRUST"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+      "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+      "queueFiltersProjectionAndDatabaseConstraints"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "queueFiltersProjectionAndDatabaseConstraints",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-018",
+    "method": "POST",
+    "path": "/admin/owner-verifications/{id}/approve",
+    "reports": [
+      "TRUST"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+      "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+      "queueFiltersProjectionAndDatabaseConstraints"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "queueFiltersProjectionAndDatabaseConstraints",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-019",
+    "method": "POST",
+    "path": "/admin/owner-verifications/{id}/reject",
+    "reports": [
+      "TRUST"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+      "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+      "queueFiltersProjectionAndDatabaseConstraints"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "queueFiltersProjectionAndDatabaseConstraints",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-020",
+    "method": "GET",
+    "path": "/admin/payout-destinations",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+      "revealAllowedStatesHeadersAndAudit",
+      "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+      "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealAllowedStatesHeadersAndAudit",
+        "passedInvocations": 4
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-021",
+    "method": "GET",
+    "path": "/admin/payout-destinations/{id}",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+      "revealAllowedStatesHeadersAndAudit",
+      "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+      "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealAllowedStatesHeadersAndAudit",
+        "passedInvocations": 4
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-022",
+    "method": "POST",
+    "path": "/admin/payout-destinations/{id}/verify",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+      "revealAllowedStatesHeadersAndAudit",
+      "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+      "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealAllowedStatesHeadersAndAudit",
+        "passedInvocations": 4
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-023",
+    "method": "POST",
+    "path": "/admin/payout-destinations/{id}/reject",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+      "revealAllowedStatesHeadersAndAudit",
+      "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+      "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealAllowedStatesHeadersAndAudit",
+        "passedInvocations": 4
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-024",
+    "method": "POST",
+    "path": "/admin/payout-destinations/{id}/reveal",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+      "revealAllowedStatesHeadersAndAudit",
+      "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+      "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealAllowedStatesHeadersAndAudit",
+        "passedInvocations": 4
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-025",
+    "method": "GET",
+    "path": "/admin/policies",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "immutableTransitionsAndRequestContract"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "immutableTransitionsAndRequestContract",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-026",
+    "method": "POST",
+    "path": "/admin/policies",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "immutableTransitionsAndRequestContract"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "immutableTransitionsAndRequestContract",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-027",
+    "method": "POST",
+    "path": "/admin/policies/{id}/publish",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "immutableTransitionsAndRequestContract"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "immutableTransitionsAndRequestContract",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-028",
+    "method": "POST",
+    "path": "/admin/policies/{id}/retire",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "immutableTransitionsAndRequestContract"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "immutableTransitionsAndRequestContract",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-029",
+    "method": "GET",
+    "path": "/admin/venues",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-030",
+    "method": "GET",
+    "path": "/admin/venues/{id}",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-031",
+    "method": "GET",
+    "path": "/admin/venues/{id}/events",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-032",
+    "method": "POST",
+    "path": "/admin/venues/{id}/approve",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-033",
+    "method": "POST",
+    "path": "/admin/venues/{id}/request-changes",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-034",
+    "method": "POST",
+    "path": "/admin/venues/{id}/suspend",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-035",
+    "method": "POST",
+    "path": "/admin/venues/{id}/reactivate",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-036",
+    "method": "POST",
+    "path": "/auth/register",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "RegistrationIntegrationTest",
+    "methods": [
+      "anonymousScoutPersistsOnlyHashesAndReturnsExactPublicContract",
+      "authenticatedScoutDoesNotOwnOrOverrideNewRegistration",
+      "rejectedRolesValidationAndMalformedJsonHaveNoSideEffects"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RegistrationIntegrationTest",
+        "method": "anonymousScoutPersistsOnlyHashesAndReturnsExactPublicContract",
+        "passedInvocations": 1
+      },
+      {
+        "class": "RegistrationIntegrationTest",
+        "method": "authenticatedScoutDoesNotOwnOrOverrideNewRegistration",
+        "passedInvocations": 1
+      },
+      {
+        "class": "RegistrationIntegrationTest",
+        "method": "rejectedRolesValidationAndMalformedJsonHaveNoSideEffects",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-037",
+    "method": "POST",
+    "path": "/auth/login",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "AuthSessionIntegrationTest",
+    "methods": [
+      "loginMatrixAndAnonymousMe",
+      "independentSessionsAndRotation",
+      "refreshFailureMatrix",
+      "concurrentHttpRefreshHasOneWinner"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "loginMatrixAndAnonymousMe",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "independentSessionsAndRotation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "refreshFailureMatrix",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "concurrentHttpRefreshHasOneWinner",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-038",
+    "method": "POST",
+    "path": "/auth/refresh",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "AuthSessionIntegrationTest",
+    "methods": [
+      "loginMatrixAndAnonymousMe",
+      "independentSessionsAndRotation",
+      "refreshFailureMatrix",
+      "concurrentHttpRefreshHasOneWinner"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "loginMatrixAndAnonymousMe",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "independentSessionsAndRotation",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "refreshFailureMatrix",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "concurrentHttpRefreshHasOneWinner",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-039",
+    "method": "POST",
+    "path": "/auth/verify-email",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "AuthRecoveryIntegrationTest",
+    "methods": [
+      "enumerationEligibilityMatrix",
+      "verificationLifecycle",
+      "resetLifecycleAndBoundaries",
+      "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "enumerationEligibilityMatrix",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "verificationLifecycle",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetLifecycleAndBoundaries",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-040",
+    "method": "POST",
+    "path": "/auth/resend-verification",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "AuthRecoveryIntegrationTest",
+    "methods": [
+      "enumerationEligibilityMatrix",
+      "verificationLifecycle",
+      "resetLifecycleAndBoundaries",
+      "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "enumerationEligibilityMatrix",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "verificationLifecycle",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetLifecycleAndBoundaries",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-041",
+    "method": "POST",
+    "path": "/auth/forgot-password",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "AuthRecoveryIntegrationTest",
+    "methods": [
+      "enumerationEligibilityMatrix",
+      "verificationLifecycle",
+      "resetLifecycleAndBoundaries",
+      "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "enumerationEligibilityMatrix",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "verificationLifecycle",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetLifecycleAndBoundaries",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-042",
+    "method": "POST",
+    "path": "/auth/reset-password",
+    "reports": [
+      "AUTH"
+    ],
+    "testClass": "AuthRecoveryIntegrationTest",
+    "methods": [
+      "enumerationEligibilityMatrix",
+      "verificationLifecycle",
+      "resetLifecycleAndBoundaries",
+      "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "enumerationEligibilityMatrix",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "verificationLifecycle",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetLifecycleAndBoundaries",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthRecoveryIntegrationTest",
+        "method": "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-043",
+    "method": "GET",
+    "path": "/auth/me",
+    "reports": [
+      "AUTH",
+      "SEC"
+    ],
+    "testClass": "AuthSessionIntegrationTest",
+    "methods": [
+      "loginMatrixAndAnonymousMe",
+      "jwtValidationAndDatabaseAuthority"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "loginMatrixAndAnonymousMe",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "jwtValidationAndDatabaseAuthority",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-044",
+    "method": "POST",
+    "path": "/availability-inquiries",
+    "reports": [
+      "INQ"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "allFiveStatesAndFourActions",
+      "invalidCreationIsAtomic",
+      "invalidOfferNeverChangesOpenInquiry",
+      "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidCreationIsAtomic",
+        "passedInvocations": 16
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidOfferNeverChangesOpenInquiry",
+        "passedInvocations": 7
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-045",
+    "method": "GET",
+    "path": "/availability-inquiries/mine",
+    "reports": [
+      "INQ"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "allFiveStatesAndFourActions",
+      "invalidCreationIsAtomic",
+      "invalidOfferNeverChangesOpenInquiry",
+      "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidCreationIsAtomic",
+        "passedInvocations": 16
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidOfferNeverChangesOpenInquiry",
+        "passedInvocations": 7
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-046",
+    "method": "GET",
+    "path": "/availability-inquiries/owned-venues",
+    "reports": [
+      "INQ"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "allFiveStatesAndFourActions",
+      "invalidCreationIsAtomic",
+      "invalidOfferNeverChangesOpenInquiry",
+      "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidCreationIsAtomic",
+        "passedInvocations": 16
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidOfferNeverChangesOpenInquiry",
+        "passedInvocations": 7
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-047",
+    "method": "POST",
+    "path": "/availability-inquiries/{id}/decline",
+    "reports": [
+      "INQ"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "allFiveStatesAndFourActions",
+      "invalidCreationIsAtomic",
+      "invalidOfferNeverChangesOpenInquiry",
+      "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidCreationIsAtomic",
+        "passedInvocations": 16
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidOfferNeverChangesOpenInquiry",
+        "passedInvocations": 7
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-048",
+    "method": "POST",
+    "path": "/availability-inquiries/{id}/offer",
+    "reports": [
+      "INQ"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "allFiveStatesAndFourActions",
+      "invalidCreationIsAtomic",
+      "invalidOfferNeverChangesOpenInquiry",
+      "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidCreationIsAtomic",
+        "passedInvocations": 16
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidOfferNeverChangesOpenInquiry",
+        "passedInvocations": 7
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-049",
+    "method": "POST",
+    "path": "/availability-inquiries/{id}/accept",
+    "reports": [
+      "INQ"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "allFiveStatesAndFourActions",
+      "invalidCreationIsAtomic",
+      "invalidOfferNeverChangesOpenInquiry",
+      "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidCreationIsAtomic",
+        "passedInvocations": 16
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "invalidOfferNeverChangesOpenInquiry",
+        "passedInvocations": 7
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-050",
+    "method": "POST",
+    "path": "/bookings",
+    "reports": [
+      "BK"
+    ],
+    "testClass": "BookingCoreIntegrationTest",
+    "methods": [
+      "actorBoundaryAndExplicitAdminDelegation",
+      "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+      "rejectedCreationHasNoRowsEventsOrProviderEffects",
+      "declineRejectsEveryNonRequestStateWithoutEffects"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "actorBoundaryAndExplicitAdminDelegation",
+        "passedInvocations": 2
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+        "passedInvocations": 1
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "rejectedCreationHasNoRowsEventsOrProviderEffects",
+        "passedInvocations": 12
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "declineRejectsEveryNonRequestStateWithoutEffects",
+        "passedInvocations": 7
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-051",
+    "method": "GET",
+    "path": "/bookings",
+    "reports": [
+      "BK"
+    ],
+    "testClass": "BookingCoreIntegrationTest",
+    "methods": [
+      "actorBoundaryAndExplicitAdminDelegation",
+      "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+      "rejectedCreationHasNoRowsEventsOrProviderEffects",
+      "declineRejectsEveryNonRequestStateWithoutEffects"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "actorBoundaryAndExplicitAdminDelegation",
+        "passedInvocations": 2
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+        "passedInvocations": 1
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "rejectedCreationHasNoRowsEventsOrProviderEffects",
+        "passedInvocations": 12
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "declineRejectsEveryNonRequestStateWithoutEffects",
+        "passedInvocations": 7
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-052",
+    "method": "GET",
+    "path": "/bookings/{id}",
+    "reports": [
+      "BK"
+    ],
+    "testClass": "BookingCoreIntegrationTest",
+    "methods": [
+      "actorBoundaryAndExplicitAdminDelegation",
+      "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+      "rejectedCreationHasNoRowsEventsOrProviderEffects",
+      "declineRejectsEveryNonRequestStateWithoutEffects"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "actorBoundaryAndExplicitAdminDelegation",
+        "passedInvocations": 2
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+        "passedInvocations": 1
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "rejectedCreationHasNoRowsEventsOrProviderEffects",
+        "passedInvocations": 12
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "declineRejectsEveryNonRequestStateWithoutEffects",
+        "passedInvocations": 7
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-053",
+    "method": "POST",
+    "path": "/bookings/{id}/accept",
+    "reports": [
+      "BK"
+    ],
+    "testClass": "BookingCoreIntegrationTest",
+    "methods": [
+      "actorBoundaryAndExplicitAdminDelegation",
+      "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+      "rejectedCreationHasNoRowsEventsOrProviderEffects",
+      "declineRejectsEveryNonRequestStateWithoutEffects"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "actorBoundaryAndExplicitAdminDelegation",
+        "passedInvocations": 2
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+        "passedInvocations": 1
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "rejectedCreationHasNoRowsEventsOrProviderEffects",
+        "passedInvocations": 12
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "declineRejectsEveryNonRequestStateWithoutEffects",
+        "passedInvocations": 7
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-054",
+    "method": "POST",
+    "path": "/bookings/{id}/decline",
+    "reports": [
+      "BK"
+    ],
+    "testClass": "BookingCoreIntegrationTest",
+    "methods": [
+      "actorBoundaryAndExplicitAdminDelegation",
+      "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+      "rejectedCreationHasNoRowsEventsOrProviderEffects",
+      "declineRejectsEveryNonRequestStateWithoutEffects"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "actorBoundaryAndExplicitAdminDelegation",
+        "passedInvocations": 2
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+        "passedInvocations": 1
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "rejectedCreationHasNoRowsEventsOrProviderEffects",
+        "passedInvocations": 12
+      },
+      {
+        "class": "BookingCoreIntegrationTest",
+        "method": "declineRejectsEveryNonRequestStateWithoutEffects",
+        "passedInvocations": 7
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-055",
+    "method": "POST",
+    "path": "/bookings/{id}/cancel",
+    "reports": [
+      "CANCEL"
+    ],
+    "testClass": "CancellationIntegrationTest",
+    "methods": [
+      "canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable",
+      "canonicalReasonBoundaryAndAuthoritativeFullRefund",
+      "staleTermsConflictAndReplayCannotChangeEconomics"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable",
+        "passedInvocations": 1
+      },
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "canonicalReasonBoundaryAndAuthoritativeFullRefund",
+        "passedInvocations": 2
+      },
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "staleTermsConflictAndReplayCannotChangeEconomics",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-056",
+    "method": "GET",
+    "path": "/bookings/{id}/cancellation-preview",
+    "reports": [
+      "CANCEL"
+    ],
+    "testClass": "CancellationIntegrationTest",
+    "methods": [
+      "canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable",
+      "canonicalReasonBoundaryAndAuthoritativeFullRefund",
+      "staleTermsConflictAndReplayCannotChangeEconomics"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable",
+        "passedInvocations": 1
+      },
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "canonicalReasonBoundaryAndAuthoritativeFullRefund",
+        "passedInvocations": 2
+      },
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "staleTermsConflictAndReplayCannotChangeEconomics",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-057",
+    "method": "POST",
+    "path": "/bookings/{id}/refund",
+    "reports": [
+      "REF"
+    ],
+    "testClass": "RefundIntegrationTest",
+    "methods": [
+      "authorizationDenialHasNoSideEffects",
+      "unsupportedBookingStateHasNoSideEffects",
+      "fullRefundIgnoresCustomClientEconomicsAndMutableVenuePrice"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundIntegrationTest",
+        "method": "authorizationDenialHasNoSideEffects",
+        "passedInvocations": 3
+      },
+      {
+        "class": "RefundIntegrationTest",
+        "method": "unsupportedBookingStateHasNoSideEffects",
+        "passedInvocations": 7
+      },
+      {
+        "class": "RefundIntegrationTest",
+        "method": "fullRefundIgnoresCustomClientEconomicsAndMutableVenuePrice",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-058",
+    "method": "POST",
+    "path": "/bookings/{bookingId}/checkout",
+    "reports": [
+      "PAY"
+    ],
+    "testClass": "PaymentIntegrationTest",
+    "methods": [
+      "checkoutActorMatrix",
+      "checkoutStateMatrix",
+      "malformedCreateCannotAttachProviderState",
+      "policyReplacementBlocksUntilCurrentAcceptance"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "checkoutActorMatrix",
+        "passedInvocations": 5
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "checkoutStateMatrix",
+        "passedInvocations": 8
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "malformedCreateCannotAttachProviderState",
+        "passedInvocations": 10
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "policyReplacementBlocksUntilCurrentAcceptance",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-059",
+    "method": "GET",
+    "path": "/bookings/{id}/receipt",
+    "reports": [
+      "DOC"
+    ],
+    "testClass": "DocumentIntegrationTest",
+    "methods": [
+      "receiptAuthorizationAlsoAppliesToExistingBytes",
+      "eligiblePaidHistoryIssuesExactlyOnce",
+      "historicalReadDoesNotRequireCurrentPoliciesOrVerifiedEmail"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "receiptAuthorizationAlsoAppliesToExistingBytes",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "eligiblePaidHistoryIssuesExactlyOnce",
+        "passedInvocations": 3
+      },
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "historicalReadDoesNotRequireCurrentPoliciesOrVerifiedEmail",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-060",
+    "method": "POST",
+    "path": "/bookings/{bookingId}/incidents",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "allCategoriesAllParticipants",
+      "participantDenialAndMissingIdsLeaveNoWrites",
+      "noVerificationOrPolicyPrerequisiteButInactiveAccountDenied",
+      "lifecycleAuditPrivacyAndFinancialIsolation"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allCategoriesAllParticipants",
+        "passedInvocations": 7
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "participantDenialAndMissingIdsLeaveNoWrites",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "noVerificationOrPolicyPrerequisiteButInactiveAccountDenied",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-061",
+    "method": "GET",
+    "path": "/bookings/{bookingId}/incidents",
+    "reports": [
+      "INC"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "allCategoriesAllParticipants",
+      "participantDenialAndMissingIdsLeaveNoWrites",
+      "noVerificationOrPolicyPrerequisiteButInactiveAccountDenied",
+      "lifecycleAuditPrivacyAndFinancialIsolation"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allCategoriesAllParticipants",
+        "passedInvocations": 7
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "participantDenialAndMissingIdsLeaveNoWrites",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "noVerificationOrPolicyPrerequisiteButInactiveAccountDenied",
+        "passedInvocations": 1
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-062",
+    "method": "POST",
+    "path": "/match",
+    "reports": [
+      "MATCH"
+    ],
+    "testClass": "MatchingIntegrationTest",
+    "methods": [
+      "directQuoteAuthBoundsAndNoProvider",
+      "pipelineBlocksInactiveFilteredInventedAndDuplicateIds",
+      "parserAndRankerFailuresAreSafe502WithoutFallback"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "MatchingIntegrationTest",
+        "method": "directQuoteAuthBoundsAndNoProvider",
+        "passedInvocations": 1
+      },
+      {
+        "class": "MatchingIntegrationTest",
+        "method": "pipelineBlocksInactiveFilteredInventedAndDuplicateIds",
+        "passedInvocations": 1
+      },
+      {
+        "class": "MatchingIntegrationTest",
+        "method": "parserAndRankerFailuresAreSafe502WithoutFallback",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-063",
+    "method": "GET",
+    "path": "/owner/payouts",
+    "reports": [
+      "PAYOUT"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "payoutReadsAndMutationsRespectRolesAndObjectScope"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-064",
+    "method": "GET",
+    "path": "/owner/payouts/{id}",
+    "reports": [
+      "PAYOUT"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "payoutReadsAndMutationsRespectRolesAndObjectScope"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-065",
+    "method": "GET",
+    "path": "/owner/payouts/{id}/statement",
+    "reports": [
+      "DOC"
+    ],
+    "testClass": "DocumentIntegrationTest",
+    "methods": [
+      "statementUsesHistoricalRoutingLedgerAndPrivateOwnership",
+      "nonPaidPayoutCannotIssue"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "statementUsesHistoricalRoutingLedgerAndPrivateOwnership",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "nonPaidPayoutCannotIssue",
+        "passedInvocations": 4
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-066",
+    "method": "GET",
+    "path": "/owner/payout-destinations",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+      "submissionGatesDoNotBlockSafeOwnerHistoryRead",
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "submissionBoundaries"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "submissionGatesDoNotBlockSafeOwnerHistoryRead",
+        "passedInvocations": 3
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "submissionBoundaries",
+        "passedInvocations": 9
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-067",
+    "method": "POST",
+    "path": "/owner/payout-destinations",
+    "reports": [
+      "DEST"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+      "submissionGatesDoNotBlockSafeOwnerHistoryRead",
+      "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+      "submissionBoundaries"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "submissionGatesDoNotBlockSafeOwnerHistoryRead",
+        "passedInvocations": 3
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "submissionBoundaries",
+        "passedInvocations": 9
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-068",
+    "method": "GET",
+    "path": "/owner/verification",
+    "reports": [
+      "TRUST"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+      "submissionNotesRespectOptionalAndLengthContract"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "submissionNotesRespectOptionalAndLengthContract",
+        "passedInvocations": 6
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-069",
+    "method": "POST",
+    "path": "/owner/verification/submit",
+    "reports": [
+      "TRUST"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+      "submissionNotesRespectOptionalAndLengthContract"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "submissionNotesRespectOptionalAndLengthContract",
+        "passedInvocations": 6
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-070",
+    "method": "GET",
+    "path": "/policies/current",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+      "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-071",
+    "method": "GET",
+    "path": "/policies/{type}/current",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+      "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-072",
+    "method": "GET",
+    "path": "/policies/status",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+      "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-073",
+    "method": "POST",
+    "path": "/policies/accept",
+    "reports": [
+      "POL"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+      "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-074",
+    "method": "POST",
+    "path": "/upload/venue-photo",
+    "reports": [
+      "MEDIA"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders",
+      "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders",
+        "passedInvocations": 4
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-075",
+    "method": "GET",
+    "path": "/upload/files/{filename:.+}",
+    "reports": [
+      "MEDIA"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders",
+      "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders",
+        "passedInvocations": 4
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-076",
+    "method": "GET",
+    "path": "/venues/{venueId}/availability",
+    "reports": [
+      "AVL"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlWeeklyValidationAndAuthorizationAreAtomic",
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlQueryRangeVisibilityAndTimezoneChange",
+      "avlAllBookingStatusesMatchDatabaseExclusion"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlWeeklyValidationAndAuthorizationAreAtomic",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlQueryRangeVisibilityAndTimezoneChange",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllBookingStatusesMatchDatabaseExclusion",
+        "passedInvocations": 8
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-077",
+    "method": "GET",
+    "path": "/venues/{venueId}/availability/settings",
+    "reports": [
+      "AVL"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlWeeklyValidationAndAuthorizationAreAtomic",
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlQueryRangeVisibilityAndTimezoneChange",
+      "avlAllBookingStatusesMatchDatabaseExclusion"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlWeeklyValidationAndAuthorizationAreAtomic",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlQueryRangeVisibilityAndTimezoneChange",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllBookingStatusesMatchDatabaseExclusion",
+        "passedInvocations": 8
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-078",
+    "method": "PUT",
+    "path": "/venues/{venueId}/availability/settings",
+    "reports": [
+      "AVL"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlWeeklyValidationAndAuthorizationAreAtomic",
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlQueryRangeVisibilityAndTimezoneChange",
+      "avlAllBookingStatusesMatchDatabaseExclusion"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlWeeklyValidationAndAuthorizationAreAtomic",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlQueryRangeVisibilityAndTimezoneChange",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllBookingStatusesMatchDatabaseExclusion",
+        "passedInvocations": 8
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-079",
+    "method": "PUT",
+    "path": "/venues/{venueId}/availability/weekly",
+    "reports": [
+      "AVL"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlWeeklyValidationAndAuthorizationAreAtomic",
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlQueryRangeVisibilityAndTimezoneChange",
+      "avlAllBookingStatusesMatchDatabaseExclusion"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlWeeklyValidationAndAuthorizationAreAtomic",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlQueryRangeVisibilityAndTimezoneChange",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllBookingStatusesMatchDatabaseExclusion",
+        "passedInvocations": 8
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-080",
+    "method": "POST",
+    "path": "/venues/{venueId}/availability/overrides",
+    "reports": [
+      "AVL"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlWeeklyValidationAndAuthorizationAreAtomic",
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlQueryRangeVisibilityAndTimezoneChange",
+      "avlAllBookingStatusesMatchDatabaseExclusion"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlWeeklyValidationAndAuthorizationAreAtomic",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlQueryRangeVisibilityAndTimezoneChange",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllBookingStatusesMatchDatabaseExclusion",
+        "passedInvocations": 8
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-081",
+    "method": "DELETE",
+    "path": "/venues/{venueId}/availability/overrides/{overrideId}",
+    "reports": [
+      "AVL"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlWeeklyValidationAndAuthorizationAreAtomic",
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlQueryRangeVisibilityAndTimezoneChange",
+      "avlAllBookingStatusesMatchDatabaseExclusion"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlWeeklyValidationAndAuthorizationAreAtomic",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlQueryRangeVisibilityAndTimezoneChange",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllBookingStatusesMatchDatabaseExclusion",
+        "passedInvocations": 8
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-082",
+    "method": "GET",
+    "path": "/venues",
+    "reports": [
+      "VEN"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "visibilityStatusActorMatrixAndExactTagNormalization"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "visibilityStatusActorMatrixAndExactTagNormalization",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-083",
+    "method": "GET",
+    "path": "/venues/{id}",
+    "reports": [
+      "VEN"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "visibilityStatusActorMatrixAndExactTagNormalization"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "visibilityStatusActorMatrixAndExactTagNormalization",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-084",
+    "method": "POST",
+    "path": "/venues",
+    "reports": [
+      "VEN"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "creationAuthorizationDefaultsAndServerOwnedFields",
+      "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+      "visibilityStatusActorMatrixAndExactTagNormalization"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "creationAuthorizationDefaultsAndServerOwnedFields",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "visibilityStatusActorMatrixAndExactTagNormalization",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-085",
+    "method": "GET",
+    "path": "/venues/my",
+    "reports": [
+      "VEN"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "creationAuthorizationDefaultsAndServerOwnedFields",
+      "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+      "visibilityStatusActorMatrixAndExactTagNormalization"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "creationAuthorizationDefaultsAndServerOwnedFields",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "visibilityStatusActorMatrixAndExactTagNormalization",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-086",
+    "method": "PUT",
+    "path": "/venues/{id}",
+    "reports": [
+      "VEN"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "creationAuthorizationDefaultsAndServerOwnedFields",
+      "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+      "visibilityStatusActorMatrixAndExactTagNormalization"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "creationAuthorizationDefaultsAndServerOwnedFields",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "visibilityStatusActorMatrixAndExactTagNormalization",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-087",
+    "method": "POST",
+    "path": "/venues/{id}/photos",
+    "reports": [
+      "MEDIA"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders",
+      "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans",
+      "mediaAttachmentFailureAfterRealFlushRollsBackRowsAndDeletesNewObject"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders",
+        "passedInvocations": 4
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "mediaAttachmentFailureAfterRealFlushRollsBackRowsAndDeletesNewObject",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-088",
+    "method": "POST",
+    "path": "/venues/{id}/submit-for-review",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-089",
+    "method": "GET",
+    "path": "/venues/{id}/moderation",
+    "reports": [
+      "VEN",
+      "READY"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+      "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "API-090",
+    "method": "POST",
+    "path": "/webhooks/mollie/payment",
+    "reports": [
+      "PAY"
+    ],
+    "testClass": "PaymentIntegrationTest",
+    "methods": [
+      "webhookIntegrityMatrix",
+      "invalidCallbackReferenceRejectedBeforeProvider",
+      "missingCallbackReferenceIs400",
+      "failedProviderRetrievalPreservesBooking",
+      "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect"
+    ],
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "webhookIntegrityMatrix",
+        "passedInvocations": 16
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "invalidCallbackReferenceRejectedBeforeProvider",
+        "passedInvocations": 6
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "missingCallbackReferenceIs400",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "failedProviderRetrievalPreservesBooking",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect",
+        "passedInvocations": 3
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  }
+]

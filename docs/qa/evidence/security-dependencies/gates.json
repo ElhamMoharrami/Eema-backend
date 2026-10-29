@@ -1,0 +1,38 @@
+{
+  "typecheck": {
+    "result": "PASS",
+    "logSha256": "d9dd29a4c1870c7075110b06bc6fe77786715d45ea4fddc996006f5bb0e5e243"
+  },
+  "lint": {
+    "result": "PASS",
+    "logSha256": "f210152ca9cc47490cac552467fa5d7c8f27c013ff2bc11b2141628240b3e0fa",
+    "warnings": 19,
+    "errors": 0
+  },
+  "build": {
+    "result": "PASS",
+    "logSha256": "6f99211cbd081d64bc1a189d332192128e199176d0dbac9ef2734db62bc34258"
+  },
+  "runtime": {
+    "node": "22.22.1",
+    "next": "16.3.5",
+    "react": "19.3.0",
+    "eslint": "9.39.5",
+    "bundler": "webpack"
+  },
+  "tree": {
+    "result": "PASS",
+    "logSha256": "dcd4dbf8354086a89bc6a0830da6d55e245e5e41dccfba4d70e3f97969ac03e6"
+  },
+  "browser": "PASS",
+  "browserChecks": {
+    "browser/browser.json": 1006,
+    "browser/accessibility.json": 112,
+    "actions/browser-actions.json": 75,
+    "expiry-browser.json": 10,
+    "session-browser.json": 1,
+    "email-browser.json": 9,
+    "cala-http.json": 4
+  },
+  "clientHarnessesPassed": 9
+}

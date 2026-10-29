@@ -1,0 +1,26 @@
+{
+  "unit": {
+    "reported": 1981,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 1981,
+    "logSha256": "3779ae1ee842394a1803d024b003a2458a3dcd221160a12f517d402547dca61e"
+  },
+  "postgres": {
+    "reported": 1084,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 13,
+    "passed": 1071,
+    "logSha256": "83efd8dc8d7f14ccff6c1a67ec3026e91ef3067ef355df5236320b0baf59d939"
+  },
+  "package": {
+    "reported": 1981,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 1981,
+    "logSha256": "fcb7c207e0e400e77a0595b1fe030684dfe7c3333ec174b7dd8e7171bc81ab7f"
+  }
+}

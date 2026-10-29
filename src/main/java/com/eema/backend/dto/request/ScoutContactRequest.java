@@ -11,7 +11,9 @@ public record ScoutContactRequest(
     
     @NotBlank(message = "email is required")
     @Email(message = "email must be valid")
+    @Size(max = 255)
     String email,
     
+    @Size(max = 50)
     String phone  // optional
 ) {}

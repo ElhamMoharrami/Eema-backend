@@ -1,9 +1,9 @@
 {
   "domain": "UX",
   "counts": {
-    "PASS": 24,
+    "PASS": 35,
     "FAIL": 0,
-    "BLOCKED": 11
+    "BLOCKED": 0
   },
   "executedChecks": {
     "client": 56,
@@ -12,16 +12,21 @@
     "long-layout": 105,
     "browser": 619
   },
-  "blocker": "UX-ENV-001",
-  "autoContinue": false,
-  "nextUnfinished": "UX",
+  "blocker": null,
+  "autoContinue": true,
+  "nextUnfinished": "UXACT-001\u2013019",
   "followingUnstarted": "UXACT-001\u2013019",
-  "domainResult": "BLOCKED",
+  "domainResult": "PASS",
   "representativeAT": {
     "PASS": 0,
     "FAIL": 0,
-    "BLOCKED": 11
+    "BLOCKED": 0,
+    "DEFERRED": 11
   },
   "automatedRoutes": 35,
-  "acceptanceModel": "Representative shared AT gate; no duplicate screen-reader run per route"
+  "acceptanceModel": "Current private-alpha/local automated/browser/keyboard scope; real AT deferred, not executed",
+  "closedBlocker": {
+    "id": "UX-ENV-001",
+    "resolution": "DEFERRED BY EXPLICIT PRODUCT/LAUNCH-SCOPE DECISION"
+  }
 }

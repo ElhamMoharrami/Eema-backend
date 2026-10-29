@@ -1,0 +1,95 @@
+{
+  "result": "FAIL",
+  "checks": [
+    {
+      "endpoint": "/match",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/match",
+      "variant": "different actor during refresh",
+      "result": "FAIL",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 1
+    },
+    {
+      "endpoint": "/venues/fixture",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/venues/fixture",
+      "variant": "different actor during refresh",
+      "result": "FAIL",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/checkout",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings/fixture/checkout",
+      "variant": "different actor during refresh",
+      "result": "FAIL",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 1
+    },
+    {
+      "endpoint": "/admin/payouts/fixture/mark-paid",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/admin/payouts/fixture/mark-paid",
+      "variant": "different actor during refresh",
+      "result": "FAIL",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/receipt",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings/fixture/receipt",
+      "variant": "different actor during refresh",
+      "result": "FAIL",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 1
+    }
+  ]
+}

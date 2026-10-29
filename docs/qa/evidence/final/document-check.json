@@ -1,0 +1,23 @@
+{
+  "scenarioCount": 703,
+  "pdfScenarioOrderMatches": true,
+  "pages": 639,
+  "sha256": {
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.md": "eaa393e0cd318af4f4de6c3bc690fe417d4f2dece1be23955d8e48b38d8b0662",
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf": "af10666562709f6f2c43808f4fcfe84c4b7e18ed5bb290f82ce269ef2cae1f2d",
+    "docs/qa/EEMA_LOCAL_VALIDATION_CLOSEOUT.md": "65bbdd8e133bd6eda5d7d8e42ec3f06bf0dfb180edf42e9422114e2fa8943d18"
+  },
+  "visualReviewPages": [
+    1,
+    208,
+    241,
+    319,
+    393,
+    626,
+    629,
+    632,
+    634,
+    635
+  ],
+  "visualResult": "PASS \u2014 inspected rendered pages: legible headings/body/tables, no clipping; all703 scenario headings match Markdown order"
+}

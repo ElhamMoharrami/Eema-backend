@@ -1,0 +1,15 @@
+{
+  "scenarioCount": 703,
+  "pdfScenarioOrderMatches": true,
+  "visualReviewPages": [
+    185
+  ],
+  "visualReview": "Legible, no clipping; EMAIL-013 and EMAIL-014 heading verified.",
+  "sha256": {
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.md": "fffecf42165154b7e0f3e1bea3381833b8a08d6f694663d7bcfdda1d20856a6a",
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf": "8d8a97726d0b7dba2e9e0e1e453c326df23a4f5765a48365a1ba24e1d6119899",
+    "docs/qa/EMAIL_EXECUTION_REPORT.md": "716c81d9651ff070d38605b73fba9ddd84bd37fac96bcd709c6462a729e412a1",
+    "src/test/java/com/eema/backend/service/EmailTemplateContractTest.java": "48c17a8694aacc4ebf04f9e70a80ec46b6ac481b00a84b7b0b1bef93077dcab5",
+    "scripts/qa/email-links-browser.cjs": "ecbbdfec8144cf3c258c1906d1d8c6e12a19591bc58372d6df1994e937638a9b"
+  }
+}

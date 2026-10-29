@@ -1,0 +1,21 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.StateRepresentationIntegrationTest",
+      "reported": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "everyTrustEventAndSubjectSurvivesPostgresMapping",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingAuditEventAndActorSurvivesPostgresMapping",
+          "result": "PASS"
+        }
+      ]
+    }
+  ]
+}

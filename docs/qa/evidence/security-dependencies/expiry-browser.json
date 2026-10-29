@@ -1,0 +1,66 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "scenario": "UXACT-015",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-015",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-016",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-016",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-017",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-017",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-018",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-018",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-019",
+      "variant": "expired access and refresh; no action replay; reauthentication guidance",
+      "result": "PASS",
+      "operations": 1,
+      "refreshes": 1
+    },
+    {
+      "scenario": "UXACT-019",
+      "variant": "same actor reauthentication and authoritative reload restore explicit action",
+      "result": "PASS"
+    }
+  ],
+  "scope": "Synthetic API expiration, actual production browser/components; no real provider."
+}

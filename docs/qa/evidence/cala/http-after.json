@@ -1,0 +1,20 @@
+[
+  {
+    "case": "anonymous lookup",
+    "status": 200,
+    "verified": true,
+    "rawMarkerReturned": false
+  },
+  {
+    "case": "null JSON",
+    "status": 200,
+    "verified": false,
+    "rawMarkerReturned": false
+  },
+  {
+    "case": "invalid company object",
+    "status": 200,
+    "verified": false,
+    "rawMarkerReturned": false
+  }
+]

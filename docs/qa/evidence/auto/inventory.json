@@ -1,0 +1,5083 @@
+[
+  {
+    "id": "AUTO-001",
+    "class": "SimpleTest",
+    "method": "testTrue",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/SimpleTest.java",
+    "sourceSha256": "9e4c12692ba69eb87ae4f293b6cfa47f464f06a24be56746ba9dd90d8b518e83",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "SimpleTest",
+        "method": "testTrue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-002",
+    "class": "AsyncConfigurationTest",
+    "method": "createsBoundedNamedExecutor",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/AsyncConfigurationTest.java",
+    "sourceSha256": "324a7fa0f42753df963699de21eca0afbc6cc95a05f811bfa9101c3aefb5eb2e",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AsyncConfigurationTest",
+        "method": "createsBoundedNamedExecutor",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-003",
+    "class": "FlywayLocationTest",
+    "method": "developmentSeedsAreNotInCommonProductionLocation",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/FlywayLocationTest.java",
+    "sourceSha256": "46aaeb21bb2e16408c29ad5e4a40ec88648611517c1c83c92e5ee7ba002b65fa",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FlywayLocationTest",
+        "method": "developmentSeedsAreNotInCommonProductionLocation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-004",
+    "class": "ProductionConfigurationValidatorTest",
+    "method": "rejectsLocalStorageInProduction",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/ProductionConfigurationValidatorTest.java",
+    "sourceSha256": "50bf9f3e5da6f5ba0efc9054987e1e52e4cf5d6c804fd25d8223928c3656c89a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProductionConfigurationValidatorTest",
+        "method": "rejectsLocalStorageInProduction",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-005",
+    "class": "ProductionConfigurationValidatorTest",
+    "method": "rejectsWeakJwtInProduction",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/ProductionConfigurationValidatorTest.java",
+    "sourceSha256": "50bf9f3e5da6f5ba0efc9054987e1e52e4cf5d6c804fd25d8223928c3656c89a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProductionConfigurationValidatorTest",
+        "method": "rejectsWeakJwtInProduction",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-006",
+    "class": "ProductionConfigurationValidatorTest",
+    "method": "rejectsWildcardCorsInProduction",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/ProductionConfigurationValidatorTest.java",
+    "sourceSha256": "50bf9f3e5da6f5ba0efc9054987e1e52e4cf5d6c804fd25d8223928c3656c89a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProductionConfigurationValidatorTest",
+        "method": "rejectsWildcardCorsInProduction",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-007",
+    "class": "ProductionConfigurationValidatorTest",
+    "method": "rejectsSharedBuckets",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/ProductionConfigurationValidatorTest.java",
+    "sourceSha256": "50bf9f3e5da6f5ba0efc9054987e1e52e4cf5d6c804fd25d8223928c3656c89a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProductionConfigurationValidatorTest",
+        "method": "rejectsSharedBuckets",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-008",
+    "class": "ProductionConfigurationValidatorTest",
+    "method": "requiresS3Credentials",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/config/ProductionConfigurationValidatorTest.java",
+    "sourceSha256": "50bf9f3e5da6f5ba0efc9054987e1e52e4cf5d6c804fd25d8223928c3656c89a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProductionConfigurationValidatorTest",
+        "method": "requiresS3Credentials",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-009",
+    "class": "AdminOperationsSurfaceTest",
+    "method": "everyAdminControllerHasDefenseInDepthRoleGuard",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/AdminOperationsSurfaceTest.java",
+    "sourceSha256": "8dce001d9a00378df318136bbbda50df2b0a61e493c69055f1e2729030af75c8",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOperationsSurfaceTest",
+        "method": "everyAdminControllerHasDefenseInDepthRoleGuard",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-010",
+    "class": "AdminOperationsSurfaceTest",
+    "method": "surfaceContainsNoGenericPutPatchOrBookingStatusMutation",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/AdminOperationsSurfaceTest.java",
+    "sourceSha256": "8dce001d9a00378df318136bbbda50df2b0a61e493c69055f1e2729030af75c8",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOperationsSurfaceTest",
+        "method": "surfaceContainsNoGenericPutPatchOrBookingStatusMutation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-011",
+    "class": "AdminOwnerFinancialLiabilityControllerTest",
+    "method": "scoutAndOwnerAreDeniedAllLiabilityOperations",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/AdminOwnerFinancialLiabilityControllerTest.java",
+    "sourceSha256": "e53fbb482af317c617f1dc73c697acd504d29589f9f711bd0ae3c0c3202d21c2",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOwnerFinancialLiabilityControllerTest",
+        "method": "scoutAndOwnerAreDeniedAllLiabilityOperations",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-012",
+    "class": "AdminOwnerPayoutControllerTest",
+    "method": "scoutAndOwnerCannotReadOrMarkPayouts",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/AdminOwnerPayoutControllerTest.java",
+    "sourceSha256": "322b37f682b03e4323829925304f9104f95d00b794d0931e48659f1080797fd3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOwnerPayoutControllerTest",
+        "method": "scoutAndOwnerCannotReadOrMarkPayouts",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-013",
+    "class": "AdminOwnerPayoutControllerTest",
+    "method": "adminCanUseOperationsEndpoints",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/AdminOwnerPayoutControllerTest.java",
+    "sourceSha256": "322b37f682b03e4323829925304f9104f95d00b794d0931e48659f1080797fd3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOwnerPayoutControllerTest",
+        "method": "adminCanUseOperationsEndpoints",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-014",
+    "class": "FinancialDocumentControllerTest",
+    "method": "authorizedEndpointReturnsPdfAttachmentWithoutStoragePath",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/FinancialDocumentControllerTest.java",
+    "sourceSha256": "4257a9e015e334250665eece3b6d69206ce04eaf78226e783ec91bea64837867",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentControllerTest",
+        "method": "authorizedEndpointReturnsPdfAttachmentWithoutStoragePath",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-015",
+    "class": "TrustWorkflowSecuritySurfaceTest",
+    "method": "adminQueuesAndActionsAreAdminOnly",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/TrustWorkflowSecuritySurfaceTest.java",
+    "sourceSha256": "16454194fca9990fa647cfd310491b22e9fd9e843bd0b45ce979f2e266576326",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "TrustWorkflowSecuritySurfaceTest",
+        "method": "adminQueuesAndActionsAreAdminOnly",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-016",
+    "class": "TrustWorkflowSecuritySurfaceTest",
+    "method": "ownerVerificationAndSubmissionAreOwnerOnly",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/TrustWorkflowSecuritySurfaceTest.java",
+    "sourceSha256": "16454194fca9990fa647cfd310491b22e9fd9e843bd0b45ce979f2e266576326",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "TrustWorkflowSecuritySurfaceTest",
+        "method": "ownerVerificationAndSubmissionAreOwnerOnly",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-017",
+    "class": "VerifiedEmailEnforcementSurfaceTest",
+    "method": "launchBlockerMarketplaceMutationsUseCentralVerifiedUserPolicy",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/controller/VerifiedEmailEnforcementSurfaceTest.java",
+    "sourceSha256": "25e293b3457234a4e97db6d89c63df432a7a17e8af91857a27916c8c7779ecbe",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VerifiedEmailEnforcementSurfaceTest",
+        "method": "launchBlockerMarketplaceMutationsUseCentralVerifiedUserPolicy",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-018",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "commonFlywayChainAndHibernateValidationStartFromEmptyDatabase",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "commonFlywayChainAndHibernateValidationStartFromEmptyDatabase",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-019",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-020",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "exclusionRejectsOneOverlappingBlockingInsert",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "exclusionRejectsOneOverlappingBlockingInsert",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-021",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "halfOpenBackToBackReservationsBothPersist",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "halfOpenBackToBackReservationsBothPersist",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-022",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-023",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-024",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "inquiryAndPayoutSkipLockedQueriesAreActuallyDisjoint",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "inquiryAndPayoutSkipLockedQueriesAreActuallyDisjoint",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-025",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "refreshTokenRotationLockAllowsOnlyOneWinner",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "refreshTokenRotationLockAllowsOnlyOneWinner",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-026",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "payoutAndDocumentUniqueConstraintsHaveSingleAuthorities",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "payoutAndDocumentUniqueConstraintsHaveSingleAuthorities",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-027",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "verifiedDestinationPartialIndexAndReplacementSemanticsHold",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "verifiedDestinationPartialIndexAndReplacementSemanticsHold",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-028",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "readyPayoutDestinationSnapshotDoesNotFollowReplacement",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "readyPayoutDestinationSnapshotDoesNotFollowReplacement",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-029",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "policyPublishRaceLeavesExactlyOneCurrentVersion",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "policyPublishRaceLeavesExactlyOneCurrentVersion",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-030",
+    "class": "PostgresCriticalPathIntegrationTest",
+    "method": "policyAcceptanceBookingSnapshotStaysHistoricalAndIncidentHasNoFinancialSideEffects",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/integration/PostgresCriticalPathIntegrationTest.java",
+    "sourceSha256": "664ca10dd4e2b32f2d1b223002108befcb6a36e11830b861b74e50f12bcbe3ac",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PostgresCriticalPathIntegrationTest",
+        "method": "policyAcceptanceBookingSnapshotStaysHistoricalAndIncidentHasNoFinancialSideEffects",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-031",
+    "class": "JwtServiceTest",
+    "method": "validatesSignatureExpiryAndExpectedIssuer",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/security/JwtServiceTest.java",
+    "sourceSha256": "a87a1f0cdfe5d1252267e1a86eebbfb5f2537bf12da7c26b83850cc14d273656",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "JwtServiceTest",
+        "method": "validatesSignatureExpiryAndExpectedIssuer",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-032",
+    "class": "RequestCorrelationFilterTest",
+    "method": "propagatesSafeRequestId",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/security/RequestCorrelationFilterTest.java",
+    "sourceSha256": "3b65a0f591b24656ff19dc91ae825eed78c5477bfe7dd30a4c6bd7dae31e8bcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RequestCorrelationFilterTest",
+        "method": "propagatesSafeRequestId",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-033",
+    "class": "RequestCorrelationFilterTest",
+    "method": "replacesUnsafeRequestId",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/security/RequestCorrelationFilterTest.java",
+    "sourceSha256": "3b65a0f591b24656ff19dc91ae825eed78c5477bfe7dd30a4c6bd7dae31e8bcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RequestCorrelationFilterTest",
+        "method": "replacesUnsafeRequestId",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-034",
+    "class": "AccountEmailNotificationServiceTest",
+    "method": "verificationUsesAuthoritativeEmailAndFrontendVerificationRoute",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountEmailNotificationServiceTest.java",
+    "sourceSha256": "8e4f855660a47020d31f131a2329d0add3581d6dfaef8be78b0209aeb47df4ce",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountEmailNotificationServiceTest",
+        "method": "verificationUsesAuthoritativeEmailAndFrontendVerificationRoute",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-035",
+    "class": "AccountEmailNotificationServiceTest",
+    "method": "resetUsesAuthoritativeEmailAndFrontendResetRoute",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountEmailNotificationServiceTest.java",
+    "sourceSha256": "8e4f855660a47020d31f131a2329d0add3581d6dfaef8be78b0209aeb47df4ce",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountEmailNotificationServiceTest",
+        "method": "resetUsesAuthoritativeEmailAndFrontendResetRoute",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-036",
+    "class": "AccountRecoveryServiceTest",
+    "method": "issueStoresOnlyHashAndPublishesRawTokenAfterTransactionBoundary",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountRecoveryServiceTest.java",
+    "sourceSha256": "81c407849b84ecb022acceae431fb34b916227428f6626295fbe022d5645b8d0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountRecoveryServiceTest",
+        "method": "issueStoresOnlyHashAndPublishesRawTokenAfterTransactionBoundary",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-037",
+    "class": "AccountRecoveryServiceTest",
+    "method": "validVerificationIsSingleUseAndSameUsedTokenIsIdempotent",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountRecoveryServiceTest.java",
+    "sourceSha256": "81c407849b84ecb022acceae431fb34b916227428f6626295fbe022d5645b8d0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountRecoveryServiceTest",
+        "method": "validVerificationIsSingleUseAndSameUsedTokenIsIdempotent",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-038",
+    "class": "AccountRecoveryServiceTest",
+    "method": "expiredAndInactiveVerificationAreRejectedWithoutActivation",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountRecoveryServiceTest.java",
+    "sourceSha256": "81c407849b84ecb022acceae431fb34b916227428f6626295fbe022d5645b8d0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountRecoveryServiceTest",
+        "method": "expiredAndInactiveVerificationAreRejectedWithoutActivation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-039",
+    "class": "AccountRecoveryServiceTest",
+    "method": "resendIsGenericAndDoesNothingForVerifiedOrUnknownAccount",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountRecoveryServiceTest.java",
+    "sourceSha256": "81c407849b84ecb022acceae431fb34b916227428f6626295fbe022d5645b8d0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountRecoveryServiceTest",
+        "method": "resendIsGenericAndDoesNothingForVerifiedOrUnknownAccount",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-040",
+    "class": "AccountRecoveryServiceTest",
+    "method": "forgotIsGenericAndResetChangesPasswordAndRevokesEveryRefreshSession",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountRecoveryServiceTest.java",
+    "sourceSha256": "81c407849b84ecb022acceae431fb34b916227428f6626295fbe022d5645b8d0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountRecoveryServiceTest",
+        "method": "forgotIsGenericAndResetChangesPasswordAndRevokesEveryRefreshSession",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-041",
+    "class": "AccountRecoveryServiceTest",
+    "method": "unknownForgotResponseMatchesExistingAndExpiredResetIsRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AccountRecoveryServiceTest.java",
+    "sourceSha256": "81c407849b84ecb022acceae431fb34b916227428f6626295fbe022d5645b8d0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AccountRecoveryServiceTest",
+        "method": "unknownForgotResponseMatchesExistingAndExpiredResetIsRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-042",
+    "class": "AdminOperationsServiceTest",
+    "method": "eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AdminOperationsServiceTest.java",
+    "sourceSha256": "9a154c6b9997825e4141ca172870a45bea1f5dba95c8398827909884f76b587a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOperationsServiceTest",
+        "method": "eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-043",
+    "class": "AdminOperationsServiceTest",
+    "method": "exceptionQueueBoundsRequestsWithoutNarrowingLargeOffsets",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "additional": [
+      "AdminDomainIntegrationTest.completeRefundBacklogBoundaries",
+      "AdminDomainIntegrationTest.mixedBacklogHasStableGlobalOrderAndNoMissingSourceRows",
+      "OperationsNotificationIntegrationTest.permanentFailureAndExhaustionAreSafeOperationalExceptions"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AdminOperationsServiceTest.java",
+    "sourceSha256": "9a154c6b9997825e4141ca172870a45bea1f5dba95c8398827909884f76b587a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOperationsServiceTest",
+        "method": "exceptionQueueBoundsRequestsWithoutNarrowingLargeOffsets",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "completeRefundBacklogBoundaries",
+        "passedInvocations": 7
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "mixedBacklogHasStableGlobalOrderAndNoMissingSourceRows",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OperationsNotificationIntegrationTest",
+        "method": "permanentFailureAndExhaustionAreSafeOperationalExceptions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-044",
+    "class": "AdminOperationsServiceTest",
+    "method": "bookingSearchForwardsControlledFiltersAndCapsPageSize",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AdminOperationsServiceTest.java",
+    "sourceSha256": "9a154c6b9997825e4141ca172870a45bea1f5dba95c8398827909884f76b587a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOperationsServiceTest",
+        "method": "bookingSearchForwardsControlledFiltersAndCapsPageSize",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-045",
+    "class": "AdminOperationsServiceTest",
+    "method": "bookingDetailCombinesAuthoritativeRefundFeePayoutAndLiabilityState",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AdminOperationsServiceTest.java",
+    "sourceSha256": "9a154c6b9997825e4141ca172870a45bea1f5dba95c8398827909884f76b587a",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminOperationsServiceTest",
+        "method": "bookingDetailCombinesAuthoritativeRefundFeePayoutAndLiabilityState",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-046",
+    "class": "AuthServiceTest",
+    "method": "loginRejectsInactiveUser",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AuthServiceTest.java",
+    "sourceSha256": "f13dfaf91308a6d21dc545c07dbd09e314e769d7de0b41f93ede08da62e8c629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthServiceTest",
+        "method": "loginRejectsInactiveUser",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-047",
+    "class": "AuthServiceTest",
+    "method": "registerAndLoginIssueTokensWithoutPersistingRawRefreshToken",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AuthServiceTest.java",
+    "sourceSha256": "f13dfaf91308a6d21dc545c07dbd09e314e769d7de0b41f93ede08da62e8c629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthServiceTest",
+        "method": "registerAndLoginIssueTokensWithoutPersistingRawRefreshToken",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-048",
+    "class": "AuthServiceTest",
+    "method": "refreshRotatesAndRejectsReuse",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AuthServiceTest.java",
+    "sourceSha256": "f13dfaf91308a6d21dc545c07dbd09e314e769d7de0b41f93ede08da62e8c629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthServiceTest",
+        "method": "refreshRotatesAndRejectsReuse",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-049",
+    "class": "AvailabilityInquiryNotificationServiceTest",
+    "method": "ownerReceivesNewInquiryWithExistingOwnerRoute",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryNotificationServiceTest.java",
+    "sourceSha256": "9e0a73a6f23da86513ae438292f9e547fa1f5aa9e8f8040532b60cafe67c3024",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryNotificationServiceTest",
+        "method": "ownerReceivesNewInquiryWithExistingOwnerRoute",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-050",
+    "class": "AvailabilityInquiryNotificationServiceTest",
+    "method": "scoutReceivesOfferWithDeadlineAndExistingScoutRoute",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryNotificationServiceTest.java",
+    "sourceSha256": "9e0a73a6f23da86513ae438292f9e547fa1f5aa9e8f8040532b60cafe67c3024",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryNotificationServiceTest",
+        "method": "scoutReceivesOfferWithDeadlineAndExistingScoutRoute",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-051",
+    "class": "AvailabilityInquiryNotificationServiceTest",
+    "method": "scoutReceivesDeclineAndOfferExpiry",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryNotificationServiceTest.java",
+    "sourceSha256": "9e0a73a6f23da86513ae438292f9e547fa1f5aa9e8f8040532b60cafe67c3024",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryNotificationServiceTest",
+        "method": "scoutReceivesDeclineAndOfferExpiry",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-052",
+    "class": "AvailabilityInquiryNotificationServiceTest",
+    "method": "providerFailureDoesNotEscapeNotificationBoundary",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryNotificationServiceTest.java",
+    "sourceSha256": "9e0a73a6f23da86513ae438292f9e547fa1f5aa9e8f8040532b60cafe67c3024",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryNotificationServiceTest",
+        "method": "providerFailureDoesNotEscapeNotificationBoundary",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-053",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "inquiryIsAllowedForUnavailableInterval",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "inquiryIsAllowedForUnavailableInterval",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-054",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "inquiryIsRejectedWhenNormalAvailabilityAlreadyContainsInterval",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "inquiryIsRejectedWhenNormalAvailabilityAlreadyContainsInterval",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-055",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "unauthorizedOwnerCannotRespond",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "unauthorizedOwnerCannotRespond",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-056",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "ownerDeclineEmitsOneLifecycleEventAndDuplicateIsRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "ownerDeclineEmitsOneLifecycleEventAndDuplicateIsRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-057",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "ownerCannotOfferIntervalConflictingWithBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "ownerCannotOfferIntervalConflictingWithBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-058",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "inquiryAndOwnerOfferCannotBypassLeadTime",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "inquiryAndOwnerOfferCannotBypassLeadTime",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-059",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "offeredSlotThatBecomesTooLateExpiresWithoutCreatingBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "offeredSlotThatBecomesTooLateExpiresWithoutCreatingBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-060",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "offerExpiresAndCannotBeAccepted",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "offerExpiresAndCannotBeAccepted",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-061",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "onlyInquiryScoutCanAcceptOffer",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "onlyInquiryScoutCanAcceptOffer",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-062",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "ownOfferCreatesApprovedBookingAndDoesNotChangeWeeklyAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "ownOfferCreatesApprovedBookingAndDoesNotChangeWeeklyAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-063",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "offeringOneOffSlotDoesNotModifyWeeklyAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "offeringOneOffSlotDoesNotModifyWeeklyAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-064",
+    "class": "AvailabilityInquiryServiceTest",
+    "method": "scheduledExpiryReleasesOutstandingOffers",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/AvailabilityInquiryServiceTest.java",
+    "sourceSha256": "518a5b9bae100703171be0ba0f2b4feb3bda36a04f95c53f5ce31d50a8d289f0",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AvailabilityInquiryServiceTest",
+        "method": "scheduledExpiryReleasesOutstandingOffers",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-065",
+    "class": "BookingApprovalExpirationJobTest",
+    "method": "scheduledScanExpiresApprovedUnpaidBookings",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingApprovalExpirationJobTest.java",
+    "sourceSha256": "525c97689fa1391b290f33b887a226e41cbb301115747c246899e574b7b3b7a5",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingApprovalExpirationJobTest",
+        "method": "scheduledScanExpiresApprovedUnpaidBookings",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-066",
+    "class": "BookingAvailabilityValidatorTest",
+    "method": "acceptsSlotContainedInEffectiveAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingAvailabilityValidatorTest.java",
+    "sourceSha256": "e08cc012ee83bb6cfc463cd272eb0797fcc9e509ed7bdda8aff29e71d481406e",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingAvailabilityValidatorTest",
+        "method": "acceptsSlotContainedInEffectiveAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-067",
+    "class": "BookingAvailabilityValidatorTest",
+    "method": "rejectsSlotOutsideEffectiveAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingAvailabilityValidatorTest.java",
+    "sourceSha256": "e08cc012ee83bb6cfc463cd272eb0797fcc9e509ed7bdda8aff29e71d481406e",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingAvailabilityValidatorTest",
+        "method": "rejectsSlotOutsideEffectiveAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-068",
+    "class": "BookingAvailabilityValidatorTest",
+    "method": "rejectsInvalidVenueTimezone",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingAvailabilityValidatorTest.java",
+    "sourceSha256": "e08cc012ee83bb6cfc463cd272eb0797fcc9e509ed7bdda8aff29e71d481406e",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingAvailabilityValidatorTest",
+        "method": "rejectsInvalidVenueTimezone",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-069",
+    "class": "BookingCancellationCoordinatorTest",
+    "method": "scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationCoordinatorTest.java",
+    "sourceSha256": "0b323a5c0662278c8e2c037a02f77793e7d776a5bed6ce6aa1860cc78160c4a7",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationCoordinatorTest",
+        "method": "scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-070",
+    "class": "BookingCancellationCoordinatorTest",
+    "method": "ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationCoordinatorTest.java",
+    "sourceSha256": "0b323a5c0662278c8e2c037a02f77793e7d776a5bed6ce6aa1860cc78160c4a7",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationCoordinatorTest",
+        "method": "ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-071",
+    "class": "BookingCancellationCoordinatorTest",
+    "method": "adminRequiresReasonAndReceivesFullRefundPolicy",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationCoordinatorTest.java",
+    "sourceSha256": "0b323a5c0662278c8e2c037a02f77793e7d776a5bed6ce6aa1860cc78160c4a7",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationCoordinatorTest",
+        "method": "adminRequiresReasonAndReceivesFullRefundPolicy",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-072",
+    "class": "BookingCancellationPolicyTest",
+    "method": "gracePeriodRequiresConfirmationWithin24HoursAndShootMoreThan48HoursAway",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationPolicyTest.java",
+    "sourceSha256": "298dab9fa27b4c028c82d76446385005fa74cdfac054ef175c87b9a72a25117b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationPolicyTest",
+        "method": "gracePeriodRequiresConfirmationWithin24HoursAndShootMoreThan48HoursAway",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-073",
+    "class": "BookingCancellationPolicyTest",
+    "method": "exactSevenDaysAndExact48HoursUsePartialTier",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationPolicyTest.java",
+    "sourceSha256": "298dab9fa27b4c028c82d76446385005fa74cdfac054ef175c87b9a72a25117b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationPolicyTest",
+        "method": "exactSevenDaysAndExact48HoursUsePartialTier",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-074",
+    "class": "BookingCancellationPolicyTest",
+    "method": "cancellationEconomicsUseRetainedAmountAndCommissionSnapshot",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationPolicyTest.java",
+    "sourceSha256": "298dab9fa27b4c028c82d76446385005fa74cdfac054ef175c87b9a72a25117b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationPolicyTest",
+        "method": "cancellationEconomicsUseRetainedAmountAndCommissionSnapshot",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-075",
+    "class": "BookingCancellationPolicyTest",
+    "method": "ownerAndAdminAlwaysProduceFullCustomerRefundAndZeroSettlement",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationPolicyTest.java",
+    "sourceSha256": "298dab9fa27b4c028c82d76446385005fa74cdfac054ef175c87b9a72a25117b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationPolicyTest",
+        "method": "ownerAndAdminAlwaysProduceFullCustomerRefundAndZeroSettlement",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-076",
+    "class": "BookingCancellationPolicyTest",
+    "method": "snapshotUsesVenueTimezoneAcrossAmsterdamDstTransition",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationPolicyTest.java",
+    "sourceSha256": "298dab9fa27b4c028c82d76446385005fa74cdfac054ef175c87b9a72a25117b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationPolicyTest",
+        "method": "snapshotUsesVenueTimezoneAcrossAmsterdamDstTransition",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-077",
+    "class": "BookingCancellationPolicyTest",
+    "method": "moneyRoundingIsHalfUpAtTwoDecimals",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingCancellationPolicyTest.java",
+    "sourceSha256": "298dab9fa27b4c028c82d76446385005fa74cdfac054ef175c87b9a72a25117b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingCancellationPolicyTest",
+        "method": "moneyRoundingIsHalfUpAtTwoDecimals",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-078",
+    "class": "BookingFinancialsTest",
+    "method": "calculatesCommissionAndActualFeePayout",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingFinancialsTest.java",
+    "sourceSha256": "5c1ff3cc76089036ceed2a6450d09124b575d04a3aff7b3035925f19fad2be47",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingFinancialsTest",
+        "method": "calculatesCommissionAndActualFeePayout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-079",
+    "class": "BookingFinancialsTest",
+    "method": "roundsMoneyExplicitlyAndEnforcesInvariants",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingFinancialsTest.java",
+    "sourceSha256": "5c1ff3cc76089036ceed2a6450d09124b575d04a3aff7b3035925f19fad2be47",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingFinancialsTest",
+        "method": "roundsMoneyExplicitlyAndEnforcesInvariants",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-080",
+    "class": "BookingNotificationServiceTest",
+    "method": "usesSnapshotRecipientsAndRendersConfirmedDetails",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "usesSnapshotRecipientsAndRendersConfirmedDetails",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-081",
+    "class": "BookingNotificationServiceTest",
+    "method": "scoutFailureStillAttemptsOwner",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "scoutFailureStillAttemptsOwner",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-082",
+    "class": "BookingNotificationServiceTest",
+    "method": "latePaymentMessageSaysNotConfirmedAndRefundInitiated",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "latePaymentMessageSaysNotConfirmedAndRefundInitiated",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-083",
+    "class": "BookingNotificationServiceTest",
+    "method": "cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-084",
+    "class": "BookingNotificationServiceTest",
+    "method": "authoritativeCancellationRefundCompletionUsesProcessedCopy",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "authoritativeCancellationRefundCompletionUsesProcessedCopy",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-085",
+    "class": "BookingNotificationServiceTest",
+    "method": "ownerAndScoutAreNotifiedWhenRequestIsSubmitted",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "ownerAndScoutAreNotifiedWhenRequestIsSubmitted",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-086",
+    "class": "BookingNotificationServiceTest",
+    "method": "scoutAcceptanceEmailContainsDeadlinePayCtaAndDeepLink",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "scoutAcceptanceEmailContainsDeadlinePayCtaAndDeepLink",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-087",
+    "class": "BookingNotificationServiceTest",
+    "method": "scoutReceivesDeclineAndApprovalExpiryMessages",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "scoutReceivesDeclineAndApprovalExpiryMessages",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-088",
+    "class": "BookingNotificationServiceTest",
+    "method": "lifecycleEmailFailureIsContained",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "lifecycleEmailFailureIsContained",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-089",
+    "class": "BookingNotificationServiceTest",
+    "method": "requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingNotificationServiceTest.java",
+    "sourceSha256": "acd7abad9a211d7a9c4aa5287914d2c8fc339a8b3d4a17e0b7dbb5c7f77276be",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingNotificationServiceTest",
+        "method": "requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-090",
+    "class": "BookingOverlapRuleTest",
+    "method": "detectsOverlappingStart",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "detectsOverlappingStart",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-091",
+    "class": "BookingOverlapRuleTest",
+    "method": "detectsOverlappingEnd",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "detectsOverlappingEnd",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-092",
+    "class": "BookingOverlapRuleTest",
+    "method": "detectsCandidateContainingBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "detectsCandidateContainingBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-093",
+    "class": "BookingOverlapRuleTest",
+    "method": "detectsCandidateInsideBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "detectsCandidateInsideBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-094",
+    "class": "BookingOverlapRuleTest",
+    "method": "permitsBackToBackBefore",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "permitsBackToBackBefore",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-095",
+    "class": "BookingOverlapRuleTest",
+    "method": "permitsBackToBackAfter",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "permitsBackToBackAfter",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-096",
+    "class": "BookingOverlapRuleTest",
+    "method": "permitsSeparatedBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingOverlapRuleTest.java",
+    "sourceSha256": "870a516f35d2e36e66265339f7490f3bd8c9e757fec16b70c96f602c9c3b0bfb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingOverlapRuleTest",
+        "method": "permitsSeparatedBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-097",
+    "class": "BookingPriceCalculatorTest",
+    "method": "appliesMinimumExactMinutesAndFullDayCap",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingPriceCalculatorTest.java",
+    "sourceSha256": "bd9864edeadfbf800db934c7562d46f338c724d923585644ed62d1b84f75dc4d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingPriceCalculatorTest",
+        "method": "appliesMinimumExactMinutesAndFullDayCap",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-098",
+    "class": "BookingPriceCalculatorTest",
+    "method": "capAlsoAppliesToMinimumDerivedTotalAndRoundsHalfUpToCents",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingPriceCalculatorTest.java",
+    "sourceSha256": "bd9864edeadfbf800db934c7562d46f338c724d923585644ed62d1b84f75dc4d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingPriceCalculatorTest",
+        "method": "capAlsoAppliesToMinimumDerivedTotalAndRoundsHalfUpToCents",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-099",
+    "class": "BookingPriceCalculatorTest",
+    "method": "exposesAuthoritativeQuoteDetails",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingPriceCalculatorTest.java",
+    "sourceSha256": "bd9864edeadfbf800db934c7562d46f338c724d923585644ed62d1b84f75dc4d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingPriceCalculatorTest",
+        "method": "exposesAuthoritativeQuoteDetails",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-100",
+    "class": "BookingPriceCalculatorTest",
+    "method": "rejectsInvalidConfigurationAndIntervals",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingPriceCalculatorTest.java",
+    "sourceSha256": "bd9864edeadfbf800db934c7562d46f338c724d923585644ed62d1b84f75dc4d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingPriceCalculatorTest",
+        "method": "rejectsInvalidConfigurationAndIntervals",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-101",
+    "class": "BookingServiceTest",
+    "method": "scoutCanReadOwnBookingButNotAnotherScoutsBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "scoutCanReadOwnBookingButNotAnotherScoutsBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-102",
+    "class": "BookingServiceTest",
+    "method": "rejectsWebhookWhosePaymentIdDoesNotMatchStoredPayment",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "rejectsWebhookWhosePaymentIdDoesNotMatchStoredPayment",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-103",
+    "class": "BookingServiceTest",
+    "method": "rejectsWebhookWhoseAmountDoesNotMatchDatabasePrice",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "rejectsWebhookWhoseAmountDoesNotMatchDatabasePrice",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-104",
+    "class": "BookingServiceTest",
+    "method": "duplicatePaidWebhookDoesNotCreateAnotherEvent",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "duplicatePaidWebhookDoesNotCreateAnotherEvent",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-105",
+    "class": "BookingServiceTest",
+    "method": "firstPaidTransitionPublishesNotificationOnceAndDuplicateDoesNot",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "firstPaidTransitionPublishesNotificationOnceAndDuplicateDoesNot",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-106",
+    "class": "BookingServiceTest",
+    "method": "ownerAndAdminCanReadAuthorizedBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "ownerAndAdminCanReadAuthorizedBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-107",
+    "class": "BookingServiceTest",
+    "method": "databaseConflictFromConcurrentAttemptCannotCreateSecondBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "databaseConflictFromConcurrentAttemptCannotCreateSecondBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-108",
+    "class": "BookingServiceTest",
+    "method": "requestAcceptPaymentEndsConfirmedWithoutSecondOwnerAction",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "requestAcceptPaymentEndsConfirmedWithoutSecondOwnerAction",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-109",
+    "class": "BookingServiceTest",
+    "method": "scoutCreatesRequestWithSelectedTimesWithoutStartingPayment",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "scoutCreatesRequestWithSelectedTimesWithoutStartingPayment",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-110",
+    "class": "BookingServiceTest",
+    "method": "ownerCanDeclineRequestAndDoubleAcceptanceIsRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "ownerCanDeclineRequestAndDoubleAcceptanceIsRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-111",
+    "class": "BookingServiceTest",
+    "method": "unauthorizedOwnerCannotAcceptRequest",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "unauthorizedOwnerCannotAcceptRequest",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-112",
+    "class": "BookingServiceTest",
+    "method": "acceptedRequestMakesOnlyOverlappingRequestsUnavailable",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "acceptedRequestMakesOnlyOverlappingRequestsUnavailable",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-113",
+    "class": "BookingServiceTest",
+    "method": "acceptanceAfterOwnerDeadlineExpiresRequestAndFailsClearly",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "acceptanceAfterOwnerDeadlineExpiresRequestAndFailsClearly",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-114",
+    "class": "BookingServiceTest",
+    "method": "acceptanceThatHasBecomeTooLateExpiresRequest",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "acceptanceThatHasBecomeTooLateExpiresRequest",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-115",
+    "class": "BookingServiceTest",
+    "method": "dueRequestExpirationIsIdempotentAndIgnoresAcceptedRows",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "dueRequestExpirationIsIdempotentAndIgnoresAcceptedRows",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-116",
+    "class": "BookingServiceTest",
+    "method": "approvedRequestExpiresAndLatePaymentIsMarkedForRefund",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "approvedRequestExpiresAndLatePaymentIsMarkedForRefund",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-117",
+    "class": "BookingServiceTest",
+    "method": "paymentAfterDeadlineExpiresBookingEvenBeforeSchedulerRuns",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "paymentAfterDeadlineExpiresBookingEvenBeforeSchedulerRuns",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-118",
+    "class": "BookingServiceTest",
+    "method": "acceptedInquiryBookingPublishesOnlyAcceptedBookingLifecycleEmail",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingServiceTest.java",
+    "sourceSha256": "392a2011c53f6c31bf2c5909a55c09822917b6b23ebd429ea0b969092d2f84cc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingServiceTest",
+        "method": "acceptedInquiryBookingPublishesOnlyAcceptedBookingLifecycleEmail",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-119",
+    "class": "BookingStateMachineTest",
+    "method": "completeTransitionContract",
+    "executed": 64,
+    "sourceExists": true,
+    "results": [
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingStateMachineTest.java",
+    "sourceSha256": "632faed852c640e6adce0af4fde71f2da4913c1cea0c96b2e9380220c1caf4a3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingStateMachineTest",
+        "method": "completeTransitionContract",
+        "passedInvocations": 64
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-120",
+    "class": "BookingStateMachineTest",
+    "method": "completeTransitionContract",
+    "executed": 64,
+    "sourceExists": true,
+    "results": [
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/BookingStateMachineTest.java",
+    "sourceSha256": "632faed852c640e6adce0af4fde71f2da4913c1cea0c96b2e9380220c1caf4a3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingStateMachineTest",
+        "method": "completeTransitionContract",
+        "passedInvocations": 64
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-121",
+    "class": "CancellationServiceTest",
+    "method": "openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CancellationServiceTest.java",
+    "sourceSha256": "35d3a8a5759dda3455303b61e9e990a2369a19ce9fb0e795bfdec79e1cc88d98",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationServiceTest",
+        "method": "openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-122",
+    "class": "CancellationServiceTest",
+    "method": "paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CancellationServiceTest.java",
+    "sourceSha256": "35d3a8a5759dda3455303b61e9e990a2369a19ce9fb0e795bfdec79e1cc88d98",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationServiceTest",
+        "method": "paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-123",
+    "class": "CancellationServiceTest",
+    "method": "zeroRefundCancellationNeverCallsRefundProvider",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CancellationServiceTest.java",
+    "sourceSha256": "35d3a8a5759dda3455303b61e9e990a2369a19ce9fb0e795bfdec79e1cc88d98",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationServiceTest",
+        "method": "zeroRefundCancellationNeverCallsRefundProvider",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-124",
+    "class": "CancellationServiceTest",
+    "method": "duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CancellationServiceTest.java",
+    "sourceSha256": "35d3a8a5759dda3455303b61e9e990a2369a19ce9fb0e795bfdec79e1cc88d98",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationServiceTest",
+        "method": "duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-125",
+    "class": "CriticalBookingWorkflowTest",
+    "method": "requestApprovalCheckoutAndAuthoritativePaymentCompleteOneReservedBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CriticalBookingWorkflowTest.java",
+    "sourceSha256": "c05431932eab5ac09bf499b63f18a3275408c7b22c17a02e3bc8d804e37a1910",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CriticalBookingWorkflowTest",
+        "method": "requestApprovalCheckoutAndAuthoritativePaymentCompleteOneReservedBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-126",
+    "class": "CriticalBookingWorkflowTest",
+    "method": "declineAndExpiryReleaseSlotsAndRejectCheckout",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CriticalBookingWorkflowTest.java",
+    "sourceSha256": "c05431932eab5ac09bf499b63f18a3275408c7b22c17a02e3bc8d804e37a1910",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CriticalBookingWorkflowTest",
+        "method": "declineAndExpiryReleaseSlotsAndRejectCheckout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-127",
+    "class": "CriticalBookingWorkflowTest",
+    "method": "paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/CriticalBookingWorkflowTest.java",
+    "sourceSha256": "c05431932eab5ac09bf499b63f18a3275408c7b22c17a02e3bc8d804e37a1910",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CriticalBookingWorkflowTest",
+        "method": "paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-128",
+    "class": "EmailServiceTest",
+    "method": "disabledEmailNeedsNoCredentials",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/EmailServiceTest.java",
+    "sourceSha256": "303bbb4afea9d1ef5f513deecb3ed909bcaebf0897f2afae3514f197771157e7",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "EmailServiceTest",
+        "method": "disabledEmailNeedsNoCredentials",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-129",
+    "class": "EmailServiceTest",
+    "method": "enabledEmailRequiresCredentials",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/EmailServiceTest.java",
+    "sourceSha256": "303bbb4afea9d1ef5f513deecb3ed909bcaebf0897f2afae3514f197771157e7",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "EmailServiceTest",
+        "method": "enabledEmailRequiresCredentials",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-130",
+    "class": "FinancialDocumentConcurrencyContractTest",
+    "method": "issuanceLocksAuthoritativeAggregateRowsBeforeUniqueDocumentCreation",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentConcurrencyContractTest.java",
+    "sourceSha256": "fa03646633473e7314bcb5eafc54b0eeb17731f063f9d6e0a86a5cbf35771c0c",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentConcurrencyContractTest",
+        "method": "issuanceLocksAuthoritativeAggregateRowsBeforeUniqueDocumentCreation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-131",
+    "class": "FinancialDocumentPdfRendererTest",
+    "method": "receiptContainsPaymentSnapshotAndExcludesInternalEconomics",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentPdfRendererTest.java",
+    "sourceSha256": "34a02207904a8c9436f478dfcc1e522cab6f81de6478f97ff69daf147b9c4e24",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentPdfRendererTest",
+        "method": "receiptContainsPaymentSnapshotAndExcludesInternalEconomics",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-132",
+    "class": "FinancialDocumentPdfRendererTest",
+    "method": "payoutStatementUsesExactLedgerValuesAndTransferReference",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentPdfRendererTest.java",
+    "sourceSha256": "34a02207904a8c9436f478dfcc1e522cab6f81de6478f97ff69daf147b9c4e24",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentPdfRendererTest",
+        "method": "payoutStatementUsesExactLedgerValuesAndTransferReference",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-133",
+    "class": "FinancialDocumentServiceTest",
+    "method": "confirmedScoutReceiptIssuesOnceAndAdminCanReuseIt",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentServiceTest.java",
+    "sourceSha256": "729afc95b2518d911f39d17470e8f4795d8aa90dbcfc0eda63de632d1a56f707",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentServiceTest",
+        "method": "confirmedScoutReceiptIssuesOnceAndAdminCanReuseIt",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-134",
+    "class": "FinancialDocumentServiceTest",
+    "method": "documentNumbersAreUniqueAndHistoricalReceiptIsNotRewritten",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentServiceTest.java",
+    "sourceSha256": "729afc95b2518d911f39d17470e8f4795d8aa90dbcfc0eda63de632d1a56f707",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentServiceTest",
+        "method": "documentNumbersAreUniqueAndHistoricalReceiptIsNotRewritten",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-135",
+    "class": "FinancialDocumentServiceTest",
+    "method": "unpaidStatesAndUnauthorizedPeopleCannotObtainReceipt",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentServiceTest.java",
+    "sourceSha256": "729afc95b2518d911f39d17470e8f4795d8aa90dbcfc0eda63de632d1a56f707",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentServiceTest",
+        "method": "unpaidStatesAndUnauthorizedPeopleCannotObtainReceipt",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-136",
+    "class": "FinancialDocumentServiceTest",
+    "method": "confirmedPaymentRemainsReceiptEligibleAfterCancellationBeforeFirstDownload",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentServiceTest.java",
+    "sourceSha256": "729afc95b2518d911f39d17470e8f4795d8aa90dbcfc0eda63de632d1a56f707",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentServiceTest",
+        "method": "confirmedPaymentRemainsReceiptEligibleAfterCancellationBeforeFirstDownload",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-137",
+    "class": "FinancialDocumentServiceTest",
+    "method": "onlyPaidPayoutUsesExactLedgerAndIssuesOneStatement",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentServiceTest.java",
+    "sourceSha256": "729afc95b2518d911f39d17470e8f4795d8aa90dbcfc0eda63de632d1a56f707",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentServiceTest",
+        "method": "onlyPaidPayoutUsesExactLedgerAndIssuesOneStatement",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-138",
+    "class": "FinancialDocumentServiceTest",
+    "method": "readyHeldScoutAndUnrelatedOwnerCannotObtainStatement",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/FinancialDocumentServiceTest.java",
+    "sourceSha256": "729afc95b2518d911f39d17470e8f4795d8aa90dbcfc0eda63de632d1a56f707",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "FinancialDocumentServiceTest",
+        "method": "readyHeldScoutAndUnrelatedOwnerCannotObtainStatement",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-139",
+    "class": "HttpMollieProviderClientTest",
+    "method": "omitsWebhookUrlForManualLocalWebhookMode",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/HttpMollieProviderClientTest.java",
+    "sourceSha256": "22295cf7b51541fa82827afc6507fc71d1735ea475c000e0889aad1f1310523d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "HttpMollieProviderClientTest",
+        "method": "omitsWebhookUrlForManualLocalWebhookMode",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-140",
+    "class": "HttpMollieProviderClientTest",
+    "method": "sendsWebhookUrlWhenPublicTunnelIsConfigured",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/HttpMollieProviderClientTest.java",
+    "sourceSha256": "22295cf7b51541fa82827afc6507fc71d1735ea475c000e0889aad1f1310523d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "HttpMollieProviderClientTest",
+        "method": "sendsWebhookUrlWhenPublicTunnelIsConfigured",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-141",
+    "class": "IbanPolicyTest",
+    "method": "normalizesAndAcceptsValidSepaIbans",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/IbanPolicyTest.java",
+    "sourceSha256": "64382b155f29fb697440ad94bed79bf240da5838c1551cc7e32e2b6528398b5d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IbanPolicyTest",
+        "method": "normalizesAndAcceptsValidSepaIbans",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-142",
+    "class": "IbanPolicyTest",
+    "method": "rejectsChecksumAndUnsupportedCountry",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/IbanPolicyTest.java",
+    "sourceSha256": "64382b155f29fb697440ad94bed79bf240da5838c1551cc7e32e2b6528398b5d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IbanPolicyTest",
+        "method": "rejectsChecksumAndUnsupportedCountry",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-143",
+    "class": "IncidentReportTest",
+    "method": "transitionsAreNarrowAndExplicit",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/IncidentReportTest.java",
+    "sourceSha256": "fc37cb3d756f664f5f16f8199c5b6d6b59613fae70a924869c3cf1d196b6516d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentReportTest",
+        "method": "transitionsAreNarrowAndExplicit",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-144",
+    "class": "IncidentReportTest",
+    "method": "cannotResolveBeforeReview",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/IncidentReportTest.java",
+    "sourceSha256": "fc37cb3d756f664f5f16f8199c5b6d6b59613fae70a924869c3cf1d196b6516d",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentReportTest",
+        "method": "cannotResolveBeforeReview",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-145",
+    "class": "LocalPrivateDocumentStorageTest",
+    "method": "storesOpaqueRelativeReferencesAndRejectsTraversal",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/LocalPrivateDocumentStorageTest.java",
+    "sourceSha256": "30a0f63ecdd7483187c51423c9dd10dc763285c21ffef379f60dd3108eaa697b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "LocalPrivateDocumentStorageTest",
+        "method": "storesOpaqueRelativeReferencesAndRejectsTraversal",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-146",
+    "class": "LocalPrivateDocumentStorageTest",
+    "method": "publicUploadControllerHasNoPrivateDocumentStorageDependency",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/LocalPrivateDocumentStorageTest.java",
+    "sourceSha256": "30a0f63ecdd7483187c51423c9dd10dc763285c21ffef379f60dd3108eaa697b",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "LocalPrivateDocumentStorageTest",
+        "method": "publicUploadControllerHasNoPrivateDocumentStorageDependency",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-147",
+    "class": "MollieFeeReconciliationJobTest",
+    "method": "reconcilesAuthoritativeFeeOncePerPendingBooking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/MollieFeeReconciliationJobTest.java",
+    "sourceSha256": "00fd7f597eb0795f59e0f8a5613e3a8ef953cad35efe3ad6f7dcee84627e3b86",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "MollieFeeReconciliationJobTest",
+        "method": "reconcilesAuthoritativeFeeOncePerPendingBooking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-148",
+    "class": "OwnerFinancialLiabilityServiceTest",
+    "method": "settleUsesStoredAmountAuditsAndIsIdempotent",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerFinancialLiabilityServiceTest.java",
+    "sourceSha256": "9d19c852aec40842f5536d51c131b8e8982da901a4a1acb568c82eaf253a2145",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerFinancialLiabilityServiceTest",
+        "method": "settleUsesStoredAmountAuditsAndIsIdempotent",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-149",
+    "class": "OwnerFinancialLiabilityServiceTest",
+    "method": "nonAdminCannotSettleAndWaivedCannotBeSettled",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerFinancialLiabilityServiceTest.java",
+    "sourceSha256": "9d19c852aec40842f5536d51c131b8e8982da901a4a1acb568c82eaf253a2145",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerFinancialLiabilityServiceTest",
+        "method": "nonAdminCannotSettleAndWaivedCannotBeSettled",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-150",
+    "class": "OwnerPayoutServiceTest",
+    "method": "otherwiseEligiblePayoutWaitsForVerifiedDestination",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "otherwiseEligiblePayoutWaitsForVerifiedDestination",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-151",
+    "class": "OwnerPayoutServiceTest",
+    "method": "normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-152",
+    "class": "OwnerPayoutServiceTest",
+    "method": "scoutPartialCancellationUsesAuthoritativeSnapshot",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "scoutPartialCancellationUsesAuthoritativeSnapshot",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-153",
+    "class": "OwnerPayoutServiceTest",
+    "method": "ownerCancellationCreatesProviderCostLiabilityWithoutNegativePayout",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "ownerCancellationCreatesProviderCostLiabilityWithoutNegativePayout",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-154",
+    "class": "OwnerPayoutServiceTest",
+    "method": "adminCancellationIsCancelledWithoutOwnerLiability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "adminCancellationIsCancelledWithoutOwnerLiability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-155",
+    "class": "OwnerPayoutServiceTest",
+    "method": "latePaymentCancelsAnyDefensivePayoutRecord",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "latePaymentCancelsAnyDefensivePayoutRecord",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-156",
+    "class": "OwnerPayoutServiceTest",
+    "method": "paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-157",
+    "class": "OwnerPayoutServiceTest",
+    "method": "markPaidIsIdempotentOnlyForSameReference",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "markPaidIsIdempotentOnlyForSameReference",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-158",
+    "class": "OwnerPayoutServiceTest",
+    "method": "adminListForwardsAllFiltersAndCapsPageSize",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "adminListForwardsAllFiltersAndCapsPageSize",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-159",
+    "class": "OwnerPayoutServiceTest",
+    "method": "ownerHistoryIsScopedAndDoesNotExposeTransferReference",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerPayoutServiceTest.java",
+    "sourceSha256": "ecf2a427515f423dc4286a4239f5a98b90386e94401b332501b88c264a909848",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerPayoutServiceTest",
+        "method": "ownerHistoryIsScopedAndDoesNotExposeTransferReference",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-160",
+    "class": "OwnerVerificationServiceTest",
+    "method": "ownerSubmitsAndCannotDowngradeVerifiedState",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerVerificationServiceTest.java",
+    "sourceSha256": "1c71e4aec9e0ace21773f51a3daa00ca86713ff3a41e8d45cde48421a45d5bdb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerVerificationServiceTest",
+        "method": "ownerSubmitsAndCannotDowngradeVerifiedState",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-161",
+    "class": "OwnerVerificationServiceTest",
+    "method": "adminApprovesPendingAndRejectsPendingWithReason",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/OwnerVerificationServiceTest.java",
+    "sourceSha256": "1c71e4aec9e0ace21773f51a3daa00ca86713ff3a41e8d45cde48421a45d5bdb",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerVerificationServiceTest",
+        "method": "adminApprovesPendingAndRejectsPendingWithReason",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-162",
+    "class": "PaymentCreationCoordinatorTest",
+    "method": "concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PaymentCreationCoordinatorTest.java",
+    "sourceSha256": "3b6e47ad7007236b435251123efa8188ceed9f8b57b3978e16ae2b7c862f7fa1",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentCreationCoordinatorTest",
+        "method": "concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-163",
+    "class": "PaymentCreationCoordinatorTest",
+    "method": "refusesUnsafeRetryOutsideMollieReplayWindow",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PaymentCreationCoordinatorTest.java",
+    "sourceSha256": "3b6e47ad7007236b435251123efa8188ceed9f8b57b3978e16ae2b7c862f7fa1",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentCreationCoordinatorTest",
+        "method": "refusesUnsafeRetryOutsideMollieReplayWindow",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-164",
+    "class": "PaymentCreationCoordinatorTest",
+    "method": "checkoutBeforeOwnerApprovalIsRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PaymentCreationCoordinatorTest.java",
+    "sourceSha256": "3b6e47ad7007236b435251123efa8188ceed9f8b57b3978e16ae2b7c862f7fa1",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentCreationCoordinatorTest",
+        "method": "checkoutBeforeOwnerApprovalIsRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-165",
+    "class": "PaymentCreationCoordinatorTest",
+    "method": "checkoutAfterApprovalExpirationIsRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PaymentCreationCoordinatorTest.java",
+    "sourceSha256": "3b6e47ad7007236b435251123efa8188ceed9f8b57b3978e16ae2b7c862f7fa1",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentCreationCoordinatorTest",
+        "method": "checkoutAfterApprovalExpirationIsRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-166",
+    "class": "PaymentServiceLeadTimeExemptionTest",
+    "method": "acceptedBookingCanCheckoutWithoutReapplyingLeadTime",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PaymentServiceLeadTimeExemptionTest.java",
+    "sourceSha256": "2cc1e6b59c30e2b57e57142acc6c0e5fb0045ad44e24ece7daaab9211fb8c465",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentServiceLeadTimeExemptionTest",
+        "method": "acceptedBookingCanCheckoutWithoutReapplyingLeadTime",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-167",
+    "class": "PayoutDestinationCryptoTest",
+    "method": "authenticatedEncryptionUsesRandomNonceAndRoundTrips",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PayoutDestinationCryptoTest.java",
+    "sourceSha256": "9dd36a2af8295049dad0a376a5744279bed5cea5191e9aaa1696c50521c8fef4",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutDestinationCryptoTest",
+        "method": "authenticatedEncryptionUsesRandomNonceAndRoundTrips",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-168",
+    "class": "PayoutDestinationCryptoTest",
+    "method": "tamperingFailsAuthentication",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PayoutDestinationCryptoTest.java",
+    "sourceSha256": "9dd36a2af8295049dad0a376a5744279bed5cea5191e9aaa1696c50521c8fef4",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutDestinationCryptoTest",
+        "method": "tamperingFailsAuthentication",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-169",
+    "class": "PolicyAcceptanceServiceTest",
+    "method": "publishingANewVersionMakesTheOldAcceptanceIncomplete",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PolicyAcceptanceServiceTest.java",
+    "sourceSha256": "3ebbbb8c3cc3f5a51c0edb3a3c8aa3cb4f9099bb8eb23698d153d93fd413e7c5",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyAcceptanceServiceTest",
+        "method": "publishingANewVersionMakesTheOldAcceptanceIncomplete",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-170",
+    "class": "PolicyAcceptanceServiceTest",
+    "method": "duplicateAcceptanceIsIdempotent",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PolicyAcceptanceServiceTest.java",
+    "sourceSha256": "3ebbbb8c3cc3f5a51c0edb3a3c8aa3cb4f9099bb8eb23698d153d93fd413e7c5",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyAcceptanceServiceTest",
+        "method": "duplicateAcceptanceIsIdempotent",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-171",
+    "class": "PolicyAcceptanceServiceTest",
+    "method": "snapshotReferencesExactFourCurrentVersions",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/PolicyAcceptanceServiceTest.java",
+    "sourceSha256": "3ebbbb8c3cc3f5a51c0edb3a3c8aa3cb4f9099bb8eb23698d153d93fd413e7c5",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyAcceptanceServiceTest",
+        "method": "snapshotReferencesExactFourCurrentVersions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-172",
+    "class": "RefundCoordinatorLatePaymentTest",
+    "method": "duplicateClaimReusesOneProviderIdempotencyKeyAndOneNotification",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundCoordinatorLatePaymentTest.java",
+    "sourceSha256": "c63b6382e070c7e6cede45a342aa35426c129fd425365abe7e363b4c6c45a516",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundCoordinatorLatePaymentTest",
+        "method": "duplicateClaimReusesOneProviderIdempotencyKeyAndOneNotification",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-173",
+    "class": "RefundCoordinatorLatePaymentTest",
+    "method": "authoritativeRefundCompletionKeepsBookingExpired",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundCoordinatorLatePaymentTest.java",
+    "sourceSha256": "c63b6382e070c7e6cede45a342aa35426c129fd425365abe7e363b4c6c45a516",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundCoordinatorLatePaymentTest",
+        "method": "authoritativeRefundCompletionKeepsBookingExpired",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-174",
+    "class": "RefundCoordinatorLatePaymentTest",
+    "method": "cancellationRefundCompletionIsIdempotentAndKeepsCancelledStatus",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundCoordinatorLatePaymentTest.java",
+    "sourceSha256": "c63b6382e070c7e6cede45a342aa35426c129fd425365abe7e363b4c6c45a516",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundCoordinatorLatePaymentTest",
+        "method": "cancellationRefundCompletionIsIdempotentAndKeepsCancelledStatus",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-175",
+    "class": "RefundServiceTest",
+    "method": "onlyAdminMayRefund",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundServiceTest.java",
+    "sourceSha256": "3904e619cb3a3e028c2b50ac5a5fa0543ce487e28c2654c36a9eb25fa05de988",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundServiceTest",
+        "method": "onlyAdminMayRefund",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-176",
+    "class": "RefundServiceTest",
+    "method": "definitiveProviderRejectionIsRecordedAndSanitized",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundServiceTest.java",
+    "sourceSha256": "3904e619cb3a3e028c2b50ac5a5fa0543ce487e28c2654c36a9eb25fa05de988",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundServiceTest",
+        "method": "definitiveProviderRejectionIsRecordedAndSanitized",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-177",
+    "class": "RefundServiceTest",
+    "method": "latePaymentProviderFailureRetainsCoordinatorStateForSafeRetry",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundServiceTest.java",
+    "sourceSha256": "3904e619cb3a3e028c2b50ac5a5fa0543ce487e28c2654c36a9eb25fa05de988",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundServiceTest",
+        "method": "latePaymentProviderFailureRetainsCoordinatorStateForSafeRetry",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-178",
+    "class": "RefundServiceTest",
+    "method": "cancellationRefundUsesExactClaimedPartialAmount",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundServiceTest.java",
+    "sourceSha256": "3904e619cb3a3e028c2b50ac5a5fa0543ce487e28c2654c36a9eb25fa05de988",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundServiceTest",
+        "method": "cancellationRefundUsesExactClaimedPartialAmount",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-179",
+    "class": "RefundServiceTest",
+    "method": "duplicateCancellationClaimDoesNotCreateAnotherProviderRefund",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/RefundServiceTest.java",
+    "sourceSha256": "3904e619cb3a3e028c2b50ac5a5fa0543ce487e28c2654c36a9eb25fa05de988",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundServiceTest",
+        "method": "duplicateCancellationClaimDoesNotCreateAnotherProviderRefund",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-180",
+    "class": "S3StorageTest",
+    "method": "publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/S3StorageTest.java",
+    "sourceSha256": "699b4551d09cae8bf8df1d0411104347d53816fddb8aee6ceeaab2cd8159b3b6",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "S3StorageTest",
+        "method": "publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-181",
+    "class": "S3StorageTest",
+    "method": "rejectsOversizedAndUnsupportedImages",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/S3StorageTest.java",
+    "sourceSha256": "699b4551d09cae8bf8df1d0411104347d53816fddb8aee6ceeaab2cd8159b3b6",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "S3StorageTest",
+        "method": "rejectsOversizedAndUnsupportedImages",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-182",
+    "class": "S3StorageTest",
+    "method": "privateStorageRejectsTraversal",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/S3StorageTest.java",
+    "sourceSha256": "699b4551d09cae8bf8df1d0411104347d53816fddb8aee6ceeaab2cd8159b3b6",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "S3StorageTest",
+        "method": "privateStorageRejectsTraversal",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-183",
+    "class": "TrustNotificationServiceTest",
+    "method": "sendsVerificationApprovalAndSafeRejectionReason",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/TrustNotificationServiceTest.java",
+    "sourceSha256": "2278bd1ded2b8cc692c23340ad9768e5f4e749e2abde392a7cb99682c7ef107c",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "TrustNotificationServiceTest",
+        "method": "sendsVerificationApprovalAndSafeRejectionReason",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-184",
+    "class": "TrustNotificationServiceTest",
+    "method": "sendsApprovalChangesAndSuspensionMessages",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/TrustNotificationServiceTest.java",
+    "sourceSha256": "2278bd1ded2b8cc692c23340ad9768e5f4e749e2abde392a7cb99682c7ef107c",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "TrustNotificationServiceTest",
+        "method": "sendsApprovalChangesAndSuspensionMessages",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-185",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "ownerMayManageOwnVenueAndTimezoneIsValidated",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "ownerMayManageOwnVenueAndTimezoneIsValidated",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-186",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "ownerCannotManageAnotherOwnersVenue",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "ownerCannotManageAnotherOwnersVenue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-187",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "scoutCannotMutateAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "scoutCannotMutateAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-188",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "rejectsInvalidAndOverlappingWeeklyIntervals",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "rejectsInvalidAndOverlappingWeeklyIntervals",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-189",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "calculatesWeeklyAndEmptyDay",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "calculatesWeeklyAndEmptyDay",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-190",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "blockedOverrideSubtractsPartialRange",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "blockedOverrideSubtractsPartialRange",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-191",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "availableOverrideAddsAndNormalizesOutsideWeeklyHours",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "availableOverrideAddsAndNormalizesOutsideWeeklyHours",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-192",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "leadTimeRemovesClipsAndPreservesIntervals",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "leadTimeRemovesClipsAndPreservesIntervals",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-193",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "blocksPartOfSpecialAvailabilityWhenNoWeeklyHoursExist",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "blocksPartOfSpecialAvailabilityWhenNoWeeklyHoursExist",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-194",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "confirmedBookingSplitsAvailabilityAndCancelledBookingDoesNotBlock",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "confirmedBookingSplitsAvailabilityAndCancelledBookingDoesNotBlock",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-195",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "onlyReservationStatusesBlockEffectiveAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "onlyReservationStatusesBlockEffectiveAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-196",
+    "class": "VenueAvailabilityServiceTest",
+    "method": "rejectsExcessiveDateRange",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueAvailabilityServiceTest.java",
+    "sourceSha256": "ce1b67e241938147a6a36c346acfa5182da51bed7e70126dce19f4c8d0e85df3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueAvailabilityServiceTest",
+        "method": "rejectsExcessiveDateRange",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-197",
+    "class": "VenueBookingLeadTimePolicyTest",
+    "method": "allowsTwentyFiveHoursAndExactBoundary",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueBookingLeadTimePolicyTest.java",
+    "sourceSha256": "1359f5f5a53934e3b0d9c89898c62da9816d285044b052d9ccb599f8f0789edf",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueBookingLeadTimePolicyTest",
+        "method": "allowsTwentyFiveHoursAndExactBoundary",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-198",
+    "class": "VenueBookingLeadTimePolicyTest",
+    "method": "rejectsOneMinuteInsideBoundary",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueBookingLeadTimePolicyTest.java",
+    "sourceSha256": "1359f5f5a53934e3b0d9c89898c62da9816d285044b052d9ccb599f8f0789edf",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueBookingLeadTimePolicyTest",
+        "method": "rejectsOneMinuteInsideBoundary",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-199",
+    "class": "VenueBookingLeadTimePolicyTest",
+    "method": "usesElapsedTimeAcrossAmsterdamDstChange",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueBookingLeadTimePolicyTest.java",
+    "sourceSha256": "1359f5f5a53934e3b0d9c89898c62da9816d285044b052d9ccb599f8f0789edf",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueBookingLeadTimePolicyTest",
+        "method": "usesElapsedTimeAcrossAmsterdamDstChange",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-200",
+    "class": "VenueHardRequirementEvaluatorTest",
+    "method": "crewCapacityMustBeKnownAndMeetTheRequirement",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueHardRequirementEvaluatorTest.java",
+    "sourceSha256": "b093fc431775e8917cb7b3b2468b822ef5e4cf8d85953cde911034bc29c67fcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueHardRequirementEvaluatorTest",
+        "method": "crewCapacityMustBeKnownAndMeetTheRequirement",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-201",
+    "class": "VenueHardRequirementEvaluatorTest",
+    "method": "explicitActivityMustBePermittedAndNotProhibited",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueHardRequirementEvaluatorTest.java",
+    "sourceSha256": "b093fc431775e8917cb7b3b2468b822ef5e4cf8d85953cde911034bc29c67fcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueHardRequirementEvaluatorTest",
+        "method": "explicitActivityMustBePermittedAndNotProhibited",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-202",
+    "class": "VenueHardRequirementEvaluatorTest",
+    "method": "requiredBooleanFactsFailClosedWhenFalseOrUnknown",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueHardRequirementEvaluatorTest.java",
+    "sourceSha256": "b093fc431775e8917cb7b3b2468b822ef5e4cf8d85953cde911034bc29c67fcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueHardRequirementEvaluatorTest",
+        "method": "requiredBooleanFactsFailClosedWhenFalseOrUnknown",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-203",
+    "class": "VenueHardRequirementEvaluatorTest",
+    "method": "minimumCeilingHeightMustBeKnownAndHighEnough",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueHardRequirementEvaluatorTest.java",
+    "sourceSha256": "b093fc431775e8917cb7b3b2468b822ef5e4cf8d85953cde911034bc29c67fcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueHardRequirementEvaluatorTest",
+        "method": "minimumCeilingHeightMustBeKnownAndHighEnough",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-204",
+    "class": "VenueHardRequirementEvaluatorTest",
+    "method": "parkingRequirementAndMinimumSpacesFailClosed",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueHardRequirementEvaluatorTest.java",
+    "sourceSha256": "b093fc431775e8917cb7b3b2468b822ef5e4cf8d85953cde911034bc29c67fcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueHardRequirementEvaluatorTest",
+        "method": "parkingRequirementAndMinimumSpacesFailClosed",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-205",
+    "class": "VenueHardRequirementEvaluatorTest",
+    "method": "preferencesNeverRemoveCandidatesEvenWhenFactsAreUnknown",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueHardRequirementEvaluatorTest.java",
+    "sourceSha256": "b093fc431775e8917cb7b3b2468b822ef5e4cf8d85953cde911034bc29c67fcc",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueHardRequirementEvaluatorTest",
+        "method": "preferencesNeverRemoveCandidatesEvenWhenFactsAreUnknown",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-206",
+    "class": "VenueMatchAvailabilityFilterTest",
+    "method": "completeIntervalInsideAvailabilityPasses",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueMatchAvailabilityFilterTest.java",
+    "sourceSha256": "6b88f0d6ac8b12994a48ca44c403abfcfb404c82fd208cd3ac007ebede538cb2",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueMatchAvailabilityFilterTest",
+        "method": "completeIntervalInsideAvailabilityPasses",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-207",
+    "class": "VenueMatchAvailabilityFilterTest",
+    "method": "partialOverlapAndFullyUnavailableDateAreRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueMatchAvailabilityFilterTest.java",
+    "sourceSha256": "6b88f0d6ac8b12994a48ca44c403abfcfb404c82fd208cd3ac007ebede538cb2",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueMatchAvailabilityFilterTest",
+        "method": "partialOverlapAndFullyUnavailableDateAreRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-208",
+    "class": "VenueMatchAvailabilityFilterTest",
+    "method": "noCompleteTimingPreservesCandidatesAndDoesNotQueryAvailability",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueMatchAvailabilityFilterTest.java",
+    "sourceSha256": "6b88f0d6ac8b12994a48ca44c403abfcfb404c82fd208cd3ac007ebede538cb2",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueMatchAvailabilityFilterTest",
+        "method": "noCompleteTimingPreservesCandidatesAndDoesNotQueryAvailability",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-209",
+    "class": "VenueModerationServiceTest",
+    "method": "verifiedOwnerSubmitsCompleteVenueButOtherOwnerCannot",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueModerationServiceTest.java",
+    "sourceSha256": "cb5ea6f529bde440a8eba7569c600ddb528080a5b5a22072bc2e2aa5a018d169",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueModerationServiceTest",
+        "method": "verifiedOwnerSubmitsCompleteVenueButOtherOwnerCannot",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-210",
+    "class": "VenueModerationServiceTest",
+    "method": "unverifiedOrIncompleteOwnerCannotSubmit",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueModerationServiceTest.java",
+    "sourceSha256": "cb5ea6f529bde440a8eba7569c600ddb528080a5b5a22072bc2e2aa5a018d169",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueModerationServiceTest",
+        "method": "unverifiedOrIncompleteOwnerCannotSubmit",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-211",
+    "class": "VenueModerationServiceTest",
+    "method": "adminApprovesRequestsChangesSuspendsAndReactivatesWithoutTouchingBookings",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueModerationServiceTest.java",
+    "sourceSha256": "cb5ea6f529bde440a8eba7569c600ddb528080a5b5a22072bc2e2aa5a018d169",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueModerationServiceTest",
+        "method": "adminApprovesRequestsChangesSuspendsAndReactivatesWithoutTouchingBookings",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-212",
+    "class": "VenueModerationServiceTest",
+    "method": "approvalRechecksReadiness",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueModerationServiceTest.java",
+    "sourceSha256": "cb5ea6f529bde440a8eba7569c600ddb528080a5b5a22072bc2e2aa5a018d169",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueModerationServiceTest",
+        "method": "approvalRechecksReadiness",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-213",
+    "class": "VenueProductionProfileValidatorTest",
+    "method": "completeProfileIsReady",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueProductionProfileValidatorTest.java",
+    "sourceSha256": "a38eb201d156d392e39165b91967ca402b69d6702d33c32e85b75682b6e71388",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueProductionProfileValidatorTest",
+        "method": "completeProfileIsReady",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-214",
+    "class": "VenueProductionProfileValidatorTest",
+    "method": "incompleteProfileReportsUnknownFieldsWithoutTreatingThemAsFalse",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueProductionProfileValidatorTest.java",
+    "sourceSha256": "a38eb201d156d392e39165b91967ca402b69d6702d33c32e85b75682b6e71388",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueProductionProfileValidatorTest",
+        "method": "incompleteProfileReportsUnknownFieldsWithoutTreatingThemAsFalse",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-215",
+    "class": "VenueProductionProfileValidatorTest",
+    "method": "contradictoryActivitiesAndParkingAreRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueProductionProfileValidatorTest.java",
+    "sourceSha256": "a38eb201d156d392e39165b91967ca402b69d6702d33c32e85b75682b6e71388",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueProductionProfileValidatorTest",
+        "method": "contradictoryActivitiesAndParkingAreRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-216",
+    "class": "VenueServiceTest",
+    "method": "ownerUpdatesMetadataAndPersistsMediaOrderAndRemoval",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueServiceTest.java",
+    "sourceSha256": "0dad308302aa393880f180526a3a865d8f8d61ca87da17652cb66e73f113b629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueServiceTest",
+        "method": "ownerUpdatesMetadataAndPersistsMediaOrderAndRemoval",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-217",
+    "class": "VenueServiceTest",
+    "method": "anotherOwnerAndScoutCannotUpdateVenue",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueServiceTest.java",
+    "sourceSha256": "0dad308302aa393880f180526a3a865d8f8d61ca87da17652cb66e73f113b629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueServiceTest",
+        "method": "anotherOwnerAndScoutCannotUpdateVenue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-218",
+    "class": "VenueServiceTest",
+    "method": "ownerMayRemoveOptionalFullDayRate",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueServiceTest.java",
+    "sourceSha256": "0dad308302aa393880f180526a3a865d8f8d61ca87da17652cb66e73f113b629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueServiceTest",
+        "method": "ownerMayRemoveOptionalFullDayRate",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-219",
+    "class": "VenueServiceTest",
+    "method": "venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueServiceTest.java",
+    "sourceSha256": "0dad308302aa393880f180526a3a865d8f8d61ca87da17652cb66e73f113b629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueServiceTest",
+        "method": "venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-220",
+    "class": "VenueServiceTest",
+    "method": "invalidOrDuplicateStorageReferencesAreRejected",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueServiceTest.java",
+    "sourceSha256": "0dad308302aa393880f180526a3a865d8f8d61ca87da17652cb66e73f113b629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueServiceTest",
+        "method": "invalidOrDuplicateStorageReferencesAreRejected",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-221",
+    "class": "VenueServiceTest",
+    "method": "scopedUploadIsAttachedAndCleanupRunsIfPersistenceFails",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VenueServiceTest.java",
+    "sourceSha256": "0dad308302aa393880f180526a3a865d8f8d61ca87da17652cb66e73f113b629",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueServiceTest",
+        "method": "scopedUploadIsAttachedAndCleanupRunsIfPersistenceFails",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-222",
+    "class": "VerifiedUserPolicyTest",
+    "method": "requiresCurrentDatabaseVerificationForMarketplaceUsers",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VerifiedUserPolicyTest.java",
+    "sourceSha256": "22fe46684cd45ca3db4fc86e0d4057024641ac6d9ab67a25efa044cbe6fb63fd",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VerifiedUserPolicyTest",
+        "method": "requiresCurrentDatabaseVerificationForMarketplaceUsers",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-223",
+    "class": "VerifiedUserPolicyTest",
+    "method": "activeAdminOperationsAreNotBlockedByMarketplaceVerification",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/VerifiedUserPolicyTest.java",
+    "sourceSha256": "22fe46684cd45ca3db4fc86e0d4057024641ac6d9ab67a25efa044cbe6fb63fd",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VerifiedUserPolicyTest",
+        "method": "activeAdminOperationsAreNotBlockedByMarketplaceVerification",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-224",
+    "class": "WebhookServiceTest",
+    "method": "latePaidWebhookStartsRefundInsteadOfNormalConfirmationPath",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/WebhookServiceTest.java",
+    "sourceSha256": "5c20c86a3160daadf3000ddaa9b08e5591954ee9ccb3905aa5cb56ba79a616d2",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "WebhookServiceTest",
+        "method": "latePaidWebhookStartsRefundInsteadOfNormalConfirmationPath",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-225",
+    "class": "WorkflowObservabilityTest",
+    "method": "recordsLifecycleCountersWithoutHighCardinalityLabels",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/WorkflowObservabilityTest.java",
+    "sourceSha256": "26af638c36bee992d892b1d03e44fe65a226222efc18cf010abaa15010bf6e77",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "WorkflowObservabilityTest",
+        "method": "recordsLifecycleCountersWithoutHighCardinalityLabels",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-226",
+    "class": "WorkflowObservabilityTest",
+    "method": "stuckScanPublishesReadOnlyGauges",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/WorkflowObservabilityTest.java",
+    "sourceSha256": "26af638c36bee992d892b1d03e44fe65a226222efc18cf010abaa15010bf6e77",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "WorkflowObservabilityTest",
+        "method": "stuckScanPublishesReadOnlyGauges",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-227",
+    "class": "GeminiAiServiceTest",
+    "method": "ranksOnlyCandidatesReturnedByDeterministicFiltering",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiAiServiceTest.java",
+    "sourceSha256": "df750b2fc9a63ced44d2ae21f268a76736b1b865015559d7c636faf5d73027f3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiAiServiceTest",
+        "method": "ranksOnlyCandidatesReturnedByDeterministicFiltering",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-228",
+    "class": "GeminiAiServiceTest",
+    "method": "zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiAiServiceTest.java",
+    "sourceSha256": "df750b2fc9a63ced44d2ae21f268a76736b1b865015559d7c636faf5d73027f3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiAiServiceTest",
+        "method": "zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-229",
+    "class": "GeminiAiServiceTest",
+    "method": "availabilityRemovalSkipsRankingAndIsNotRelaxed",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiAiServiceTest.java",
+    "sourceSha256": "df750b2fc9a63ced44d2ae21f268a76736b1b865015559d7c636faf5d73027f3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiAiServiceTest",
+        "method": "availabilityRemovalSkipsRankingAndIsNotRelaxed",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-230",
+    "class": "GeminiAiServiceTest",
+    "method": "onlyAvailableCandidatesReachRanking",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiAiServiceTest.java",
+    "sourceSha256": "df750b2fc9a63ced44d2ae21f268a76736b1b865015559d7c636faf5d73027f3",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiAiServiceTest",
+        "method": "onlyAvailableCandidatesReachRanking",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-231",
+    "class": "GeminiBriefParserServiceTest",
+    "method": "mapsStructuredProductionRequirementsWithoutLiveGemini",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiBriefParserServiceTest.java",
+    "sourceSha256": "cd3404ba0e6ee5900fd748bda9bcfff8f29459faea0fe69fa893a233c5671d87",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiBriefParserServiceTest",
+        "method": "mapsStructuredProductionRequirementsWithoutLiveGemini",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-232",
+    "class": "GeminiBriefParserServiceTest",
+    "method": "promptDefinesRequirementStrengthEnumsAndStructuredTagBoundary",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiBriefParserServiceTest.java",
+    "sourceSha256": "cd3404ba0e6ee5900fd748bda9bcfff8f29459faea0fe69fa893a233c5671d87",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiBriefParserServiceTest",
+        "method": "promptDefinesRequirementStrengthEnumsAndStructuredTagBoundary",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-233",
+    "class": "GeminiBriefParserServiceTest",
+    "method": "relativeDateUsesExplicitApplicationReferenceDate",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiBriefParserServiceTest.java",
+    "sourceSha256": "cd3404ba0e6ee5900fd748bda9bcfff8f29459faea0fe69fa893a233c5671d87",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiBriefParserServiceTest",
+        "method": "relativeDateUsesExplicitApplicationReferenceDate",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-234",
+    "class": "GeminiBriefParserServiceTest",
+    "method": "ambiguousTimingRemainsNonExactContext",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiBriefParserServiceTest.java",
+    "sourceSha256": "cd3404ba0e6ee5900fd748bda9bcfff8f29459faea0fe69fa893a233c5671d87",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiBriefParserServiceTest",
+        "method": "ambiguousTimingRemainsNonExactContext",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "AUTO-235",
+    "class": "GeminiVenueRankerTest",
+    "method": "rankingPromptReceivesAuthoritativeProductionFactsAndSafetyRules",
+    "executed": 1,
+    "sourceExists": true,
+    "results": [
+      "PASS"
+    ],
+    "source": "src/test/java/com/eema/backend/service/ai/GeminiVenueRankerTest.java",
+    "sourceSha256": "34b8e7464a486c98ef31b381d8792f849512e1930b2697a4679b5f5546c56535",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "GeminiVenueRankerTest",
+        "method": "rankingPromptReceivesAuthoritativeProductionFactsAndSafetyRules",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  }
+]

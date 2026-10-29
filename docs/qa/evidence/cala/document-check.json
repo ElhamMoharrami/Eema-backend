@@ -1,0 +1,18 @@
+{
+  "scenarioIdsInOrder": 703,
+  "visualPagesReviewed": [
+    1,
+    173,
+    174,
+    620
+  ],
+  "status": "Final CALA PASS; 703 IDs in unchanged order",
+  "sha256": {
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.md": "19cf58787157b686bfa8c3bcf2d840857213b6d31e32603137abe25aed6f9d58",
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf": "a1b3437e0d0b9578aaf9a9d8940ae1efe779859a0cbe682296b83370ccf9a4e0",
+    "scripts/qa/cala-contract-check.cjs": "a62452f64bc738e89253de83e5cd6252fcb918c8a9bed9c57a0c24029b9d4e8a",
+    "/home/elham/workspace/Eema-frontend/lib/cala.ts": "5aa1a2eb068e10f71b2ba9d7aad8f43810750fe2d6019efc51614c2b5667762b",
+    "/home/elham/workspace/Eema-frontend/app/api/verify-booker/route.ts": "e453d2f87e50e89c4b628cd7e677ad8379497a82b0b92fa6dbb5e524fb6a1612"
+  },
+  "visualResult": "PASS: headings, paragraphs and gap table legible, no clipping"
+}

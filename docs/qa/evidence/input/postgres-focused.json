@@ -1,0 +1,50 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.InputBoundaryIntegrationTest",
+      "reported": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "scoutPhoneBoundaryRejectsBeforePersistenceAndNotifications",
+          "result": "PASS"
+        },
+        {
+          "name": "validRegisteredScoutName120SurvivesInquiryAcceptance",
+          "result": "PASS"
+        },
+        {
+          "name": "validRegisteredOwnerName120SurvivesBookingSnapshot",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutEmailCannotOverflowSnapshotColumn",
+          "result": "PASS"
+        },
+        {
+          "name": "historicalOwnerWithoutNameKeepsSupportedEmailFallback",
+          "result": "PASS"
+        },
+        {
+          "name": "nullWeeklyElementIs400AndLeavesCalendarUntouched",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.ContactSnapshotMigrationIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "existingAllStateRowsSurviveWideningWithoutRewritingHistory",
+          "result": "PASS"
+        }
+      ]
+    }
+  ]
+}

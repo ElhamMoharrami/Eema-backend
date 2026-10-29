@@ -1,0 +1,396 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "scenario": "UXACT-001",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-001",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-001",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-001",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-001",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-002",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-002",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-002",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-002",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-002",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-003",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-003",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-003",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-003",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-003",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-004",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-004",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-004",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-004",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-004",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-005",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-005",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-005",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-005",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-005",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-006",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-006",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-006",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-006",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-006",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-007",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-007",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-007",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-007",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-007",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-008",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-008",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-008",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-008",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-008",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-009",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-009",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-009",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-009",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-009",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-010",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-010",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-010",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-010",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-010",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-011",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-011",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-011",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-011",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-011",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-012",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-013",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-013",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-013",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-013",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-013",
+      "variant": "reload without crash",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-014",
+      "variant": "double click and Enter while pending",
+      "result": "PASS",
+      "requests": 1
+    },
+    {
+      "scenario": "UXACT-014",
+      "variant": "transport failure does not automatically replay",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-014",
+      "variant": "explicit user retry sends one request",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-014",
+      "variant": "authoritative completion",
+      "result": "PASS"
+    },
+    {
+      "scenario": "UXACT-014",
+      "variant": "reload without crash",
+      "result": "PASS"
+    }
+  ],
+  "scope": "Browser transport only; backend guarantees require mapped PostgreSQL results."
+}

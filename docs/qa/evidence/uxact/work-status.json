@@ -1,0 +1,13 @@
+{
+  "domain": "UXACT",
+  "counts": {
+    "PASS": 19,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "resolvedDefects": [
+    "UXACT-DEF-001"
+  ],
+  "nextUnfinished": "PROVIDER-001\u2013005",
+  "autoContinue": true
+}

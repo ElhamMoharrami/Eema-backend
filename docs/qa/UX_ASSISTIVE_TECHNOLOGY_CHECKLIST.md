@@ -1,6 +1,8 @@
+> **Current disposition: DEFERRED / NOT EXECUTED.** Explicit launch-scope decision: this is a future post-alpha/public-launch asset, not a current private-alpha/local prerequisite. UX-ENV-001 is closed by deferral, not a technical pass. The execution procedure below remains for later use.
+
 # Representative real screen-reader acceptance — Elham
 
-**Status: not executed. UX-ENV-001 stays open.** This is 11 distinct flows, not 35 route repetitions. Existing automation covers all routes/states; actual speech/braille output is still required here. No recordings required.
+**Future acceptance status: not executed.** This is 11 distinct flows, not 35 route repetitions. Existing automation covers all routes/states; actual speech/braille output is still required here. No recordings required.
 
 ## Setup once
 
@@ -94,4 +96,4 @@ Read exception severity, type, reason and related-record links. Navigate Next/Pr
 
 Fill [representative-at-results.csv](evidence/ux/representative-at-results.csv), one row per flow. Include browser/version, reader/version, scenario, PASS/FAIL (or BLOCKED if not executable), actual observed announcement, problem, optional sanitized screenshot path and notes. Keep credentials, reset URLs/tokens, full IBANs and personal financial data out of text/screenshots; describe sensitive announcements with placeholders. No recording is required.
 
-PASS means the applicable common checks and flow actions were actually exercised with the reader. If a defect occurs, give action + observed speech/focus + expected usable behavior; retain the original FAIL when retesting. Return the filled file or paste the 11 results so they can be reviewed and the gate updated. Until all 11 pass and reproduced defects are fixed/retested, UX remains incomplete and UXACT must not start. Broader Windows/NVDA compatibility is a later representative follow-up, not a requirement to repeat every browser/reader combination locally.
+PASS means the applicable common checks and flow actions were actually exercised with the reader. If a defect occurs, give action + observed speech/focus + expected usable behavior; retain the original FAIL when retesting. Return the filled file or paste the 11 results so they can be reviewed and the gate updated. Before broader/public launch, complete these representative checks and fix/retest reproduced defects. This no longer prevents current private-alpha/local UXACT validation. Broader Windows/NVDA compatibility is a later representative follow-up, not a requirement to repeat every browser/reader combination locally.

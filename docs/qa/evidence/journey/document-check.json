@@ -1,0 +1,12 @@
+{
+  "scenarioCount": 703,
+  "pdfScenarioOrderMatches": true,
+  "reviewedPage": 205,
+  "visualResult": "PASS \u2014 legible, no clipping",
+  "sha256": {
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.md": "618ab71164f6b832eaa5803f1cebd4e34595d64d2a758d02515496f2138660f5",
+    "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf": "e46d5f7e81fb7819c766abf6a58ef14137b485a85d0fdfb32b124167e1d9ff9b",
+    "docs/qa/JOURNEY_EXECUTION_REPORT.md": "b7ee1a16ab071c7db28b1582dce6cd9b86dcadbd62a0fed32323d0e10e3738dd",
+    "src/test/java/com/eema/backend/integration/JourneyIntegrationTest.java": "0edb36902375e9649a69d70d871f58bad5dc4d9b52b6869cba6cfffb0421add4"
+  }
+}

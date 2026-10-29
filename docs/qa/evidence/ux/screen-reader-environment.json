@@ -1,6 +1,6 @@
 {
-  "result": "BLOCKED",
-  "requirement": "Eleven representative actual screen-reader flows; all 35 routes retain automated coverage",
+  "result": "DEFERRED / NOT EXECUTED",
+  "requirement": "Future real assistive-technology acceptance before broader/public launch",
   "localOrcaInstalled": true,
   "privateAccessibilityBusStarts": true,
   "headlessChromiumAvailable": true,
@@ -17,5 +17,6 @@
   "boundary": "Browser accessibility-tree/keyboard checks are separate from actual screen-reader execution. No change to user desktop preferences; temporary private bus/profile only.",
   "currentCapability": "No tool for controlling and observing normal-desktop Orca; manual checklist supplied per user instruction",
   "furtherIsolatedAttempts": false,
-  "actualATExecuted": false
+  "actualATExecuted": false,
+  "resolution": "DEFERRED BY EXPLICIT PRODUCT/LAUNCH-SCOPE DECISION"
 }

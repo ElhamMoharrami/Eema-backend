@@ -1,0 +1,278 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "admin bookings",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin bookings",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin bookings",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin bookings",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin bookings",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin bookings",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin bookings",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin booking",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "admin policies",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "inquiries",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "booking",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "venues",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "malformed shape",
+      "result": "PASS"
+    },
+    {
+      "name": "availability",
+      "variant": "recover with valid unchanged data",
+      "result": "PASS"
+    },
+    {
+      "name": "nested/unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "nested/unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "nested/unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "nested/unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "nested/unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "money untouched and nullable pending fields accepted",
+      "result": "PASS"
+    },
+    {
+      "name": "HTTP error remains HTTP not schema error",
+      "result": "PASS"
+    }
+  ]
+}

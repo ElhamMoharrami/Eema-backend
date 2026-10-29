@@ -1,0 +1,56 @@
+[
+  {
+    "id": "JOURNEY-001",
+    "result": "PASS",
+    "test": "scoutAndOwnerOnboardingThroughReceiptAndRecordedPayout",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-002",
+    "result": "PASS",
+    "test": "scoutAndOwnerOnboardingThroughReceiptAndRecordedPayout",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-003",
+    "result": "PASS",
+    "test": "adminIncidentAndLiabilityOperationsStayAuditedAndScoped + onboarding/policy methods",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-004",
+    "result": "PASS",
+    "test": "cancellationJourney (five variants)",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-005",
+    "result": "PASS",
+    "test": "inquiryAcceptanceThroughConfirmationDoesNotExpandCalendar",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-006",
+    "result": "PASS",
+    "test": "competingRequestsKeepWinnerAndDenyStaleLoserCheckout",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-007",
+    "result": "PASS",
+    "test": "suspensionPreservesPaidHistoryAndRejectsOldRequestUntilReactivation",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-008",
+    "result": "PASS",
+    "test": "passwordRecoveryRetainsBookingAndEstablishedJwtSemantics",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  },
+  {
+    "id": "JOURNEY-009",
+    "result": "PASS",
+    "test": "policyReplacementPreservesPaidReceiptAndResumesNewCommitment",
+    "scope": "LOCAL PostgreSQL HTTP workflow; previously executed browser/domain evidence reused"
+  }
+]

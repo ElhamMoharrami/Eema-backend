@@ -1,0 +1,29 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.InputBoundaryIntegrationTest",
+      "reported": 4,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "scoutPhoneBoundaryRejectsBeforePersistenceAndNotifications",
+          "result": "FAIL"
+        },
+        {
+          "name": "validRegisteredOwnerName120SurvivesBookingSnapshot",
+          "result": "FAIL"
+        },
+        {
+          "name": "scoutEmailCannotOverflowSnapshotColumn",
+          "result": "FAIL"
+        },
+        {
+          "name": "nullWeeklyElementIs400AndLeavesCalendarUntouched",
+          "result": "FAIL"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "note": "Previously executed domain browser evidence, not a claim of one new uninterrupted browser journey. New JOURNEY coherence is proved by PostgreSQL HTTP integration tests; unchanged frontend source verified separately.",
+  "evidence": [
+    {
+      "path": "docs/qa/evidence/auth/browser.json",
+      "sha256": "27defdf59f31fc20d176f75e8b5ffac3ed2033dcd92950c521c7e11d25159814",
+      "topLevelFields": [
+        "result",
+        "date",
+        "source",
+        "checks"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/booking/browser.json",
+      "sha256": "134743af503452fd19b45cb38ad72dabce89d6e3fc62a858777e7f9b7834b23e",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "network"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/inquiry/browser.json",
+      "sha256": "47c96811667f8716adbdbcb0acc10cfa329f0b44efabf6fd583a3f4f00e572b6",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "network"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/payment/browser.json",
+      "sha256": "a944086407d31d3a1b53b584ca8e33c8a5223b87d53d6e171fea878b5c53dbf9",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider",
+        "network"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/cancellation/browser.json",
+      "sha256": "a340b38540352bf58209ad1b90890748b71970e06cb1ce286e825bc7dd389f1c",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/payout/browser.json",
+      "sha256": "e02643c346e0e9df938c3bc24f06c7773457b728437b7282afcd7b1905f0453a",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/dest/browser.json",
+      "sha256": "6c4c2d54fa5ab364f042ebb7f2db92f5644b4e418e3f81a56915441f5b333bbc",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/doc/browser.json",
+      "sha256": "09b4a90d83acb91b95c1f7c9217f39a4e41b9428d7237d6c3164983bf6d3fc09",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/admin/backlog/browser.json",
+      "sha256": "634e4ae005f7b613d09cb77cb3f705452b3774fd43dab73a163b132828a9486a",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/edge/v1/browser.json",
+      "sha256": "084a7a2c198912baca03e3a1ccdbea01626351bd77b7885f5c6283f9530ccee4",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "provider"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/uxact/browser-actions.json",
+      "sha256": "d0618485f264c69848682c5055180063585f96b3c60097c031ac491ba1b447b7",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "scope"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/uxact/expiry-browser.json",
+      "sha256": "c7302eb7455b3f2759e44a44bfa84db4a4a8ec1359efcbe7395a98269d21a221",
+      "topLevelFields": [
+        "result",
+        "checks",
+        "scope"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/uxact/session-browser.json",
+      "sha256": "c0301f2fee2c304e83d7a54e5235f114ec29334ddaab98e467c58a3004f5ed1a",
+      "topLevelFields": [
+        "result",
+        "originalAndReplayCalls",
+        "crossActorMutationCalls",
+        "newSessionPreserved",
+        "scope"
+      ],
+      "reused": true
+    },
+    {
+      "path": "docs/qa/evidence/email/browser-links.json",
+      "sha256": "c9d5589061fe2172ce12d3124b6202ba6f59ccaab48a0a043ddf27303151f421",
+      "topLevelFields": [
+        "scope",
+        "checks",
+        "errors",
+        "result"
+      ],
+      "reused": true
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "scope": "Actual production frontend and real browser; synthetic intercepted auth/domain responses, no real provider or backend transition",
+  "checks": [
+    {
+      "route": "/bookings/10000000-0000-0000-0000-000000000001",
+      "role": "SCOUT",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/bookings/10000000-0000-0000-0000-000000000001",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/inquiries",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/scout/inquiries",
+      "role": "SCOUT",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/verification",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/venues/10000000-0000-0000-0000-000000000001",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/owner/payout-destination",
+      "role": "OWNER",
+      "signInPreservesContext": true,
+      "reloadShowsServerFixture": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/verify-email",
+      "encodedTokenForwardedCorrectly": true,
+      "result": "PASS"
+    },
+    {
+      "route": "/reset-password",
+      "encodedTokenForwardedCorrectly": true,
+      "result": "PASS"
+    }
+  ],
+  "errors": [],
+  "result": "PASS"
+}

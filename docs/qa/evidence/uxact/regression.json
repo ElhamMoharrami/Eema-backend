@@ -1,0 +1,366 @@
+{
+  "gates": [
+    {
+      "command": "mvn test",
+      "result": "PASS",
+      "reported": 1078,
+      "executed": 1078,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "classes": []
+    },
+    {
+      "command": "mvn verify -Ppostgres-integration",
+      "result": "PASS",
+      "reported": 1023,
+      "executed": 1010,
+      "skipped": 13,
+      "failures": 0,
+      "errors": 0,
+      "classes": [
+        {
+          "reported": 37,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.BookingCoreIntegrationTest"
+        },
+        {
+          "reported": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.ZeroPriceIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.DestinationBrowserIntegrationTest"
+        },
+        {
+          "reported": 41,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.IncidentIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.MatchingBrowserIntegrationTest"
+        },
+        {
+          "reported": 90,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.PaymentIntegrationTest"
+        },
+        {
+          "reported": 30,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.OwnerTrustIntegrationTest"
+        },
+        {
+          "reported": 138,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.MatchingIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.DocumentBrowserIntegrationTest"
+        },
+        {
+          "reported": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.ScheduledJobsIntegrationTest"
+        },
+        {
+          "reported": 24,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.PayoutIntegrationTest"
+        },
+        {
+          "reported": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.PriceIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.PriceBrowserIntegrationTest"
+        },
+        {
+          "reported": 25,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.EdgeIntegrationTest"
+        },
+        {
+          "reported": 94,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.InquiryIntegrationTest"
+        },
+        {
+          "reported": 47,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.DocumentIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.PayoutBrowserIntegrationTest"
+        },
+        {
+          "reported": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.SecurityIntegrationTest"
+        },
+        {
+          "reported": 35,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.DestinationIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.CancellationBrowserIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.SecurityBrowserIntegrationTest"
+        },
+        {
+          "reported": 23,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.CancellationIntegrationTest"
+        },
+        {
+          "reported": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest"
+        },
+        {
+          "reported": 53,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.RefundIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.IncidentBrowserIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.OperationsRecoveryIntegrationTest"
+        },
+        {
+          "reported": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.PolicyIntegrationTest"
+        },
+        {
+          "reported": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.AuthSessionIntegrationTest"
+        },
+        {
+          "reported": 47,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.AdminDomainIntegrationTest"
+        },
+        {
+          "reported": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.RegistrationIntegrationTest"
+        },
+        {
+          "reported": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.OperationsIntegrationTest"
+        },
+        {
+          "reported": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.OperationsNotificationIntegrationTest"
+        },
+        {
+          "reported": 33,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.ProviderCostAllocationIntegrationTest"
+        },
+        {
+          "reported": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.AdminBookingSearchIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.PaymentBrowserIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.EdgeBrowserIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.AdminBrowserIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.BookingBrowserIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1,
+          "class": "com.eema.backend.integration.InquiryBrowserIntegrationTest"
+        },
+        {
+          "reported": 154,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.VenueDomainIntegrationTest"
+        }
+      ]
+    },
+    {
+      "command": "mvn clean package",
+      "result": "PASS",
+      "reported": 1078,
+      "executed": 1078,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "classes": []
+    },
+    {
+      "command": "focused PostgreSQL replay tests",
+      "result": "PASS",
+      "reported": 4,
+      "executed": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "classes": [
+        {
+          "reported": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.UxActionReplayIntegrationTest"
+        },
+        {
+          "reported": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "class": "com.eema.backend.integration.VenueDomainIntegrationTest"
+        }
+      ]
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "logSha256": "d9dd29a4c1870c7075110b06bc6fe77786715d45ea4fddc996006f5bb0e5e243"
+    },
+    {
+      "command": "npm run lint",
+      "result": "PASS",
+      "logSha256": "a1620a9315e1963f6a00c62c5c2cea73c0464af400783004836adf6593d6108b"
+    },
+    {
+      "command": "npm run build",
+      "result": "PASS",
+      "logSha256": "4109afe74dfcf5ae97ee68048c4e3a939a3215fff3d64ed146411842de9f5be7"
+    }
+  ],
+  "noLiveProviders": true,
+  "frontendDiffCheck": "PASS",
+  "backendDiffCheck": "PASS",
+  "note": "Full PostgreSQL run began before the four additional replay tests compiled; they were run separately in the same real PostgreSQL profile. Unit/package gates include test compilation."
+}

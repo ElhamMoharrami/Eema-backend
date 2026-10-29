@@ -1,0 +1,226 @@
+[
+  {
+    "id": "AUTO-042",
+    "priorMethod": "AdminOperationsServiceTest#eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+    "currentMethod": "AdminOperationsServiceTest#eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+    "priorExcerptSha256": "7ab8d627727c1ada1170f1bfb7ebd3067b8f3c83df0bec68952de9eebfdcdedd",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-043",
+    "priorMethod": "AdminOperationsServiceTest#exceptionQueueAggregatesAllRequiredOperationalCategories",
+    "currentMethod": "AdminOperationsServiceTest#exceptionQueueBoundsRequestsWithoutNarrowingLargeOffsets",
+    "priorExcerptSha256": "95ff3db4b796b3f306468ecdbe8a7b2b1bfddab8cac00b33ed9250c6fd4a86cf",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-052",
+    "priorMethod": "AvailabilityInquiryNotificationServiceTest#providerFailureDoesNotEscapeNotificationBoundary",
+    "currentMethod": "AvailabilityInquiryNotificationServiceTest#providerFailureDoesNotEscapeNotificationBoundary",
+    "priorExcerptSha256": "2c1abd0d5329d5a6202c05805ee6ab374c6c4ac49a70c79c309d0fdf96bf78c8",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-069",
+    "priorMethod": "BookingCancellationCoordinatorTest#scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+    "currentMethod": "BookingCancellationCoordinatorTest#scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+    "priorExcerptSha256": "8808370b6c6cf0680e10b7c78906f1d9d6436e013044ba5c43b60eb9d953e5c3",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-070",
+    "priorMethod": "BookingCancellationCoordinatorTest#ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+    "currentMethod": "BookingCancellationCoordinatorTest#ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+    "priorExcerptSha256": "311550a6c84b641a34bcaefac4925fe5d9b348645c456126e6fdf7049619312c",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-071",
+    "priorMethod": "BookingCancellationCoordinatorTest#adminRequiresReasonAndReceivesFullRefundPolicy",
+    "currentMethod": "BookingCancellationCoordinatorTest#adminRequiresReasonAndReceivesFullRefundPolicy",
+    "priorExcerptSha256": "8fff7e36dce16d0747a4f84079eac1a45431341e5b3afdddaf6b5d91559982a5",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-079",
+    "priorMethod": "BookingFinancialsTest#roundsMoneyExplicitlyAndEnforcesInvariants",
+    "currentMethod": "BookingFinancialsTest#roundsMoneyExplicitlyAndEnforcesInvariants",
+    "priorExcerptSha256": "f89fa0defdf827920b9d2ad25ecd1c7eb00a5662e54db9b7b7bb6d1f0394b56c",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-081",
+    "priorMethod": "BookingNotificationServiceTest#scoutFailureStillAttemptsOwner",
+    "currentMethod": "BookingNotificationServiceTest#scoutFailureStillAttemptsOwner",
+    "priorExcerptSha256": "cb3614e6faac3fcab25e6f7a64e0eb593787a98427a4a30fd27945fc3640ba71",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-083",
+    "priorMethod": "BookingNotificationServiceTest#cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+    "currentMethod": "BookingNotificationServiceTest#cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+    "priorExcerptSha256": "9815e17e786d6087eb426cd8eeb014b23a16db55cbef1f54b04ed6e95c71c0a2",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-088",
+    "priorMethod": "BookingNotificationServiceTest#lifecycleEmailFailureIsContained",
+    "currentMethod": "BookingNotificationServiceTest#lifecycleEmailFailureIsContained",
+    "priorExcerptSha256": "351b442227922a259a03904aab17b21b943e66f1b9a49521087b2179a4d679a6",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-089",
+    "priorMethod": "BookingNotificationServiceTest#requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+    "currentMethod": "BookingNotificationServiceTest#requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+    "priorExcerptSha256": "f973d9056c9ce96b82c2ae105221552f96066a09416e32080e7f3e1c43013696",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-119",
+    "priorMethod": "BookingStateMachineTest#permitsDefinedTransitions",
+    "currentMethod": "BookingStateMachineTest#completeTransitionContract",
+    "priorExcerptSha256": "a19f4bcc0b37346b58609f385fd04237e5cce67678f2150d29414864f28ada11",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-120",
+    "priorMethod": "BookingStateMachineTest#rejectsUserSkippingPaymentAndTerminalMutations",
+    "currentMethod": "BookingStateMachineTest#completeTransitionContract",
+    "priorExcerptSha256": "3361b416d3a3211f3e925afd79acb5395bfcf5fc5f44cc27875ee811cf573df1",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-121",
+    "priorMethod": "CancellationServiceTest#openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+    "currentMethod": "CancellationServiceTest#openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+    "priorExcerptSha256": "d1e54ed8aba73d2fcd02aaa216e73e1515a59429257448ec467fa02b77905ce0",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-122",
+    "priorMethod": "CancellationServiceTest#paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+    "currentMethod": "CancellationServiceTest#paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+    "priorExcerptSha256": "c3326fe1740da86dcea47eb855338040de8a51834b98acf94c570e5a08934f34",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-123",
+    "priorMethod": "CancellationServiceTest#zeroRefundCancellationNeverCallsRefundProvider",
+    "currentMethod": "CancellationServiceTest#zeroRefundCancellationNeverCallsRefundProvider",
+    "priorExcerptSha256": "8e3f3298df602297b6abf193c906111166cda328d159250f8d438f51917adc68",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-124",
+    "priorMethod": "CancellationServiceTest#duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+    "currentMethod": "CancellationServiceTest#duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+    "priorExcerptSha256": "8a28b801ad3b4114ab9b8bdfdde5d153ae5e8812afd769a890bc7a26dd6d29b6",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-127",
+    "priorMethod": "CriticalBookingWorkflowTest#paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+    "currentMethod": "CriticalBookingWorkflowTest#paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+    "priorExcerptSha256": "547e7c3f4664c1d321d55f95f629caebc87f704548cb0a544138094d452cb4c9",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-151",
+    "priorMethod": "OwnerPayoutServiceTest#normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+    "currentMethod": "OwnerPayoutServiceTest#normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+    "priorExcerptSha256": "97411724ad29879fa8ea90d42a6900c0f3633a53ca6ae68a99172ee780efa47a",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-155",
+    "priorMethod": "OwnerPayoutServiceTest#latePaymentCancelsAnyDefensivePayoutRecord",
+    "currentMethod": "OwnerPayoutServiceTest#latePaymentCancelsAnyDefensivePayoutRecord",
+    "priorExcerptSha256": "d81b34354797a897c27edf08f7ad47bc9481cb0cf4ed236d4b0802aed2c4fed9",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-156",
+    "priorMethod": "OwnerPayoutServiceTest#paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+    "currentMethod": "OwnerPayoutServiceTest#paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+    "priorExcerptSha256": "cf9690efd31ad7c0fd9d10216848f6aa6695785f9e5647c14b0f6d8e2dd55369",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-157",
+    "priorMethod": "OwnerPayoutServiceTest#markPaidIsIdempotentOnlyForSameReference",
+    "currentMethod": "OwnerPayoutServiceTest#markPaidIsIdempotentOnlyForSameReference",
+    "priorExcerptSha256": "28f2ddf4342c9e2754bdf534bf6c985d2337c87372fc144bd8033bbe8d16dcc6",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-170",
+    "priorMethod": "PolicyAcceptanceServiceTest#duplicateAcceptanceIsIdempotent",
+    "currentMethod": "PolicyAcceptanceServiceTest#duplicateAcceptanceIsIdempotent",
+    "priorExcerptSha256": "b34ecad90eefa28dc61edea209baa22a7bce265314ced8f20bea27ab76701c83",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-180",
+    "priorMethod": "S3StorageTest#publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+    "currentMethod": "S3StorageTest#publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+    "priorExcerptSha256": "8b4d0962b49cdb337fa986859396e9c1c65332633a6e954f61ed5ffb11f1c6c0",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-183",
+    "priorMethod": "TrustNotificationServiceTest#sendsVerificationApprovalAndSafeRejectionReason",
+    "currentMethod": "TrustNotificationServiceTest#sendsVerificationApprovalAndSafeRejectionReason",
+    "priorExcerptSha256": "daf03f563598c95d39135c52bd7cd3a29416dbf53a9c594cc466d9965cf135ad",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-184",
+    "priorMethod": "TrustNotificationServiceTest#sendsApprovalChangesAndSuspensionMessages",
+    "currentMethod": "TrustNotificationServiceTest#sendsApprovalChangesAndSuspensionMessages",
+    "priorExcerptSha256": "18fabb8cd8e825253c7522d8494467fc295db2fed10dcafbc755714cacd43384",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-225",
+    "priorMethod": "WorkflowObservabilityTest#recordsLifecycleCountersWithoutHighCardinalityLabels",
+    "currentMethod": "WorkflowObservabilityTest#recordsLifecycleCountersWithoutHighCardinalityLabels",
+    "priorExcerptSha256": "1616fc4c02054dcab143b215854d9fdeb42f2cd546182a1a7663749e1613b137",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-226",
+    "priorMethod": "WorkflowObservabilityTest#stuckScanPublishesReadOnlyGauges",
+    "currentMethod": "WorkflowObservabilityTest#stuckScanPublishesReadOnlyGauges",
+    "priorExcerptSha256": "4ea4f00ee79bd0f4f959adb30801d0e4001864e2f899475ead83777211ed2215",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-227",
+    "priorMethod": "GeminiAiServiceTest#ranksOnlyCandidatesReturnedByDeterministicFiltering",
+    "currentMethod": "GeminiAiServiceTest#ranksOnlyCandidatesReturnedByDeterministicFiltering",
+    "priorExcerptSha256": "33d6d37f7ff36e69bb04f8b5b2a44b9390f01c1c38d8d1208937b72e3eee534c",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-228",
+    "priorMethod": "GeminiAiServiceTest#zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+    "currentMethod": "GeminiAiServiceTest#zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+    "priorExcerptSha256": "0fa1e2c1808389914aca8e5d93ef6edbd0963f6228d142263bf0653351d62b0f",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-229",
+    "priorMethod": "GeminiAiServiceTest#availabilityRemovalSkipsRankingAndIsNotRelaxed",
+    "currentMethod": "GeminiAiServiceTest#availabilityRemovalSkipsRankingAndIsNotRelaxed",
+    "priorExcerptSha256": "6980bf2b911c2b2bef61617c9bd4ce154ce1caab593aca386aeee03ca8861b18",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  },
+  {
+    "id": "AUTO-230",
+    "priorMethod": "GeminiAiServiceTest#onlyAvailableCandidatesReachRanking",
+    "currentMethod": "GeminiAiServiceTest#onlyAvailableCandidatesReachRanking",
+    "priorExcerptSha256": "26b5eadc1bddf198c24a55b84e53cfccbca903f6b8ee3edd1995ff4c258d9741",
+    "disposition": "Earlier approved domain fixes supersede generated frozen source; use current named method and fixture/parameter sources."
+  }
+]

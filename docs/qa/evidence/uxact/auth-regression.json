@@ -1,0 +1,89 @@
+{
+  "result": "PASS",
+  "source": "Actual lib/api/client.ts and lib/auth/token.ts; simulated transport",
+  "checks": [
+    {
+      "variant": "valid",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 2,
+      "sessionRetained": true
+    },
+    {
+      "variant": "second401",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 2,
+      "sessionRetained": true
+    },
+    {
+      "variant": "refresh401",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 1,
+      "sessionRetained": false
+    },
+    {
+      "variant": "network",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 1,
+      "sessionRetained": false
+    },
+    {
+      "variant": "malformed",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 1,
+      "sessionRetained": false
+    },
+    {
+      "variant": "missing-user",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 1,
+      "sessionRetained": false
+    },
+    {
+      "variant": "missing-role",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 1,
+      "sessionRetained": false
+    },
+    {
+      "variant": "same-tab-five-requests",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "originalCalls": 10
+    },
+    {
+      "variant": "cross-tab-winner-then-loser",
+      "result": "PASS",
+      "refreshCalls": 2,
+      "sharedSessionPreserved": true,
+      "loserSynchronized": true
+    },
+    {
+      "variant": "newer-generation-genuine-failure",
+      "result": "PASS",
+      "sessionCleared": true
+    },
+    {
+      "variant": "cross-tab-recovery-retries-once",
+      "result": "PASS",
+      "originalCalls": 2,
+      "refreshCalls": 1
+    },
+    {
+      "variant": "logout-during-refresh",
+      "result": "PASS",
+      "staleResponseIgnored": true
+    },
+    {
+      "variant": "login-during-refresh",
+      "result": "PASS",
+      "staleResponseIgnored": true
+    }
+  ]
+}

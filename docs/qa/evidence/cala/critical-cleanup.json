@@ -1,0 +1,23 @@
+{
+  "reported": 14,
+  "executed": 14,
+  "failures": 0,
+  "errors": 0,
+  "contextClosedOnMainThread": true,
+  "cases": [
+    "exclusionRejectsOneOverlappingBlockingInsert",
+    "inquiryAndPayoutSkipLockedQueriesAreActuallyDisjoint",
+    "payoutAndDocumentUniqueConstraintsHaveSingleAuthorities",
+    "nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate",
+    "readyPayoutDestinationSnapshotDoesNotFollowReplacement",
+    "policyPublishRaceLeavesExactlyOneCurrentVersion",
+    "commonFlywayChainAndHibernateValidationStartFromEmptyDatabase",
+    "emailIndexRejectsConcurrentCaseVariedLogicalDuplicates",
+    "policyAcceptanceBookingSnapshotStaysHistoricalAndIncidentHasNoFinancialSideEffects",
+    "verifiedDestinationPartialIndexAndReplacementSemanticsHold",
+    "refreshTokenRotationLockAllowsOnlyOneWinner",
+    "overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve",
+    "twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches",
+    "halfOpenBackToBackReservationsBothPersist"
+  ]
+}

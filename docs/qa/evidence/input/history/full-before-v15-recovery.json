@@ -1,0 +1,4593 @@
+{
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.AdminBookingSearchIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "optionalFiltersPaginationAndAuthorization",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.AdminBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "adminReadAndRecoveryJourneys",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.AdminDomainIntegrationTest",
+      "reported": 47,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "bookingStatusFilter(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingStatusFilter(BookingStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "heldReasons(OwnerPayoutHoldReason)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "heldReasons(OwnerPayoutHoldReason)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "heldReasons(OwnerPayoutHoldReason)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "heldReasons(OwnerPayoutHoldReason)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateRefundStatusMembership(RefundStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "liabilityLinksAndReadOnlySeverityOrdering",
+          "result": "PASS"
+        },
+        {
+          "name": "mixedBacklogHasStableGlobalOrderAndNoMissingSourceRows",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeRefundBacklogBoundaries(int)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundStatusFilter(RefundStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "allAdminQueuesBoundPaginationFilterAndDenyOtherRoles",
+          "result": "PASS"
+        },
+        {
+          "name": "detailReadsExactStoredFinancialValuesWithoutWrites",
+          "result": "PASS"
+        },
+        {
+          "name": "veryLargeExceptionPageIsSafelyEmpty",
+          "result": "PASS"
+        },
+        {
+          "name": "strictExceptionCutoffs(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "strictExceptionCutoffs(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "strictExceptionCutoffs(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "creationStatusFilter(PaymentCreationStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "creationStatusFilter(PaymentCreationStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "creationStatusFilter(PaymentCreationStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "timelineOrdersPagesAndRejectsNestedSensitivePayloads",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+      "reported": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "enumerationEligibilityMatrix",
+          "result": "PASS"
+        },
+        {
+          "name": "verificationLifecycle",
+          "result": "PASS"
+        },
+        {
+          "name": "verifiedMutationBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "policyAcceptanceProjectionReturnsOnlyTheUsersVersionIds",
+          "result": "PASS"
+        },
+        {
+          "name": "resetLifecycleAndBoundaries",
+          "result": "PASS"
+        },
+        {
+          "name": "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation",
+          "result": "PASS"
+        },
+        {
+          "name": "resetMustNotMakeDistinctUnicodePasswordsEquivalent",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.AuthSessionIntegrationTest",
+      "reported": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "jwtValidationAndDatabaseAuthority",
+          "result": "PASS"
+        },
+        {
+          "name": "independentSessionsAndRotation",
+          "result": "PASS"
+        },
+        {
+          "name": "loginMatrixAndAnonymousMe",
+          "result": "PASS"
+        },
+        {
+          "name": "registrationBoundaryMatrix",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentHttpRefreshHasOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "refreshFailureMatrix",
+          "result": "PASS"
+        },
+        {
+          "name": "inactiveDuplicateStillConflicts",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerRegistrationCreatesNoTrustOrMarketplaceAggregates",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.BookingBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "browserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.BookingCoreIntegrationTest",
+      "reported": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "persistedExpiryIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "persistedExpiryIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "persistedExpiryIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "reservationAndNotificationIntentCommitTogetherWithoutProvider",
+          "result": "PASS"
+        },
+        {
+          "name": "competitorFailureRollsBackFlushedWinnerAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "actorBoundaryAndExplicitAdminDelegation(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "actorBoundaryAndExplicitAdminDelegation(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "exact270MinutesAndHistoricalSnapshotsSurviveAcceptance(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "exact270MinutesAndHistoricalSnapshotsSurviveAcceptance(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptanceRevalidatesCurrentConditions(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptanceRevalidatesCurrentConditions(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptanceRevalidatesCurrentConditions(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+          "result": "PASS"
+        },
+        {
+          "name": "exactResponseDeadlineCommitsExpiryBeforeConflict(long)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactResponseDeadlineCommitsExpiryBeforeConflict(long)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactResponseDeadlineCommitsExpiryBeforeConflict(long)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "policyReplacementAndLiveEmailsDoNotRewriteBookingHistory",
+          "result": "PASS"
+        },
+        {
+          "name": "halfOpenCompetitorsOnlyBecomeUnavailable",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.CancellationBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "cancellationBrowserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.CancellationIntegrationTest",
+      "reported": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "rejectionKeepsCancelledBookingAndCannotMintNewLogicalRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentReconciliationCompletesOnceWithImmutableCancellation",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptedRefundResponseLossOrPersistenceFailureResumesFromDatabase(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalReasonBoundaryAndAuthoritativeFullRefund(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalReasonBoundaryAndAuthoritativeFullRefund(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalDeniedActorsHaveNoSideEffectsAndZeroRefundIsDurable",
+          "result": "PASS"
+        },
+        {
+          "name": "markPaidAndCancellationSerializeOnRealBookingLock(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "markPaidAndCancellationSerializeOnRealBookingLock(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "stuckQueueAndMetricShareExactThreshold(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "stuckQueueAndMetricShareExactThreshold(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "stuckQueueAndMetricShareExactThreshold(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "historicalDocumentsSurviveRefundAndRecovery",
+          "result": "PASS"
+        },
+        {
+          "name": "rollbackBeforeProviderLeavesNoCancellationOrClaim",
+          "result": "PASS"
+        },
+        {
+          "name": "feeReconciliationAndLiabilitySettlementLeaveCancellationAndRefundUnchanged",
+          "result": "PASS"
+        },
+        {
+          "name": "staleTermsConflictAndReplayCannotChangeEconomics",
+          "result": "PASS"
+        },
+        {
+          "name": "incidentModerationProfilesAndDeletionCannotRewriteHistory",
+          "result": "PASS"
+        },
+        {
+          "name": "unexpectedPaymentAfterWithdrawalIsRefundedWithoutResurrectingBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalUnpaidWithdrawalReleasesReservation(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalUnpaidWithdrawalReleasesReservation(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalUnpaidWithdrawalReleasesReservation(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidPaymentDiscoveredDuringUnpaidWithdrawalRequiresFinancialPreview",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.ContactSnapshotMigrationIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "existingAllStateRowsSurviveWideningWithoutRewritingHistory",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.DestinationBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "destinationBrowserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.DestinationIntegrationTest",
+      "reported": 35,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "databaseRejectsInvalidStateRoutingCurrencyAndHistoricalDuplicates",
+          "result": "PASS"
+        },
+        {
+          "name": "revealCannotSucceedWithoutItsAuditAndIsPostOnly",
+          "result": "PASS"
+        },
+        {
+          "name": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+          "result": "PASS"
+        },
+        {
+          "name": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+          "result": "PASS"
+        },
+        {
+          "name": "revealAllowedStatesHeadersAndAudit(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "revealAllowedStatesHeadersAndAudit(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "revealAllowedStatesHeadersAndAudit(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "revealAllowedStatesHeadersAndAudit(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "replacementAuditFailureRollsBackBothDestinations",
+          "result": "PASS"
+        },
+        {
+          "name": "sameRecordVerifyRejectHasOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "reviewTextBoundaries(String, int, int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "reviewTextBoundaries(String, int, int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "reviewTextBoundaries(String, int, int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "reviewTextBoundaries(String, int, int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "reviewTextBoundaries(String, int, int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentSameOwnerSubmissionIsConflictNot500",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentSameOwnerSubmissionIsConflictNot500",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentSameOwnerSubmissionIsConflictNot500",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionBoundaries(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentDistinctVerificationSerializesOwnerRouting",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentDistinctVerificationSerializesOwnerRouting",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentDistinctVerificationSerializesOwnerRouting",
+          "result": "PASS"
+        },
+        {
+          "name": "roleAndOwnerScopeNeverExposeBankDetailsOrMutateState",
+          "result": "PASS"
+        },
+        {
+          "name": "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionGatesDoNotBlockSafeOwnerHistoryRead(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionGatesDoNotBlockSafeOwnerHistoryRead(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionGatesDoNotBlockSafeOwnerHistoryRead(String)[3]",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.DocumentBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "realDocumentDownloads",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.DocumentIntegrationTest",
+      "reported": 47,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "legacyPaidStatementWithMissingReferenceIsRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedNameRollsBackWithoutStorageOrAuditAndRetryWorks(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedNameRollsBackWithoutStorageOrAuditAndRetryWorks(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "uniqueIdentityAndForeignKeysAreDatabaseEnforced",
+          "result": "PASS"
+        },
+        {
+          "name": "ineligibleBookingStatesNeverIssue(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "ineligibleBookingStatesNeverIssue(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "ineligibleBookingStatesNeverIssue(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "ineligibleBookingStatesNeverIssue(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "ineligibleBookingStatesNeverIssue(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "statementUsesHistoricalRoutingLedgerAndPrivateOwnership",
+          "result": "PASS"
+        },
+        {
+          "name": "historicalReadDoesNotRequireCurrentPoliciesOrVerifiedEmail",
+          "result": "PASS"
+        },
+        {
+          "name": "receiptPreservesFinancialSnapshotsAndImmutableBytes",
+          "result": "PASS"
+        },
+        {
+          "name": "missingPaidConfirmationAndLatePaymentsNeverIssue(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "missingPaidConfirmationAndLatePaymentsNeverIssue(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "missingPaidConfirmationAndLatePaymentsNeverIssue(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "missingPaidConfirmationAndLatePaymentsNeverIssue(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeStatementKeepsOriginalNameLedgerMaskAndImmutableBytes(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeStatementKeepsOriginalNameLedgerMaskAndImmutableBytes(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeStatementKeepsOriginalNameLedgerMaskAndImmutableBytes(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "missingIssuedObjectFailsWithoutRegenerating",
+          "result": "PASS"
+        },
+        {
+          "name": "storedDocumentsAreNotPublicUploadResources",
+          "result": "PASS"
+        },
+        {
+          "name": "receiptAuthorizationAlsoAppliesToExistingBytes",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousStatementRequestsIssueOneObjectAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousStatementRequestsIssueOneObjectAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousStatementRequestsIssueOneObjectAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "failedIssuanceNeverSucceedsAndCleansStoredObject(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "failedIssuanceNeverSucceedsAndCleansStoredObject(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "failedIssuanceNeverSucceedsAndCleansStoredObject(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidPayoutCannotIssue(OwnerPayoutStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidPayoutCannotIssue(OwnerPayoutStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidPayoutCannotIssue(OwnerPayoutStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidPayoutCannotIssue(OwnerPayoutStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "unicodeReceiptKeepsOriginalNameMoneyAndImmutableBytes(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "eligiblePaidHistoryIssuesExactlyOnce(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "eligiblePaidHistoryIssuesExactlyOnce(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "eligiblePaidHistoryIssuesExactlyOnce(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousReceiptRequestsIssueOneObjectAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousReceiptRequestsIssueOneObjectAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousReceiptRequestsIssueOneObjectAndAudit",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.EdgeBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "deadlineAndDstJourneys",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.EdgeIntegrationTest",
+      "reported": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "unsupportedCompatibilityMutationsDoNotPersist",
+          "result": "PASS"
+        },
+        {
+          "name": "springGapCannotAliasReservations",
+          "result": "PASS"
+        },
+        {
+          "name": "springGapCannotAliasReservations",
+          "result": "PASS"
+        },
+        {
+          "name": "springGapCannotAliasReservations",
+          "result": "PASS"
+        },
+        {
+          "name": "suspendedRequestDenialIsAtomic",
+          "result": "PASS"
+        },
+        {
+          "name": "overlapConfirmationUsesEarlierOffsetAndWallClockPrice(String, String, String, String, String, int, int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryGapCreationOfferAndAcceptanceAreAtomic",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryGapCreationOfferAndAcceptanceAreAtomic",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryGapCreationOfferAndAcceptanceAreAtomic",
+          "result": "PASS"
+        },
+        {
+          "name": "declineAndExpiryHaveSameTerminalOutcomeInBothOrders",
+          "result": "PASS"
+        },
+        {
+          "name": "declineAndExpiryHaveSameTerminalOutcomeInBothOrders",
+          "result": "PASS"
+        },
+        {
+          "name": "declineAndExpiryHaveSameTerminalOutcomeInBothOrders",
+          "result": "PASS"
+        },
+        {
+          "name": "matchingBoundsAndStableTies(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "matchingBoundsAndStableTies(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryOverlapUsesEarlierOffset",
+          "result": "PASS"
+        },
+        {
+          "name": "declineDeadlineIsAuthoritative(long)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineDeadlineIsAuthoritative(long)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "declineDeadlineIsAuthoritative(long)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "secondsAndNanosRespectWholeMinuteGuard(String, String, int, int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "secondsAndNanosRespectWholeMinuteGuard(String, String, int, int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "secondsAndNanosRespectWholeMinuteGuard(String, String, int, int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "weeklyAndOverrideAvailabilityExcludeGapSelections",
+          "result": "PASS"
+        },
+        {
+          "name": "midnightRoundingCarriesDateThroughPublicAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "workerFirstMakesOverdueDeclineConflict",
+          "result": "PASS"
+        },
+        {
+          "name": "matchingContinuesToAvailableThirtyFirst",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.IncidentBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "realIncidentWorkflow",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.IncidentIntegrationTest",
+      "reported": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "allIllegalTransitionsLeaveRecordAndAuditUnchanged(IncidentStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "allIllegalTransitionsLeaveRecordAndAuditUnchanged(IncidentStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "allIllegalTransitionsLeaveRecordAndAuditUnchanged(IncidentStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "allIllegalTransitionsLeaveRecordAndAuditUnchanged(IncidentStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "adminFiltersMissingRecordsAndBoundedPagination",
+          "result": "PASS"
+        },
+        {
+          "name": "adminEndpointsRejectAllOtherActors",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidDescriptions(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidDescriptions(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidDescriptions(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidDescriptions(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidDescriptions(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidDescriptions(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "noVerificationOrPolicyPrerequisiteButInactiveAccountDenied",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseRejectsBrokenReferencesAndResolutionShape",
+          "result": "PASS"
+        },
+        {
+          "name": "auditFailureRollsBackCreationAndTransition",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyBookingStateAllowsSupportIntake(BookingStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "allCategoriesAllParticipants(IncidentCategory)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "participantDenialAndMissingIdsLeaveNoWrites",
+          "result": "PASS"
+        },
+        {
+          "name": "resolutionValidationAtomic(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "resolutionValidationAtomic(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "resolutionValidationAtomic(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "resolutionValidationAtomic(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "lifecycleAuditPrivacyAndFinancialIsolation",
+          "result": "PASS"
+        },
+        {
+          "name": "noteLengthsAndPlainText",
+          "result": "PASS"
+        },
+        {
+          "name": "competingTransitionsHaveOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "competingTransitionsHaveOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "competingTransitionsHaveOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "exactLengthsUnknownCategoryAndMissingFields",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.InputBoundaryIntegrationTest",
+      "reported": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "scoutPhoneBoundaryRejectsBeforePersistenceAndNotifications",
+          "result": "PASS"
+        },
+        {
+          "name": "validRegisteredScoutName120SurvivesInquiryAcceptance",
+          "result": "PASS"
+        },
+        {
+          "name": "validRegisteredOwnerName120SurvivesBookingSnapshot",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutEmailCannotOverflowSnapshotColumn",
+          "result": "PASS"
+        },
+        {
+          "name": "historicalOwnerWithoutNameKeepsSupportedEmailFallback",
+          "result": "PASS"
+        },
+        {
+          "name": "nullWeeklyElementIs400AndLeavesCalendarUntouched",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.InquiryBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "browserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.InquiryIntegrationTest",
+      "reported": 94,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOfferNeverChangesOpenInquiry(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "messageContractAndCreationHaveNoInventoryWrites(String, int)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseRejectsBrokenReferencesIntervalsStatusesAndDuplicateBookingLink",
+          "result": "PASS"
+        },
+        {
+          "name": "normalBookingVersusInquiryRoutingAndIgnoredStateInjection",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentSameOfferCreatesExactlyOneBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentSameOfferCreatesExactlyOneBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentSameOfferCreatesExactlyOneBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "twoOffersAndNormalAcceptanceShareVenueReservationBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "twoOffersAndNormalAcceptanceShareVenueReservationBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "twoOffersAndNormalAcceptanceShareVenueReservationBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "actorsAndReadPrivacyAreStrictlyScoped(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "actorsAndReadPrivacyAreStrictlyScoped(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "actorsAndReadPrivacyAreStrictlyScoped(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "leadExpiryCommitsButOccupiedOrSuspendedOfferRemainsOffered",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "allFiveStatesAndFourActions(AvailabilityInquiryStatus, String)[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "waitingForVenueLockCannotExtendOfferDeadline",
+          "result": "PASS"
+        },
+        {
+          "name": "suspendedOwnerOfferCannotMutateNegotiation",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerConflictsUseExactlyBlockingStatusesAndHalfOpenIntervals(BookingStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "deadlineEqualityDoesNotRelyOnWorker(long)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "deadlineEqualityDoesNotRelyOnWorker(long)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "deadlineEqualityDoesNotRelyOnWorker(long)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "conversionUsesAcceptancePriceContactsPoliciesAndStandardCheckout",
+          "result": "PASS"
+        },
+        {
+          "name": "suspensionAndInquiryAcceptanceSerialize",
+          "result": "PASS"
+        },
+        {
+          "name": "suspensionAndInquiryAcceptanceSerialize",
+          "result": "PASS"
+        },
+        {
+          "name": "suspensionAndInquiryAcceptanceSerialize",
+          "result": "PASS"
+        },
+        {
+          "name": "expiryWorkerIsDurableAndIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "expiryWorkerIsDurableAndIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "expiryWorkerIsDurableAndIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "offerExpiryIsCappedAndDifferentTimeIsHistorical(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "offerExpiryIsCappedAndDifferentTimeIsHistorical(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "mutationUsesCurrentAccountAuthorityNotOldToken(String, String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "mutationUsesCurrentAccountAuthorityNotOldToken(String, String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "mutationUsesCurrentAccountAuthorityNotOldToken(String, String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "mutationUsesCurrentAccountAuthorityNotOldToken(String, String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "mutationUsesCurrentAccountAuthorityNotOldToken(String, String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "mutationUsesCurrentAccountAuthorityNotOldToken(String, String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCreationIsAtomic(String)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "policyReplacementGatesOfferDeclineAndAcceptanceThenSnapshotsReplacement",
+          "result": "PASS"
+        },
+        {
+          "name": "createAndOfferRespectExactLeadBoundary(long)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "createAndOfferRespectExactLeadBoundary(long)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryWriteFailureRollsBackBookingPoliciesAuditAndAfterCommitNotice",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.JourneyIntegrationTest",
+      "reported": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "suspensionPreservesPaidHistoryAndRejectsOldRequestUntilReactivation",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationJourney(String, String, String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationJourney(String, String, String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationJourney(String, String, String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationJourney(String, String, String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationJourney(String, String, String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryAcceptanceThroughConfirmationDoesNotExpandCalendar",
+          "result": "PASS"
+        },
+        {
+          "name": "adminIncidentAndLiabilityOperationsStayAuditedAndScoped",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutAndOwnerOnboardingThroughReceiptAndRecordedPayout",
+          "result": "PASS"
+        },
+        {
+          "name": "passwordRecoveryRetainsBookingAndEstablishedJwtSemantics",
+          "result": "PASS"
+        },
+        {
+          "name": "policyReplacementPreservesPaidReceiptAndResumesNewCommitment",
+          "result": "PASS"
+        },
+        {
+          "name": "competingRequestsKeepWinnerAndDenyStaleLoserCheckout",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.MatchingBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "browserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.MatchingIntegrationTest",
+      "reported": 138,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "preferenceBudgetTagsAndCandidateBound",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualAvailabilityComposition(String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "directQuoteAuthBoundsAndNoProvider",
+          "result": "PASS"
+        },
+        {
+          "name": "pipelineBlocksInactiveFilteredInventedAndDuplicateIds",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[40]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[41]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[42]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[43]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[44]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[45]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[46]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[47]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[48]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[49]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[50]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[51]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[52]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[53]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[54]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[55]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[56]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[57]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[58]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[59]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[60]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[61]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[62]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[63]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[64]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[65]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[66]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[67]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[68]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[69]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[70]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[71]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[72]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[73]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[74]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[75]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[76]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[77]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[78]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[79]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[80]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[81]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[82]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[83]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[84]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[85]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[86]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[87]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[88]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[89]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[90]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[91]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[92]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[93]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[94]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[95]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[96]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[97]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[98]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[99]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[100]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[101]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[102]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[103]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[104]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[105]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[106]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[107]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[108]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[109]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[110]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[111]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[112]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[113]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[114]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[115]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[116]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[117]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[118]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[119]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[120]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[121]",
+          "result": "PASS"
+        },
+        {
+          "name": "sqlAndJavaAgree(Case)[122]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserAndRankerFailuresAreSafe502WithoutFallback",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.OperationsIntegrationTest",
+      "reported": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "feeCutoffIsStrictAndShared(long)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "feeCutoffIsStrictAndShared(long)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "feeCutoffIsStrictAndShared(long)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "feeGaugeAndCompleteQueueAgreeBeyondTwoHundredAcrossPaidHistory",
+          "result": "PASS"
+        },
+        {
+          "name": "policyAndIncidentReferencesRejectParentDeletionAtomically",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.OperationsNotificationIntegrationTest",
+      "reported": 19,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "transientProviderFailureCannotUndoDomainAndRetriesAtExactBackoffBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "authOutboxContainsNoCredentialAndReconstructsOriginalValidToken",
+          "result": "PASS"
+        },
+        {
+          "name": "twoWorkersCannotSendTheSameClaimSimultaneously",
+          "result": "PASS"
+        },
+        {
+          "name": "trustAuditIdentityDeduplicatesReplayButAllowsAnotherLegitimateTransition",
+          "result": "PASS"
+        },
+        {
+          "name": "skipLockedMakesProgressWhileAnotherConnectionHoldsCandidate",
+          "result": "PASS"
+        },
+        {
+          "name": "providerAcceptedButCompletionLostRetriesStableIdentityAndHistoricalContent",
+          "result": "PASS"
+        },
+        {
+          "name": "permanentFailureAndExhaustionAreSafeOperationalExceptions",
+          "result": "PASS"
+        },
+        {
+          "name": "recipientSlotsStayDistinctEvenWhenContactAddressesMatch",
+          "result": "PASS"
+        },
+        {
+          "name": "rotatedDerivationKeyFailsSafelyWithoutSendingCredential",
+          "result": "PASS"
+        },
+        {
+          "name": "supersededAndExpiredAuthTokensAreNeverSent",
+          "result": "PASS"
+        },
+        {
+          "name": "actualBeforeCommitInsertFailureRollsBackAcceptanceAndAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "leaseDeathAtAttemptLimitBecomesTerminalAndDisabledEmailDoesNotConsumeClaims",
+          "result": "PASS"
+        },
+        {
+          "name": "authEligibilityIsRecheckedBeforeProvider(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "authEligibilityIsRecheckedBeforeProvider(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "authEligibilityIsRecheckedBeforeProvider(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "domainCommitPersistsPendingWithoutDispatcherAndDuplicatePublicationDoesNotDuplicate",
+          "result": "PASS"
+        },
+        {
+          "name": "rollbackAndEnqueueFailureLeaveNoDomainTransitionOrNotification",
+          "result": "PASS"
+        },
+        {
+          "name": "expiredLeaseRecoversAtEqualityAndOldWorkerCannotComplete",
+          "result": "PASS"
+        },
+        {
+          "name": "existingV13SchemaUpgradesWithoutRewritingHistoryAndHasClaimConstraints",
+          "result": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.OperationsRecoveryIntegrationTest",
+      "reported": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "packagedMigrationsBackupRestoreRestartAndReset",
+          "result": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.OwnerTrustIntegrationTest",
+      "reported": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "queueFiltersProjectionAndDatabaseConstraints",
+          "result": "PASS"
+        },
+        {
+          "name": "currentDbEmailRoleAndAdminSecurityAreAuthoritative",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionVersusResubmissionHasOnlyLegalOrderedOutcomes",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionVersusResubmissionHasOnlyLegalOrderedOutcomes",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionVersusResubmissionHasOnlyLegalOrderedOutcomes",
+          "result": "PASS"
+        },
+        {
+          "name": "durableNotificationRunsAfterCommitAndProviderFailureCannotRollBackTrust",
+          "result": "PASS"
+        },
+        {
+          "name": "competingAdminReviewsHaveOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "competingAdminReviewsHaveOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "competingAdminReviewsHaveOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidMethodsReasonsAndUnknownFieldsCannotAssignState",
+          "result": "PASS"
+        },
+        {
+          "name": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousFirstSubmissionIsOneCommittedLifecycle",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousFirstSubmissionIsOneCommittedLifecycle",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousFirstSubmissionIsOneCommittedLifecycle",
+          "result": "PASS"
+        },
+        {
+          "name": "approvalNotesRespectOptionalAndLengthContract(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "approvalNotesRespectOptionalAndLengthContract(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "approvalNotesRespectOptionalAndLengthContract(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "approvalNotesRespectOptionalAndLengthContract(int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "approvalNotesRespectOptionalAndLengthContract(int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMethodIsStoredWithoutAdditionalIdentityEvidence(VerificationMethod)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMethodIsStoredWithoutAdditionalIdentityEvidence(VerificationMethod)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMethodIsStoredWithoutAdditionalIdentityEvidence(VerificationMethod)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMethodIsStoredWithoutAdditionalIdentityEvidence(VerificationMethod)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionNotesRespectOptionalAndLengthContract(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionNotesRespectOptionalAndLengthContract(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionNotesRespectOptionalAndLengthContract(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionNotesRespectOptionalAndLengthContract(int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionNotesRespectOptionalAndLengthContract(int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionNotesRespectOptionalAndLengthContract(int)[6]",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PaymentBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "browserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PaymentIntegrationTest",
+      "reported": 90,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "latePaymentWithOrWithoutSchedulerNeverResurrects(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "latePaymentWithOrWithoutSchedulerNeverResurrects(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutInsideLeadWindowStillUsesSavedPriceAndAssociation",
+          "result": "PASS"
+        },
+        {
+          "name": "paidDuplicateAfterConfirmedCancellationIsNotALatePayment",
+          "result": "PASS"
+        },
+        {
+          "name": "missingCallbackReferenceIs400",
+          "result": "PASS"
+        },
+        {
+          "name": "paymentDeadlineExactBoundary(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "paymentDeadlineExactBoundary(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "paymentDeadlineExactBoundary(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "failedProviderRetrievalPreservesBooking(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "failedProviderRetrievalPreservesBooking(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "failedProviderRetrievalPreservesBooking(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "freshCoordinatorReadsDurableClaimsAndCompletedResult",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCallbackReferenceRejectedBeforeProvider(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCallbackReferenceRejectedBeforeProvider(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCallbackReferenceRejectedBeforeProvider(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCallbackReferenceRejectedBeforeProvider(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCallbackReferenceRejectedBeforeProvider(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidCallbackReferenceRejectedBeforeProvider(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "staleTokenUsesCurrentEmailState",
+          "result": "PASS"
+        },
+        {
+          "name": "expiryWorkerIsIdempotentAtFixedDeadline",
+          "result": "PASS"
+        },
+        {
+          "name": "expiryWorkerIsIdempotentAtFixedDeadline",
+          "result": "PASS"
+        },
+        {
+          "name": "expiryWorkerIsIdempotentAtFixedDeadline",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousCreationReplayBoundary(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousCreationReplayBoundary(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousCreationReplayBoundary(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutActorMatrix(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutActorMatrix(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutActorMatrix(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutActorMatrix(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutActorMatrix(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidCallbackUsesExactDeadlineBoundary(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidCallbackUsesExactDeadlineBoundary(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidCallbackUsesExactDeadlineBoundary(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "replacementReservationSurvivesLatePayment",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutStateMatrix(BookingStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutDiscoveredExpiryIsDurable",
+          "result": "PASS"
+        },
+        {
+          "name": "inFlightCreateAfterDeadlineRetainsRefundAssociation",
+          "result": "PASS"
+        },
+        {
+          "name": "lateAmbiguousRefundStopsOutsideReplayWindow",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "webhookIntegrityMatrix(String)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousLateRefundReplaysSameIdentityWithinWindow(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousLateRefundReplaysSameIdentityWithinWindow(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidStatusesCannotConfirm(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidStatusesCannotConfirm(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidStatusesCannotConfirm(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidStatusesCannotConfirm(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidStatusesCannotConfirm(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonPaidStatusesCannotConfirm(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect",
+          "result": "PASS"
+        },
+        {
+          "name": "createdRetryReusesSavedCheckout",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedCreateCannotAttachProviderState(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "policyReplacementBlocksUntilCurrentAcceptance",
+          "result": "PASS"
+        },
+        {
+          "name": "lateDuplicateCannotRewriteCompletedRefundEconomics",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousCheckoutCommitsClaimBeforeTwoSameKeyTransportCalls",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousCheckoutCommitsClaimBeforeTwoSameKeyTransportCalls",
+          "result": "PASS"
+        },
+        {
+          "name": "simultaneousCheckoutCommitsClaimBeforeTwoSameKeyTransportCalls",
+          "result": "PASS"
+        },
+        {
+          "name": "fractionalCentMismatchCannotConfirm",
+          "result": "PASS"
+        },
+        {
+          "name": "fetchedPaymentMustMatchIncomingReference",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PayoutBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "payoutBrowserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PayoutIntegrationTest",
+      "reported": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "concurrentPaidRecordingIsIdempotentOrConflicts(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentPaidRecordingIsIdempotentOrConflicts(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "feeValidationExactReplayAndCorrectionConflictLeaveOneAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "adminListsAcceptOmittedAndPartialFilters(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "adminListsAcceptOmittedAndPartialFilters(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessWorkersClaimDisjointBookingsInIndependentTransactions",
+          "result": "PASS"
+        },
+        {
+          "name": "firstReadyDestinationSurvivesRealReplacementAndPaidRecalculation",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentRecalculationCreatesOneLedgerAndOneAudit",
+          "result": "PASS"
+        },
+        {
+          "name": "missingOrUnverifiedSnapshotCannotBeRecordedPaid",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessWorkerHonorsExactEndUsingInjectedClock",
+          "result": "PASS"
+        },
+        {
+          "name": "liabilitySettlementUsesStoredAmountAndSerializes(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "liabilitySettlementUsesStoredAmountAndSerializes(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessWorkerSkipsBusyBookingAndProcessesItOnNextScan",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyReadyCanBeRecordedPaid(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyReadyCanBeRecordedPaid(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyReadyCanBeRecordedPaid(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidTransferReferenceIsRejectedBeforeMutation(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidTransferReferenceIsRejectedBeforeMutation(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidTransferReferenceIsRejectedBeforeMutation(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "waivedLiabilityCannotBeSettledAndDatabaseRejectsInvalidMoneyAndDuplicates",
+          "result": "PASS"
+        },
+        {
+          "name": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+          "result": "PASS"
+        },
+        {
+          "name": "unpaidBookingsCannotAcquireReconciledFees(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unpaidBookingsCannotAcquireReconciledFees(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidRecordingRollsBackWithItsAudit",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PolicyIntegrationTest",
+      "reported": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "immutableTransitionsAndRequestContract",
+          "result": "PASS"
+        },
+        {
+          "name": "publicationDuringAcceptanceKeepsHistoryButNextGateRejects",
+          "result": "PASS"
+        },
+        {
+          "name": "publicationDuringAcceptanceKeepsHistoryButNextGateRejects",
+          "result": "PASS"
+        },
+        {
+          "name": "publicationDuringAcceptanceKeepsHistoryButNextGateRejects",
+          "result": "PASS"
+        },
+        {
+          "name": "lifecycleAllFiveAndAuthorization",
+          "result": "PASS"
+        },
+        {
+          "name": "lifecycleAndAcceptancePublishNoDomainNotificationEvents",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet",
+          "result": "PASS"
+        },
+        {
+          "name": "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentServicePublicationHasOneCurrentAndSafeConflict",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentServicePublicationHasOneCurrentAndSafeConflict",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentServicePublicationHasOneCurrentAndSafeConflict",
+          "result": "PASS"
+        },
+        {
+          "name": "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+      "reported": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "emailIndexRejectsConcurrentCaseVariedLogicalDuplicates",
+          "result": "PASS"
+        },
+        {
+          "name": "overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve",
+          "result": "PASS"
+        },
+        {
+          "name": "exclusionRejectsOneOverlappingBlockingInsert",
+          "result": "PASS"
+        },
+        {
+          "name": "twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches",
+          "result": "PASS"
+        },
+        {
+          "name": "readyPayoutDestinationSnapshotDoesNotFollowReplacement",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryAndPayoutSkipLockedQueriesAreActuallyDisjoint",
+          "result": "PASS"
+        },
+        {
+          "name": "refreshTokenRotationLockAllowsOnlyOneWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "payoutAndDocumentUniqueConstraintsHaveSingleAuthorities",
+          "result": "PASS"
+        },
+        {
+          "name": "policyAcceptanceBookingSnapshotStaysHistoricalAndIncidentHasNoFinancialSideEffects",
+          "result": "PASS"
+        },
+        {
+          "name": "nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate",
+          "result": "PASS"
+        },
+        {
+          "name": "commonFlywayChainAndHibernateValidationStartFromEmptyDatabase",
+          "result": "PASS"
+        },
+        {
+          "name": "verifiedDestinationPartialIndexAndReplacementSemanticsHold",
+          "result": "PASS"
+        },
+        {
+          "name": "policyPublishRaceLeavesExactlyOneCurrentVersion",
+          "result": "PASS"
+        },
+        {
+          "name": "halfOpenBackToBackReservationsBothPersist",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PriceBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "browserJourney",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.PriceIntegrationTest",
+      "reported": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "calculatedOverflowIsSafeAndLeavesNoBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryPriceIsCapturedAtAcceptanceNotOffer",
+          "result": "PASS"
+        },
+        {
+          "name": "normalRequestKeepsCoherentOldPriceAcrossConcurrentOwnerEdit",
+          "result": "PASS"
+        },
+        {
+          "name": "normalRequestKeepsCoherentOldPriceAcrossConcurrentOwnerEdit",
+          "result": "PASS"
+        },
+        {
+          "name": "normalRequestKeepsCoherentOldPriceAcrossConcurrentOwnerEdit",
+          "result": "PASS"
+        },
+        {
+          "name": "fractionalCentResponseMatchesPersistedConfiguration",
+          "result": "PASS"
+        },
+        {
+          "name": "zeroPriceIsRejectedBeforeBookingPersistence",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryConversionAndOwnerEditChooseOneWholePricingConfiguration",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryConversionAndOwnerEditChooseOneWholePricingConfiguration",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryConversionAndOwnerEditChooseOneWholePricingConfiguration",
+          "result": "PASS"
+        },
+        {
+          "name": "persistedSnapshotAndMaliciousCheckoutUseOriginalPrice(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "persistedSnapshotAndMaliciousCheckoutUseOriginalPrice(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "persistedSnapshotAndMaliciousCheckoutUseOriginalPrice(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "persistedSnapshotAndMaliciousCheckoutUseOriginalPrice(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "pricingHttpValidationAndDatabaseConstraints(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "pricingHttpValidationAndDatabaseConstraints(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "pricingHttpValidationAndDatabaseConstraints(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseMoneyScaleAndRequiredSnapshots",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.ProviderCostAllocationIntegrationTest",
+      "reported": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "paidHistoryUsesAppliedDeductionRatherThanTheRawProviderCost(ProviderCostResponsibility)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidHistoryUsesAppliedDeductionRatherThanTheRawProviderCost(ProviderCostResponsibility)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidHistoryUsesAppliedDeductionRatherThanTheRawProviderCost(ProviderCostResponsibility)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateFeeOnHistoricalPaidSettlementCannotCreateLimitedRecourseDebt(ProviderCostResponsibility)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateFeeOnHistoricalPaidSettlementCannotCreateLimitedRecourseDebt(ProviderCostResponsibility)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateFeeOnHistoricalPaidSettlementCannotCreateLimitedRecourseDebt(ProviderCostResponsibility)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateFeeOnHistoricalPaidSettlementCannotCreateLimitedRecourseDebt(ProviderCostResponsibility)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "normalBookingNullResponsibilityAlsoCapsFeesWithoutDebt",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationAndFeeOrderingConvergeWithoutChangingScoutRefund(String, String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation(String, String, String, String, String, String, String)[16]",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.RefundIntegrationTest",
+      "reported": 53,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "ambiguousCreationRestartAndExactWindow(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousCreationRestartAndExactWindow(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousCreationRestartAndExactWindow(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "authorizationDenialHasNoSideEffects(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "authorizationDenialHasNoSideEffects(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "authorizationDenialHasNoSideEffects(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "feeCanReconcileAfterAdministrativeRefundWithoutRestoringEntitlement",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedProviderFactsCannotComplete(String)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedBookingStateHasNoSideEffects(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "refundAndMarkPaidRaceBothSerializations",
+          "result": "PASS"
+        },
+        {
+          "name": "refundAndMarkPaidRaceBothSerializations",
+          "result": "PASS"
+        },
+        {
+          "name": "refundAndMarkPaidRaceBothSerializations",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentRequestsShareOneLogicalProviderRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentRequestsShareOneLogicalProviderRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentRequestsShareOneLogicalProviderRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseProtectsRefundIdentityBoundsAndLiabilityUniqueness",
+          "result": "PASS"
+        },
+        {
+          "name": "completionPreservesRefundOrigin(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "completionPreservesRefundOrigin(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "completionPreservesRefundOrigin(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectionAndAmbiguityKeepRecoverableIdentityAndSanitizeResponse(int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerStatusAndFailedEconomics(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerStatusAndFailedEconomics(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerStatusAndFailedEconomics(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerStatusAndFailedEconomics(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerStatusAndFailedEconomics(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerStatusAndFailedEconomics(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "fullRefundIgnoresCustomClientEconomicsAndMutableVenuePrice",
+          "result": "PASS"
+        },
+        {
+          "name": "repeatAmbiguousRestart",
+          "result": "PASS"
+        },
+        {
+          "name": "repeatAmbiguousRestart",
+          "result": "PASS"
+        },
+        {
+          "name": "repeatAmbiguousRestart",
+          "result": "PASS"
+        },
+        {
+          "name": "paidPayoutSurvivesRefundAndRepeatedRecalculation",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.RegistrationIntegrationTest",
+      "reported": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "duplicateCaseVariantIs409WithoutAdditionalTokensOrEvents",
+          "result": "PASS"
+        },
+        {
+          "name": "otherAuthEndpointsRejectUnknownFieldsWithSafeErrors",
+          "result": "PASS"
+        },
+        {
+          "name": "directRegistrationAlsoCanonicalizesAndAllowsOwner",
+          "result": "PASS"
+        },
+        {
+          "name": "verificationPersistenceFailureRollsBackUserAndTokens",
+          "result": "PASS"
+        },
+        {
+          "name": "recoveryUsesCanonicalEmailAndKeepsGenericResponses",
+          "result": "PASS"
+        },
+        {
+          "name": "deliveryFailureAfterCommitDoesNotRollbackRegistration",
+          "result": "PASS"
+        },
+        {
+          "name": "anonymousScoutPersistsOnlyHashesAndReturnsExactPublicContract",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectedRolesValidationAndMalformedJsonHaveNoSideEffects",
+          "result": "PASS"
+        },
+        {
+          "name": "authenticatedScoutDoesNotOwnOrOverrideNewRegistration",
+          "result": "PASS"
+        },
+        {
+          "name": "unknownRegistrationFieldsAreRejectedBeforeAnySideEffect",
+          "result": "PASS"
+        },
+        {
+          "name": "normalizedLoginPreservesPasswordSpacesExactly",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.ScheduledJobsIntegrationTest",
+      "reported": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "feeJobProcessesBoundedSuccessfulBatchesAndIgnoresUnpaidRows",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingWorkersAndBusyRowLeaveOneCommittedTransitionPerBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingJobProcessesOneHundredPerKindThenRemainderWithoutDuplicateEvents",
+          "result": "PASS"
+        },
+        {
+          "name": "tokenCleanupUsesInjectedTimeBoundedBatchesAndRetainsEqualityAndSessions",
+          "result": "PASS"
+        },
+        {
+          "name": "heldOlderPayoutsMustNotPermanentlyStarveLaterReadyPayout",
+          "result": "PASS"
+        },
+        {
+          "name": "allWorkflowGaugesAreCompleteReadOnlyAndConcurrent",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryWorkerSkipsLockedOfferThenRecoversItWithoutDuplicateIntent",
+          "result": "PASS"
+        },
+        {
+          "name": "rollbackDoesNotIncrementExpiryCounterOrRetainOutbox",
+          "result": "PASS"
+        },
+        {
+          "name": "usedTokensAreDeletedBeforeTheirExpiryWithoutTouchingUnusedFutureTokens",
+          "result": "PASS"
+        },
+        {
+          "name": "overlappingFeeWorkersReconcileOneFinancialOutcome",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessRollbackPreservesScanPositionAndHasNoAuditOutcome",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryJobUsesInjectedTimeAndBoundedRepeatedConcurrentBatches",
+          "result": "PASS"
+        },
+        {
+          "name": "unavailableOlderFeesMustNotPermanentlyStarveLaterAvailableFee",
+          "result": "PASS"
+        },
+        {
+          "name": "payoutReadinessProcessesBoundedBatchesWithoutTransferOrDuplicateAudit",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.SecurityBrowserIntegrationTest",
+      "reported": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "cases": [
+        {
+          "name": "malformedSessionsEscapedContentAndTamperedRole",
+          "result": "SKIP"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.SecurityIntegrationTest",
+      "reported": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "correlationIdIsSafeAndDoesNotBleedBetweenRequests(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "correlationIdIsSafeAndDoesNotBleedBetweenRequests(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "correlationIdIsSafeAndDoesNotBleedBetweenRequests(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "correlationIdIsSafeAndDoesNotBleedBetweenRequests(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "correlationIdIsSafeAndDoesNotBleedBetweenRequests(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "actuatorAndFrameworkExposureIsRoleBounded",
+          "result": "PASS"
+        },
+        {
+          "name": "securityHeadersAndOptInHstsRespectTransport",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedJwtThroughHttpDoesNotLogHeaderContents",
+          "result": "PASS"
+        },
+        {
+          "name": "unexpectedHttpFailureIsSafeInBodyAndLogs",
+          "result": "PASS"
+        },
+        {
+          "name": "authSecretsRemainOutOfNormalDtosAndApplicationLogs",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseRoleActiveAndVerificationWinOverCachedClaims",
+          "result": "PASS"
+        },
+        {
+          "name": "plainTextPolicyAndNameInputsRemainData(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "plainTextPolicyAndNameInputsRemainData(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "plainTextPolicyAndNameInputsRemainData(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "plainTextPolicyAndNameInputsRemainData(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "plainTextPolicyAndNameInputsRemainData(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "plainTextPolicyAndNameInputsRemainData(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "dtoSpecificLargeInputBoundsAndSafeErrors",
+          "result": "PASS"
+        },
+        {
+          "name": "corsAllowsOnlyConfiguredOriginsMethodsAndHeaders",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.UxActionReplayIntegrationTest",
+      "reported": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "bookingCreationReplayCreatesRequestsButOnlyOneCanReserve",
+          "result": "PASS"
+        },
+        {
+          "name": "incidentCreationReplayCreatesSupportRecordsWithoutFinancialEffects",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryCreationReplayCreatesOpenRecordsWithoutReservations",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.VenueDomainIntegrationTest",
+      "reported": 155,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "avlWeeklyValidationAndAuthorizationAreAtomic",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyCriticalOwnerEditRequiresReviewAndPreservesBooking(String, Object)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "photoListChangesRequireReview(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "photoListChangesRequireReview(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "photoListChangesRequireReview(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaStandaloneAndScopedFormatsUseRealFilesystemAndCorrectPublicHeaders(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration",
+          "result": "PASS"
+        },
+        {
+          "name": "clipAllowsHttpLinksWithoutServerFetch(String, int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "clipAllowsHttpLinksWithoutServerFetch(String, int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "clipAllowsHttpLinksWithoutServerFetch(String, int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions",
+          "result": "PASS"
+        },
+        {
+          "name": "policyReplacementBlocksReadySubmissionUntilExactNewVersionAccepted",
+          "result": "PASS"
+        },
+        {
+          "name": "avlConfirmationKeepsReservationAndCancellationOrRefundReleasesIt(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlConfirmationKeepsReservationAndCancellationOrRefundReleasesIt(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingConsistencyAndHardRequirements(Boolean, Integer, int)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlQueryRangeVisibilityAndTimezoneChange",
+          "result": "PASS"
+        },
+        {
+          "name": "policiesAreRecheckedForSubmissionButNotAdminApproval",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching(String, Boolean)[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaAttachmentFailureAfterRealFlushRollsBackRowsAndDeletesNewObject",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidZonesDoNotMutateEitherRoute(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidZonesDoNotMutateEitherRoute(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidZonesDoNotMutateEitherRoute(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidZonesDoNotMutateEitherRoute(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidZonesDoNotMutateEitherRoute(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+          "result": "PASS"
+        },
+        {
+          "name": "numericallyIdenticalCeilingSaveDoesNotTriggerRereview",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseConstraintsPreserveProductionAndOwnerInvariants",
+          "result": "PASS"
+        },
+        {
+          "name": "wrongStateRoleAndInvalidReasonHaveNoModerationEffects",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored(String, Object)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "visibilityStatusActorMatrixAndExactTagNormalization",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlWeeklyReplacementAllWeekdays(DayOfWeek)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "noncriticalEditsKeepApprovalAndBookingSnapshots(String, Object)[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllBookingStatusesMatchDatabaseExclusion(BookingStatus)[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaUploadLimitsAuthorizationAndAvailabilityAreIndependent",
+          "result": "PASS"
+        },
+        {
+          "name": "suspensionVersusRequestAcceptanceSerializesCommitmentBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "suspensionVersusRequestAcceptanceSerializesCommitmentBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "suspensionVersusRequestAcceptanceSerializesCommitmentBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "creationAuthorizationDefaultsAndServerOwnedFields",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllDayOverridesWithEmptyAndPopulatedWeek(boolean)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "avlAllDayOverridesWithEmptyAndPopulatedWeek(boolean)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaConcurrentUploadsAppendBothAndRespectLastSlot",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaConcurrentUploadsAppendBothAndRespectLastSlot",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaConcurrentUploadsAppendBothAndRespectLastSlot",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentAdminReviewsHaveOneAuthoritativeWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentAdminReviewsHaveOneAuthoritativeWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentAdminReviewsHaveOneAuthoritativeWinner",
+          "result": "PASS"
+        },
+        {
+          "name": "avlConcurrentAcceptanceReservesOnceAndExpiryReopens",
+          "result": "PASS"
+        },
+        {
+          "name": "avlConcurrentAcceptanceReservesOnceAndExpiryReopens",
+          "result": "PASS"
+        },
+        {
+          "name": "avlConcurrentAcceptanceReservesOnceAndExpiryReopens",
+          "result": "PASS"
+        },
+        {
+          "name": "avlLeadExpiryCommitsForRequestAndInquiryButCheckoutIsExempt",
+          "result": "PASS"
+        },
+        {
+          "name": "identicalAndAdminEditsAndEmptyAvailabilityCharacterizeApproval",
+          "result": "PASS"
+        },
+        {
+          "name": "supportedZonesPersistAcrossBothRoutes(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "supportedZonesPersistAcrossBothRoutes(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "supportedZonesPersistAcrossBothRoutes(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "supportedZonesPersistAcrossBothRoutes(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unverifiedEmailBlocksEveryOwnerMutationWithoutChangingExistingRows",
+          "result": "PASS"
+        },
+        {
+          "name": "suspendedVenueCannotAcceptRequestedButKeepsAcceptedAndConfirmedHistory",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrMalformedClipsAreRejected(String)[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaConcurrentWholePutAndUploadHaveSerializedReplacementSemantics",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaConcurrentWholePutAndUploadHaveSerializedReplacementSemantics",
+          "result": "PASS"
+        },
+        {
+          "name": "mediaConcurrentWholePutAndUploadHaveSerializedReplacementSemantics",
+          "result": "PASS"
+        },
+        {
+          "name": "replayedSubmissionHasNoSecondLifecycle",
+          "result": "PASS"
+        },
+        {
+          "name": "activityOrderAndUnknownEmptyAreCriticalButTagOrderIsNot",
+          "result": "PASS"
+        },
+        {
+          "name": "criticalEditVersusApprovalHasCoherentSerialization",
+          "result": "PASS"
+        },
+        {
+          "name": "criticalEditVersusApprovalHasCoherentSerialization",
+          "result": "PASS"
+        },
+        {
+          "name": "criticalEditVersusApprovalHasCoherentSerialization",
+          "result": "PASS"
+        },
+        {
+          "name": "activityArraysPreserveUnknownEmptyAndEveryEnumAndRejectContradictions",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "com.eema.backend.integration.ZeroPriceIntegrationTest",
+      "reported": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "databaseRejectsZeroOriginalPriceAcrossAllBookingStates",
+          "result": "PASS"
+        },
+        {
+          "name": "legacyZeroCheckoutFailsWithoutChangingClaimOrCallingProvider(PaymentCreationStatus)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "legacyZeroCheckoutFailsWithoutChangingClaimOrCallingProvider(PaymentCreationStatus)[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "legacyZeroCheckoutFailsWithoutChangingClaimOrCallingProvider(PaymentCreationStatus)[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryAcceptanceUsesCurrentPriceAndRollsBackAtomically",
+          "result": "PASS"
+        },
+        {
+          "name": "roundedZeroRequestHasNoPersistenceReservationOrLifecycleEffects",
+          "result": "PASS"
+        },
+        {
+          "name": "oneCentFinalAmountIsAcceptedWithoutCheckout(String)[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "oneCentFinalAmountIsAcceptedWithoutCheckout(String)[2]",
+          "result": "PASS"
+        }
+      ]
+    }
+  ]
+}

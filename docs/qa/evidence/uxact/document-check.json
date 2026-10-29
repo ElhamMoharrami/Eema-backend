@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
+  "pdfSha256": "b05b5c766aa354decc7d26026cdbf283f511408c855acdfe3df41122b1226730",
+  "markdownSha256": "a0c03177f6f9c62214f83db6290a111b49ed1ccb56502fc558afbb6eec5b4ae4",
+  "pages": 627,
+  "scenarioIds": 703,
+  "sameIdOrder": true,
+  "visuallyReviewedPages": [
+    1,
+    153,
+    169,
+    623,
+    624
+  ],
+  "layout": "No clipping/overlap on reviewed pages. Final release-gate correction on page623 and continuation624 reviewed separately. UX35PASS current scope; actual AT11DEFERRED/not executed; UXACT19PASS; PROVIDER5BLOCKED for missing isolated staging inputs."
+}

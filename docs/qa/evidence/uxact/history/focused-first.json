@@ -1,0 +1,20 @@
+{
+  "classification": "Test-query error: recipient_slot is an integer ordinal, not a recipient role. Production unchanged. Corrected assertion checks both intended recipient rows per request.",
+  "tests": [
+    {
+      "test": "bookingCreationReplayCreatesRequestsButOnlyOneCanReserve",
+      "result": "ERROR",
+      "error": "PreparedStatementCallback; SQL [select count(*) from notification_outbox where aggregate_id in (?,?) and recipient_slot='scout']; ERROR: invalid input syntax for type integer: \"scout\"\n  Position: 91"
+    },
+    {
+      "test": "incidentCreationReplayCreatesSupportRecordsWithoutFinancialEffects",
+      "result": "PASS",
+      "error": null
+    },
+    {
+      "test": "inquiryCreationReplayCreatesOpenRecordsWithoutReservations",
+      "result": "PASS",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "source": "../cala/regression.json",
+  "productionAndIntegrationSourcesUnchanged": true,
+  "fullPostgres": {
+    "reported": 1027,
+    "executed": 1014,
+    "skipped": 13,
+    "failures": 0
+  },
+  "criticalCleanupFocused": 14,
+  "frontendGates": "Reused unchanged production build/typecheck/lint from CALA",
+  "note": "EMAIL adds/strengthens unit assertions only. No new full PostgreSQL run is claimed."
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "EMAIL",
+  "counts": {
+    "PASS": 31,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "productionDefects": [],
+  "testDefectFixed": "Obsolete Scout-send subject made the existing delivery-failure stub ineffective",
+  "nextLocallyExecutable": "JOURNEY-001\u2013009",
+  "autoContinue": true
+}

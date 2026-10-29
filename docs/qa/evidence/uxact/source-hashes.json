@@ -1,0 +1,12 @@
+{
+  "sha256": {
+    "scripts/qa/uxact-browser.cjs": "b6411cf216312ca4f346ed7bab10a5bad5e2c3fa2c7f38a0838fa30153edce48",
+    "scripts/qa/uxact-client-check.cjs": "802ac46ba7202a9c33193b88c6bbbeb87848f4f836dc68d77c1fe2b9231de3e0",
+    "scripts/qa/uxact-expiry-browser.cjs": "4cf79ff18f96147c34514799364314edf336f364beb2ba5c47c4c4bb08b654f0",
+    "scripts/qa/uxact-session-browser.cjs": "42e89e7241e7cfdb087eee6d7da61947e8f0aefa036580c8df9b03cf20cb209c",
+    "src/test/java/com/eema/backend/integration/UxActionReplayIntegrationTest.java": "cccca61c68b0e8abe556b2f3b83eb7c0c324663a7c21a97ba083df6d8594127c",
+    "src/test/java/com/eema/backend/integration/VenueDomainIntegrationTest.java": "347b9b09fae4fc3d050ec32fac5ed41e7c9d134d2fa560d909a74efdc7ae96fa",
+    "/home/elham/workspace/Eema-frontend/lib/api/client.ts": "29c989fa4af589469d17ef0225568c566fc1cd9bf2a6679512fe01ee12d12c8b"
+  },
+  "note": "Current saved sources. Browser harnesses received failure-exit-code checks after successful runs; syntax checks passed. Production client unchanged after the passing build/browser run."
+}

@@ -1,0 +1,31 @@
+{
+  "receiptSha256" : "6b44d9acfe4dd8bc6cb39f47d2838de4cb0389700b2152981c9ab57b5d27c79c",
+  "checks" : [ "Ordinary packaged restart preserves every table hash and document bytes", "Forced JVM death after acceptance retains pending intent; packaged restart initializes bounded scheduler and dispatches the pre-crash message through loopback HTTP with stable idempotency identity", "pg_dump/restore preserves all table hashes, IDs, constraints, paid/cancelled/inquiry/policy/session/destination/document state, files and decryptability; restored session rotation and source isolation verified", "Packaged common-only V1–V14 and Hibernate validation start empty and restart idempotently", "Disposable local V1–V14/V100–V103 seed/login and DB/object-directory reset/reseed passed without touching source/shared data" ],
+  "provider" : "No live provider; synthetic local fixtures and keys only",
+  "result" : "PASS",
+  "publicMediaSha256" : "e6e8c7e9ca69689be9487227209bfc6ff7b2404b816a35aeaf74d48a4402cfbe",
+  "tableHashes" : {
+    "availability_inquiries" : "12eda65f06a7a0457a5cd24d7e6db6be79f373a95bef8a53f8cc3ddc0643293e",
+    "booking_events" : "256ed5463e3b0d0fb2acbf70b1b92a5c47077c837825d188b7bedd7d4ead871d",
+    "booking_policy_versions" : "8c638383f83a255885490088c6a5102e6798318fee47e9f06ea186413bbc7ed3",
+    "bookings" : "bdc3b69907c29efd889848a642b7cd71c5543c9bc6db37804d57e295df829a70",
+    "email_verification_tokens" : "5799958eca88743111a41a70df8aa7bcee2e1148c2feb390643432d4d807bef8",
+    "financial_documents" : "5e812b8dc91b8d19f0c101b66540acef9d28bb4358be71c28287e3ca20f2c5dd",
+    "flyway_schema_history" : "095ba0aa899cb2890bf14667d4713e57e79471f444514ab38bc193c60682fec7",
+    "incident_reports" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "marketplace_trust_events" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "notification_outbox" : "16ce9d1802c4302de857c5e585a58c258043e34e02af9c5bc4e46b67971fc9e3",
+    "owner_financial_liabilities" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_payout_destinations" : "27d042526e238b6943860ab857cfb5c71453cb8616a1fcd1f1985945a85e0728",
+    "owner_payouts" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "owner_verifications" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "password_reset_tokens" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "policy_acceptances" : "b0df68ec25e027fae448c699ee87c2b962f21bd1c39603d71f381b7cab95d490",
+    "policy_versions" : "1f7d9456f7c19540bee5ecf5478898bb7cd5af1e3baf3f253edfb988559f7118",
+    "refresh_tokens" : "b62eaa8f3e5e46d0f26c0b852e33a3b5cbafb7102d7b9af6d8de311681317fed",
+    "users" : "e8280b600f93b8a93de707b2a33c218cc3df44585229d97a82f62ccde1fc5057",
+    "venue_availability_overrides" : "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "venue_operating_hours" : "5231b528a08b31a5cd29225e7e29f54668af23a095dd8c8754ebdee216b3b614",
+    "venues" : "ff3b40f05011fd554625f1bd11f19462ee727a17f52572f6d2e75eb78195ec4e"
+  }
+}

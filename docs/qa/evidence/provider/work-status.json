@@ -1,0 +1,44 @@
+{
+  "domain": "PROVIDER",
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 5
+  },
+  "scenarios": [
+    {
+      "id": "PROVIDER-001",
+      "result": "BLOCKED",
+      "reason": "Designated isolated staging/provider environment and controlled QA resources not supplied",
+      "realProviderExecuted": false
+    },
+    {
+      "id": "PROVIDER-002",
+      "result": "BLOCKED",
+      "reason": "Designated isolated staging/provider environment and controlled QA resources not supplied",
+      "realProviderExecuted": false
+    },
+    {
+      "id": "PROVIDER-003",
+      "result": "BLOCKED",
+      "reason": "Designated isolated staging/provider environment and controlled QA resources not supplied",
+      "realProviderExecuted": false
+    },
+    {
+      "id": "PROVIDER-004",
+      "result": "BLOCKED",
+      "reason": "Designated isolated staging/provider environment and controlled QA resources not supplied",
+      "realProviderExecuted": false
+    },
+    {
+      "id": "PROVIDER-005",
+      "result": "BLOCKED",
+      "reason": "Designated isolated staging/provider environment and controlled QA resources not supplied",
+      "realProviderExecuted": false
+    }
+  ],
+  "autoContinue": false,
+  "stopReason": "Required unavailable external/staging inputs; not deferred AT",
+  "followingUnstarted": "CALA-001",
+  "scope": "Local dependent-domain evidence is separately green; credentials were not enumerated and live provider calls were not made."
+}

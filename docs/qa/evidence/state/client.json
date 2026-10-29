@@ -1,0 +1,876 @@
+{
+  "result": "PASS",
+  "scope": "TypeScript representation only; no browser or server state authority claimed",
+  "checks": [
+    {
+      "type": "BookingStatus",
+      "value": "REQUESTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "AWAITING_PAYMENT",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "CONFIRMED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "DECLINED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "EXPIRED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "UNAVAILABLE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "CANCELLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "value": "REFUNDED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "NONE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "CREATING",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "QUEUED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "PENDING",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "PROCESSING",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "REFUNDED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "FAILED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "value": "CANCELED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "VenueStatus",
+      "value": "DRAFT",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "VenueStatus",
+      "value": "PENDING",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "VenueStatus",
+      "value": "ACTIVE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "VenueStatus",
+      "value": "SUSPENDED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "VenueStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "value": "CALCULATED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "value": "HELD",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "value": "READY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "value": "PAID",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "value": "CANCELLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityStatus",
+      "value": "OPEN",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityStatus",
+      "value": "SETTLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityStatus",
+      "value": "WAIVED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityType",
+      "value": "PROVIDER_COST",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityType",
+      "value": "OWNER_PAYOUT_RECOVERY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityType",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentStatus",
+      "value": "OPEN",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentStatus",
+      "value": "UNDER_REVIEW",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentStatus",
+      "value": "RESOLVED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentStatus",
+      "value": "CLOSED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "PROPERTY_DAMAGE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "ACCESS_PROBLEM",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "SAFETY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "NOISE_NEIGHBOUR",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "MISREPRESENTATION",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "CONDUCT",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "value": "OTHER",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerVerificationStatus",
+      "value": "UNVERIFIED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerVerificationStatus",
+      "value": "PENDING",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerVerificationStatus",
+      "value": "VERIFIED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerVerificationStatus",
+      "value": "REJECTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerVerificationStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "PayoutDestinationStatus",
+      "value": "PENDING_VERIFICATION",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PayoutDestinationStatus",
+      "value": "VERIFIED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PayoutDestinationStatus",
+      "value": "REJECTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PayoutDestinationStatus",
+      "value": "REPLACED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PayoutDestinationStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyStatus",
+      "value": "DRAFT",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyStatus",
+      "value": "PUBLISHED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyStatus",
+      "value": "RETIRED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyType",
+      "value": "TERMS_OF_SERVICE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyType",
+      "value": "PRIVACY_POLICY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyType",
+      "value": "ACCEPTABLE_USE_POLICY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyType",
+      "value": "PRODUCTION_POLICY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyType",
+      "value": "INSURANCE_REQUIREMENTS",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "PolicyType",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "AvailabilityInquiryStatus",
+      "value": "OPEN",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "AvailabilityInquiryStatus",
+      "value": "DECLINED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "AvailabilityInquiryStatus",
+      "value": "OFFERED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "AvailabilityInquiryStatus",
+      "value": "EXPIRED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "AvailabilityInquiryStatus",
+      "value": "ACCEPTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "AvailabilityInquiryStatus",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "UserRole",
+      "value": "SCOUT",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "UserRole",
+      "value": "OWNER",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "UserRole",
+      "value": "ADMIN",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "UserRole",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REQUEST_SUBMITTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REQUEST_ACCEPTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REQUEST_DECLINED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REQUEST_EXPIRED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REQUEST_BECAME_UNAVAILABLE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "APPROVAL_EXPIRED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "BOOKING_CONFIRMED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYMENT_SUCCEEDED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYMENT_REFUNDED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYMENT_RECONCILED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REFUND_REQUESTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "REFUND_STATUS_CHANGED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "LATE_PAYMENT_DETECTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "LATE_PAYMENT_REFUND_REQUESTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "LATE_PAYMENT_REFUND_COMPLETED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "SCOUT_CANCELLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "OWNER_CANCELLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "ADMIN_CANCELLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYOUT_CALCULATED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYOUT_READY",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYOUT_MARKED_PAID",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "PAYOUT_CANCELLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "OWNER_LIABILITY_CREATED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "OWNER_LIABILITY_SETTLED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "BOOKING_RECEIPT_ISSUED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "BookingEventType",
+      "value": "OWNER_PAYOUT_STATEMENT_ISSUED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "ActorType",
+      "value": "SCOUT",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "ActorType",
+      "value": "OWNER",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "ActorType",
+      "value": "ADMIN",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "ActorType",
+      "value": "SYSTEM",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "ActorType",
+      "value": "WEBHOOK",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "OWNER_VERIFICATION_SUBMITTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "OWNER_VERIFICATION_APPROVED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "OWNER_VERIFICATION_REJECTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "VENUE_SUBMITTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "VENUE_APPROVED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "VENUE_CHANGES_REQUESTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "VENUE_SUSPENDED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "VENUE_REACTIVATED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "PAYOUT_DESTINATION_SUBMITTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "PAYOUT_DESTINATION_VERIFIED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "PAYOUT_DESTINATION_REJECTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "PAYOUT_DESTINATION_REPLACED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "PAYOUT_DESTINATION_REVEALED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "PAYOUT_DESTINATION_SNAPSHOTTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "INCIDENT_REPORTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "INCIDENT_REVIEW_STARTED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "INCIDENT_RESOLVED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "TrustEventType",
+      "value": "INCIDENT_CLOSED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "PAYOUT_READY_OVERDUE",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "PAYOUT_HELD",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "OWNER_LIABILITY_OPEN",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "REFUND_STUCK",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "PAYMENT_CREATION_STUCK",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "MOLLIE_FEE_UNRECONCILED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "LATE_PAYMENT_REFUND_IN_PROGRESS",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "value": "NOTIFICATION_DELIVERY_FAILED",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionSeverity",
+      "value": "INFO",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionSeverity",
+      "value": "WARNING",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionSeverity",
+      "value": "CRITICAL",
+      "check": "accepted representation",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionSeverity",
+      "check": "unknown state rejected",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutStatus",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerPayoutHoldReason",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityStatus",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "OwnerFinancialLiabilityType",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionType",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "OperationalExceptionSeverity",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "PaymentCreationStatus",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "RefundStatus",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentCategory",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    },
+    {
+      "type": "IncidentStatus",
+      "check": "complete nonempty label map",
+      "result": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,331 @@
+{
+  "scope": "Explicit user private-alpha/local launch decision",
+  "result": "PASS",
+  "scenarios": [
+    {
+      "id": "UX-001",
+      "route": "/admin/bookings/[id]",
+      "result": "PASS",
+      "browserChecks": 33,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-002",
+      "route": "/admin/bookings",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-003",
+      "route": "/admin/exceptions",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-004",
+      "route": "/admin/incidents/[id]",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-005",
+      "route": "/admin/incidents",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-006",
+      "route": "/admin/liabilities/[id]",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-007",
+      "route": "/admin/liabilities",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-008",
+      "route": "/admin/owner-verifications/[id]",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-009",
+      "route": "/admin/owner-verifications",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-010",
+      "route": "/admin",
+      "result": "PASS",
+      "browserChecks": 6,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-011",
+      "route": "/admin/payout-destinations/[id]",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-012",
+      "route": "/admin/payout-destinations",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-013",
+      "route": "/admin/payouts/[id]",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-014",
+      "route": "/admin/payouts",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-015",
+      "route": "/admin/policies",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-016",
+      "route": "/admin/venues/[id]",
+      "result": "PASS",
+      "browserChecks": 33,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-017",
+      "route": "/admin/venues",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-018",
+      "route": "/booked",
+      "result": "PASS",
+      "browserChecks": 22,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-019",
+      "route": "/bookings/[id]",
+      "result": "PASS",
+      "browserChecks": 31,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-020",
+      "route": "/forgot-password",
+      "result": "PASS",
+      "browserChecks": 4,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-021",
+      "route": "/owner/bookings",
+      "result": "PASS",
+      "browserChecks": 24,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-022",
+      "route": "/owner/inquiries",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-023",
+      "route": "/owner/payout-destination",
+      "result": "PASS",
+      "browserChecks": 24,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-024",
+      "route": "/owner/payouts/[id]",
+      "result": "PASS",
+      "browserChecks": 24,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-025",
+      "route": "/owner/payouts",
+      "result": "PASS",
+      "browserChecks": 24,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-026",
+      "route": "/owner/venues/[id]",
+      "result": "PASS",
+      "browserChecks": 42,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-027",
+      "route": "/owner/venues/new",
+      "result": "PASS",
+      "browserChecks": 6,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-028",
+      "route": "/owner/venues",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-029",
+      "route": "/owner/verification",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-030",
+      "route": "/",
+      "result": "PASS",
+      "browserChecks": 13,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-031",
+      "route": "/policies",
+      "result": "PASS",
+      "browserChecks": 31,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-032",
+      "route": "/reset-password",
+      "result": "PASS",
+      "browserChecks": 4,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-033",
+      "route": "/scout/bookings",
+      "result": "PASS",
+      "browserChecks": 24,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-034",
+      "route": "/scout/inquiries",
+      "result": "PASS",
+      "browserChecks": 15,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    },
+    {
+      "id": "UX-035",
+      "route": "/verify-email",
+      "result": "PASS",
+      "browserChecks": 4,
+      "accessibilityChecks": 3,
+      "longContentChecks": 3,
+      "actualAT": "DEFERRED / NOT EXECUTED"
+    }
+  ],
+  "evidenceHashes": {
+    "browser": "ce6255660904d11101d9c4bb7ecdb606b73a61d10fa1a58c51910262a88485d1",
+    "accessibility": "3c43a8b7d57876d9455112953964ec6e01fe36185d744bebd8144a4f835eed50",
+    "long-layout": "5d454dced392715daba431b4b7ce11240141f502d4a5c000060853e694f4f57e",
+    "flows": "2f42ee5257ac85b5cfe948bc27642201f170557dcc65c343d9499e406280274b",
+    "client": "f0172deff509be7135808bd750a74ad0856def18fb952426548dc5a4a89cb985"
+  },
+  "executedCheckCount": 918,
+  "productionChanged": false,
+  "actualATExecuted": false
+}

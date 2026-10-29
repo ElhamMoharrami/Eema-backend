@@ -1,0 +1,6 @@
+{
+  "exitCode": 1,
+  "assertionsPassed": 10,
+  "harnessError": "ReferenceError: checks is not defined in shared CDP asynchronous error handler during close; underlying error being isolated",
+  "productionFailureObserved": false
+}

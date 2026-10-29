@@ -1,0 +1,39 @@
+{
+  "scope": "Actual upgraded Next production HTTP route; invalid input rejected before provider transport",
+  "checks": [
+    {
+      "input": null,
+      "httpStatus": 200,
+      "verified": false,
+      "rawAbsent": true,
+      "result": "PASS"
+    },
+    {
+      "input": {
+        "company": 42
+      },
+      "httpStatus": 200,
+      "verified": false,
+      "rawAbsent": true,
+      "result": "PASS"
+    },
+    {
+      "input": {
+        "company": ""
+      },
+      "httpStatus": 200,
+      "verified": false,
+      "rawAbsent": true,
+      "result": "PASS"
+    },
+    {
+      "input": {
+        "companyName": 42
+      },
+      "httpStatus": 200,
+      "verified": false,
+      "rawAbsent": true,
+      "result": "PASS"
+    }
+  ]
+}

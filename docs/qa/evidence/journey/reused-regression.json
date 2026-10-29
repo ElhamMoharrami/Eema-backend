@@ -1,0 +1,9 @@
+{
+  "unchangedSourceFilesCompared": 452,
+  "baseline": "../cala/final-source-hashes.json",
+  "fullPostgresGate": "../cala/regression.json",
+  "unitAndPackageGate": "../email/regression.json",
+  "frontendGate": "../cala/regression.json",
+  "newFocusedSuite": "JourneyIntegrationTest",
+  "note": "Baseline full gates were executed during this autonomous run. No production, migration, pom or frontend changes in JOURNEY; fresh workflow PostgreSQL execution supplements prior boundary/browser evidence."
+}

@@ -74,8 +74,9 @@ class BookingNotificationServiceTest {
     @Test
     void scoutFailureStillAttemptsOwner() {
         doThrow(new EmailService.DeliveryFailure("QA_FAILURE",false))
-                .when(email).send(eq("snapshot-scout@example.test"), eq("Payment received for your Eema booking"), anyString(), anyString());
+                .when(email).send(eq("snapshot-scout@example.test"), eq("Your Eema booking is confirmed"), anyString(), anyString());
         service.sendPaymentReceived(bookingId);
+        verify(email).send(eq("snapshot-scout@example.test"), eq("Your Eema booking is confirmed"), anyString(), anyString());
         verify(email).send(eq("snapshot-owner@example.test"), eq("Confirmed booking for your Eema venue"), anyString(), anyString());
     }
 

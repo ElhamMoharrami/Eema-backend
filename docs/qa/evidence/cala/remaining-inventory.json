@@ -1,0 +1,3630 @@
+{
+  "scenarios": [
+    {
+      "id": "AUTH-001",
+      "title": "Register SCOUT",
+      "status": "AUTH-001A **PASS** (2026-09-10, hardened contract, local API/integration/browser); AUTH-001B **NOT RUN** (staging delivery). See dated [execution record](qa/AUTH-001_REGISTER_SCOUT.md#corrected-contract-execution-record). Re-executed in the complete AUTH pass; [current evidence](qa/AUTH_EXECUTION_REPORT.md). Broader Unicode password safety fails separately in AUTH-004, not this ASCII fixture."
+    },
+    {
+      "id": "AUTH-002",
+      "title": "Register OWNER",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-003",
+      "title": "Duplicate and normalized email",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-004",
+      "title": "Registration validation",
+      "status": "LOCAL PASS (2026-09-10 rerun); historical BCrypt failure resolved with Argon2id."
+    },
+    {
+      "id": "AUTH-005",
+      "title": "Login credentials and inactive account",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-006",
+      "title": "JWT and database role authority",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-007",
+      "title": "Reload, logout and cross-tab state",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-008",
+      "title": "Refresh valid, expired, reused and revoked",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-009",
+      "title": "Frontend refresh failure and one retry",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-010",
+      "title": "Same-tab versus cross-tab refresh race",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-011",
+      "title": "Recovery enumeration resistance",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-012",
+      "title": "Verification token lifecycle",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-013",
+      "title": "Verification UI and mutation enforcement",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "AUTH-014",
+      "title": "Password reset end to end",
+      "status": "LOCAL PASS (2026-09-10 rerun); historical BCrypt failure resolved with Argon2id."
+    },
+    {
+      "id": "AUTH-015",
+      "title": "Issued access token after password reset",
+      "status": "LOCAL PASS (2026-09-10); real delivery STAGING ONLY / NOT RUN where applicable."
+    },
+    {
+      "id": "POL-001",
+      "title": "Policy draft, publish, replacement and retire",
+      "status": "LOCAL TECHNICAL PASS \u2014 see [POL execution report](qa/POL_EXECUTION_REPORT.md)"
+    },
+    {
+      "id": "POL-002",
+      "title": "Policy immutability and unsupported edit",
+      "status": "LOCAL TECHNICAL PASS \u2014 see [POL execution report](qa/POL_EXECUTION_REPORT.md)"
+    },
+    {
+      "id": "POL-003",
+      "title": "Exact acceptance IDs and duplicates",
+      "status": "LOCAL TECHNICAL PASS \u2014 see [POL execution report](qa/POL_EXECUTION_REPORT.md)"
+    },
+    {
+      "id": "POL-004",
+      "title": "Policy replacement gating and history",
+      "status": "LOCAL TECHNICAL PASS \u2014 see [POL execution report](qa/POL_EXECUTION_REPORT.md)"
+    },
+    {
+      "id": "POL-005",
+      "title": "Privacy wording and missing-set UI",
+      "status": "LOCAL TECHNICAL PASS / LEGAL BLOCKED \u2014 see [POL execution report](qa/POL_EXECUTION_REPORT.md)"
+    },
+    {
+      "id": "POL-006",
+      "title": "Acceptance publication race",
+      "status": "LOCAL TECHNICAL PASS \u2014 see [POL execution report](qa/POL_EXECUTION_REPORT.md)"
+    },
+    {
+      "id": "TRUST-001",
+      "title": "Owner review lifecycle, audit and first-submission concurrency",
+      "status": "PASS (local software; staging/operations follow-ups separate)"
+    },
+    {
+      "id": "TRUST-002",
+      "title": "Actor, transition and trust-boundary enforcement",
+      "status": "PASS (local software; staging/operations follow-ups separate)"
+    },
+    {
+      "id": "TRUST-003",
+      "title": "Manual methods, input boundaries and neutral wording",
+      "status": "PASS (local software; staging/operations follow-ups separate)"
+    },
+    {
+      "id": "VEN-001",
+      "title": "Create an incomplete owner draft",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-002",
+      "title": "Full PUT replacement and immutable booking snapshots",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-003",
+      "title": "Native activity arrays and readiness semantics",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-004",
+      "title": "Parking consistency and deterministic matching",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-005",
+      "title": "Clip text and venue timezone contracts",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-006",
+      "title": "Critical owner edits and identical-save semantics",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-007",
+      "title": "Noncritical edits, availability and admin override",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-008",
+      "title": "Public visibility, own listings and tag behavior",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-009",
+      "title": "Moderation lifecycle, metadata, audit and notifications",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-010",
+      "title": "Revalidation, suspension commitments and concurrent decisions",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-011",
+      "title": "naturalLight: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-012",
+      "title": "blackoutPossible: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-013",
+      "title": "loadingAccess: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-014",
+      "title": "parkingAvailable: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-015",
+      "title": "liftAvailable: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-016",
+      "title": "wheelchairAccessible: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-017",
+      "title": "bathroomsAvailable: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "VEN-018",
+      "title": "soundRecordingSuitable: unknown/no/yes round trip",
+      "status": "PASS \u2014 local deterministic contract; human/staging/operations limits remain"
+    },
+    {
+      "id": "READY-001",
+      "title": "Readiness issue maxCrewSize",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-002",
+      "title": "Readiness issue permittedActivities",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-003",
+      "title": "Readiness issue productionRules",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-004",
+      "title": "Readiness issue naturalLight",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-005",
+      "title": "Readiness issue loadingAccess",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-006",
+      "title": "Readiness issue bathroomsAvailable",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-007",
+      "title": "Readiness issue soundRecordingSuitable",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-008",
+      "title": "Readiness issue hourlyRateEur",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-009",
+      "title": "Readiness issue minimumBookingMinutes",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-010",
+      "title": "Readiness issue minimumLeadTimeMinutes",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-011",
+      "title": "Readiness issue timezone",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "READY-012",
+      "title": "Readiness issue photoPaths",
+      "status": "PASS \u2014 local deterministic contract; UX/operations/staging limits remain"
+    },
+    {
+      "id": "MEDIA-001",
+      "title": "Valid image upload and durable reference",
+      "status": "PASS (LOCAL; staging/privacy decisions separate)"
+    },
+    {
+      "id": "MEDIA-002",
+      "title": "Image content, size, multipart and public-path security",
+      "status": "PASS (LOCAL; staging/privacy decisions separate)"
+    },
+    {
+      "id": "MEDIA-003",
+      "title": "Ordered photos, maximum, readiness and moderation",
+      "status": "PASS (LOCAL; staging/privacy decisions separate)"
+    },
+    {
+      "id": "MEDIA-004",
+      "title": "Storage compensation after persistence failure",
+      "status": "PASS (LOCAL; staging/privacy decisions separate)"
+    },
+    {
+      "id": "AVL-001",
+      "title": "Weekly full replacement",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-002",
+      "title": "Weekly validation and adjacency",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-003",
+      "title": "AVAILABLE/BLOCKED override algebra",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-004",
+      "title": "Override validation, duplicates and scoped deletion",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-005",
+      "title": "Query range and visibility",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-006",
+      "title": "Lead-time boundary, rounding and DST",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-007",
+      "title": "Lead time between workflow stages",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-008",
+      "title": "Booking subtraction REQUESTED",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-009",
+      "title": "Booking subtraction AWAITING_PAYMENT",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-010",
+      "title": "Booking subtraction CONFIRMED",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-011",
+      "title": "Booking subtraction DECLINED",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-012",
+      "title": "Booking subtraction EXPIRED",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-013",
+      "title": "Booking subtraction UNAVAILABLE",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-014",
+      "title": "Booking subtraction CANCELLED",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "AVL-015",
+      "title": "Booking subtraction REFUNDED",
+      "status": "PASS (local; product/deployed checks separate)"
+    },
+    {
+      "id": "MATCH-001",
+      "title": "Parser extraction: productionActivity",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-002",
+      "title": "Parser extraction: numPeople",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-003",
+      "title": "Parser extraction: requiresNaturalLight",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-004",
+      "title": "Parser extraction: requiresBlackout",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-005",
+      "title": "Parser extraction: requiresLoadingAccess",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-006",
+      "title": "Parser extraction: requiresParking",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-007",
+      "title": "Parser extraction: minimumParkingSpaces",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-008",
+      "title": "Parser extraction: requiresWheelchairAccessibility",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-009",
+      "title": "Parser extraction: requiresLift",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-010",
+      "title": "Parser extraction: requiresBathrooms",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-011",
+      "title": "Parser extraction: requiresSoundRecordingSuitable",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-012",
+      "title": "Parser extraction: minimumCeilingHeightM",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-013",
+      "title": "Parser extraction: requestedDate",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-014",
+      "title": "Parser extraction: requestedStartTime/requestedEndTime",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-015",
+      "title": "Parser extraction: relative timing",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-016",
+      "title": "Parser extraction: ambiguous timing",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-017",
+      "title": "Parser extraction: budget context",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-018",
+      "title": "Hard requirement activity",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-019",
+      "title": "Hard requirement maxCrewSize",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-020",
+      "title": "Hard requirement naturalLight",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-021",
+      "title": "Hard requirement blackoutPossible",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-022",
+      "title": "Hard requirement loadingAccess",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-023",
+      "title": "Hard requirement parkingAvailable",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-024",
+      "title": "Hard requirement parkingSpaces",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-025",
+      "title": "Hard requirement wheelchairAccessible",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-026",
+      "title": "Hard requirement liftAvailable",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-027",
+      "title": "Hard requirement bathroomsAvailable",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-028",
+      "title": "Hard requirement soundRecordingSuitable",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-029",
+      "title": "Hard requirement ceilingHeightM",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-030",
+      "title": "Preference ranking and zero candidates",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-031",
+      "title": "Availability-aware match and direct quote",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "MATCH-032",
+      "title": "Ranker malicious/malformed response",
+      "status": "PASS (local contract; live model quality not approved)"
+    },
+    {
+      "id": "BK-001",
+      "title": "Standard request and immutable snapshots",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-002",
+      "title": "Invalid creation and side-effect boundaries",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-003",
+      "title": "Overlapping REQUESTED bookings coexist",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-004",
+      "title": "Owner response deadline and committed expiry",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-005",
+      "title": "Owner acceptance reserves and resolves competitors",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-006",
+      "title": "Acceptance rechecks changed conditions",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-007",
+      "title": "Decline authorization and state transitions",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "BK-008",
+      "title": "Actor-scoped history and contact privacy",
+      "status": "LOCAL PASS (2026-09-14; human/staging separate)"
+    },
+    {
+      "id": "INQ-001",
+      "title": "Unavailable-slot inquiry creation",
+      "status": "PASS locally \u2014 see execution report"
+    },
+    {
+      "id": "INQ-002",
+      "title": "Owner offers same or different one-off slot",
+      "status": "PASS locally \u2014 see execution report"
+    },
+    {
+      "id": "INQ-003",
+      "title": "Atomic offer acceptance and late conflict",
+      "status": "PASS locally \u2014 see execution report"
+    },
+    {
+      "id": "INQ-004",
+      "title": "Decline, expiry and scoped dashboard history",
+      "status": "PASS locally \u2014 see execution report"
+    },
+    {
+      "id": "PRICE-001",
+      "title": "30 selected minutes, 60 minimum, 100/hour, cap none",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-002",
+      "title": "60 selected minutes, 60 minimum, 100/hour, cap none",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-003",
+      "title": "90 selected minutes, 60 minimum, 100/hour, cap none",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-004",
+      "title": "270 selected minutes, 60 minimum, 100/hour, cap none",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-005",
+      "title": "480 selected minutes, 60 minimum, 100/hour, cap 500",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-006",
+      "title": "30 selected minutes, 240 minimum, 100/hour, cap 200",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-007",
+      "title": "61 selected minutes, 1 minimum, 19.99/hour, cap none",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-008",
+      "title": "1 selected minutes, 1 minimum, 0.30/hour, cap none",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-009",
+      "title": "299 selected minutes, 1 minimum, 100/hour, cap 500",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-010",
+      "title": "300 selected minutes, 1 minimum, 100/hour, cap 500",
+      "status": "PASS"
+    },
+    {
+      "id": "PRICE-011",
+      "title": "301 selected minutes, 1 minimum, 100/hour, cap 500",
+      "status": "PASS"
+    },
+    {
+      "id": "PAY-001",
+      "title": "Checkout snapshot and association",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-002",
+      "title": "Checkout eligibility and exact deadline",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-003",
+      "title": "Durable creation identity and concurrency",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-004",
+      "title": "Ambiguous creation and replay window",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-005",
+      "title": "Webhook integrity and safe failures",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-006",
+      "title": "Provider status and exactly-once confirmation",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-007",
+      "title": "Late paid callback and full refund",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "PAY-008",
+      "title": "Redirect is navigation only",
+      "status": "NO INLINE RESULT"
+    },
+    {
+      "id": "CANCEL-001",
+      "title": "Withdraw unpaid request or approval",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-002",
+      "title": "Owner/admin full cancellation and reason limits",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-003",
+      "title": "Authoritative preview, stale terms and renewed consent",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-004",
+      "title": "Zero refund and idempotent cancellation",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-005",
+      "title": "Grace just before 24 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-006",
+      "title": "Grace exactly 24 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-007",
+      "title": "Grace just after 24 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-008",
+      "title": "More than seven days",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-009",
+      "title": "Exactly seven days",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-010",
+      "title": "Between seven days and 48 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-011",
+      "title": "Exactly 48 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-012",
+      "title": "Just inside 48 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-013",
+      "title": "Grace does not override exactly 48 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "CANCEL-014",
+      "title": "Grace does not override inside 48 hours",
+      "status": "LOCAL PASS (2026-09-19); see [execution report](qa/CANCEL_EXECUTION_REPORT.md)."
+    },
+    {
+      "id": "REF-001",
+      "title": "Admin full-only refund and one policy-owned partial refund",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "REF-002",
+      "title": "Validated monotonic refund lifecycle and origin-sensitive completion",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "REF-003",
+      "title": "Durable ambiguous creation and exclusive one-hour replay window",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "REF-004",
+      "title": "Historical PAID payout, recovery liability and mark-paid race",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "PAYOUT-001",
+      "title": "Payout creation economics",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "PAYOUT-002",
+      "title": "Payout readiness precedence",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "PAYOUT-003",
+      "title": "Fee reconciliation idempotency and responsibility",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "PAYOUT-004",
+      "title": "Destination snapshot on READY",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "PAYOUT-005",
+      "title": "Mark paid records external transfer",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "PAYOUT-006",
+      "title": "Liability settlement and WAIVED",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DEST-001",
+      "title": "Destination submit and validation",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DEST-002",
+      "title": "Encrypted persistence and masked access",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DEST-003",
+      "title": "Review replacement and rejection",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DEST-004",
+      "title": "Audited reveal and ephemeral frontend value",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DOC-001",
+      "title": "Receipt eligibility and ownership",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DOC-002",
+      "title": "Receipt content and immutability",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DOC-003",
+      "title": "Payout statement content and scope",
+      "status": "PASS (local)"
+    },
+    {
+      "id": "DOC-004",
+      "title": "Private storage failure, Unicode and layout",
+      "status": "PASS (local; DOC-DEC-001 resolved)"
+    },
+    {
+      "id": "INC-001",
+      "title": "Incident participants and plain text",
+      "status": "PASS"
+    },
+    {
+      "id": "INC-002",
+      "title": "Admin incident lifecycle and isolation",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-001",
+      "title": "Every admin queue pagination and filters",
+      "status": "PASS (approved complete-backlog policy, 2026-09-20)"
+    },
+    {
+      "id": "ADMIN-002",
+      "title": "Booking search and detail composition",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-003",
+      "title": "Booking event timeline payload allowlist",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-004",
+      "title": "Review mutation stale-state recovery",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-005",
+      "title": "Exception PAYOUT_READY_OVERDUE",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-006",
+      "title": "Exception PAYOUT_HELD",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-007",
+      "title": "Exception OWNER_LIABILITY_OPEN",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-008",
+      "title": "Exception REFUND_STUCK",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-009",
+      "title": "Exception PAYMENT_CREATION_STUCK",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-010",
+      "title": "Exception MOLLIE_FEE_UNRECONCILED",
+      "status": "PASS"
+    },
+    {
+      "id": "ADMIN-011",
+      "title": "Exception LATE_PAYMENT_REFUND_IN_PROGRESS",
+      "status": "PASS"
+    },
+    {
+      "id": "SEC-001",
+      "title": "Object ownership tampering",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "SEC-002",
+      "title": "Input injection and safe error handling",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "SEC-003",
+      "title": "Token and credential leak audit",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "SEC-004",
+      "title": "CORS, security headers and request ID",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "SEC-005",
+      "title": "Private document URL and cache isolation",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "SEC-006",
+      "title": "Framework and actuator exposure",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "SEC-007",
+      "title": "Malformed sessions and local tampering",
+      "status": "PASS (local; full command gates in report)"
+    },
+    {
+      "id": "EDGE-001",
+      "title": "Sub-minute and midnight boundary",
+      "status": "PASS"
+    },
+    {
+      "id": "EDGE-002",
+      "title": "DST missing/repeated local times",
+      "status": "PASS"
+    },
+    {
+      "id": "EDGE-003",
+      "title": "Matching filters and bounded candidate batches",
+      "status": "PASS"
+    },
+    {
+      "id": "EDGE-004",
+      "title": "Suspended request acceptance",
+      "status": "PASS"
+    },
+    {
+      "id": "EDGE-005",
+      "title": "Owner response deadline for both decisions",
+      "status": "PASS"
+    },
+    {
+      "id": "EDGE-006",
+      "title": "Unsupported compatibility service paths",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-001",
+      "title": "Fresh common migrations and Hibernate validation",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-002",
+      "title": "Local dev chain and production exclusion",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-003",
+      "title": "Constraint and foreign-key behavior",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-004",
+      "title": "Backup and isolated restore",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-005",
+      "title": "Backend restart and frontend reload",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-006",
+      "title": "Local reset and reseed rehearsal",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-007",
+      "title": "Fee metric versus exception consistency",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-008",
+      "title": "Durable lifecycle notification dispatch and restart recovery",
+      "status": "PASS"
+    },
+    {
+      "id": "OPS-009",
+      "title": "Reporting pagination and unavailable fee",
+      "status": "PASS"
+    },
+    {
+      "id": "JOB-001",
+      "title": "BookingApprovalExpirationJob.expireUnpaidApprovals",
+      "status": "PASS"
+    },
+    {
+      "id": "JOB-002",
+      "title": "AvailabilityInquiryExpirationJob.expireOffers",
+      "status": "PASS"
+    },
+    {
+      "id": "JOB-003",
+      "title": "OwnerPayoutReadinessJob.scan",
+      "status": "PASS"
+    },
+    {
+      "id": "JOB-004",
+      "title": "AuthTokenCleanupJob.cleanup",
+      "status": "PASS"
+    },
+    {
+      "id": "JOB-005",
+      "title": "MollieFeeReconciliationJob.reconcile",
+      "status": "PASS"
+    },
+    {
+      "id": "JOB-006",
+      "title": "WorkflowObservability.scanStuckStates",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-001",
+      "title": "Booking acceptance",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-002",
+      "title": "Blocking insert",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-003",
+      "title": "Refresh rotation",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-004",
+      "title": "Payout uniqueness",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-005",
+      "title": "Verified destination",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-006",
+      "title": "Policy publication",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-007",
+      "title": "Document issuance",
+      "status": "PASS"
+    },
+    {
+      "id": "RACE-008",
+      "title": "SKIP LOCKED workers",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-001",
+      "title": "Page design, navigation and state QA: /admin/bookings/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-002",
+      "title": "Page design, navigation and state QA: /admin/bookings",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-003",
+      "title": "Page design, navigation and state QA: /admin/exceptions",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-004",
+      "title": "Page design, navigation and state QA: /admin/incidents/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-005",
+      "title": "Page design, navigation and state QA: /admin/incidents",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-006",
+      "title": "Page design, navigation and state QA: /admin/liabilities/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-007",
+      "title": "Page design, navigation and state QA: /admin/liabilities",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-008",
+      "title": "Page design, navigation and state QA: /admin/owner-verifications/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-009",
+      "title": "Page design, navigation and state QA: /admin/owner-verifications",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-010",
+      "title": "Page design, navigation and state QA: /admin",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-011",
+      "title": "Page design, navigation and state QA: /admin/payout-destinations/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-012",
+      "title": "Page design, navigation and state QA: /admin/payout-destinations",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-013",
+      "title": "Page design, navigation and state QA: /admin/payouts/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-014",
+      "title": "Page design, navigation and state QA: /admin/payouts",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-015",
+      "title": "Page design, navigation and state QA: /admin/policies",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-016",
+      "title": "Page design, navigation and state QA: /admin/venues/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-017",
+      "title": "Page design, navigation and state QA: /admin/venues",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-018",
+      "title": "Page design, navigation and state QA: /booked",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-019",
+      "title": "Page design, navigation and state QA: /bookings/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-020",
+      "title": "Page design, navigation and state QA: /forgot-password",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-021",
+      "title": "Page design, navigation and state QA: /owner/bookings",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-022",
+      "title": "Page design, navigation and state QA: /owner/inquiries",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-023",
+      "title": "Page design, navigation and state QA: /owner/payout-destination",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-024",
+      "title": "Page design, navigation and state QA: /owner/payouts/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-025",
+      "title": "Page design, navigation and state QA: /owner/payouts",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-026",
+      "title": "Page design, navigation and state QA: /owner/venues/[id]",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-027",
+      "title": "Page design, navigation and state QA: /owner/venues/new",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-028",
+      "title": "Page design, navigation and state QA: /owner/venues",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-029",
+      "title": "Page design, navigation and state QA: /owner/verification",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-030",
+      "title": "Page design, navigation and state QA: /",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-031",
+      "title": "Page design, navigation and state QA: /policies",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-032",
+      "title": "Page design, navigation and state QA: /reset-password",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-033",
+      "title": "Page design, navigation and state QA: /scout/bookings",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-034",
+      "title": "Page design, navigation and state QA: /scout/inquiries",
+      "status": "PASS"
+    },
+    {
+      "id": "UX-035",
+      "title": "Page design, navigation and state QA: /verify-email",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-001",
+      "title": "Double submission: booking request",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-002",
+      "title": "Double submission: inquiry",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-003",
+      "title": "Double submission: owner accept",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-004",
+      "title": "Double submission: owner decline",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-005",
+      "title": "Double submission: checkout",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-006",
+      "title": "Double submission: cancel",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-007",
+      "title": "Double submission: incident",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-008",
+      "title": "Double submission: policy acceptance",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-009",
+      "title": "Double submission: venue submission",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-010",
+      "title": "Double submission: owner verification",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-011",
+      "title": "Double submission: payout destination",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-012",
+      "title": "Double submission: admin verify/reject",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-013",
+      "title": "Double submission: mark paid",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-014",
+      "title": "Double submission: settle liability",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-015",
+      "title": "Session expiry while browsing marketplace",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-016",
+      "title": "Session expiry while editing owner venue",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-017",
+      "title": "Session expiry while checkout",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-018",
+      "title": "Session expiry while admin review or mark paid",
+      "status": "PASS"
+    },
+    {
+      "id": "UXACT-019",
+      "title": "Session expiry while private document download",
+      "status": "PASS"
+    },
+    {
+      "id": "PROVIDER-001",
+      "title": "Real staging Mollie",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "PROVIDER-002",
+      "title": "Real staging Resend",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "PROVIDER-003",
+      "title": "Real staging Gemini",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "PROVIDER-004",
+      "title": "Real staging S3",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "PROVIDER-005",
+      "title": "Real staging Mollie reporting",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "CALA-001",
+      "title": "Optional company verification BFF",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-001",
+      "title": "Registration verification",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-002",
+      "title": "Password reset",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-003",
+      "title": "Request submitted scout",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-004",
+      "title": "Request submitted owner",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-005",
+      "title": "Request accepted",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-006",
+      "title": "Request declined",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-007",
+      "title": "Request expired",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-008",
+      "title": "Request unavailable",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-009",
+      "title": "Payment window expired",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-010",
+      "title": "Payment confirmed scout",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-011",
+      "title": "Payment confirmed owner",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-012",
+      "title": "Late payment",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-013",
+      "title": "Cancellation scout notification",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-014",
+      "title": "Scout cancellation owner notification",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-015",
+      "title": "Cancellation refund completed",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-016",
+      "title": "Inquiry created",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-017",
+      "title": "Inquiry offered",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-018",
+      "title": "Inquiry declined",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-019",
+      "title": "Inquiry offer expired",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-020",
+      "title": "Owner verification submitted",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-021",
+      "title": "Owner verification approved",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-022",
+      "title": "Owner verification rejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-023",
+      "title": "Venue submitted",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-024",
+      "title": "Venue approved",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-025",
+      "title": "Venue changes requested",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-026",
+      "title": "Venue suspended",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-027",
+      "title": "Venue reactivated",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-028",
+      "title": "Destination submitted",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-029",
+      "title": "Destination verified",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-030",
+      "title": "Destination rejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "EMAIL-031",
+      "title": "Unsupported notification events remain explicit gaps",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-001",
+      "title": "Scout happy path",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-002",
+      "title": "Owner happy path",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-003",
+      "title": "Admin happy path",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-004",
+      "title": "Cancellation journey matrix",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-005",
+      "title": "Inquiry alternate-slot journey",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-006",
+      "title": "Competing scouts journey",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-007",
+      "title": "Suspension journey",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-008",
+      "title": "Recovery journey",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "JOURNEY-009",
+      "title": "Policy update journey",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-001",
+      "title": "AcceptPoliciesRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-002",
+      "title": "CancelBookingRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-003",
+      "title": "CreateAvailabilityInquiryRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-004",
+      "title": "CreateAvailabilityOverrideRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-005",
+      "title": "CreateBookingRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-006",
+      "title": "CreateIncidentRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-007",
+      "title": "CreatePayoutDestinationRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-008",
+      "title": "CreatePolicyVersionRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-009",
+      "title": "CreateVenueRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-010",
+      "title": "EmailAddressRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-011",
+      "title": "LoginRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-012",
+      "title": "MarkOwnerPayoutPaidRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-013",
+      "title": "MatchRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-014",
+      "title": "OfferAvailabilityInquiryRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-015",
+      "title": "OptionalNoteRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-016",
+      "title": "OwnerVerificationApproveRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-017",
+      "title": "OwnerVerificationSubmitRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-018",
+      "title": "ReasonRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-019",
+      "title": "RefreshRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-020",
+      "title": "RegisterRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-021",
+      "title": "ResetPasswordRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-022",
+      "title": "ResolveIncidentRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-023",
+      "title": "ScoutContactRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-024",
+      "title": "UpdateVenueAvailabilitySettingsRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-025",
+      "title": "UpdateVenueRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-026",
+      "title": "UpdateWeeklyAvailabilityRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-027",
+      "title": "VerifyEmailRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "INPUT-028",
+      "title": "WeeklyIntervalRequest all field boundaries",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-001",
+      "title": "GET /admin/bookings: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-002",
+      "title": "GET /admin/bookings/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-003",
+      "title": "GET /admin/bookings/{id}/events: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-004",
+      "title": "GET /admin/incidents: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-005",
+      "title": "GET /admin/incidents/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-006",
+      "title": "POST /admin/incidents/{id}/start-review: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-007",
+      "title": "POST /admin/incidents/{id}/resolve: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-008",
+      "title": "POST /admin/incidents/{id}/close: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-009",
+      "title": "GET /admin/operations/exceptions: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-010",
+      "title": "GET /admin/liabilities: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-011",
+      "title": "GET /admin/liabilities/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-012",
+      "title": "POST /admin/liabilities/{id}/settle: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-013",
+      "title": "GET /admin/payouts: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-014",
+      "title": "GET /admin/payouts/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-015",
+      "title": "POST /admin/payouts/{id}/mark-paid: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-016",
+      "title": "GET /admin/owner-verifications: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-017",
+      "title": "GET /admin/owner-verifications/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-018",
+      "title": "POST /admin/owner-verifications/{id}/approve: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-019",
+      "title": "POST /admin/owner-verifications/{id}/reject: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-020",
+      "title": "GET /admin/payout-destinations: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-021",
+      "title": "GET /admin/payout-destinations/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-022",
+      "title": "POST /admin/payout-destinations/{id}/verify: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-023",
+      "title": "POST /admin/payout-destinations/{id}/reject: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-024",
+      "title": "POST /admin/payout-destinations/{id}/reveal: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-025",
+      "title": "GET /admin/policies: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-026",
+      "title": "POST /admin/policies: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-027",
+      "title": "POST /admin/policies/{id}/publish: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-028",
+      "title": "POST /admin/policies/{id}/retire: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-029",
+      "title": "GET /admin/venues: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-030",
+      "title": "GET /admin/venues/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-031",
+      "title": "GET /admin/venues/{id}/events: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-032",
+      "title": "POST /admin/venues/{id}/approve: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-033",
+      "title": "POST /admin/venues/{id}/request-changes: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-034",
+      "title": "POST /admin/venues/{id}/suspend: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-035",
+      "title": "POST /admin/venues/{id}/reactivate: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-036",
+      "title": "POST /auth/register: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-037",
+      "title": "POST /auth/login: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-038",
+      "title": "POST /auth/refresh: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-039",
+      "title": "POST /auth/verify-email: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-040",
+      "title": "POST /auth/resend-verification: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-041",
+      "title": "POST /auth/forgot-password: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-042",
+      "title": "POST /auth/reset-password: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-043",
+      "title": "GET /auth/me: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-044",
+      "title": "POST /availability-inquiries: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-045",
+      "title": "GET /availability-inquiries/mine: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-046",
+      "title": "GET /availability-inquiries/owned-venues: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-047",
+      "title": "POST /availability-inquiries/{id}/decline: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-048",
+      "title": "POST /availability-inquiries/{id}/offer: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-049",
+      "title": "POST /availability-inquiries/{id}/accept: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-050",
+      "title": "POST /bookings: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-051",
+      "title": "GET /bookings: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-052",
+      "title": "GET /bookings/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-053",
+      "title": "POST /bookings/{id}/accept: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-054",
+      "title": "POST /bookings/{id}/decline: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-055",
+      "title": "POST /bookings/{id}/cancel: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-056",
+      "title": "GET /bookings/{id}/cancellation-preview: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-057",
+      "title": "POST /bookings/{id}/refund: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-058",
+      "title": "POST /bookings/{bookingId}/checkout: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-059",
+      "title": "GET /bookings/{id}/receipt: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-060",
+      "title": "POST /bookings/{bookingId}/incidents: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-061",
+      "title": "GET /bookings/{bookingId}/incidents: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-062",
+      "title": "POST /match: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-063",
+      "title": "GET /owner/payouts: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-064",
+      "title": "GET /owner/payouts/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-065",
+      "title": "GET /owner/payouts/{id}/statement: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-066",
+      "title": "GET /owner/payout-destinations: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-067",
+      "title": "POST /owner/payout-destinations: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-068",
+      "title": "GET /owner/verification: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-069",
+      "title": "POST /owner/verification/submit: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-070",
+      "title": "GET /policies/current: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-071",
+      "title": "GET /policies/{type}/current: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-072",
+      "title": "GET /policies/status: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-073",
+      "title": "POST /policies/accept: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-074",
+      "title": "POST /upload/venue-photo: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-075",
+      "title": "GET /upload/files/{filename:.+}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-076",
+      "title": "GET /venues/{venueId}/availability: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-077",
+      "title": "GET /venues/{venueId}/availability/settings: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-078",
+      "title": "PUT /venues/{venueId}/availability/settings: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-079",
+      "title": "PUT /venues/{venueId}/availability/weekly: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-080",
+      "title": "POST /venues/{venueId}/availability/overrides: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-081",
+      "title": "DELETE /venues/{venueId}/availability/overrides/{overrideId}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-082",
+      "title": "GET /venues: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-083",
+      "title": "GET /venues/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-084",
+      "title": "POST /venues: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-085",
+      "title": "GET /venues/my: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-086",
+      "title": "PUT /venues/{id}: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-087",
+      "title": "POST /venues/{id}/photos: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-088",
+      "title": "POST /venues/{id}/submit-for-review: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-089",
+      "title": "GET /venues/{id}/moderation: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "API-090",
+      "title": "POST /webhooks/mollie/payment: role/ownership/status contract",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-001",
+      "title": "ActorType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-002",
+      "title": "AvailabilityInquiryStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-003",
+      "title": "AvailabilityOverrideType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-004",
+      "title": "BookingEventType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-005",
+      "title": "BookingStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-006",
+      "title": "CancellationPolicyTier exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-007",
+      "title": "FinancialDocumentStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-008",
+      "title": "FinancialDocumentType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-009",
+      "title": "IncidentCategory exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-010",
+      "title": "IncidentStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-011",
+      "title": "OperationalExceptionSeverity exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-012",
+      "title": "OperationalExceptionType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-013",
+      "title": "OwnerFinancialLiabilityStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-014",
+      "title": "OwnerFinancialLiabilityType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-015",
+      "title": "OwnerPayoutHoldReason exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-016",
+      "title": "OwnerPayoutStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-017",
+      "title": "OwnerVerificationStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-018",
+      "title": "PaymentCreationStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-019",
+      "title": "PayoutDestinationStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-020",
+      "title": "PayoutDestinationType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-021",
+      "title": "PolicyStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-022",
+      "title": "PolicyType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-023",
+      "title": "ProductionActivity exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-024",
+      "title": "ProviderCostResponsibility exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-025",
+      "title": "RefundStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-026",
+      "title": "TrustEventType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-027",
+      "title": "TrustSubjectType exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-028",
+      "title": "UserRole exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-029",
+      "title": "VenueStatus exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-030",
+      "title": "VerificationMethod exhaustive state representation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-031",
+      "title": "BookingLifecycleEvent.Type internal branch coverage",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-032",
+      "title": "AvailabilityInquiryLifecycleEvent.Type internal branch coverage",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "STATE-033",
+      "title": "BookingService.PaidPaymentResult internal branch coverage",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-001",
+      "title": "SimpleTest#testTrue",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-002",
+      "title": "AsyncConfigurationTest#createsBoundedNamedExecutor",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-003",
+      "title": "FlywayLocationTest#developmentSeedsAreNotInCommonProductionLocation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-004",
+      "title": "ProductionConfigurationValidatorTest#rejectsLocalStorageInProduction",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-005",
+      "title": "ProductionConfigurationValidatorTest#rejectsWeakJwtInProduction",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-006",
+      "title": "ProductionConfigurationValidatorTest#rejectsWildcardCorsInProduction",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-007",
+      "title": "ProductionConfigurationValidatorTest#rejectsSharedBuckets",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-008",
+      "title": "ProductionConfigurationValidatorTest#requiresS3Credentials",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-009",
+      "title": "AdminOperationsSurfaceTest#everyAdminControllerHasDefenseInDepthRoleGuard",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-010",
+      "title": "AdminOperationsSurfaceTest#surfaceContainsNoGenericPutPatchOrBookingStatusMutation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-011",
+      "title": "AdminOwnerFinancialLiabilityControllerTest#scoutAndOwnerAreDeniedAllLiabilityOperations",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-012",
+      "title": "AdminOwnerPayoutControllerTest#scoutAndOwnerCannotReadOrMarkPayouts",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-013",
+      "title": "AdminOwnerPayoutControllerTest#adminCanUseOperationsEndpoints",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-014",
+      "title": "FinancialDocumentControllerTest#authorizedEndpointReturnsPdfAttachmentWithoutStoragePath",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-015",
+      "title": "TrustWorkflowSecuritySurfaceTest#adminQueuesAndActionsAreAdminOnly",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-016",
+      "title": "TrustWorkflowSecuritySurfaceTest#ownerVerificationAndSubmissionAreOwnerOnly",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-017",
+      "title": "VerifiedEmailEnforcementSurfaceTest#launchBlockerMarketplaceMutationsUseCentralVerifiedUserPolicy",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-018",
+      "title": "PostgresCriticalPathIntegrationTest#commonFlywayChainAndHibernateValidationStartFromEmptyDatabase",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-019",
+      "title": "PostgresCriticalPathIntegrationTest#nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-020",
+      "title": "PostgresCriticalPathIntegrationTest#exclusionRejectsOneOverlappingBlockingInsert",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-021",
+      "title": "PostgresCriticalPathIntegrationTest#halfOpenBackToBackReservationsBothPersist",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-022",
+      "title": "PostgresCriticalPathIntegrationTest#overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-023",
+      "title": "PostgresCriticalPathIntegrationTest#twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-024",
+      "title": "PostgresCriticalPathIntegrationTest#inquiryAndPayoutSkipLockedQueriesAreActuallyDisjoint",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-025",
+      "title": "PostgresCriticalPathIntegrationTest#refreshTokenRotationLockAllowsOnlyOneWinner",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-026",
+      "title": "PostgresCriticalPathIntegrationTest#payoutAndDocumentUniqueConstraintsHaveSingleAuthorities",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-027",
+      "title": "PostgresCriticalPathIntegrationTest#verifiedDestinationPartialIndexAndReplacementSemanticsHold",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-028",
+      "title": "PostgresCriticalPathIntegrationTest#readyPayoutDestinationSnapshotDoesNotFollowReplacement",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-029",
+      "title": "PostgresCriticalPathIntegrationTest#policyPublishRaceLeavesExactlyOneCurrentVersion",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-030",
+      "title": "PostgresCriticalPathIntegrationTest#policyAcceptanceBookingSnapshotStaysHistoricalAndIncidentHasNoFinancialSideEffects",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-031",
+      "title": "JwtServiceTest#validatesSignatureExpiryAndExpectedIssuer",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-032",
+      "title": "RequestCorrelationFilterTest#propagatesSafeRequestId",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-033",
+      "title": "RequestCorrelationFilterTest#replacesUnsafeRequestId",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-034",
+      "title": "AccountEmailNotificationServiceTest#verificationUsesAuthoritativeEmailAndFrontendVerificationRoute",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-035",
+      "title": "AccountEmailNotificationServiceTest#resetUsesAuthoritativeEmailAndFrontendResetRoute",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-036",
+      "title": "AccountRecoveryServiceTest#issueStoresOnlyHashAndPublishesRawTokenAfterTransactionBoundary",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-037",
+      "title": "AccountRecoveryServiceTest#validVerificationIsSingleUseAndSameUsedTokenIsIdempotent",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-038",
+      "title": "AccountRecoveryServiceTest#expiredAndInactiveVerificationAreRejectedWithoutActivation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-039",
+      "title": "AccountRecoveryServiceTest#resendIsGenericAndDoesNothingForVerifiedOrUnknownAccount",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-040",
+      "title": "AccountRecoveryServiceTest#forgotIsGenericAndResetChangesPasswordAndRevokesEveryRefreshSession",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-041",
+      "title": "AccountRecoveryServiceTest#unknownForgotResponseMatchesExistingAndExpiredResetIsRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-042",
+      "title": "AdminOperationsServiceTest#eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-043",
+      "title": "AdminOperationsServiceTest#exceptionQueueAggregatesAllRequiredOperationalCategories",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-044",
+      "title": "AdminOperationsServiceTest#bookingSearchForwardsControlledFiltersAndCapsPageSize",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-045",
+      "title": "AdminOperationsServiceTest#bookingDetailCombinesAuthoritativeRefundFeePayoutAndLiabilityState",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-046",
+      "title": "AuthServiceTest#loginRejectsInactiveUser",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-047",
+      "title": "AuthServiceTest#registerAndLoginIssueTokensWithoutPersistingRawRefreshToken",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-048",
+      "title": "AuthServiceTest#refreshRotatesAndRejectsReuse",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-049",
+      "title": "AvailabilityInquiryNotificationServiceTest#ownerReceivesNewInquiryWithExistingOwnerRoute",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-050",
+      "title": "AvailabilityInquiryNotificationServiceTest#scoutReceivesOfferWithDeadlineAndExistingScoutRoute",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-051",
+      "title": "AvailabilityInquiryNotificationServiceTest#scoutReceivesDeclineAndOfferExpiry",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-052",
+      "title": "AvailabilityInquiryNotificationServiceTest#providerFailureDoesNotEscapeNotificationBoundary",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-053",
+      "title": "AvailabilityInquiryServiceTest#inquiryIsAllowedForUnavailableInterval",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-054",
+      "title": "AvailabilityInquiryServiceTest#inquiryIsRejectedWhenNormalAvailabilityAlreadyContainsInterval",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-055",
+      "title": "AvailabilityInquiryServiceTest#unauthorizedOwnerCannotRespond",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-056",
+      "title": "AvailabilityInquiryServiceTest#ownerDeclineEmitsOneLifecycleEventAndDuplicateIsRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-057",
+      "title": "AvailabilityInquiryServiceTest#ownerCannotOfferIntervalConflictingWithBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-058",
+      "title": "AvailabilityInquiryServiceTest#inquiryAndOwnerOfferCannotBypassLeadTime",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-059",
+      "title": "AvailabilityInquiryServiceTest#offeredSlotThatBecomesTooLateExpiresWithoutCreatingBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-060",
+      "title": "AvailabilityInquiryServiceTest#offerExpiresAndCannotBeAccepted",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-061",
+      "title": "AvailabilityInquiryServiceTest#onlyInquiryScoutCanAcceptOffer",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-062",
+      "title": "AvailabilityInquiryServiceTest#ownOfferCreatesApprovedBookingAndDoesNotChangeWeeklyAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-063",
+      "title": "AvailabilityInquiryServiceTest#offeringOneOffSlotDoesNotModifyWeeklyAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-064",
+      "title": "AvailabilityInquiryServiceTest#scheduledExpiryReleasesOutstandingOffers",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-065",
+      "title": "BookingApprovalExpirationJobTest#scheduledScanExpiresApprovedUnpaidBookings",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-066",
+      "title": "BookingAvailabilityValidatorTest#acceptsSlotContainedInEffectiveAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-067",
+      "title": "BookingAvailabilityValidatorTest#rejectsSlotOutsideEffectiveAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-068",
+      "title": "BookingAvailabilityValidatorTest#rejectsInvalidVenueTimezone",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-069",
+      "title": "BookingCancellationCoordinatorTest#scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-070",
+      "title": "BookingCancellationCoordinatorTest#ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-071",
+      "title": "BookingCancellationCoordinatorTest#adminRequiresReasonAndReceivesFullRefundPolicy",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-072",
+      "title": "BookingCancellationPolicyTest#gracePeriodRequiresConfirmationWithin24HoursAndShootMoreThan48HoursAway",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-073",
+      "title": "BookingCancellationPolicyTest#exactSevenDaysAndExact48HoursUsePartialTier",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-074",
+      "title": "BookingCancellationPolicyTest#cancellationEconomicsUseRetainedAmountAndCommissionSnapshot",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-075",
+      "title": "BookingCancellationPolicyTest#ownerAndAdminAlwaysProduceFullCustomerRefundAndZeroSettlement",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-076",
+      "title": "BookingCancellationPolicyTest#snapshotUsesVenueTimezoneAcrossAmsterdamDstTransition",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-077",
+      "title": "BookingCancellationPolicyTest#moneyRoundingIsHalfUpAtTwoDecimals",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-078",
+      "title": "BookingFinancialsTest#calculatesCommissionAndActualFeePayout",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-079",
+      "title": "BookingFinancialsTest#roundsMoneyExplicitlyAndEnforcesInvariants",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-080",
+      "title": "BookingNotificationServiceTest#usesSnapshotRecipientsAndRendersConfirmedDetails",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-081",
+      "title": "BookingNotificationServiceTest#scoutFailureStillAttemptsOwner",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-082",
+      "title": "BookingNotificationServiceTest#latePaymentMessageSaysNotConfirmedAndRefundInitiated",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-083",
+      "title": "BookingNotificationServiceTest#cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-084",
+      "title": "BookingNotificationServiceTest#authoritativeCancellationRefundCompletionUsesProcessedCopy",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-085",
+      "title": "BookingNotificationServiceTest#ownerAndScoutAreNotifiedWhenRequestIsSubmitted",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-086",
+      "title": "BookingNotificationServiceTest#scoutAcceptanceEmailContainsDeadlinePayCtaAndDeepLink",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-087",
+      "title": "BookingNotificationServiceTest#scoutReceivesDeclineAndApprovalExpiryMessages",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-088",
+      "title": "BookingNotificationServiceTest#lifecycleEmailFailureIsContained",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-089",
+      "title": "BookingNotificationServiceTest#requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-090",
+      "title": "BookingOverlapRuleTest#detectsOverlappingStart",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-091",
+      "title": "BookingOverlapRuleTest#detectsOverlappingEnd",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-092",
+      "title": "BookingOverlapRuleTest#detectsCandidateContainingBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-093",
+      "title": "BookingOverlapRuleTest#detectsCandidateInsideBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-094",
+      "title": "BookingOverlapRuleTest#permitsBackToBackBefore",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-095",
+      "title": "BookingOverlapRuleTest#permitsBackToBackAfter",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-096",
+      "title": "BookingOverlapRuleTest#permitsSeparatedBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-097",
+      "title": "BookingPriceCalculatorTest#appliesMinimumExactMinutesAndFullDayCap",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-098",
+      "title": "BookingPriceCalculatorTest#capAlsoAppliesToMinimumDerivedTotalAndRoundsHalfUpToCents",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-099",
+      "title": "BookingPriceCalculatorTest#exposesAuthoritativeQuoteDetails",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-100",
+      "title": "BookingPriceCalculatorTest#rejectsInvalidConfigurationAndIntervals",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-101",
+      "title": "BookingServiceTest#scoutCanReadOwnBookingButNotAnotherScoutsBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-102",
+      "title": "BookingServiceTest#rejectsWebhookWhosePaymentIdDoesNotMatchStoredPayment",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-103",
+      "title": "BookingServiceTest#rejectsWebhookWhoseAmountDoesNotMatchDatabasePrice",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-104",
+      "title": "BookingServiceTest#duplicatePaidWebhookDoesNotCreateAnotherEvent",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-105",
+      "title": "BookingServiceTest#firstPaidTransitionPublishesNotificationOnceAndDuplicateDoesNot",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-106",
+      "title": "BookingServiceTest#ownerAndAdminCanReadAuthorizedBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-107",
+      "title": "BookingServiceTest#databaseConflictFromConcurrentAttemptCannotCreateSecondBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-108",
+      "title": "BookingServiceTest#requestAcceptPaymentEndsConfirmedWithoutSecondOwnerAction",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-109",
+      "title": "BookingServiceTest#scoutCreatesRequestWithSelectedTimesWithoutStartingPayment",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-110",
+      "title": "BookingServiceTest#ownerCanDeclineRequestAndDoubleAcceptanceIsRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-111",
+      "title": "BookingServiceTest#unauthorizedOwnerCannotAcceptRequest",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-112",
+      "title": "BookingServiceTest#acceptedRequestMakesOnlyOverlappingRequestsUnavailable",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-113",
+      "title": "BookingServiceTest#acceptanceAfterOwnerDeadlineExpiresRequestAndFailsClearly",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-114",
+      "title": "BookingServiceTest#acceptanceThatHasBecomeTooLateExpiresRequest",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-115",
+      "title": "BookingServiceTest#dueRequestExpirationIsIdempotentAndIgnoresAcceptedRows",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-116",
+      "title": "BookingServiceTest#approvedRequestExpiresAndLatePaymentIsMarkedForRefund",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-117",
+      "title": "BookingServiceTest#paymentAfterDeadlineExpiresBookingEvenBeforeSchedulerRuns",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-118",
+      "title": "BookingServiceTest#acceptedInquiryBookingPublishesOnlyAcceptedBookingLifecycleEmail",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-119",
+      "title": "BookingStateMachineTest#permitsDefinedTransitions",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-120",
+      "title": "BookingStateMachineTest#rejectsUserSkippingPaymentAndTerminalMutations",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-121",
+      "title": "CancellationServiceTest#openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-122",
+      "title": "CancellationServiceTest#paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-123",
+      "title": "CancellationServiceTest#zeroRefundCancellationNeverCallsRefundProvider",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-124",
+      "title": "CancellationServiceTest#duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-125",
+      "title": "CriticalBookingWorkflowTest#requestApprovalCheckoutAndAuthoritativePaymentCompleteOneReservedBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-126",
+      "title": "CriticalBookingWorkflowTest#declineAndExpiryReleaseSlotsAndRejectCheckout",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-127",
+      "title": "CriticalBookingWorkflowTest#paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-128",
+      "title": "EmailServiceTest#disabledEmailNeedsNoCredentials",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-129",
+      "title": "EmailServiceTest#enabledEmailRequiresCredentials",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-130",
+      "title": "FinancialDocumentConcurrencyContractTest#issuanceLocksAuthoritativeAggregateRowsBeforeUniqueDocumentCreation",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-131",
+      "title": "FinancialDocumentPdfRendererTest#receiptContainsPaymentSnapshotAndExcludesInternalEconomics",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-132",
+      "title": "FinancialDocumentPdfRendererTest#payoutStatementUsesExactLedgerValuesAndTransferReference",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-133",
+      "title": "FinancialDocumentServiceTest#confirmedScoutReceiptIssuesOnceAndAdminCanReuseIt",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-134",
+      "title": "FinancialDocumentServiceTest#documentNumbersAreUniqueAndHistoricalReceiptIsNotRewritten",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-135",
+      "title": "FinancialDocumentServiceTest#unpaidStatesAndUnauthorizedPeopleCannotObtainReceipt",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-136",
+      "title": "FinancialDocumentServiceTest#confirmedPaymentRemainsReceiptEligibleAfterCancellationBeforeFirstDownload",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-137",
+      "title": "FinancialDocumentServiceTest#onlyPaidPayoutUsesExactLedgerAndIssuesOneStatement",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-138",
+      "title": "FinancialDocumentServiceTest#readyHeldScoutAndUnrelatedOwnerCannotObtainStatement",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-139",
+      "title": "HttpMollieProviderClientTest#omitsWebhookUrlForManualLocalWebhookMode",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-140",
+      "title": "HttpMollieProviderClientTest#sendsWebhookUrlWhenPublicTunnelIsConfigured",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-141",
+      "title": "IbanPolicyTest#normalizesAndAcceptsValidSepaIbans",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-142",
+      "title": "IbanPolicyTest#rejectsChecksumAndUnsupportedCountry",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-143",
+      "title": "IncidentReportTest#transitionsAreNarrowAndExplicit",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-144",
+      "title": "IncidentReportTest#cannotResolveBeforeReview",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-145",
+      "title": "LocalPrivateDocumentStorageTest#storesOpaqueRelativeReferencesAndRejectsTraversal",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-146",
+      "title": "LocalPrivateDocumentStorageTest#publicUploadControllerHasNoPrivateDocumentStorageDependency",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-147",
+      "title": "MollieFeeReconciliationJobTest#reconcilesAuthoritativeFeeOncePerPendingBooking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-148",
+      "title": "OwnerFinancialLiabilityServiceTest#settleUsesStoredAmountAuditsAndIsIdempotent",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-149",
+      "title": "OwnerFinancialLiabilityServiceTest#nonAdminCannotSettleAndWaivedCannotBeSettled",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-150",
+      "title": "OwnerPayoutServiceTest#otherwiseEligiblePayoutWaitsForVerifiedDestination",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-151",
+      "title": "OwnerPayoutServiceTest#normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-152",
+      "title": "OwnerPayoutServiceTest#scoutPartialCancellationUsesAuthoritativeSnapshot",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-153",
+      "title": "OwnerPayoutServiceTest#ownerCancellationCreatesProviderCostLiabilityWithoutNegativePayout",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-154",
+      "title": "OwnerPayoutServiceTest#adminCancellationIsCancelledWithoutOwnerLiability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-155",
+      "title": "OwnerPayoutServiceTest#latePaymentCancelsAnyDefensivePayoutRecord",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-156",
+      "title": "OwnerPayoutServiceTest#paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-157",
+      "title": "OwnerPayoutServiceTest#markPaidIsIdempotentOnlyForSameReference",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-158",
+      "title": "OwnerPayoutServiceTest#adminListForwardsAllFiltersAndCapsPageSize",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-159",
+      "title": "OwnerPayoutServiceTest#ownerHistoryIsScopedAndDoesNotExposeTransferReference",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-160",
+      "title": "OwnerVerificationServiceTest#ownerSubmitsAndCannotDowngradeVerifiedState",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-161",
+      "title": "OwnerVerificationServiceTest#adminApprovesPendingAndRejectsPendingWithReason",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-162",
+      "title": "PaymentCreationCoordinatorTest#concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-163",
+      "title": "PaymentCreationCoordinatorTest#refusesUnsafeRetryOutsideMollieReplayWindow",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-164",
+      "title": "PaymentCreationCoordinatorTest#checkoutBeforeOwnerApprovalIsRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-165",
+      "title": "PaymentCreationCoordinatorTest#checkoutAfterApprovalExpirationIsRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-166",
+      "title": "PaymentServiceLeadTimeExemptionTest#acceptedBookingCanCheckoutWithoutReapplyingLeadTime",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-167",
+      "title": "PayoutDestinationCryptoTest#authenticatedEncryptionUsesRandomNonceAndRoundTrips",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-168",
+      "title": "PayoutDestinationCryptoTest#tamperingFailsAuthentication",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-169",
+      "title": "PolicyAcceptanceServiceTest#publishingANewVersionMakesTheOldAcceptanceIncomplete",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-170",
+      "title": "PolicyAcceptanceServiceTest#duplicateAcceptanceIsIdempotent",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-171",
+      "title": "PolicyAcceptanceServiceTest#snapshotReferencesExactFourCurrentVersions",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-172",
+      "title": "RefundCoordinatorLatePaymentTest#duplicateClaimReusesOneProviderIdempotencyKeyAndOneNotification",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-173",
+      "title": "RefundCoordinatorLatePaymentTest#authoritativeRefundCompletionKeepsBookingExpired",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-174",
+      "title": "RefundCoordinatorLatePaymentTest#cancellationRefundCompletionIsIdempotentAndKeepsCancelledStatus",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-175",
+      "title": "RefundServiceTest#onlyAdminMayRefund",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-176",
+      "title": "RefundServiceTest#definitiveProviderRejectionIsRecordedAndSanitized",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-177",
+      "title": "RefundServiceTest#latePaymentProviderFailureRetainsCoordinatorStateForSafeRetry",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-178",
+      "title": "RefundServiceTest#cancellationRefundUsesExactClaimedPartialAmount",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-179",
+      "title": "RefundServiceTest#duplicateCancellationClaimDoesNotCreateAnotherProviderRefund",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-180",
+      "title": "S3StorageTest#publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-181",
+      "title": "S3StorageTest#rejectsOversizedAndUnsupportedImages",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-182",
+      "title": "S3StorageTest#privateStorageRejectsTraversal",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-183",
+      "title": "TrustNotificationServiceTest#sendsVerificationApprovalAndSafeRejectionReason",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-184",
+      "title": "TrustNotificationServiceTest#sendsApprovalChangesAndSuspensionMessages",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-185",
+      "title": "VenueAvailabilityServiceTest#ownerMayManageOwnVenueAndTimezoneIsValidated",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-186",
+      "title": "VenueAvailabilityServiceTest#ownerCannotManageAnotherOwnersVenue",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-187",
+      "title": "VenueAvailabilityServiceTest#scoutCannotMutateAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-188",
+      "title": "VenueAvailabilityServiceTest#rejectsInvalidAndOverlappingWeeklyIntervals",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-189",
+      "title": "VenueAvailabilityServiceTest#calculatesWeeklyAndEmptyDay",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-190",
+      "title": "VenueAvailabilityServiceTest#blockedOverrideSubtractsPartialRange",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-191",
+      "title": "VenueAvailabilityServiceTest#availableOverrideAddsAndNormalizesOutsideWeeklyHours",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-192",
+      "title": "VenueAvailabilityServiceTest#leadTimeRemovesClipsAndPreservesIntervals",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-193",
+      "title": "VenueAvailabilityServiceTest#blocksPartOfSpecialAvailabilityWhenNoWeeklyHoursExist",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-194",
+      "title": "VenueAvailabilityServiceTest#confirmedBookingSplitsAvailabilityAndCancelledBookingDoesNotBlock",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-195",
+      "title": "VenueAvailabilityServiceTest#onlyReservationStatusesBlockEffectiveAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-196",
+      "title": "VenueAvailabilityServiceTest#rejectsExcessiveDateRange",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-197",
+      "title": "VenueBookingLeadTimePolicyTest#allowsTwentyFiveHoursAndExactBoundary",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-198",
+      "title": "VenueBookingLeadTimePolicyTest#rejectsOneMinuteInsideBoundary",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-199",
+      "title": "VenueBookingLeadTimePolicyTest#usesElapsedTimeAcrossAmsterdamDstChange",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-200",
+      "title": "VenueHardRequirementEvaluatorTest#crewCapacityMustBeKnownAndMeetTheRequirement",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-201",
+      "title": "VenueHardRequirementEvaluatorTest#explicitActivityMustBePermittedAndNotProhibited",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-202",
+      "title": "VenueHardRequirementEvaluatorTest#requiredBooleanFactsFailClosedWhenFalseOrUnknown",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-203",
+      "title": "VenueHardRequirementEvaluatorTest#minimumCeilingHeightMustBeKnownAndHighEnough",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-204",
+      "title": "VenueHardRequirementEvaluatorTest#parkingRequirementAndMinimumSpacesFailClosed",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-205",
+      "title": "VenueHardRequirementEvaluatorTest#preferencesNeverRemoveCandidatesEvenWhenFactsAreUnknown",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-206",
+      "title": "VenueMatchAvailabilityFilterTest#completeIntervalInsideAvailabilityPasses",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-207",
+      "title": "VenueMatchAvailabilityFilterTest#partialOverlapAndFullyUnavailableDateAreRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-208",
+      "title": "VenueMatchAvailabilityFilterTest#noCompleteTimingPreservesCandidatesAndDoesNotQueryAvailability",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-209",
+      "title": "VenueModerationServiceTest#verifiedOwnerSubmitsCompleteVenueButOtherOwnerCannot",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-210",
+      "title": "VenueModerationServiceTest#unverifiedOrIncompleteOwnerCannotSubmit",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-211",
+      "title": "VenueModerationServiceTest#adminApprovesRequestsChangesSuspendsAndReactivatesWithoutTouchingBookings",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-212",
+      "title": "VenueModerationServiceTest#approvalRechecksReadiness",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-213",
+      "title": "VenueProductionProfileValidatorTest#completeProfileIsReady",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-214",
+      "title": "VenueProductionProfileValidatorTest#incompleteProfileReportsUnknownFieldsWithoutTreatingThemAsFalse",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-215",
+      "title": "VenueProductionProfileValidatorTest#contradictoryActivitiesAndParkingAreRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-216",
+      "title": "VenueServiceTest#ownerUpdatesMetadataAndPersistsMediaOrderAndRemoval",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-217",
+      "title": "VenueServiceTest#anotherOwnerAndScoutCannotUpdateVenue",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-218",
+      "title": "VenueServiceTest#ownerMayRemoveOptionalFullDayRate",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-219",
+      "title": "VenueServiceTest#venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-220",
+      "title": "VenueServiceTest#invalidOrDuplicateStorageReferencesAreRejected",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-221",
+      "title": "VenueServiceTest#scopedUploadIsAttachedAndCleanupRunsIfPersistenceFails",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-222",
+      "title": "VerifiedUserPolicyTest#requiresCurrentDatabaseVerificationForMarketplaceUsers",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-223",
+      "title": "VerifiedUserPolicyTest#activeAdminOperationsAreNotBlockedByMarketplaceVerification",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-224",
+      "title": "WebhookServiceTest#latePaidWebhookStartsRefundInsteadOfNormalConfirmationPath",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-225",
+      "title": "WorkflowObservabilityTest#recordsLifecycleCountersWithoutHighCardinalityLabels",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-226",
+      "title": "WorkflowObservabilityTest#stuckScanPublishesReadOnlyGauges",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-227",
+      "title": "GeminiAiServiceTest#ranksOnlyCandidatesReturnedByDeterministicFiltering",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-228",
+      "title": "GeminiAiServiceTest#zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-229",
+      "title": "GeminiAiServiceTest#availabilityRemovalSkipsRankingAndIsNotRelaxed",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-230",
+      "title": "GeminiAiServiceTest#onlyAvailableCandidatesReachRanking",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-231",
+      "title": "GeminiBriefParserServiceTest#mapsStructuredProductionRequirementsWithoutLiveGemini",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-232",
+      "title": "GeminiBriefParserServiceTest#promptDefinesRequirementStrengthEnumsAndStructuredTagBoundary",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-233",
+      "title": "GeminiBriefParserServiceTest#relativeDateUsesExplicitApplicationReferenceDate",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-234",
+      "title": "GeminiBriefParserServiceTest#ambiguousTimingRemainsNonExactContext",
+      "status": "NOT RUN"
+    },
+    {
+      "id": "AUTO-235",
+      "title": "GeminiVenueRankerTest#rankingPromptReceivesAuthoritativeProductionFactsAndSafetyRules",
+      "status": "NOT RUN"
+    }
+  ],
+  "reports": [
+    {
+      "path": "docs/qa/ADMIN_EXECUTION_REPORT.md",
+      "sha256": "7f7de44816d304527e09ad0c51055251355068f0c08825e4e06b5c576b332b83"
+    },
+    {
+      "path": "docs/qa/AUTH_EXECUTION_REPORT.md",
+      "sha256": "8c5dbba06a5c7746ede2c1c104d2fb5a87e60433a8e46343ab0de4a1b50ecd09"
+    },
+    {
+      "path": "docs/qa/AVL_EXECUTION_REPORT.md",
+      "sha256": "ab19307fd1d29b7d0e3964afec4a88317ed26f84964cccb3cfff64e5a2f5cfd6"
+    },
+    {
+      "path": "docs/qa/BK_EXECUTION_REPORT.md",
+      "sha256": "e93b899e56418f52cc8a8d8651ec8f8cf469cd3273cf58cb8ae2fc3e48fb9eff"
+    },
+    {
+      "path": "docs/qa/CANCEL_EXECUTION_REPORT.md",
+      "sha256": "6e1aaf772a583763696af8fbc3adcbea3f0490993c351af87f646b4db2857c6d"
+    },
+    {
+      "path": "docs/qa/DEST_EXECUTION_REPORT.md",
+      "sha256": "9ba43f2eadc39906b8b10e34ed773eef15a3786ebff5d232855f084ffb1fcaa4"
+    },
+    {
+      "path": "docs/qa/DOC_EXECUTION_REPORT.md",
+      "sha256": "2d1c19eb2ddc0d0cb74a4abe7c1db8cd349d60e8936bfb1a5380815cfd4f0a21"
+    },
+    {
+      "path": "docs/qa/EDGE_EXECUTION_REPORT.md",
+      "sha256": "02def62b4cba1d99c956a24312d605c8913c5a39eb6b6f572233bcd4a528f771"
+    },
+    {
+      "path": "docs/qa/INC_EXECUTION_REPORT.md",
+      "sha256": "3e8bcc27e068e8357cf9ff4c2b21489c1c689b881b774e95b69a3d1f8b89d1f1"
+    },
+    {
+      "path": "docs/qa/INQ_EXECUTION_REPORT.md",
+      "sha256": "edca90da70dbec845e2b54ccd92f4d59b93b081f4416d00b2a5c5a8c2877c4da"
+    },
+    {
+      "path": "docs/qa/JOB_EXECUTION_REPORT.md",
+      "sha256": "45fca7b80526c238f4d2a0f20a3c07494f0e21f4796fa2d8868ee956c988b969"
+    },
+    {
+      "path": "docs/qa/MATCH_EXECUTION_REPORT.md",
+      "sha256": "1d071976402af1588eff93a79371874fcd98961e0f7aaf6b1d737c09a7ade726"
+    },
+    {
+      "path": "docs/qa/MEDIA_EXECUTION_REPORT.md",
+      "sha256": "2f7f62cbdf499a8457d0cf9ad8d452e9674f8da78562ad8fd6524dc547e1ff99"
+    },
+    {
+      "path": "docs/qa/OPS_EXECUTION_REPORT.md",
+      "sha256": "4c0e968b568222a17a5303fad5b7bcc72ca11089018900d642f6385c203e5086"
+    },
+    {
+      "path": "docs/qa/PAYOUT_EXECUTION_REPORT.md",
+      "sha256": "2cf96b4f23376468ca2e20fe14e2780447c5b9f26f4c1107dba6233e9b4e159a"
+    },
+    {
+      "path": "docs/qa/PAY_EXECUTION_REPORT.md",
+      "sha256": "cd916a4e901808bf35a7f4e1b1fe316b940e54b06f7ea2804a645614147e026f"
+    },
+    {
+      "path": "docs/qa/POL_EXECUTION_REPORT.md",
+      "sha256": "28faf49f149cb5b30f878df56d16a7ffd6a34a71a13e2d5df14199af90ca25d0"
+    },
+    {
+      "path": "docs/qa/PRICE_EXECUTION_REPORT.md",
+      "sha256": "5a67034aaf7c8e58449fba29656deefd5c6bd2a2050f36f3726df3a218db3278"
+    },
+    {
+      "path": "docs/qa/PROVIDER_EXECUTION_REPORT.md",
+      "sha256": "b7dd9adc7f03bdccd877531da1cf0b4f5edc8cb1acf4f74f8688435fbd4ac6ae"
+    },
+    {
+      "path": "docs/qa/RACE_EXECUTION_REPORT.md",
+      "sha256": "1e918062b79aa49a019de251092ebebac568ed9703429b70986ba721be54810c"
+    },
+    {
+      "path": "docs/qa/READY_EXECUTION_REPORT.md",
+      "sha256": "2b5cf34ab41fb47ff817a3032c2f50bd4fd61248af0f028429d7eb1086cb6ae7"
+    },
+    {
+      "path": "docs/qa/REF_EXECUTION_REPORT.md",
+      "sha256": "f74640de5e7487b675b49cbca1f2261693a6bd53332906ee696a101d6c76eec7"
+    },
+    {
+      "path": "docs/qa/SEC_EXECUTION_REPORT.md",
+      "sha256": "1313b356fe452e5470802dd1d6ecf532c12101af64535e5ebb0f9198768d5428"
+    },
+    {
+      "path": "docs/qa/TRUST_EXECUTION_REPORT.md",
+      "sha256": "7bfc675b5a75d03e3b046235f0c456e31f7604f311f2be11d70b4cca89041ec4"
+    },
+    {
+      "path": "docs/qa/UXACT_EXECUTION_REPORT.md",
+      "sha256": "67384ba24c0473749657f58592256fbbfa8133bdae790f14f94ba630cbf41083"
+    },
+    {
+      "path": "docs/qa/UX_EXECUTION_REPORT.md",
+      "sha256": "39bec10332dcaec4d694d64836082629c7cad5c867f073c5912dc78dd7ca1ed9"
+    },
+    {
+      "path": "docs/qa/VEN_EXECUTION_REPORT.md",
+      "sha256": "e7b2e1f155c620859a034ca5d559b64e31ab1c4c1d5274f0db72de59451d8c52"
+    }
+  ],
+  "providerPreservedSha256": "b7dd9adc7f03bdccd877531da1cf0b4f5edc8cb1acf4f74f8688435fbd4ac6ae"
+}

@@ -1,0 +1,159 @@
+{
+  "scope": "Actual NextRequest/NextResponse and source modules; deterministic mock transport/timer, no real provider",
+  "results": [
+    {
+      "name": "malformed JSON",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 0,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "empty object",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 0,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "blank company",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 0,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "missing key",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 0,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "quoted key and success",
+      "httpStatus": 200,
+      "verified": true,
+      "providerCalls": 2,
+      "rawReturned": true,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "no company match",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 1,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "detail failure fallback",
+      "httpStatus": 200,
+      "verified": true,
+      "providerCalls": 3,
+      "rawReturned": true,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "provider 500",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 2,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "timeout",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 1,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "wrong search shape",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 1,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "PASS"
+    },
+    {
+      "name": "null request",
+      "httpStatus": null,
+      "verified": null,
+      "providerCalls": 0,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": "TypeError",
+      "result": "FAIL"
+    },
+    {
+      "name": "non-string request",
+      "httpStatus": null,
+      "verified": null,
+      "providerCalls": 0,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": "TypeError",
+      "result": "FAIL"
+    },
+    {
+      "name": "anonymous unrelated match and raw data",
+      "httpStatus": 200,
+      "verified": true,
+      "providerCalls": 2,
+      "rawReturned": true,
+      "sensitiveMarkerLogged": false,
+      "keyNormalized": true,
+      "error": null,
+      "result": "OBSERVED"
+    },
+    {
+      "name": "provider error log echo",
+      "httpStatus": 200,
+      "verified": false,
+      "providerCalls": 2,
+      "rawReturned": false,
+      "sensitiveMarkerLogged": true,
+      "keyNormalized": true,
+      "error": null,
+      "result": "OBSERVED"
+    }
+  ]
+}

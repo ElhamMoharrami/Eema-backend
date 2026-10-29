@@ -1,0 +1,62 @@
+{
+  "gates": [
+    {
+      "command": "mvn test",
+      "result": "PASS",
+      "reported": 1078,
+      "executed": 1078,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "10cc848eb4a2fd09343e85871a1312a91e80879171aa4b6649d72c5eede908ac"
+    },
+    {
+      "command": "mvn verify -Ppostgres-integration",
+      "result": "PASS",
+      "reported": 1027,
+      "executed": 1014,
+      "skipped": 13,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "75ce5365c71c2738c89594ca17e47e49c5231f6f99a9ac4aa5814cdb65e93105"
+    },
+    {
+      "command": "mvn clean package",
+      "result": "PASS",
+      "reported": 1078,
+      "executed": 1078,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "aab296300b1da9e35b55705a8afa6067d67e3eeb7134f7f1335da787b443c54e"
+    },
+    {
+      "command": "mvn verify -Ppostgres-integration -Dit.test=PostgresCriticalPathIntegrationTest",
+      "result": "PASS",
+      "reported": 14,
+      "executed": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "c39626f56404d7ae9fe4171952447510c5f5d97275abddbe1c7607406f9aafcb"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "logSha256": "d9dd29a4c1870c7075110b06bc6fe77786715d45ea4fddc996006f5bb0e5e243"
+    },
+    {
+      "command": "npm run lint",
+      "result": "PASS",
+      "logSha256": "a1620a9315e1963f6a00c62c5c2cea73c0464af400783004836adf6593d6108b"
+    },
+    {
+      "command": "npm run build",
+      "result": "PASS",
+      "logSha256": "610ee5d2b599a005ce55e188b91fccf49950e3dfe93e2746d9f3c8aff78ab357"
+    }
+  ],
+  "noLiveProviders": true,
+  "providerReportUnchanged": true,
+  "note": "Full PostgreSQL run used the original critical-path test annotation; focused 14-case rerun validates its subsequent context-cleanup annotation. Frontend gates completed in one successful command chain."
+}

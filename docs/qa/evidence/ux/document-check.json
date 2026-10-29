@@ -1,15 +1,17 @@
 {
   "result": "PASS",
   "pdf": "docs/EEMA_COMPLETE_TEST_MASTER_PLAN.pdf",
-  "pdfSha256": "b8d7bc3ffb3a465e5bbf8711bc07fb7b42c04c477649fa068f5718071c1d3d18",
-  "markdownSha256": "68f32bf857e7ea95ca0e1c82988b216bf76e2ec6f1e0ecd8c9f434c9a87487c9",
+  "pdfSha256": "b05b5c766aa354decc7d26026cdbf283f511408c855acdfe3df41122b1226730",
+  "markdownSha256": "a0c03177f6f9c62214f83db6290a111b49ed1ccb56502fc558afbb6eec5b4ae4",
   "pages": 627,
   "scenarioIds": 703,
   "sameIdOrder": true,
   "visuallyReviewedPages": [
     1,
-    114,
-    117
+    153,
+    169,
+    623,
+    624
   ],
-  "layout": "No clipping/overlap on reviewed pages. Representative model recorded: 24 route PASS, 11 AT BLOCKED; overall UX gate remains BLOCKED. 703 IDs/order verified against PDF extraction."
+  "layout": "No clipping/overlap on reviewed pages. Final release-gate correction on page623 and continuation624 reviewed separately. UX35PASS current scope; actual AT11DEFERRED/not executed; UXACT19PASS; PROVIDER5BLOCKED for missing isolated staging inputs."
 }

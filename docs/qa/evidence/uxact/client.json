@@ -1,0 +1,220 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "endpoint": "/match",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/match",
+      "variant": "different actor during refresh",
+      "result": "PASS",
+      "status": 401,
+      "originals": 1,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/venues/fixture",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/venues/fixture",
+      "variant": "different actor during refresh",
+      "result": "PASS",
+      "status": 401,
+      "originals": 1,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings/fixture/checkout",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings/fixture/checkout",
+      "variant": "different actor during refresh",
+      "result": "PASS",
+      "status": 401,
+      "originals": 1,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/admin/payouts/fixture/mark-paid",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/admin/payouts/fixture/mark-paid",
+      "variant": "different actor during refresh",
+      "result": "PASS",
+      "status": 401,
+      "originals": 1,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings/fixture/receipt",
+      "variant": "same actor refresh",
+      "result": "PASS",
+      "status": 200,
+      "originals": 2,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings/fixture/receipt",
+      "variant": "different actor during refresh",
+      "result": "PASS",
+      "status": 401,
+      "originals": 1,
+      "refreshes": 1,
+      "newActorCalls": 0
+    },
+    {
+      "endpoint": "/bookings",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/availability-inquiries",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/accept",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/decline",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/checkout",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/cancel",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/incidents",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/policies/accept",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/venues/fixture/submit-for-review",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/owner/verification/submit",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/owner/payout-destinations",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/admin/payout-destinations/fixture/verify",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/admin/payout-destinations/fixture/reject",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/admin/payouts/fixture/mark-paid",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/admin/liabilities/fixture/settle",
+      "variant": "unknown transport outcome is never automatically replayed",
+      "result": "PASS",
+      "calls": 1
+    },
+    {
+      "endpoint": "/match",
+      "variant": "failed refresh clears session without mutation replay",
+      "result": "PASS",
+      "calls": 1,
+      "refresh": 1
+    },
+    {
+      "endpoint": "/venues/fixture",
+      "variant": "failed refresh clears session without mutation replay",
+      "result": "PASS",
+      "calls": 1,
+      "refresh": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/checkout",
+      "variant": "failed refresh clears session without mutation replay",
+      "result": "PASS",
+      "calls": 1,
+      "refresh": 1
+    },
+    {
+      "endpoint": "/admin/payouts/fixture/mark-paid",
+      "variant": "failed refresh clears session without mutation replay",
+      "result": "PASS",
+      "calls": 1,
+      "refresh": 1
+    },
+    {
+      "endpoint": "/bookings/fixture/receipt",
+      "variant": "failed refresh clears session without mutation replay",
+      "result": "PASS",
+      "calls": 1,
+      "refresh": 1
+    }
+  ]
+}

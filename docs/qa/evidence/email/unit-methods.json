@@ -1,0 +1,5185 @@
+{
+  "scope": "Current clean-package unit results, logs omitted",
+  "suites": {
+    "com.eema.backend.service.NotificationOutboxUnitTest": {
+      "tests": 11,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "tokenCanBeReconstructedFromNonceOnlyWithRootKeyAndHashRemainsOneWay",
+          "result": "PASS"
+        },
+        {
+          "name": "templateCaptureHasNoProviderAndClearsAfterCompositionFailure",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerHttpClassificationAndStableIdempotencyKey{int, String, boolean}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "schedulerNeverQueuesAnotherBatchWhileOneIsOutstanding",
+          "result": "PASS"
+        },
+        {
+          "name": "retryBackoffIsBounded",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.CancellationScenarioBoundaryTest": {
+      "tests": 30,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "previewAndCancellationAgreeAtEveryBoundary{String, String, long, long, String, String, String, String, String, String}[30]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.controller.FinancialDocumentControllerTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "authorizedEndpointReturnsPdfAttachmentWithoutStoragePath",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.OwnerPayoutServiceTest": {
+      "tests": 41,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedBlockersHaveExplicitPrecedence{String, RefundStatus, boolean, boolean, boolean, OwnerPayoutStatus, OwnerPayoutHoldReason}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutPartialCancellationUsesAuthoritativeSnapshot",
+          "result": "PASS"
+        },
+        {
+          "name": "adminCancellationIsCancelledWithoutOwnerLiability",
+          "result": "PASS"
+        },
+        {
+          "name": "adminListForwardsAllFiltersAndCapsPageSize",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerCancellationCreatesProviderCostLiabilityWithoutNegativePayout",
+          "result": "PASS"
+        },
+        {
+          "name": "markPaidIsIdempotentOnlyForSameReference",
+          "result": "PASS"
+        },
+        {
+          "name": "paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+          "result": "PASS"
+        },
+        {
+          "name": "noNewPayoutForIneligibleBooking{BookingStatus}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "noNewPayoutForIneligibleBooking{BookingStatus}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "noNewPayoutForIneligibleBooking{BookingStatus}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "noNewPayoutForIneligibleBooking{BookingStatus}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "noNewPayoutForIneligibleBooking{BookingStatus}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "noNewPayoutForIneligibleBooking{BookingStatus}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "readinessUsesVenueEndInstantIncludingBothDstTransitions{String, int}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerHistoryIsScopedAndDoesNotExposeTransferReference",
+          "result": "PASS"
+        },
+        {
+          "name": "otherwiseEligiblePayoutWaitsForVerifiedDestination",
+          "result": "PASS"
+        },
+        {
+          "name": "paidOwnerSettlementDoesNotChargeAlreadyAppliedProviderCostAgain",
+          "result": "PASS"
+        },
+        {
+          "name": "paidPlatformBorneCostCannotBecomeLimitedRecourseRecovery{ProviderCostResponsibility}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "paidPlatformBorneCostCannotBecomeLimitedRecourseRecovery{ProviderCostResponsibility}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "latePaymentCancelsAnyDefensivePayoutRecord",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueReadinessContractTest": {
+      "tests": 43,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "numericValidityIsSeparateFromPresenceReadiness",
+          "result": "PASS"
+        },
+        {
+          "name": "canonicalFixtureIsReadyWithAllFourBooleansFalseAndOptionalFactsAbsent",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSingleIssueRestoresAndEvaluationNeverMutates{String, Object}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeIssueKeySetIsOrderedAccumulatedImmutableAndPure",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyMissingConditionGatesAllThreeServiceTransitionsWithoutEffects{String, Object}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "TrueAndFalseAreBothAnswered{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "TrueAndFalseAreBothAnswered{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "TrueAndFalseAreBothAnswered{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "TrueAndFalseAreBothAnswered{String}[4]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.RefundClaimContractTest": {
+      "tests": 15,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "notSuccessfullyPaidCreatesNothing",
+          "result": "PASS"
+        },
+        {
+          "name": "terminalRetryCannotInventNewIdentity{RefundStatus}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "terminalRetryCannotInventNewIdentity{RefundStatus}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSafeReplayWindow{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSafeReplayWindow{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactSafeReplayWindow{int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "existingAmountNeverRecomputedOnRetry",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidPaidAmountCreatesNothing{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidPaidAmountCreatesNothing{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateSafetyClaimCannotReplaceTerminalIdentity{RefundStatus}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "lateSafetyClaimCannotReplaceTerminalIdentity{RefundStatus}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "uncertainHttpResponseMustKeepClaim{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "uncertainHttpResponseMustKeepClaim{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "uncertainHttpResponseMustKeepClaim{int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "uncertainHttpResponseMustKeepClaim{int}[4]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingTimePolicyTest": {
+      "tests": 8,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "gapOnlyAndSkippedDayHaveNoAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "halfHourGapAndOverlap",
+          "result": "PASS"
+        },
+        {
+          "name": "gapIsInvalid{String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "gapIsInvalid{String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "gapIsInvalid{String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "splitAvailabilityHasOnlyValidEndpointsAndMinutes",
+          "result": "PASS"
+        },
+        {
+          "name": "normalAndEarlierOverlap",
+          "result": "PASS"
+        },
+        {
+          "name": "orderedPositiveIntervalAndWallPricing",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.FinancialDocumentPdfRendererTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "payoutStatementUsesExactLedgerValuesAndTransferReference",
+          "result": "PASS"
+        },
+        {
+          "name": "receiptContainsPaymentSnapshotAndExcludesInternalEconomics",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingNotificationServiceTest": {
+      "tests": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "missingBookingProducesNoEmail",
+          "result": "PASS"
+        },
+        {
+          "name": "usesSnapshotRecipientsAndRendersConfirmedDetails",
+          "result": "PASS"
+        },
+        {
+          "name": "requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutFailureStillAttemptsOwner",
+          "result": "PASS"
+        },
+        {
+          "name": "oneRecipientFailureDoesNotPreventOtherRecipientAttempt",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutReceivesDeclineAndApprovalExpiryMessages",
+          "result": "PASS"
+        },
+        {
+          "name": "authoritativeCancellationRefundCompletionUsesProcessedCopy",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerAndScoutAreNotifiedWhenRequestIsSubmitted",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutAcceptanceEmailContainsDeadlinePayCtaAndDeepLink",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "lifecycleEmailFailureIsContained",
+          "result": "PASS"
+        },
+        {
+          "name": "latePaymentMessageSaysNotConfirmedAndRefundInitiated",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ai.GeminiVenueRankerTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "rankingPromptReceivesAuthoritativeProductionFactsAndSafetyRules",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PaymentCreationCoordinatorTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "checkoutBeforeOwnerApprovalIsRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "checkoutAfterApprovalExpirationIsRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "refusesUnsafeRetryOutsideMollieReplayWindow",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ZeroPriceCheckoutTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "invalidStoredPriceCannotReachProviderOrCreateClaim{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStoredPriceCannotReachProviderOrCreateClaim{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStoredPriceCannotReachProviderOrCreateClaim{String}[3]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingCancellationCoordinatorTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+          "result": "PASS"
+        },
+        {
+          "name": "adminRequiresReasonAndReceivesFullRefundPolicy",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.OperationsReportingTest": {
+      "tests": 13,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "disabledJobNeverQueriesOrCallsProvider",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidReportingCannotInventFee{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidReportingCannotInventFee{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidReportingCannotInventFee{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidReportingCannotInventFee{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidReportingCannotInventFee{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "oneFailureAndOneUnavailableFeeDoNotPreventNextBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "noFeeIsNotInvented",
+          "result": "PASS"
+        },
+        {
+          "name": "absentTokenDoesNotCallTransport",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrLoopingPaginationStopsBeforeAnotherRequest{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrLoopingPaginationStopsBeforeAnotherRequest{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsafeOrLoopingPaginationStopsBeforeAnotherRequest{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "sameOriginPaginationFindsExactEuroFee",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AvailabilityInquiryServiceTest": {
+      "tests": 13,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "offeredSlotThatBecomesTooLateExpiresWithoutCreatingBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "ownOfferCreatesApprovedBookingAndDoesNotChangeWeeklyAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "unauthorizedOwnerCannotRespond",
+          "result": "PASS"
+        },
+        {
+          "name": "scheduledExpiryReleasesOutstandingOffers",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryIsAllowedForUnavailableInterval",
+          "result": "PASS"
+        },
+        {
+          "name": "offerExpiresAndCannotBeAccepted",
+          "result": "PASS"
+        },
+        {
+          "name": "suspendedVenueCannotReceiveNewOffer",
+          "result": "PASS"
+        },
+        {
+          "name": "offeringOneOffSlotDoesNotModifyWeeklyAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyInquiryScoutCanAcceptOffer",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerDeclineEmitsOneLifecycleEventAndDuplicateIsRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerCannotOfferIntervalConflictingWithBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryIsRejectedWhenNormalAvailabilityAlreadyContainsInterval",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryAndOwnerOfferCannotBypassLeadTime",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.CriticalBookingWorkflowTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "requestApprovalCheckoutAndAuthoritativePaymentCompleteOneReservedBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "declineAndExpiryReleaseSlotsAndRejectCheckout",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AdminBoundaryTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "nestedValuesCannotBypassEventRedaction",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.WebhookServiceTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "latePaidWebhookStartsRefundInsteadOfNormalConfirmationPath",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingServiceTest": {
+      "tests": 18,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "acceptanceAfterOwnerDeadlineExpiresRequestAndFailsClearly",
+          "result": "PASS"
+        },
+        {
+          "name": "paymentAfterDeadlineExpiresBookingEvenBeforeSchedulerRuns",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsWebhookWhoseAmountDoesNotMatchDatabasePrice",
+          "result": "PASS"
+        },
+        {
+          "name": "requestAcceptPaymentEndsConfirmedWithoutSecondOwnerAction",
+          "result": "PASS"
+        },
+        {
+          "name": "firstPaidTransitionPublishesNotificationOnceAndDuplicateDoesNot",
+          "result": "PASS"
+        },
+        {
+          "name": "databaseConflictFromConcurrentAttemptCannotCreateSecondBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicatePaidWebhookDoesNotCreateAnotherEvent",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptedInquiryBookingPublishesOnlyAcceptedBookingLifecycleEmail",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptedRequestMakesOnlyOverlappingRequestsUnavailable",
+          "result": "PASS"
+        },
+        {
+          "name": "acceptanceThatHasBecomeTooLateExpiresRequest",
+          "result": "PASS"
+        },
+        {
+          "name": "unauthorizedOwnerCannotAcceptRequest",
+          "result": "PASS"
+        },
+        {
+          "name": "approvedRequestExpiresAndLatePaymentIsMarkedForRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerCanDeclineRequestAndDoubleAcceptanceIsRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerAndAdminCanReadAuthorizedBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutCanReadOwnBookingButNotAnotherScoutsBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutCreatesRequestWithSelectedTimesWithoutStartingPayment",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsWebhookWhosePaymentIdDoesNotMatchStoredPayment",
+          "result": "PASS"
+        },
+        {
+          "name": "dueRequestExpirationIsIdempotentAndIgnoresAcceptedRows",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ai.MatchingProviderContractTest": {
+      "tests": 108,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "duplicateAndUnknownIdsCannotConsumeResultSlots",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateEligibleIdsAppearOnce",
+          "result": "PASS"
+        },
+        {
+          "name": "emptyRankingsAndMissingExplanationAreSafe",
+          "result": "PASS"
+        },
+        {
+          "name": "missingAndUnknownFieldsDoNotCreateRequirements",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "nullableBooleans{String, String}[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "everyActivity{ProductionActivity}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "existingNumericClampingPreserved{String, double}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "existingNumericClampingPreserved{String, double}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "existingNumericClampingPreserved{String, double}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "existingNumericClampingPreserved{String, double}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "existingNumericClampingPreserved{String, double}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "parserFieldMappingAndSchema{String, String}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedRankerRootOrRowFails{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedRankerRootOrRowFails{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedRankerRootOrRowFails{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedRankerRootOrRowFails{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedRankerRootOrRowFails{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedRankerRootOrRowFails{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidParserValuesFail{String}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedScoresFailSafely{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "rankerBoundAndPrivacy",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingOverlapRuleTest": {
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "permitsBackToBackBefore",
+          "result": "PASS"
+        },
+        {
+          "name": "detectsOverlappingStart",
+          "result": "PASS"
+        },
+        {
+          "name": "permitsBackToBackAfter",
+          "result": "PASS"
+        },
+        {
+          "name": "permitsSeparatedBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "detectsOverlappingEnd",
+          "result": "PASS"
+        },
+        {
+          "name": "detectsCandidateContainingBooking",
+          "result": "PASS"
+        },
+        {
+          "name": "detectsCandidateInsideBooking",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AdminOperationsServiceTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingSearchForwardsControlledFiltersAndCapsPageSize",
+          "result": "PASS"
+        },
+        {
+          "name": "bookingDetailCombinesAuthoritativeRefundFeePayoutAndLiabilityState",
+          "result": "PASS"
+        },
+        {
+          "name": "exceptionQueueBoundsRequestsWithoutNarrowingLargeOffsets",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.LocalPrivateDocumentStorageTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "publicUploadControllerHasNoPrivateDocumentStorageDependency",
+          "result": "PASS"
+        },
+        {
+          "name": "storesOpaqueRelativeReferencesAndRejectsTraversal",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ai.GeminiAiServiceTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "onlyAvailableCandidatesReachRanking",
+          "result": "PASS"
+        },
+        {
+          "name": "ranksOnlyCandidatesReturnedByDeterministicFiltering",
+          "result": "PASS"
+        },
+        {
+          "name": "zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+          "result": "PASS"
+        },
+        {
+          "name": "availabilityRemovalSkipsRankingAndIsNotRelaxed",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.MediaStorageContractTest": {
+      "tests": 35,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidContentNeverCreatesAnObject{String, String, String, byte[]}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactFiveMiBIsAllowedButLyingStreamSizeIsStillBounded",
+          "result": "PASS"
+        },
+        {
+          "name": "fakeImageMustBeRejectedBeforeEitherStorageWrites",
+          "result": "PASS"
+        },
+        {
+          "name": "clientPathsNeverChooseStoragePaths{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "clientPathsNeverChooseStoragePaths{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "clientPathsNeverChooseStoragePaths{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "clientPathsNeverChooseStoragePaths{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "clientPathsNeverChooseStoragePaths{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "clientPathsNeverChooseStoragePaths{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "publicMissingFileIs404AndMalformedMultipartIs400",
+          "result": "PASS"
+        },
+        {
+          "name": "realFormatsRoundTripLocalAndS3WithoutChangingBytes{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "realFormatsRoundTripLocalAndS3WithoutChangingBytes{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "realFormatsRoundTripLocalAndS3WithoutChangingBytes{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "realFormatsRoundTripLocalAndS3WithoutChangingBytes{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "validationPreservesMetadataAndDoesNotReencode",
+          "result": "PASS"
+        },
+        {
+          "name": "webpAlphaAndLosslessRemainSupported{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "webpAlphaAndLosslessRemainSupported{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "publicReadsRejectTraversalPrivateNamesSymlinksAndS3MissingKeys",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.DocumentUnicodeTest": {
+      "tests": 18,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "markupIsLiteralAndInternalSpacesArePreserved",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTextFailsInsteadOfChangingIdentity{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTextFailsInsteadOfChangingIdentity{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTextFailsInsteadOfChangingIdentity{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTextFailsInsteadOfChangingIdentity{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTextFailsInsteadOfChangingIdentity{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTextFailsInsteadOfChangingIdentity{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "storedNamesSurviveExtraction{String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "longUnicodeNamePreservesEveryCharacterWithinBounds",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.FinancialDocumentServiceTest": {
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "confirmedScoutReceiptIssuesOnceAndAdminCanReuseIt",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyPaidPayoutUsesExactLedgerAndIssuesOneStatement",
+          "result": "PASS"
+        },
+        {
+          "name": "documentNumbersAreUniqueAndHistoricalReceiptIsNotRewritten",
+          "result": "PASS"
+        },
+        {
+          "name": "unpaidStatesAndUnauthorizedPeopleCannotObtainReceipt",
+          "result": "PASS"
+        },
+        {
+          "name": "readyHeldScoutAndUnrelatedOwnerCannotObtainStatement",
+          "result": "PASS"
+        },
+        {
+          "name": "confirmedPaymentRemainsReceiptEligibleAfterCancellationBeforeFirstDownload",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.IncidentReportTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "transitionsAreNarrowAndExplicit",
+          "result": "PASS"
+        },
+        {
+          "name": "cannotResolveBeforeReview",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PaymentTransportContractTest": {
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "malformedTransportJsonCannotProducePaidObject{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedTransportJsonCannotProducePaidObject{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedTransportJsonCannotProducePaidObject{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "missingPoliciesStopBeforeClaimOrProvider",
+          "result": "PASS"
+        },
+        {
+          "name": "actualTransportSendsServerAssociationAndIdempotency{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "actualTransportSendsServerAssociationAndIdempotency{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerFailureLogContainsNoRawExceptionOrBody",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.config.AsyncConfigurationTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "createsBoundedNamedExecutor",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.security.RequestCorrelationFilterTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "replacesUnsafeRequestId",
+          "result": "PASS"
+        },
+        {
+          "name": "propagatesSafeRequestId",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.MatchingEligibilityContractTest": {
+      "tests": 122,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "hardEligibility{Case}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[40]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[41]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[42]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[43]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[44]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[45]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[46]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[47]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[48]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[49]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[50]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[51]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[52]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[53]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[54]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[55]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[56]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[57]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[58]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[59]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[60]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[61]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[62]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[63]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[64]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[65]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[66]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[67]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[68]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[69]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[70]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[71]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[72]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[73]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[74]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[75]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[76]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[77]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[78]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[79]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[80]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[81]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[82]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[83]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[84]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[85]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[86]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[87]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[88]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[89]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[90]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[91]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[92]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[93]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[94]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[95]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[96]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[97]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[98]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[99]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[100]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[101]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[102]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[103]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[104]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[105]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[106]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[107]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[108]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[109]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[110]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[111]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[112]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[113]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[114]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[115]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[116]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[117]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[118]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[119]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[120]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[121]",
+          "result": "PASS"
+        },
+        {
+          "name": "hardEligibility{Case}[122]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.EmailTemplateContractTest": {
+      "tests": 35,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent{Type}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "confirmedAndLatePaymentAndCompletedRefundHaveDifferentMoneyClaims",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationRoutesByActorAndDoesNotClaimRefundCompletion{ActorType}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "trustTemplatesUseManagementRouteAndNeverIncludeBankFields{TrustEventType}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsupportedTrustEventsHaveNoDedicatedEmail{TrustEventType}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "accountLinksEncodeTokensAndUseCurrentRecipient{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "accountLinksEncodeTokensAndUseCurrentRecipient{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "nonRefundableCancellationNeverClaimsMoneyIsBeingReturned",
+          "result": "PASS"
+        },
+        {
+          "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute{Type}[6]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.config.FlywayLocationTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "developmentSeedsAreNotInCommonProductionLocation",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.HttpMollieProviderClientTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "omitsWebhookUrlForManualLocalWebhookMode",
+          "result": "PASS"
+        },
+        {
+          "name": "sendsWebhookUrlWhenPublicTunnelIsConfigured",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.WorkflowObservabilityTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "stuckScanPublishesReadOnlyGauges",
+          "result": "PASS"
+        },
+        {
+          "name": "recordsLifecycleCountersWithoutHighCardinalityLabels",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PriceDownstreamContractTest": {
+      "tests": 8,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "providerReceivesExactEurDecimalStrings{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerReceivesExactEurDecimalStrings{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerReceivesExactEurDecimalStrings{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerReceivesExactEurDecimalStrings{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "receiptUsesSavedMonetaryFieldsEvenWhenVenuePricingChanges",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationUsesPaidSnapshotAndStoredCommission{int, String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationUsesPaidSnapshotAndStoredCommission{int, String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationUsesPaidSnapshotAndStoredCommission{int, String, String}[3]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.dto.request.AuthInputContractTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "strictnessIsScopedToAllSixAuthDtos",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingNormalizesHumanInputButPreservesSecrets",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.S3PrivateDocumentStorageTest": {
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "failedConditionalStorePropagatesWithoutFallbackOverwrite",
+          "result": "PASS"
+        },
+        {
+          "name": "privateBucketOpaqueKeyConditionalWriteAndExactBytes",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidKeysNeverCallProvider{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidKeysNeverCallProvider{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidKeysNeverCallProvider{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidKeysNeverCallProvider{String}[4]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueServiceTest": {
+      "tests": 8,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "ownerUpdatesMetadataAndPersistsMediaOrderAndRemoval",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidOrDuplicateStorageReferencesAreRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "scopedUploadIsAttachedAndCleanupRunsIfPersistenceFails",
+          "result": "PASS"
+        },
+        {
+          "name": "venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerMayRemoveOptionalFullDayRate",
+          "result": "PASS"
+        },
+        {
+          "name": "cleanupFailureNeverReplacesOriginalPersistenceFailure",
+          "result": "PASS"
+        },
+        {
+          "name": "anotherOwnerAndScoutCannotUpdateVenue",
+          "result": "PASS"
+        },
+        {
+          "name": "persistenceFailureCompensatesThroughRealS3Adapter",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueModerationServiceTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "adminApprovesRequestsChangesSuspendsAndReactivatesWithoutTouchingBookings",
+          "result": "PASS"
+        },
+        {
+          "name": "verifiedOwnerSubmitsCompleteVenueButOtherOwnerCannot",
+          "result": "PASS"
+        },
+        {
+          "name": "unverifiedOrIncompleteOwnerCannotSubmit",
+          "result": "PASS"
+        },
+        {
+          "name": "approvalRechecksReadiness",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingStateMachineTest": {
+      "tests": 64,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[40]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[41]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[42]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[43]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[44]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[45]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[46]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[47]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[48]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[49]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[50]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[51]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[52]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[53]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[54]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[55]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[56]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[57]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[58]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[59]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[60]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[61]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[62]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[63]",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransitionContract{BookingStatus, BookingStatus}[64]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PayoutDestinationCryptoTest": {
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "authenticatedEncryptionUsesRandomNonceAndRoundTrips",
+          "result": "PASS"
+        },
+        {
+          "name": "tamperingFailsAuthentication",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedEnvelopeFailsClosed{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedEnvelopeFailsClosed{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedEnvelopeFailsClosed{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedEnvelopeFailsClosed{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "missingOrShortConfiguredKeysFailStartup",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.MollieFeeReconciliationJobTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "reconcilesAuthoritativeFeeOncePerPendingBooking",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AvailabilityInquiryNotificationServiceTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "scoutReceivesOfferWithDeadlineAndExistingScoutRoute",
+          "result": "PASS"
+        },
+        {
+          "name": "providerFailureDoesNotEscapeNotificationBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerReceivesNewInquiryWithExistingOwnerRoute",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutReceivesDeclineAndOfferExpiry",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.OwnerFinancialLiabilityServiceTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "settleUsesStoredAmountAuditsAndIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "nonAdminCannotSettleAndWaivedCannotBeSettled",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ai.GeminiBriefParserServiceTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "relativeDateUsesExplicitApplicationReferenceDate",
+          "result": "PASS"
+        },
+        {
+          "name": "mapsStructuredProductionRequirementsWithoutLiveGemini",
+          "result": "PASS"
+        },
+        {
+          "name": "promptDefinesRequirementStrengthEnumsAndStructuredTagBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "ambiguousTimingRemainsNonExactContext",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueAvailabilityServiceTest": {
+      "tests": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "blockedOverrideSubtractsPartialRange",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsInvalidAndOverlappingWeeklyIntervals",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsExcessiveDateRange",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyReservationStatusesBlockEffectiveAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "leadTimeRemovesClipsAndPreservesIntervals",
+          "result": "PASS"
+        },
+        {
+          "name": "confirmedBookingSplitsAvailabilityAndCancelledBookingDoesNotBlock",
+          "result": "PASS"
+        },
+        {
+          "name": "blocksPartOfSpecialAvailabilityWhenNoWeeklyHoursExist",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerMayManageOwnVenueAndTimezoneIsValidated",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutCannotMutateAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "availableOverrideAddsAndNormalizesOutsideWeeklyHours",
+          "result": "PASS"
+        },
+        {
+          "name": "calculatesWeeklyAndEmptyDay",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerCannotManageAnotherOwnersVenue",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.CancellationPreviewProofTest": {
+      "tests": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "resultChangeAtDeadlineRequiresNewConsent",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "bindingAndTampering{String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactExpiry{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactExpiry{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "exactExpiry{int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "stableProofSurvivesNewServiceAndCannotAuthenticateAsAccessToken",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.controller.AdminOwnerPayoutControllerTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "adminCanUseOperationsEndpoints",
+          "result": "PASS"
+        },
+        {
+          "name": "scoutAndOwnerCannotReadOrMarkPayouts",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PriceContractTest": {
+      "tests": 107,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "lightweightMonotonicityMinimumAndCapInvariants",
+          "result": "PASS"
+        },
+        {
+          "name": "dstUsesSelectedWallMinutesNotElapsedInstants{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "dstUsesSelectedWallMinutesNotElapsedInstants{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[40]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[41]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[42]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[43]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[44]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[45]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[46]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[47]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[48]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[49]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[50]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[51]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[52]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[53]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[54]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[55]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[56]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[57]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[58]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[59]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[60]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[61]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[62]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[63]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[64]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[65]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[66]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[67]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[68]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[69]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[70]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[71]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[72]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[73]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[74]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[75]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[76]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[77]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[78]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[79]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[80]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[81]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[82]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[83]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[84]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[85]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[86]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[87]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[88]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[89]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[90]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[91]",
+          "result": "PASS"
+        },
+        {
+          "name": "sharedDecimalContract{String, JsonNode}[92]",
+          "result": "PASS"
+        },
+        {
+          "name": "technicalAmountBoundIsAppliedAfterCap",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidInputsDoNotProduceBookingPrices{String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "roundsHourlyBeforeComparingNormalizedCap",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.EmailServiceTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "disabledDeliveryNeverCallsProvider",
+          "result": "PASS"
+        },
+        {
+          "name": "enabledEmailRequiresCredentials",
+          "result": "PASS"
+        },
+        {
+          "name": "disabledEmailNeedsNoCredentials",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.DocumentRendererBoundaryTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "unsupportedControlAndUnicodeInputFailsSafely",
+          "result": "PASS"
+        },
+        {
+          "name": "completeTransferReferenceSurvivesRendering",
+          "result": "PASS"
+        },
+        {
+          "name": "validWideNamesAndMaximumAmountsStayInsidePage",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PolicyAcceptanceServiceTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "snapshotReferencesExactFourCurrentVersions",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateAcceptanceIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "publishingANewVersionMakesTheOldAcceptanceIncomplete",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.security.JwtServiceTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "validatesSignatureExpiryAndExpectedIssuer",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingPriceCalculatorTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "exposesAuthoritativeQuoteDetails",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsInvalidConfigurationAndIntervals",
+          "result": "PASS"
+        },
+        {
+          "name": "appliesMinimumExactMinutesAndFullDayCap",
+          "result": "PASS"
+        },
+        {
+          "name": "capAlsoAppliesToMinimumDerivedTotalAndRoundsHalfUpToCents",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.config.ProductionConfigurationValidatorTest": {
+      "tests": 15,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "acceptsCompleteProductionConfigurationWithoutCallingProviders",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsWeakJwtInProduction",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsLocalStorageInProduction",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsSharedBuckets",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsWildcardCorsInProduction",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsMissingRequiredProductionValue{String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "requiresS3Credentials",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.controller.AdminOperationsSurfaceTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "everyAdminControllerHasDefenseInDepthRoleGuard",
+          "result": "PASS"
+        },
+        {
+          "name": "surfaceContainsNoGenericPutPatchOrBookingStatusMutation",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.OwnerVerificationServiceTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "adminApprovesPendingAndRejectsPendingWithReason",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerSubmitsAndCannotDowngradeVerifiedState",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.controller.TrustWorkflowSecuritySurfaceTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "adminQueuesAndActionsAreAdminOnly",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerVerificationAndSubmissionAreOwnerOnly",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AuthServiceTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "registerAndLoginIssueTokensWithoutPersistingRawRefreshToken",
+          "result": "PASS"
+        },
+        {
+          "name": "loginRejectsInactiveUser",
+          "result": "PASS"
+        },
+        {
+          "name": "refreshRotatesAndRejectsReuse",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PaymentServiceLeadTimeExemptionTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "acceptedBookingCanCheckoutWithoutReapplyingLeadTime",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.RefundTransportContractTest": {
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "paymentCancellationUsesDeleteAndDecodesProviderState",
+          "result": "PASS"
+        },
+        {
+          "name": "responseLossIsTransportAmbiguity",
+          "result": "PASS"
+        },
+        {
+          "name": "createAndLookupUsePaymentScopeExactAmountAndDurableKey",
+          "result": "PASS"
+        },
+        {
+          "name": "providerErrorsRemainErrors{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerErrorsRemainErrors{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerErrorsRemainErrors{int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "providerErrorsRemainErrors{int}[4]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.controller.VerifiedEmailEnforcementSurfaceTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "launchBlockerMarketplaceMutationsUseCentralVerifiedUserPolicy",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.RefundCoordinatorLatePaymentTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "authoritativeRefundCompletionKeepsBookingExpired",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateClaimReusesOneProviderIdempotencyKeyAndOneNotification",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationRefundCompletionIsIdempotentAndKeepsCancelledStatus",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.S3StorageTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "privateStorageRejectsTraversal",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsOversizedAndUnsupportedImages",
+          "result": "PASS"
+        },
+        {
+          "name": "publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueProductionProfileValidatorTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "completeProfileIsReady",
+          "result": "PASS"
+        },
+        {
+          "name": "contradictoryActivitiesAndParkingAreRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "incompleteProfileReportsUnknownFieldsWithoutTreatingThemAsFalse",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingAvailabilityValidatorTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "acceptsSlotContainedInEffectiveAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsSlotOutsideEffectiveAvailability",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsInvalidVenueTimezone",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.FinancialDocumentConcurrencyContractTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "issuanceLocksAuthoritativeAggregateRowsBeforeUniqueDocumentCreation",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingFinancialsTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "roundsMoneyExplicitlyAndEnforcesInvariants",
+          "result": "PASS"
+        },
+        {
+          "name": "calculatesCommissionAndActualFeePayout",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.RefundCancellationContractTest": {
+      "tests": 68,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedOrUnrelatedAmountNeverCompletes{String, String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "boundedReplayAtProviderCacheExpiry{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "boundedReplayAtProviderCacheExpiry{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "boundedReplayAtProviderCacheExpiry{int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStatusCannotAttach{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStatusCannotAttach{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStatusCannotAttach{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStatusCannotAttach{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidStatusCannotAttach{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "wrongPaymentAndClaimIdentityCannotAttach",
+          "result": "PASS"
+        },
+        {
+          "name": "recreatedServiceResumesOriginalIdentityAndAmount",
+          "result": "PASS"
+        },
+        {
+          "name": "reconciliationRequiresSameRefundId",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[40]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[41]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[42]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[43]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[44]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[45]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[46]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[47]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusMatrixAndImmutableEconomics{RefundStatus, RefundStatus, boolean}[48]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingApprovalExpirationJobTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "scheduledScanExpiresApprovedUnpaidBookings",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.IbanPolicyTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "rejectsChecksumAndUnsupportedCountry",
+          "result": "PASS"
+        },
+        {
+          "name": "normalizesAndAcceptsValidSepaIbans",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.controller.AdminOwnerFinancialLiabilityControllerTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "scoutAndOwnerAreDeniedAllLiabilityOperations",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.PrivateDocumentImmutabilityTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "simultaneousStoreHasOneWinnerAndLeavesNoTemporaryFile",
+          "result": "PASS"
+        },
+        {
+          "name": "existingReferenceCannotBeOverwritten",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ProviderCostAllocationTest": {
+      "tests": 16,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "v1Allocation{ProviderCostResponsibility, String, String, String, String, String, String}[16]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AccountEmailNotificationServiceTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "resetUsesAuthoritativeEmailAndFrontendResetRoute",
+          "result": "PASS"
+        },
+        {
+          "name": "verificationUsesAuthoritativeEmailAndFrontendVerificationRoute",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VerifiedUserPolicyTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "activeAdminOperationsAreNotBlockedByMarketplaceVerification",
+          "result": "PASS"
+        },
+        {
+          "name": "requiresCurrentDatabaseVerificationForMarketplaceUsers",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AvailabilityAlgebraTest": {
+      "tests": 67,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "exactMinuteBoundaryAndJavaGapOverlapResolutionAreExplicit",
+          "result": "PASS"
+        },
+        {
+          "name": "combinedAlgebraAndMultipleBookingsNormalizeWithoutMutation",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "displayedLeadBoundaryNeverExposesAnInvalidStart{String, String, String, String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "elapsedDayAcrossBothDstTransitions{String, String, String, String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "elapsedDayAcrossBothDstTransitions{String, String, String, String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[8]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[9]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[10]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[11]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[12]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[13]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[14]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[15]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[16]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[17]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[18]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[19]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[20]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[21]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[22]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[23]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[24]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[25]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[26]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[27]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[28]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[29]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[30]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[31]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[32]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[33]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[34]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[35]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[36]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[37]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[38]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[39]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[40]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[41]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[42]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[43]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[44]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[45]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[46]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[47]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[48]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[49]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[50]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[51]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[52]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[53]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[54]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[55]",
+          "result": "PASS"
+        },
+        {
+          "name": "statusAndHalfOpenSubtraction{BookingStatus, String, String, List}[56]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.ai.MatchingTransportContractTest": {
+      "tests": 13,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "keyUsesHeaderAndFencesAreStripped",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[5]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[6]",
+          "result": "PASS"
+        },
+        {
+          "name": "invalidEnvelope{String}[7]",
+          "result": "PASS"
+        },
+        {
+          "name": "transportFailuresAndRetryBound{int}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "transportFailuresAndRetryBound{int}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "transportFailuresAndRetryBound{int}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "transportFailuresAndRetryBound{int}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "transportFailuresAndRetryBound{int}[5]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueBookingLeadTimePolicyTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "usesElapsedTimeAcrossAmsterdamDstChange",
+          "result": "PASS"
+        },
+        {
+          "name": "allowsTwentyFiveHoursAndExactBoundary",
+          "result": "PASS"
+        },
+        {
+          "name": "rejectsOneMinuteInsideBoundary",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.security.SecurityLoggingTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "unexpectedProviderCauseDoesNotReachApplicationLogsOrResponse",
+          "result": "PASS"
+        },
+        {
+          "name": "malformedJwtHeaderCannotInjectTokenContentsIntoDebugLogs",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.AccountRecoveryServiceTest": {
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "expiredAndInactiveVerificationAreRejectedWithoutActivation",
+          "result": "PASS"
+        },
+        {
+          "name": "validVerificationIsSingleUseAndSameUsedTokenIsIdempotent",
+          "result": "PASS"
+        },
+        {
+          "name": "forgotIsGenericAndResetChangesPasswordAndRevokesEveryRefreshSession",
+          "result": "PASS"
+        },
+        {
+          "name": "unknownForgotResponseMatchesExistingAndExpiredResetIsRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "resendIsGenericAndDoesNothingForVerifiedOrUnknownAccount",
+          "result": "PASS"
+        },
+        {
+          "name": "recoveryTokensRejectExactExpiryEquality",
+          "result": "PASS"
+        },
+        {
+          "name": "issueStoresOnlyHashAndPublishesRawTokenAfterTransactionBoundary",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.BookingCancellationPolicyTest": {
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "exactSevenDaysAndExact48HoursUsePartialTier",
+          "result": "PASS"
+        },
+        {
+          "name": "ownerAndAdminAlwaysProduceFullCustomerRefundAndZeroSettlement",
+          "result": "PASS"
+        },
+        {
+          "name": "moneyRoundingIsHalfUpAtTwoDecimals",
+          "result": "PASS"
+        },
+        {
+          "name": "cancellationEconomicsUseRetainedAmountAndCommissionSnapshot",
+          "result": "PASS"
+        },
+        {
+          "name": "snapshotUsesVenueTimezoneAcrossAmsterdamDstTransition",
+          "result": "PASS"
+        },
+        {
+          "name": "gracePeriodRequiresConfirmationWithin24HoursAndShootMoreThan48HoursAway",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.RefundServiceTest": {
+      "tests": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "cancellationRefundUsesExactClaimedPartialAmount",
+          "result": "PASS"
+        },
+        {
+          "name": "onlyAdminMayRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateCancellationClaimDoesNotCreateAnotherProviderRefund",
+          "result": "PASS"
+        },
+        {
+          "name": "latePaymentProviderFailureRetainsCoordinatorStateForSafeRetry",
+          "result": "PASS"
+        },
+        {
+          "name": "definitiveProviderRejectionIsRecordedAndSanitized",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.config.NotificationExecutorBindingTest": {
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "saturationHasBoundedQueueAndCallerBackpressure",
+          "result": "PASS"
+        },
+        {
+          "name": "actualDispatcherUsesBoundedExecutorWithStandardAlias",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueHardRequirementEvaluatorTest": {
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "minimumCeilingHeightMustBeKnownAndHighEnough",
+          "result": "PASS"
+        },
+        {
+          "name": "explicitActivityMustBePermittedAndNotProhibited",
+          "result": "PASS"
+        },
+        {
+          "name": "requiredBooleanFactsFailClosedWhenFalseOrUnknown",
+          "result": "PASS"
+        },
+        {
+          "name": "preferencesNeverRemoveCandidatesEvenWhenFactsAreUnknown",
+          "result": "PASS"
+        },
+        {
+          "name": "parkingRequirementAndMinimumSpacesFailClosed",
+          "result": "PASS"
+        },
+        {
+          "name": "crewCapacityMustBeKnownAndMeetTheRequirement",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.TrustNotificationServiceTest": {
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "venueSubmissionAndReactivationUseOwnerLinkAndEscapeReason",
+          "result": "PASS"
+        },
+        {
+          "name": "sendsVerificationApprovalAndSafeRejectionReason",
+          "result": "PASS"
+        },
+        {
+          "name": "submissionAndRejectionUseOwnerLinkAndEscapeReviewText",
+          "result": "PASS"
+        },
+        {
+          "name": "sendsApprovalChangesAndSuspensionMessages",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.CancellationServiceTest": {
+      "tests": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+          "result": "PASS"
+        },
+        {
+          "name": "duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+          "result": "PASS"
+        },
+        {
+          "name": "paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+          "result": "PASS"
+        },
+        {
+          "name": "alreadyTerminalPaymentNeedsNoProviderCancellation{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "alreadyTerminalPaymentNeedsNoProviderCancellation{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "alreadyTerminalPaymentNeedsNoProviderCancellation{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "zeroRefundCancellationNeverCallsRefundProvider",
+          "result": "PASS"
+        },
+        {
+          "name": "unsuccessfulProviderCancellationCannotWithdraw{String}[1]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsuccessfulProviderCancellationCannotWithdraw{String}[2]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsuccessfulProviderCancellationCannotWithdraw{String}[3]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsuccessfulProviderCancellationCannotWithdraw{String}[4]",
+          "result": "PASS"
+        },
+        {
+          "name": "unsuccessfulProviderCancellationCannotWithdraw{String}[5]",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.SimpleTest": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "testTrue",
+          "result": "PASS"
+        }
+      ]
+    },
+    "com.eema.backend.service.VenueMatchAvailabilityFilterTest": {
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "cases": [
+        {
+          "name": "partialOverlapAndFullyUnavailableDateAreRejected",
+          "result": "PASS"
+        },
+        {
+          "name": "completeIntervalInsideAvailabilityPasses",
+          "result": "PASS"
+        },
+        {
+          "name": "noCompleteTimingPreservesCandidatesAndDoesNotQueryAvailability",
+          "result": "PASS"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,989 @@
+[
+  {
+    "id": "STATE-001",
+    "type": "com.eema.backend.entity.enums.ActorType",
+    "values": [
+      "SCOUT",
+      "OWNER",
+      "ADMIN",
+      "SYSTEM",
+      "WEBHOOK"
+    ],
+    "testClass": "StateRepresentationIntegrationTest",
+    "methods": [
+      "everyBookingAuditEventAndActorSurvivesPostgresMapping",
+      "everyTrustEventAndSubjectSurvivesPostgresMapping"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "StateRepresentationIntegrationTest",
+        "method": "everyBookingAuditEventAndActorSurvivesPostgresMapping",
+        "passedInvocations": 1
+      },
+      {
+        "class": "StateRepresentationIntegrationTest",
+        "method": "everyTrustEventAndSubjectSurvivesPostgresMapping",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-002",
+    "type": "com.eema.backend.entity.enums.AvailabilityInquiryStatus",
+    "values": [
+      "OPEN",
+      "DECLINED",
+      "OFFERED",
+      "EXPIRED",
+      "ACCEPTED"
+    ],
+    "testClass": "InquiryIntegrationTest",
+    "methods": [
+      "allFiveStatesAndFourActions",
+      "actorsAndReadPrivacyAreStrictlyScoped",
+      "deadlineEqualityDoesNotRelyOnWorker"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "allFiveStatesAndFourActions",
+        "passedInvocations": 20
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "actorsAndReadPrivacyAreStrictlyScoped",
+        "passedInvocations": 3
+      },
+      {
+        "class": "InquiryIntegrationTest",
+        "method": "deadlineEqualityDoesNotRelyOnWorker",
+        "passedInvocations": 3
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-003",
+    "type": "com.eema.backend.entity.enums.AvailabilityOverrideType",
+    "values": [
+      "AVAILABLE",
+      "BLOCKED"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+      "avlAllDayOverridesWithEmptyAndPopulatedWeek"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "avlAllDayOverridesWithEmptyAndPopulatedWeek",
+        "passedInvocations": 2
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-004",
+    "type": "com.eema.backend.entity.enums.BookingEventType",
+    "values": [
+      "REQUEST_SUBMITTED",
+      "REQUEST_ACCEPTED",
+      "REQUEST_DECLINED",
+      "REQUEST_EXPIRED",
+      "REQUEST_BECAME_UNAVAILABLE",
+      "APPROVAL_EXPIRED",
+      "BOOKING_CONFIRMED",
+      "PAYMENT_SUCCEEDED",
+      "PAYMENT_REFUNDED",
+      "PAYMENT_RECONCILED",
+      "REFUND_REQUESTED",
+      "REFUND_STATUS_CHANGED",
+      "LATE_PAYMENT_DETECTED",
+      "LATE_PAYMENT_REFUND_REQUESTED",
+      "LATE_PAYMENT_REFUND_COMPLETED",
+      "SCOUT_CANCELLED",
+      "OWNER_CANCELLED",
+      "ADMIN_CANCELLED",
+      "PAYOUT_CALCULATED",
+      "PAYOUT_READY",
+      "PAYOUT_MARKED_PAID",
+      "PAYOUT_CANCELLED",
+      "OWNER_LIABILITY_CREATED",
+      "OWNER_LIABILITY_SETTLED",
+      "BOOKING_RECEIPT_ISSUED",
+      "OWNER_PAYOUT_STATEMENT_ISSUED"
+    ],
+    "testClass": "StateRepresentationIntegrationTest",
+    "methods": [
+      "everyBookingAuditEventAndActorSurvivesPostgresMapping"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "StateRepresentationIntegrationTest",
+        "method": "everyBookingAuditEventAndActorSurvivesPostgresMapping",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-005",
+    "type": "com.eema.backend.entity.enums.BookingStatus",
+    "values": [
+      "REQUESTED",
+      "AWAITING_PAYMENT",
+      "CONFIRMED",
+      "DECLINED",
+      "EXPIRED",
+      "UNAVAILABLE",
+      "CANCELLED",
+      "REFUNDED"
+    ],
+    "testClass": "BookingStateMachineTest",
+    "methods": [
+      "completeTransitionContract"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "BookingStateMachineTest",
+        "method": "completeTransitionContract",
+        "passedInvocations": 64
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-006",
+    "type": "com.eema.backend.entity.enums.CancellationPolicyTier",
+    "values": [
+      "PRE_PAYMENT_WITHDRAWAL",
+      "GRACE_PERIOD",
+      "FLEXIBLE_FULL_REFUND",
+      "PARTIAL_REFUND",
+      "NON_REFUNDABLE",
+      "OWNER_FULL_REFUND",
+      "ADMIN_FULL_REFUND"
+    ],
+    "testClass": "CancellationIntegrationTest",
+    "methods": [
+      "canonicalReasonBoundaryAndAuthoritativeFullRefund",
+      "canonicalUnpaidWithdrawalReleasesReservation",
+      "staleTermsConflictAndReplayCannotChangeEconomics"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "canonicalReasonBoundaryAndAuthoritativeFullRefund",
+        "passedInvocations": 2
+      },
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "canonicalUnpaidWithdrawalReleasesReservation",
+        "passedInvocations": 3
+      },
+      {
+        "class": "CancellationIntegrationTest",
+        "method": "staleTermsConflictAndReplayCannotChangeEconomics",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-007",
+    "type": "com.eema.backend.entity.enums.FinancialDocumentStatus",
+    "values": [
+      "ISSUED"
+    ],
+    "testClass": "DocumentIntegrationTest",
+    "methods": [
+      "eligiblePaidHistoryIssuesExactlyOnce",
+      "simultaneousReceiptRequestsIssueOneObjectAndAudit"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "eligiblePaidHistoryIssuesExactlyOnce",
+        "passedInvocations": 3
+      },
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "simultaneousReceiptRequestsIssueOneObjectAndAudit",
+        "passedInvocations": 3
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-008",
+    "type": "com.eema.backend.entity.enums.FinancialDocumentType",
+    "values": [
+      "BOOKING_RECEIPT",
+      "OWNER_PAYOUT_STATEMENT"
+    ],
+    "testClass": "DocumentIntegrationTest",
+    "methods": [
+      "receiptPreservesFinancialSnapshotsAndImmutableBytes",
+      "statementUsesHistoricalRoutingLedgerAndPrivateOwnership"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "receiptPreservesFinancialSnapshotsAndImmutableBytes",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DocumentIntegrationTest",
+        "method": "statementUsesHistoricalRoutingLedgerAndPrivateOwnership",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-009",
+    "type": "com.eema.backend.entity.enums.IncidentCategory",
+    "values": [
+      "PROPERTY_DAMAGE",
+      "ACCESS_PROBLEM",
+      "SAFETY",
+      "NOISE_NEIGHBOUR",
+      "MISREPRESENTATION",
+      "CONDUCT",
+      "OTHER"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "allCategoriesAllParticipants"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allCategoriesAllParticipants",
+        "passedInvocations": 7
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-010",
+    "type": "com.eema.backend.entity.enums.IncidentStatus",
+    "values": [
+      "OPEN",
+      "UNDER_REVIEW",
+      "RESOLVED",
+      "CLOSED"
+    ],
+    "testClass": "IncidentIntegrationTest",
+    "methods": [
+      "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+      "lifecycleAuditPrivacyAndFinancialIsolation"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "allIllegalTransitionsLeaveRecordAndAuditUnchanged",
+        "passedInvocations": 4
+      },
+      {
+        "class": "IncidentIntegrationTest",
+        "method": "lifecycleAuditPrivacyAndFinancialIsolation",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-011",
+    "type": "com.eema.backend.entity.enums.OperationalExceptionSeverity",
+    "values": [
+      "INFO",
+      "WARNING",
+      "CRITICAL"
+    ],
+    "testClass": "AdminDomainIntegrationTest",
+    "methods": [
+      "liabilityLinksAndReadOnlySeverityOrdering",
+      "strictExceptionCutoffs",
+      "heldReasons"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "liabilityLinksAndReadOnlySeverityOrdering",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "strictExceptionCutoffs",
+        "passedInvocations": 3
+      },
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "heldReasons",
+        "passedInvocations": 4
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-012",
+    "type": "com.eema.backend.entity.enums.OperationalExceptionType",
+    "values": [
+      "PAYOUT_READY_OVERDUE",
+      "PAYOUT_HELD",
+      "OWNER_LIABILITY_OPEN",
+      "REFUND_STUCK",
+      "PAYMENT_CREATION_STUCK",
+      "MOLLIE_FEE_UNRECONCILED",
+      "LATE_PAYMENT_REFUND_IN_PROGRESS",
+      "NOTIFICATION_DELIVERY_FAILED"
+    ],
+    "testClass": "OperationsNotificationIntegrationTest",
+    "methods": [
+      "permanentFailureAndExhaustionAreSafeOperationalExceptions"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OperationsNotificationIntegrationTest",
+        "method": "permanentFailureAndExhaustionAreSafeOperationalExceptions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-013",
+    "type": "com.eema.backend.entity.enums.OwnerFinancialLiabilityStatus",
+    "values": [
+      "OPEN",
+      "SETTLED",
+      "WAIVED"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "liabilitySettlementUsesStoredAmountAndSerializes",
+      "waivedLiabilityCannotBeSettledAndDatabaseRejectsInvalidMoneyAndDuplicates"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "liabilitySettlementUsesStoredAmountAndSerializes",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "waivedLiabilityCannotBeSettledAndDatabaseRejectsInvalidMoneyAndDuplicates",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-014",
+    "type": "com.eema.backend.entity.enums.OwnerFinancialLiabilityType",
+    "values": [
+      "PROVIDER_COST",
+      "OWNER_PAYOUT_RECOVERY"
+    ],
+    "testClass": "ProviderCostAllocationIntegrationTest",
+    "methods": [
+      "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProviderCostAllocationIntegrationTest",
+        "method": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation",
+        "passedInvocations": 16
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-015",
+    "type": "com.eema.backend.entity.enums.OwnerPayoutHoldReason",
+    "values": [
+      "WAITING_FOR_BOOKING_END",
+      "WAITING_FOR_PROVIDER_COST",
+      "REFUND_IN_PROGRESS",
+      "WAITING_FOR_PAYOUT_DESTINATION"
+    ],
+    "testClass": "AdminDomainIntegrationTest",
+    "methods": [
+      "heldReasons"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AdminDomainIntegrationTest",
+        "method": "heldReasons",
+        "passedInvocations": 4
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-016",
+    "type": "com.eema.backend.entity.enums.OwnerPayoutStatus",
+    "values": [
+      "CALCULATED",
+      "HELD",
+      "READY",
+      "PAID",
+      "CANCELLED"
+    ],
+    "testClass": "PayoutIntegrationTest",
+    "methods": [
+      "onlyReadyCanBeRecordedPaid",
+      "payoutReadsAndMutationsRespectRolesAndObjectScope"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "onlyReadyCanBeRecordedPaid",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PayoutIntegrationTest",
+        "method": "payoutReadsAndMutationsRespectRolesAndObjectScope",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-017",
+    "type": "com.eema.backend.entity.enums.OwnerVerificationStatus",
+    "values": [
+      "UNVERIFIED",
+      "PENDING",
+      "VERIFIED",
+      "REJECTED"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+      "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "fullLifecyclePreservesHistoryAndOwnerSafeProjection",
+        "passedInvocations": 1
+      },
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-018",
+    "type": "com.eema.backend.entity.enums.PaymentCreationStatus",
+    "values": [
+      "NOT_STARTED",
+      "CREATING",
+      "CREATED"
+    ],
+    "testClass": "PaymentIntegrationTest",
+    "methods": [
+      "ambiguousCreationReplayBoundary",
+      "createdRetryReusesSavedCheckout",
+      "freshCoordinatorReadsDurableClaimsAndCompletedResult"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "ambiguousCreationReplayBoundary",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "createdRetryReusesSavedCheckout",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "freshCoordinatorReadsDurableClaimsAndCompletedResult",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-019",
+    "type": "com.eema.backend.entity.enums.PayoutDestinationStatus",
+    "values": [
+      "PENDING_VERIFICATION",
+      "VERIFIED",
+      "REJECTED",
+      "REPLACED"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+      "revealAllowedStatesHeadersAndAudit"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "replacementRejectionAndHistoricalDuplicatesPreserveOneVerified",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "revealAllowedStatesHeadersAndAudit",
+        "passedInvocations": 4
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-020",
+    "type": "com.eema.backend.entity.enums.PayoutDestinationType",
+    "values": [
+      "IBAN"
+    ],
+    "testClass": "DestinationIntegrationTest",
+    "methods": [
+      "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+      "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "normalizedSubmissionEncryptsAndMasksEveryOrdinaryRead",
+        "passedInvocations": 1
+      },
+      {
+        "class": "DestinationIntegrationTest",
+        "method": "clientCannotChooseOwnerStatusCurrencyOrTypeAndAdminFiltersAreExact",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-021",
+    "type": "com.eema.backend.entity.enums.PolicyStatus",
+    "values": [
+      "DRAFT",
+      "PUBLISHED",
+      "RETIRED"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "immutableTransitionsAndRequestContract"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "immutableTransitionsAndRequestContract",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-022",
+    "type": "com.eema.backend.entity.enums.PolicyType",
+    "values": [
+      "TERMS_OF_SERVICE",
+      "PRIVACY_POLICY",
+      "ACCEPTABLE_USE_POLICY",
+      "PRODUCTION_POLICY",
+      "INSURANCE_REQUIREMENTS"
+    ],
+    "testClass": "PolicyIntegrationTest",
+    "methods": [
+      "lifecycleAllFiveAndAuthorization",
+      "exactAcceptanceSubsetsDuplicatesAndMissingTypes"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "lifecycleAllFiveAndAuthorization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "PolicyIntegrationTest",
+        "method": "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-023",
+    "type": "com.eema.backend.entity.enums.ProductionActivity",
+    "values": [
+      "PHOTO",
+      "FILM",
+      "VIDEO",
+      "INTERVIEW",
+      "COMMERCIAL",
+      "MUSIC_VIDEO",
+      "CONTENT_CREATION"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "activityArraysPreserveUnknownEmptyAndEveryEnumAndRejectContradictions"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "activityArraysPreserveUnknownEmptyAndEveryEnumAndRejectContradictions",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-024",
+    "type": "com.eema.backend.entity.enums.ProviderCostResponsibility",
+    "values": [
+      "NONE",
+      "OWNER_SETTLEMENT",
+      "OWNER",
+      "EEMA"
+    ],
+    "testClass": "ProviderCostAllocationIntegrationTest",
+    "methods": [
+      "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "ProviderCostAllocationIntegrationTest",
+        "method": "responsibilityMatrixPersistsExactAllocationUnderConcurrentReconciliation",
+        "passedInvocations": 16
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-025",
+    "type": "com.eema.backend.entity.enums.RefundStatus",
+    "values": [
+      "NONE",
+      "CREATING",
+      "QUEUED",
+      "PENDING",
+      "PROCESSING",
+      "REFUNDED",
+      "FAILED",
+      "CANCELED"
+    ],
+    "testClass": "RefundIntegrationTest",
+    "methods": [
+      "providerStatusAndFailedEconomics",
+      "completionPreservesRefundOrigin"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "RefundIntegrationTest",
+        "method": "providerStatusAndFailedEconomics",
+        "passedInvocations": 6
+      },
+      {
+        "class": "RefundIntegrationTest",
+        "method": "completionPreservesRefundOrigin",
+        "passedInvocations": 3
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-026",
+    "type": "com.eema.backend.entity.enums.TrustEventType",
+    "values": [
+      "OWNER_VERIFICATION_SUBMITTED",
+      "OWNER_VERIFICATION_APPROVED",
+      "OWNER_VERIFICATION_REJECTED",
+      "VENUE_SUBMITTED",
+      "VENUE_APPROVED",
+      "VENUE_CHANGES_REQUESTED",
+      "VENUE_SUSPENDED",
+      "VENUE_REACTIVATED",
+      "PAYOUT_DESTINATION_SUBMITTED",
+      "PAYOUT_DESTINATION_VERIFIED",
+      "PAYOUT_DESTINATION_REJECTED",
+      "PAYOUT_DESTINATION_REPLACED",
+      "PAYOUT_DESTINATION_REVEALED",
+      "PAYOUT_DESTINATION_SNAPSHOTTED",
+      "INCIDENT_REPORTED",
+      "INCIDENT_REVIEW_STARTED",
+      "INCIDENT_RESOLVED",
+      "INCIDENT_CLOSED"
+    ],
+    "testClass": "StateRepresentationIntegrationTest",
+    "methods": [
+      "everyTrustEventAndSubjectSurvivesPostgresMapping"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "StateRepresentationIntegrationTest",
+        "method": "everyTrustEventAndSubjectSurvivesPostgresMapping",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-027",
+    "type": "com.eema.backend.entity.enums.TrustSubjectType",
+    "values": [
+      "OWNER_VERIFICATION",
+      "VENUE",
+      "PAYOUT_DESTINATION",
+      "INCIDENT"
+    ],
+    "testClass": "StateRepresentationIntegrationTest",
+    "methods": [
+      "everyTrustEventAndSubjectSurvivesPostgresMapping"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "StateRepresentationIntegrationTest",
+        "method": "everyTrustEventAndSubjectSurvivesPostgresMapping",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-028",
+    "type": "com.eema.backend.entity.enums.UserRole",
+    "values": [
+      "SCOUT",
+      "OWNER",
+      "ADMIN"
+    ],
+    "testClass": "AuthSessionIntegrationTest",
+    "methods": [
+      "jwtValidationAndDatabaseAuthority",
+      "loginMatrixAndAnonymousMe"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "jwtValidationAndDatabaseAuthority",
+        "passedInvocations": 1
+      },
+      {
+        "class": "AuthSessionIntegrationTest",
+        "method": "loginMatrixAndAnonymousMe",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-029",
+    "type": "com.eema.backend.entity.enums.VenueStatus",
+    "values": [
+      "DRAFT",
+      "PENDING",
+      "ACTIVE",
+      "SUSPENDED"
+    ],
+    "testClass": "VenueDomainIntegrationTest",
+    "methods": [
+      "visibilityStatusActorMatrixAndExactTagNormalization",
+      "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "visibilityStatusActorMatrixAndExactTagNormalization",
+        "passedInvocations": 1
+      },
+      {
+        "class": "VenueDomainIntegrationTest",
+        "method": "fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue",
+        "passedInvocations": 1
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-030",
+    "type": "com.eema.backend.entity.enums.VerificationMethod",
+    "values": [
+      "MANUAL_REVIEW",
+      "VIDEO_CALL",
+      "BUSINESS_DOCUMENT",
+      "VENUE_CONTROL_EVIDENCE"
+    ],
+    "testClass": "OwnerTrustIntegrationTest",
+    "methods": [
+      "everyMethodIsStoredWithoutAdditionalIdentityEvidence"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "OwnerTrustIntegrationTest",
+        "method": "everyMethodIsStoredWithoutAdditionalIdentityEvidence",
+        "passedInvocations": 4
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-031",
+    "type": "com.eema.backend.event.BookingLifecycleEvent$Type",
+    "values": [
+      "REQUEST_SUBMITTED",
+      "REQUEST_ACCEPTED",
+      "REQUEST_DECLINED",
+      "REQUEST_EXPIRED",
+      "REQUEST_BECAME_UNAVAILABLE",
+      "APPROVAL_EXPIRED"
+    ],
+    "testClass": "EmailTemplateContractTest",
+    "methods": [
+      "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "EmailTemplateContractTest",
+        "method": "requestTemplatesPreserveSnapshotRecipientsEscapeUnicodeAndUseExistingBookingRoute",
+        "passedInvocations": 6
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-032",
+    "type": "com.eema.backend.event.AvailabilityInquiryLifecycleEvent$Type",
+    "values": [
+      "CREATED",
+      "OFFERED",
+      "DECLINED",
+      "OFFER_EXPIRED"
+    ],
+    "testClass": "EmailTemplateContractTest",
+    "methods": [
+      "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "EmailTemplateContractTest",
+        "method": "inquiryMessagesUseCurrentRecipientAndEscapeAllUntrustedContent",
+        "passedInvocations": 4
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  },
+  {
+    "id": "STATE-033",
+    "type": "com.eema.backend.service.BookingService$PaidPaymentResult",
+    "values": [
+      "APPLIED",
+      "LATE_PAYMENT",
+      "DUPLICATE"
+    ],
+    "testClass": "PaymentIntegrationTest",
+    "methods": [
+      "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect",
+      "latePaymentWithOrWithoutSchedulerNeverResurrects",
+      "webhookIntegrityMatrix"
+    ],
+    "representationTest": "EnumRepresentationContractTest",
+    "result": "PASS",
+    "executionProof": [
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "duplicateConcurrentPaidCallbacksHaveOneEconomicEffect",
+        "passedInvocations": 3
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "latePaymentWithOrWithoutSchedulerNeverResurrects",
+        "passedInvocations": 2
+      },
+      {
+        "class": "PaymentIntegrationTest",
+        "method": "webhookIntegrityMatrix",
+        "passedInvocations": 16
+      }
+    ],
+    "executionEvidence": "../final/unit-methods.json and ../final/postgres-methods.json"
+  }
+]
