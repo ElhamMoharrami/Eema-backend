@@ -16,6 +16,7 @@ public class GeminiBriefParserService implements BriefParser {
 
     private final GeminiClient geminiClient;
     private final ObjectMapper objectMapper;
+    private final MatchingReferenceDateProvider referenceDateProvider;
 
     @Override
     public ParsedBrief parseBrief(String brief) {
@@ -28,7 +29,7 @@ public class GeminiBriefParserService implements BriefParser {
 
         try {
             String prompt =
-                    buildPrompt(brief);
+                    buildPrompt(brief, referenceDateProvider.today());
 
             String rawResponse =
                     geminiClient.generateContent(prompt);
@@ -167,7 +168,7 @@ public class GeminiBriefParserService implements BriefParser {
         }
     }
 
-    private String buildPrompt(String brief) {
+    private String buildPrompt(String brief, java.time.LocalDate referenceDate) {
 
             return """
             You are an expert film and photography location scout.
@@ -177,6 +178,10 @@ public class GeminiBriefParserService implements BriefParser {
 
             USER BRIEF:
             %s
+
+            CALENDAR REFERENCE:
+            - Current date: %s
+            - Reference timezone for relative calendar expressions: Europe/Amsterdam
 
             Return exactly one complete JSON object using this schema:
 
@@ -216,6 +221,9 @@ public class GeminiBriefParserService implements BriefParser {
               "prefersLift": null,
               "requiresBathrooms": null,
               "requiresSoundRecordingSuitable": null,
+              "requestedDate": null,
+              "requestedStartTime": null,
+              "requestedEndTime": null,
               "timingDatePreferences": null,
 
               "briefSummary": null,
@@ -228,6 +236,19 @@ public class GeminiBriefParserService implements BriefParser {
             - Unknown scalar fields must be null.
             - Unknown list fields must be [].
             - confidenceScore must be between 0.0 and 1.0.
+
+            Exact timing:
+            - Use ISO date YYYY-MM-DD and 24-hour local times HH:mm:ss.
+            - Populate requestedDate, requestedStartTime, and requestedEndTime only when
+              the brief unambiguously supplies one date and both interval boundaries.
+            - Resolve today, tomorrow, and named relative weekdays only against the
+              supplied current date and Europe/Amsterdam reference timezone.
+            - "25 August from 10 to 16" may become an exact interval when its calendar
+              date is unambiguous from the supplied reference date.
+            - "Friday afternoon", "sometime next week", "around 2pm", a date without
+              both times, or times without a reliable date must leave all three exact
+              timing fields null. Never invent morning/afternoon boundaries or duration.
+            - Preserve non-exact timing language in timingDatePreferences for ranking context.
 
             Requirement strength:
             - "need", "must", "required", and "important" normally set requires... = true.
@@ -266,6 +287,6 @@ public class GeminiBriefParserService implements BriefParser {
             concise factual sentence. Parser confidence is interpretation confidence only.
 
             Return the complete JSON object only.
-            """.formatted(brief);
+            """.formatted(brief, referenceDate);
     }
 }

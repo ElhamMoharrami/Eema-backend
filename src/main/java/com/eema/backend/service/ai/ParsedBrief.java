@@ -1,6 +1,8 @@
 package com.eema.backend.service.ai;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import com.eema.backend.entity.enums.ProductionActivity;
 
@@ -42,6 +44,9 @@ public record ParsedBrief(
         Boolean requiresBathrooms,
         Boolean requiresSoundRecordingSuitable,
 
+        LocalDate requestedDate,
+        LocalTime requestedStartTime,
+        LocalTime requestedEndTime,
         String timingDatePreferences,
 
         String briefSummary,
@@ -108,6 +113,14 @@ public record ParsedBrief(
 
         if (minimumParkingSpaces != null && minimumParkingSpaces < 0) {
             throw new IllegalArgumentException("minimumParkingSpaces must be non-negative");
+        }
+
+        if (requestedStartTime != null
+                && requestedEndTime != null
+                && !requestedEndTime.isAfter(requestedStartTime)) {
+            throw new IllegalArgumentException(
+                    "requestedEndTime must be after requestedStartTime"
+            );
         }
 
         if (confidenceScore != null

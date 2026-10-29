@@ -3,6 +3,7 @@ package com.eema.backend.service.ai;
 import com.eema.backend.dto.response.MatchResponse;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.service.VenueFilterBuilder;
+import com.eema.backend.service.VenueMatchAvailabilityFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ public class GeminiAiService implements AiService {
 
     private final BriefParser briefParser;
     private final VenueFilterBuilder venueFilterBuilder;
+    private final VenueMatchAvailabilityFilter availabilityFilter;
     private final VenueRanker venueRanker;
 
     @Override
@@ -55,6 +57,14 @@ public class GeminiAiService implements AiService {
             log.info(
                     "Database filtering returned {} candidates",
                     candidates.size()
+            );
+
+            candidates = availabilityFilter.retainAvailable(candidates, parsedBrief);
+
+            log.info(
+                    "Availability filtering returned {} candidates; exactInterval={}",
+                    candidates.size(),
+                    availabilityFilter.hasExactInterval(parsedBrief)
             );
 
             if (candidates.isEmpty()) {

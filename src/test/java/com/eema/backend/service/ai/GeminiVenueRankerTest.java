@@ -36,8 +36,12 @@ class GeminiVenueRankerTest {
         when(client.generateContent(anyString())).thenReturn("raw");
         when(client.extractGeneratedText("raw")).thenReturn("[]");
 
+        ParsedBrief brief = ParsedBriefFixtures.fromJson("""
+                {"requestedDate":"2026-08-25","requestedStartTime":"10:00:00",
+                 "requestedEndTime":"16:00:00"}
+                """);
         new GeminiVenueRanker(client, objectMapper, mapper)
-                .rank("Interview", ParsedBriefFixtures.empty(), List.of(venue));
+                .rank("Interview", brief, List.of(venue));
 
         ArgumentCaptor<String> prompt = ArgumentCaptor.forClass(String.class);
         verify(client).generateContent(prompt.capture());
@@ -49,6 +53,7 @@ class GeminiVenueRankerTest {
                 .contains("No smoke effects")
                 .contains("3-phase power available")
                 .contains("Do not claim current availability")
+                .contains("available for the exact requested interval 2026-08-25 10:00-16:00")
                 .contains("Do not judge or claim a total budget fit")
                 .contains("Do not claim excellent acoustics");
         assertThat(prompt.getValue()).doesNotContain("ownerEmail");

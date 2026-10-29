@@ -155,6 +155,13 @@ public class GeminiVenueRanker implements VenueRanker {
                                     .toList()
                     );
 
+            String availabilityInstruction = hasExactInterval(parsedBrief)
+                    ? "Every candidate is available for the exact requested interval "
+                    + parsedBrief.requestedDate() + " " + parsedBrief.requestedStartTime()
+                    + "-" + parsedBrief.requestedEndTime()
+                    + " in that venue's local timezone. You may state only that exact fact."
+                    : "No exact requested interval was established. Make no availability claim.";
+
             return """
                     You are an expert film and photography location scout.
 
@@ -165,6 +172,9 @@ public class GeminiVenueRanker implements VenueRanker {
                     %s
 
                     AVAILABLE VENUES:
+                    %s
+
+                    AVAILABILITY CONTEXT:
                     %s
 
                     Every venue below has already passed all deterministic hard requirements.
@@ -208,7 +218,8 @@ public class GeminiVenueRanker implements VenueRanker {
                     """.formatted(
                     originalBrief,
                     requirements,
-                    candidates
+                    candidates,
+                    availabilityInstruction
             );
 
         } catch (Exception e) {
@@ -217,6 +228,12 @@ public class GeminiVenueRanker implements VenueRanker {
                     e
             );
         }
+    }
+
+    private boolean hasExactInterval(ParsedBrief brief) {
+        return brief.requestedDate() != null
+                && brief.requestedStartTime() != null
+                && brief.requestedEndTime() != null;
     }
 
     private List<VenueRanking> parseRankings(String json) {
