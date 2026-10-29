@@ -46,7 +46,7 @@ public class VenueController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('OWNER') and @verifiedUserPolicy.isVerified()")
     public ResponseEntity<VenueDto> createVenue(@Valid @RequestBody CreateVenueRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -80,14 +80,14 @@ public class VenueController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN') and @verifiedUserPolicy.isVerified()")
     public ResponseEntity<VenueDto> updateVenue(@PathVariable UUID id,
                                                  @Valid @RequestBody UpdateVenueRequest request) {
         return ResponseEntity.ok(venueService.updateVenue(id, request));
     }
 
     @PostMapping(value = "/{id}/photos", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN') and @verifiedUserPolicy.isVerified()")
     public ResponseEntity<VenueDto> uploadAndAttachPhoto(@PathVariable UUID id,
                                                          @RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) return ResponseEntity.badRequest().build();

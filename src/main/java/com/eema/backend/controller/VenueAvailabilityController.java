@@ -27,26 +27,26 @@ public class VenueAvailabilityController {
     public VenueAvailabilitySettingsDto getSettings(@PathVariable UUID venueId) { return service.getSettings(venueId); }
 
     @PutMapping("/settings")
-    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN') and @verifiedUserPolicy.isVerified()")
     public VenueAvailabilitySettingsDto updateSettings(@PathVariable UUID venueId, @Valid @RequestBody UpdateVenueAvailabilitySettingsRequest request) {
         return service.updateSettings(venueId, request);
     }
 
     @PutMapping("/weekly")
-    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN') and @verifiedUserPolicy.isVerified()")
     public VenueAvailabilitySettingsDto replaceWeekly(@PathVariable UUID venueId, @Valid @RequestBody UpdateWeeklyAvailabilityRequest request) {
         return service.replaceWeekly(venueId, request);
     }
 
     @PostMapping("/overrides")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN') and @verifiedUserPolicy.isVerified()")
     public AvailabilityOverrideDto addOverride(@PathVariable UUID venueId, @Valid @RequestBody CreateAvailabilityOverrideRequest request) {
         return service.addOverride(venueId, request);
     }
 
     @DeleteMapping("/overrides/{overrideId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN') and @verifiedUserPolicy.isVerified()")
     public void deleteOverride(@PathVariable UUID venueId, @PathVariable UUID overrideId) { service.deleteOverride(venueId, overrideId); }
 }

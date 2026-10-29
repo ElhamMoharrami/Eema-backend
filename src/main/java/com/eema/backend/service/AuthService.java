@@ -42,6 +42,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserMapper userMapper;
     private final AppProperties appProperties;
+    private final AccountRecoveryService accountRecoveryService;
 
     /**
      * Register a new user.
@@ -75,9 +76,11 @@ public class AuthService {
                 .role(request.role())
                 .fullName(request.fullName())
                 .active(true)
+                .emailVerified(false)
                 .build();
 
         userRepository.save(user);
+        accountRecoveryService.issueVerification(user);
 
         // Generate and save tokens
         return createAuthentication(user);

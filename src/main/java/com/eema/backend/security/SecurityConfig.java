@@ -70,7 +70,9 @@ public class SecurityConfig {
                         // AUTH
                         // -------------------------
 
-                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh",
+                                "/auth/verify-email", "/auth/resend-verification",
+                                "/auth/forgot-password", "/auth/reset-password").permitAll()
 
                         // -------------------------
                         // MOLLIE WEBHOOK

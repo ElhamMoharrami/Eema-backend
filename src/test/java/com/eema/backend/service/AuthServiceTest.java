@@ -30,7 +30,8 @@ class AuthServiceTest {
     private final JwtService jwt = mock(JwtService.class);
     private final AppProperties properties = new AppProperties(
             new AppProperties.JwtProperties("unused", 15, 7), null, null, null, null, null, null, null, null);
-    private final AuthService service = new AuthService(users, tokens, passwords, jwt, new UserMapper(), properties);
+    private final AccountRecoveryService recovery = mock(AccountRecoveryService.class);
+    private final AuthService service = new AuthService(users, tokens, passwords, jwt, new UserMapper(), properties, recovery);
 
     @Test
     void loginRejectsInactiveUser() {
@@ -48,6 +49,7 @@ class AuthServiceTest {
         when(jwt.hashRefreshToken("raw-refresh")).thenReturn("hashed-refresh");
         assertEquals("raw-refresh", service.register(new RegisterRequest(
                 "New@Example.com", "password1", "New Scout", UserRole.SCOUT)).refreshToken());
+        verify(recovery).issueVerification(argThat(user -> !user.isEmailVerified()));
         verify(tokens).save(argThat(token -> "hashed-refresh".equals(token.getTokenHash())));
 
         User active = User.builder().email("new@example.com").passwordHash("hash").role(UserRole.SCOUT).active(true).build();

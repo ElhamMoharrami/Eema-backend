@@ -20,7 +20,7 @@ public class AvailabilityInquiryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('SCOUT')")
+    @PreAuthorize("hasRole('SCOUT') and @verifiedUserPolicy.isVerified()")
     public AvailabilityInquiryDto create(@Valid @RequestBody CreateAvailabilityInquiryRequest request) { return service.create(request); }
 
     @GetMapping("/mine")
@@ -32,14 +32,14 @@ public class AvailabilityInquiryController {
     public List<AvailabilityInquiryDto> ownedVenueInquiries() { return service.ownedVenueInquiries(); }
 
     @PostMapping("/{id}/decline")
-    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('OWNER') and @verifiedUserPolicy.isVerified()")
     public AvailabilityInquiryDto decline(@PathVariable UUID id) { return service.decline(id); }
 
     @PostMapping("/{id}/offer")
-    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('OWNER') and @verifiedUserPolicy.isVerified()")
     public AvailabilityInquiryDto offer(@PathVariable UUID id, @Valid @RequestBody OfferAvailabilityInquiryRequest request) { return service.offer(id, request); }
 
     @PostMapping("/{id}/accept")
-    @PreAuthorize("hasRole('SCOUT')")
+    @PreAuthorize("hasRole('SCOUT') and @verifiedUserPolicy.isVerified()")
     public BookingDto accept(@PathVariable UUID id) { return service.accept(id); }
 }

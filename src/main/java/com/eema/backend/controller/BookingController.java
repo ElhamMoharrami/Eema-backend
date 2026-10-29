@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.net.URI;
 import java.util.List;
@@ -32,6 +33,7 @@ public class BookingController {
     private final CancellationService cancellationService;
 
     @PostMapping
+    @PreAuthorize("@verifiedUserPolicy.isVerified()")
     public ResponseEntity<BookingDto> createBooking(@Valid @RequestBody CreateBookingRequest request) {
 
         User user = currentUserService.getCurrentUser();
@@ -57,16 +59,19 @@ public class BookingController {
     }
 
     @PostMapping("/{id}/accept")
+    @PreAuthorize("@verifiedUserPolicy.isVerified()")
     public ResponseEntity<BookingDto> acceptRequest(@PathVariable UUID id) {
         return ResponseEntity.ok(bookingService.acceptRequest(id));
     }
 
     @PostMapping("/{id}/decline")
+    @PreAuthorize("@verifiedUserPolicy.isVerified()")
     public ResponseEntity<BookingDto> declineRequest(@PathVariable UUID id) {
         return ResponseEntity.ok(bookingService.declineRequest(id));
     }
 
     @PostMapping("/{id}/cancel")
+    @PreAuthorize("@verifiedUserPolicy.isVerified()")
     public ResponseEntity<BookingDto> cancelBooking(
             @PathVariable UUID id,
             @Valid @RequestBody(required = false) CancelBookingRequest request) {
@@ -79,6 +84,7 @@ public class BookingController {
     }
 
     @PostMapping("/{id}/refund")
+    @PreAuthorize("@verifiedUserPolicy.isVerified()")
     public ResponseEntity<BookingDto> refundBooking(@PathVariable UUID id) {
         return ResponseEntity.accepted().body(refundService.requestFullRefund(id));
     }

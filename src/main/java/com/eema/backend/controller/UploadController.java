@@ -29,7 +29,7 @@ public class UploadController {
      * @return JSON with upload status and file URL
      */
     @PostMapping("/venue-photo")
-    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('OWNER') and @verifiedUserPolicy.isVerified()")
     public ResponseEntity<Map<String, String>> uploadVenuePhoto(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest()

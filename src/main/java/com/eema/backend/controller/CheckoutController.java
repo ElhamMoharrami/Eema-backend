@@ -24,6 +24,7 @@ public class CheckoutController {
     private final CurrentUserService currentUserService;
 
     @PostMapping("/{bookingId}/checkout")
+    @PreAuthorize("@verifiedUserPolicy.isVerified()")
     public ResponseEntity<CheckoutResponse> createCheckout(@PathVariable java.util.UUID bookingId) {
 
         User scout = currentUserService.getCurrentUser();

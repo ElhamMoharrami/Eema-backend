@@ -3,9 +3,14 @@ package com.eema.backend.controller;
 import com.eema.backend.dto.request.LoginRequest;
 import com.eema.backend.dto.request.RefreshRequest;
 import com.eema.backend.dto.request.RegisterRequest;
+import com.eema.backend.dto.request.EmailAddressRequest;
+import com.eema.backend.dto.request.ResetPasswordRequest;
+import com.eema.backend.dto.request.VerifyEmailRequest;
 import com.eema.backend.dto.response.AuthResponse;
 import com.eema.backend.dto.response.UserDto;
+import com.eema.backend.dto.response.MessageResponse;
 import com.eema.backend.service.AuthService;
+import com.eema.backend.service.AccountRecoveryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final AccountRecoveryService accountRecoveryService;
 
     /**
      * Register a new user.
@@ -63,6 +69,26 @@ public class AuthController {
     public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request) {
         AuthResponse response = authService.refresh(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<MessageResponse> verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
+        return ResponseEntity.ok(accountRecoveryService.verifyEmail(request.token()));
+    }
+
+    @PostMapping("/resend-verification")
+    public ResponseEntity<MessageResponse> resendVerification(@Valid @RequestBody EmailAddressRequest request) {
+        return ResponseEntity.ok(accountRecoveryService.resendVerification(request.email()));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody EmailAddressRequest request) {
+        return ResponseEntity.ok(accountRecoveryService.forgotPassword(request.email()));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(accountRecoveryService.resetPassword(request.token(), request.newPassword()));
     }
 
     /**
