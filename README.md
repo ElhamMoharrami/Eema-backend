@@ -139,3 +139,32 @@ Owner bank destinations are EUR/IBAN-only and manually verified by Eema. IBANs a
 The current encryption format is versioned (`v1`), but online key rotation is not implemented. Preserve both keys in durable secret management and plan a deliberate re-encryption migration before rotating them.
 
 Payouts snapshot the current verified destination when they first become `READY`. Replacement destinations do not redirect already-ready or paid payouts. Eema still executes transfers manually outside the application.
+
+## Database verification
+
+The normal suite remains the fast default:
+
+```bash
+mvn test
+```
+
+Database and concurrency guarantees run separately against a disposable PostgreSQL 16 Testcontainer:
+
+```bash
+mvn verify -Ppostgres-integration
+```
+
+Docker must be running for the PostgreSQL suite. It starts one shared container for the test class, applies only `db/migration/common`, validates the Hibernate schema, and resets fixtures between tests. No development seed migration or external Mollie, Resend, Gemini, S3, or HTTP service is used.
+
+Full local verification is:
+
+```bash
+mvn test
+mvn verify -Ppostgres-integration
+mvn clean package
+git diff --check
+```
+
+The PostgreSQL suite covers native enum and enum-array mappings, booking exclusion and half-open ranges, concurrent request acceptance, representative `SKIP LOCKED` workers, refresh-token rotation locking, payout/document/destination uniqueness, payout destination snapshots, policy publication and booking-policy snapshots, and incident financial isolation.
+
+Spring Boot 3.2.2 currently supplies Flyway 9.22.3, which emits its known PostgreSQL 16 support warning. The migrations and Hibernate validation are tested despite that warning; upgrading Spring Boot/Flyway remains separate dependency work.

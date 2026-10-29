@@ -1,0 +1,23 @@
+spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/common
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+app:
+  resend:
+    enabled: false
+  storage:
+    provider: local
+    upload-dir: ${java.io.tmpdir}/eema-postgres-it/uploads
+  documents:
+    storage-dir: ${java.io.tmpdir}/eema-postgres-it/documents
+  mollie:
+    api-key: ""
+    fee-reconciliation-enabled: false
+  gemini:
+    api-key: ""
+  payout-destination:
+    enabled: false
