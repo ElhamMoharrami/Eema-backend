@@ -28,10 +28,11 @@ class BookingCancellationCoordinatorTest {
     private final BookingEventRepository events = mock(BookingEventRepository.class);
     private final RefundCoordinator refunds = mock(RefundCoordinator.class);
     private final ApplicationEventPublisher publisher = mock(ApplicationEventPublisher.class);
+    private final OwnerPayoutService payouts = mock(OwnerPayoutService.class);
     private final BookingFinancials financials = new BookingFinancials();
     private final BookingCancellationPolicy policy = new BookingCancellationPolicy(financials);
     private final BookingCancellationCoordinator coordinator = new BookingCancellationCoordinator(
-            bookings, venues, events, policy, financials, new BookingStateMachine(), refunds, publisher);
+            bookings, venues, events, policy, financials, new BookingStateMachine(), refunds, publisher, payouts);
     private final UUID bookingId = UUID.randomUUID();
     private final UUID scoutId = UUID.randomUUID();
     private final UUID ownerId = UUID.randomUUID();

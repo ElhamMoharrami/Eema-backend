@@ -46,6 +46,9 @@ app:
     payment-creating-stuck-minutes: ${PAYMENT_CREATING_STUCK_MINUTES:60}
     refund-stuck-minutes: ${REFUND_STUCK_MINUTES:1440}
     fee-unreconciled-minutes: ${FEE_UNRECONCILED_MINUTES:1440}
+    payout-ready-overdue-hours: ${PAYOUT_READY_OVERDUE_HOURS:72}
+  payout:
+    readiness-scan-delay-ms: ${PAYOUT_READINESS_SCAN_DELAY_MS:300000}
   availability-inquiry:
     offer-valid-hours: ${AVAILABILITY_INQUIRY_OFFER_VALID_HOURS:48}
     expiration-scan-delay-ms: ${AVAILABILITY_INQUIRY_EXPIRATION_SCAN_DELAY_MS:60000}

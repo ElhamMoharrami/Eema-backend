@@ -16,12 +16,43 @@ import java.util.Optional;
 import java.util.UUID;
 import java.time.LocalDate;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import com.eema.backend.entity.enums.PaymentCreationStatus;
 import com.eema.backend.entity.enums.RefundStatus;
 import java.time.OffsetDateTime;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
+
+    @Query("""
+            select b from Booking b
+            where (:bookingId is null or b.id = :bookingId)
+              and (:venueId is null or b.venueId = :venueId)
+              and (:scoutId is null or b.scoutId = :scoutId)
+              and (:status is null or b.status = :status)
+              and (:molliePaymentId is null or b.molliePaymentId = :molliePaymentId)
+              and (:refundStatus is null or b.refundStatus = :refundStatus)
+              and (:paymentCreationStatus is null or b.paymentCreationStatus = :paymentCreationStatus)
+            order by b.createdAt desc
+            """)
+    Page<Booking> adminSearch(@Param("bookingId") UUID bookingId, @Param("venueId") UUID venueId,
+            @Param("scoutId") UUID scoutId, @Param("status") BookingStatus status,
+            @Param("molliePaymentId") String molliePaymentId, @Param("refundStatus") RefundStatus refundStatus,
+            @Param("paymentCreationStatus") PaymentCreationStatus paymentCreationStatus, Pageable pageable);
+
+    @Query("select b from Booking b where b.paymentCreationStatus = :status and b.paymentCreationStartedAt < :cutoff order by b.paymentCreationStartedAt")
+    List<Booking> findStuckPaymentCreations(@Param("status") PaymentCreationStatus status,
+            @Param("cutoff") OffsetDateTime cutoff, Pageable pageable);
+
+    @Query("select b from Booking b where b.refundStatus in :statuses and b.refundRequestedAt < :cutoff order by b.refundRequestedAt")
+    List<Booking> findStuckRefunds(@Param("statuses") List<RefundStatus> statuses,
+            @Param("cutoff") OffsetDateTime cutoff, Pageable pageable);
+
+    @Query("select b from Booking b where b.mollieFeeReconciled = false and b.totalPaidEur > 0 and b.paidAt < :cutoff and b.status in (com.eema.backend.entity.enums.BookingStatus.CONFIRMED, com.eema.backend.entity.enums.BookingStatus.CANCELLED) order by b.paidAt")
+    List<Booking> findOldUnreconciledMollieFees(@Param("cutoff") OffsetDateTime cutoff, Pageable pageable);
+
+    @Query("select b from Booking b where b.latePaymentDetectedAt is not null and b.refundStatus in :statuses order by b.latePaymentDetectedAt")
+    List<Booking> findLatePaymentRefundsInProgress(@Param("statuses") List<RefundStatus> statuses, Pageable pageable);
 
     List<Booking> findByScoutIdOrderByCreatedAtDesc(UUID scoutId);
 

@@ -18,7 +18,10 @@ class WorkflowObservabilityTest {
     void recordsLifecycleCountersWithoutHighCardinalityLabels() {
         BookingRepository bookings = mock(BookingRepository.class);
         SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        WorkflowObservability visibility = new WorkflowObservability(bookings, registry, 60, 1440, 1440);
+        WorkflowObservability visibility = new WorkflowObservability(bookings,
+                mock(com.eema.backend.repository.OwnerPayoutRepository.class),
+                mock(com.eema.backend.repository.OwnerFinancialLiabilityRepository.class),
+                registry, new OperationalThresholds(60, 1440, 1440, 72));
 
         visibility.bookingLifecycle(new BookingLifecycleEvent(java.util.UUID.randomUUID(),
                 BookingLifecycleEvent.Type.APPROVAL_EXPIRED));
@@ -48,7 +51,10 @@ class WorkflowObservabilityTest {
         when(bookings.countByRefundStatusInAndRefundRequestedAtBefore(anyList(), any())).thenReturn(3L);
         when(bookings.countOldUnreconciledMollieFees(any())).thenReturn(4L);
         SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        WorkflowObservability visibility = new WorkflowObservability(bookings, registry, 60, 1440, 1440);
+        WorkflowObservability visibility = new WorkflowObservability(bookings,
+                mock(com.eema.backend.repository.OwnerPayoutRepository.class),
+                mock(com.eema.backend.repository.OwnerFinancialLiabilityRepository.class),
+                registry, new OperationalThresholds(60, 1440, 1440, 72));
 
         visibility.scanStuckStates();
 

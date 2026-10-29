@@ -35,6 +35,7 @@ public class RefundCoordinator {
     private final BookingFinancials financials;
     private final BookingStateMachine stateMachine;
     private final ApplicationEventPublisher eventPublisher;
+    private final OwnerPayoutService ownerPayoutService;
 
     @Transactional
     public Claim claim(UUID bookingId, UUID adminId, String adminName) {
@@ -61,6 +62,7 @@ public class RefundCoordinator {
             append(bookingId, BookingEventType.REFUND_REQUESTED, adminId, adminName, ActorType.ADMIN,
                     Map.of("amount", booking.getRefundAmountEur(), "currency", "EUR"));
         }
+        ownerPayoutService.recalculateForBooking(bookingId);
         return new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(), booking.getRefundIdempotencyKey());
     }
 
@@ -151,6 +153,7 @@ public class RefundCoordinator {
             booking.setLatePaymentNotificationAt(now);
             eventPublisher.publishEvent(new LatePaymentRefundInitiatedEvent(bookingId));
         }
+        ownerPayoutService.recalculateForBooking(bookingId);
         return Optional.of(new Claim(bookingId, booking.getMolliePaymentId(), booking.getRefundAmountEur(),
                 booking.getRefundIdempotencyKey()));
     }
@@ -222,6 +225,7 @@ public class RefundCoordinator {
         if (booking.getMollieRefundId() != null) payload.put("refundId", booking.getMollieRefundId());
         append(booking.getId(), target == RefundStatus.REFUNDED ? BookingEventType.PAYMENT_REFUNDED : BookingEventType.REFUND_STATUS_CHANGED,
                 null, "Mollie", ActorType.WEBHOOK, payload);
+        ownerPayoutService.recalculateForBooking(booking.getId());
     }
 
     private RefundStatus providerStatus(String status) {

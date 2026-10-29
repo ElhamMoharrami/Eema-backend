@@ -36,6 +36,7 @@ public class BookingCancellationCoordinator {
     private final BookingStateMachine stateMachine;
     private final RefundCoordinator refunds;
     private final ApplicationEventPublisher publisher;
+    private final OwnerPayoutService ownerPayoutService;
 
     @Transactional
     public CancellationResult cancel(UUID bookingId, User actor, String reason, OffsetDateTime now) {
@@ -78,6 +79,7 @@ public class BookingCancellationCoordinator {
                 ? refunds.claimCancellation(bookingId, decision.refundAmountEur(), actor.getId(),
                 actorName(actor), actorType)
                 : null;
+        ownerPayoutService.recalculateForBooking(bookingId);
         publisher.publishEvent(new BookingCancelledEvent(bookingId));
         return new CancellationResult(bookingId, refundClaim);
     }

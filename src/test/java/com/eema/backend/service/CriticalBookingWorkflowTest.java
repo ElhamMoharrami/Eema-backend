@@ -36,6 +36,7 @@ class CriticalBookingWorkflowTest {
     private final BookingAvailabilityValidator availability = mock(BookingAvailabilityValidator.class);
     private final MollieProviderClient mollie = mock(MollieProviderClient.class);
     private final RefundService refunds = mock(RefundService.class);
+    private final OwnerPayoutService payouts = mock(OwnerPayoutService.class);
     private final UUID bookingId = UUID.randomUUID();
     private final UUID venueId = UUID.randomUUID();
     private final User scout = User.builder().id(UUID.randomUUID()).email("scout@example.test")
@@ -52,7 +53,7 @@ class CriticalBookingWorkflowTest {
         bookingService = new BookingService(bookings, venues, users, audit, properties, current,
                 new BookingStateMachine(), new BookingFinancials(), new BookingPriceCalculator(), events, availability,
                 new BookingWorkflowProperties(24, 24, 60000),
-                new BookingCancellationPolicy(new BookingFinancials()));
+                new BookingCancellationPolicy(new BookingFinancials()), payouts);
         Venue venue = Venue.builder().id(venueId).owner(owner).name("Workflow Studio")
                 .timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE)
                 .hourlyRateEur(new BigDecimal("25.00"))
@@ -140,7 +141,7 @@ class CriticalBookingWorkflowTest {
         booking.setPaymentExpiresAt(OffsetDateTime.now().minusSeconds(1));
 
         RefundCoordinator refundCoordinator = new RefundCoordinator(bookings, audit, new BookingFinancials(),
-                new BookingStateMachine(), events);
+                new BookingStateMachine(), events, payouts);
         RefundService refundService = new RefundService(current, refundCoordinator, mollie, bookingService);
         MollieRefundResponse queued = new MollieRefundResponse("re_late", "queued", "tr_workflow",
                 new MolliePaymentResponse.Amount("100.00", "EUR"));

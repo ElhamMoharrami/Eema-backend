@@ -82,6 +82,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/upload/files/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
 
+                        // Administrative operational and financial data.
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
                         // -------------------------
                         // EVERYTHING ELSE
                         // -------------------------

@@ -1,0 +1,6 @@
+package com.eema.backend.entity.enums;
+public enum OperationalExceptionType {
+    PAYOUT_READY_OVERDUE, PAYOUT_HELD, OWNER_LIABILITY_OPEN,
+    REFUND_STUCK, PAYMENT_CREATION_STUCK, MOLLIE_FEE_UNRECONCILED,
+    LATE_PAYMENT_REFUND_IN_PROGRESS
+}

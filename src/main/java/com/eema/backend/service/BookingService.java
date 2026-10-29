@@ -77,6 +77,7 @@ public class BookingService {
     private final BookingAvailabilityValidator availabilityValidator;
     private final BookingWorkflowProperties workflowProperties;
     private final BookingCancellationPolicy cancellationPolicy;
+    private final OwnerPayoutService ownerPayoutService;
 
     // --------------------------------------------------
     // CREATE BOOKING
@@ -426,6 +427,8 @@ public class BookingService {
 
         bookingRepository.save(booking);
 
+        ownerPayoutService.recalculateForBooking(booking.getId());
+
         Map<String, Object> payload = new HashMap<>();
 
         payload.put("provider", "Mollie");
@@ -515,6 +518,8 @@ public class BookingService {
         booking.setOwnerPayoutEur(ownerPayout);
 
         bookingRepository.save(booking);
+
+        ownerPayoutService.recalculateForBooking(bookingId);
 
         appendEvent(bookingId, BookingEventType.PAYMENT_RECONCILED, null, "SYSTEM", ActorType.SYSTEM, Map.of("mollieFeeEur", normalizedFee, "commissionEur", booking.getCommissionEur(), "ownerPayoutEur", ownerPayout));
 
@@ -767,7 +772,7 @@ public class BookingService {
                 booking.getVenuePriceEur(), booking.getHourlyRateEurSnapshot(),
                 booking.getMinimumBookingMinutesSnapshot(), booking.getFullDayRateEurSnapshot(),
                 booking.getDurationMinutes(), booking.getBillableMinutes(),
-                booking.getCommissionPercentage(), booking.getCommissionEur(), booking.getMollieFeeEur(), booking.isMollieFeeReconciled(), booking.getMollieFeeReconciledAt(), booking.getOwnerPayoutEur(), booking.getOwnerPayoutStatus(), booking.getTotalPaidEur(),
+                booking.getCommissionPercentage(), booking.getCommissionEur(), booking.getMollieFeeEur(), booking.isMollieFeeReconciled(), booking.getMollieFeeReconciledAt(), booking.getOwnerPayoutEur(), ownerPayoutService.statusForBooking(booking.getId()), booking.getTotalPaidEur(),
 
                 booking.getMolliePaymentId(), booking.getPaymentCreationStatus(), booking.getRefundStatus(), booking.getMollieRefundId(), booking.getRefundAmountEur(), booking.getRefundRequestedAt(), booking.getRefundedAt(),
 

@@ -3,7 +3,6 @@ package com.eema.backend.entity;
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.entity.enums.PaymentCreationStatus;
 import com.eema.backend.entity.enums.RefundStatus;
-import com.eema.backend.entity.enums.OwnerPayoutStatus;
 import com.eema.backend.entity.enums.ActorType;
 import com.eema.backend.entity.enums.CancellationPolicyTier;
 import com.eema.backend.entity.enums.ProviderCostResponsibility;
@@ -185,14 +184,6 @@ public class Booking {
 
     @Column(name = "refunded_at")
     private OffsetDateTime refundedAt;
-
-    @Builder.Default
-    @Enumerated(EnumType.STRING)
-    @Column(name = "owner_payout_status", nullable = false, length = 30)
-    private OwnerPayoutStatus ownerPayoutStatus = OwnerPayoutStatus.CALCULATED_NOT_PAID;
-
-    @Column(name = "owner_payout_paid_at")
-    private OffsetDateTime ownerPayoutPaidAt;
 
     @Column(name = "cancellation_policy_version", length = 20)
     private String cancellationPolicyVersion;

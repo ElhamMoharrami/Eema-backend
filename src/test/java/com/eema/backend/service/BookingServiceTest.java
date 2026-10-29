@@ -60,6 +60,7 @@ class BookingServiceTest {
     @Spy BookingPriceCalculator priceCalculator = new BookingPriceCalculator();
     @Mock ApplicationEventPublisher eventPublisher;
     @Mock BookingAvailabilityValidator availabilityValidator;
+    @Mock OwnerPayoutService ownerPayoutService;
     BookingService service;
 
     private UUID bookingId;
@@ -71,7 +72,7 @@ class BookingServiceTest {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
                 appProperties, currentUserService, stateMachine, financials, priceCalculator, eventPublisher, availabilityValidator,
                 new BookingWorkflowProperties(24, 24, 60000),
-                new BookingCancellationPolicy(financials));
+                new BookingCancellationPolicy(financials), ownerPayoutService);
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()

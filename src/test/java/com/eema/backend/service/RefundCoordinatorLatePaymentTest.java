@@ -26,6 +26,7 @@ class RefundCoordinatorLatePaymentTest {
     private final BookingRepository bookings = mock(BookingRepository.class);
     private final BookingEventRepository events = mock(BookingEventRepository.class);
     private final ApplicationEventPublisher publisher = mock(ApplicationEventPublisher.class);
+    private final OwnerPayoutService payouts = mock(OwnerPayoutService.class);
     private final UUID bookingId = UUID.randomUUID();
     private final Booking booking = Booking.builder().id(bookingId).status(BookingStatus.EXPIRED)
             .molliePaymentId("tr_late").totalPaidEur(new BigDecimal("100.00"))
@@ -35,7 +36,7 @@ class RefundCoordinatorLatePaymentTest {
     @BeforeEach
     void setUp() {
         coordinator = new RefundCoordinator(bookings, events, new BookingFinancials(),
-                new BookingStateMachine(), publisher);
+                new BookingStateMachine(), publisher, payouts);
         when(bookings.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
     }
 
