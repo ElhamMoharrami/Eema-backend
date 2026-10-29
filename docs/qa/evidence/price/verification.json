@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-15",
+  "scenarioCounts": {
+    "pass": 11,
+    "fail": 0,
+    "blocked": 0
+  },
+  "launchAccountingDecisionsOpen": 1,
+  "commands": {
+    "mvn test": {
+      "result": "PASS",
+      "tests": 796,
+      "executed": 796,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mvn verify -Ppostgres-integration": {
+      "result": "PASS",
+      "tests": 530,
+      "executed": 526,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4
+    },
+    "focused PriceIntegrationTest": {
+      "result": "PASS",
+      "tests": 18,
+      "executed": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "PriceBrowserIntegrationTest": {
+      "result": "PASS",
+      "tests": 1,
+      "executed": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 796,
+      "executed": 796,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "diffCheck": "PASS",
+    "sharedCases": 92,
+    "additionalGuardAssertions": 9,
+    "browserChecks": 9
+  },
+  "pdf": {
+    "pages": 651,
+    "pricePagesVisuallyInspected": true
+  },
+  "cleanup": {
+    "temporaryAuthFilesRemaining": 0,
+    "temporaryBrowserProfilesRemaining": 0,
+    "frontendTestServerStopped": true
+  },
+  "providerBoundary": "Mollie mocked; Resend delivery disabled; no live-provider PASS claimed",
+  "backendDiffCheck": "PASS",
+  "pricingRaceRepetitions": {
+    "normalRequestVersusOwnerEdit": 6,
+    "inquiryAcceptanceVersusOwnerEdit": 6
+  },
+  "sourceSha256": {
+    "src/main/java/com/eema/backend/service/BookingPriceCalculator.java": "9e699409a89d5b5e110765869364f9f747214a09abf87fb8a942000ef3e69b01",
+    "src/main/java/com/eema/backend/service/VenueService.java": "1b581106664f2bd3c01177c52021cd9398f52e0c4cf5bc73840a592746bc2c7a",
+    "src/test/resources/pricing-cases.json": "b53c3de74fe9eebd9923d51734d9f9bb100016ae1ad93d4b0906f7536a0879a8",
+    "src/test/java/com/eema/backend/service/PriceContractTest.java": "02a1d51deab9386ff336a1c300a66a60a86784762f1562bfc2b58b6f6459cd2d",
+    "src/test/java/com/eema/backend/service/PriceDownstreamContractTest.java": "7051ee2173dcc9ab488de02248aee0f017e9c1a805400232d63f0074baab2218",
+    "src/test/java/com/eema/backend/integration/PriceIntegrationTest.java": "1c6a09ba46ceca57bba32e9c0c7117f6b7187abaa5ff874d7360e1cb2ca7fa59",
+    "../Eema-frontend/lib/pricing.ts": "69363c8c8b955876fc3ad903b7fce0aa619a9617033f4fc8236bbcbd3597b11d"
+  }
+}

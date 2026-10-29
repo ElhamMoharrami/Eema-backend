@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "checks": 3,
+  "oversizeMessage": "This file is too large. Choose a smaller image within the upload size limit.",
+  "corruptMessage": "Actionable validation message",
+  "providerFailure": "Generic safe client message"
+}

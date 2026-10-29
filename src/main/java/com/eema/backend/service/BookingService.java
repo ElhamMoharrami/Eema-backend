@@ -80,13 +80,14 @@ public class BookingService {
     private final OwnerPayoutService ownerPayoutService;
     private final VenueBookingLeadTimePolicy leadTimePolicy;
     private final PolicyAcceptanceService policyAcceptances;
+    private final java.time.Clock clock;
 
     BookingService(BookingRepository a, VenueRepository b, UserRepository c, BookingEventRepository d,
                    AppProperties e, CurrentUserService f, BookingStateMachine g, BookingFinancials h,
                    BookingPriceCalculator i, ApplicationEventPublisher j, BookingAvailabilityValidator k,
                    BookingWorkflowProperties l, BookingCancellationPolicy m, OwnerPayoutService n,
                    VenueBookingLeadTimePolicy o) {
-        this(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,null);
+        this(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,null,java.time.Clock.systemDefaultZone());
     }
 
     // --------------------------------------------------
@@ -144,7 +145,7 @@ public class BookingService {
          */
         BigDecimal ownerPayoutEur = calculateOwnerPayout(venuePriceEur, commissionEur, mollieFeeEur);
 
-        OffsetDateTime ownerResponseExpiresAt = OffsetDateTime.now()
+        OffsetDateTime ownerResponseExpiresAt = OffsetDateTime.now(clock)
                 .plusHours(workflowProperties.ownerResponseWindowHours());
         Booking booking = Booking.builder().venueId(venue.getId()).scoutId(scout.getId()).molliePaymentId(null).status(BookingStatus.REQUESTED)
 
@@ -204,7 +205,7 @@ public class BookingService {
         BigDecimal percentage = validateCommissionPercentage(appProperties.commission().percentage());
         BigDecimal commission = calculateCommission(venuePrice, percentage);
         BigDecimal fee = money(BigDecimal.ZERO);
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         Booking booking = Booking.builder().venueId(venueId).scoutId(scoutId).status(BookingStatus.AWAITING_PAYMENT)
                 .shootDate(date).startTime(startTime).endTime(endTime).rawBrief(brief)
                 .venuePriceEur(venuePrice).totalPaidEur(money(BigDecimal.ZERO)).commissionPercentage(percentage)
@@ -273,7 +274,10 @@ public class BookingService {
                 .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
         authorizeOwnerOrAdmin(user, booking);
         if (booking.getStatus() != BookingStatus.REQUESTED) throw new ConflictException("Only requested bookings can be accepted");
-        OffsetDateTime now = OffsetDateTime.now();
+        // A request is not an approved commitment yet; serialize this check with venue moderation.
+        if (venue.getStatus() != VenueStatus.ACTIVE)
+            throw new ConflictException("Venue must be active before a request can be accepted");
+        OffsetDateTime now = OffsetDateTime.now(clock);
         if (booking.getOwnerResponseExpiresAt() == null || !booking.getOwnerResponseExpiresAt().isAfter(now)) {
             transition(booking, BookingStatus.EXPIRED);
             appendEvent(bookingId, BookingEventType.REQUEST_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
@@ -605,7 +609,7 @@ public class BookingService {
         stateMachine.requireTransition(booking.getStatus(), newStatus);
         booking.setStatus(newStatus);
 
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
 
         switch (newStatus) {
 

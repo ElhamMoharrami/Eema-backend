@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "counts": {
+    "tests": 138,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "caseGroups": {
+    "sqlJavaAndDatabaseConstraints": 122,
+    "availability": 12,
+    "pipelineAuthBoundFailures": 4
+  },
+  "database": "PostgreSQL16 Testcontainers; real Flyway V1-V11"
+}

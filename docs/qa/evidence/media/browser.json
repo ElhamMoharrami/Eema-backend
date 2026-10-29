@@ -1,0 +1,35 @@
+{
+  "result": "PASS",
+  "run": "QA-MEDIA-1789250265883",
+  "checks": [
+    {
+      "name": "Real owner login and JPEG/PNG/WebP browser uploads; loading state, valid previews, ordered persisted references",
+      "result": "PASS"
+    },
+    {
+      "name": "Reload preserves order; move changes primary; removal detaches reference but keeps physical object",
+      "result": "PASS"
+    },
+    {
+      "name": "Corrupt image rejected with actionable error; actual servlet oversize returns 413 with size guidance",
+      "result": "PASS"
+    },
+    {
+      "name": "Real Tomcat HTTP boundaries and actor matrix; exact 5 MiB accepted, +1 rejected; standalone does not attach; public reads have correct MIME/nosniff",
+      "result": "PASS",
+      "cacheControl": "no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "name": "Public catalogue/detail use first photo; approved listing photo addition refetches PENDING and removes public listing",
+      "result": "PASS"
+    },
+    {
+      "name": "12-photo UI disables upload and backend independently rejects thirteenth",
+      "result": "PASS"
+    },
+    {
+      "name": "Production Dockerfile backend container restart retains all references and bytes in dedicated named media volume",
+      "result": "PASS"
+    }
+  ]
+}

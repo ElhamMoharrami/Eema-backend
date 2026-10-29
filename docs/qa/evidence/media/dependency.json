@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "dependencies": [
+    "\\- com.twelvemonkeys.imageio:imageio-webp:jar:3.15.0:compile",
+    "   +- com.twelvemonkeys.imageio:imageio-core:jar:3.15.0:compile",
+    "   +- com.twelvemonkeys.imageio:imageio-metadata:jar:3.15.0:compile",
+    "   +- com.twelvemonkeys.common:common-lang:jar:3.15.0:compile",
+    "   +- com.twelvemonkeys.common:common-io:jar:3.15.0:compile",
+    "   \\- com.twelvemonkeys.common:common-image:jar:3.15.0:compile"
+  ],
+  "license": "BSD-3-Clause",
+  "review": "Official release, module POM and license; not comprehensive vulnerability certification"
+}

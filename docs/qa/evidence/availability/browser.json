@@ -1,0 +1,34 @@
+{
+  "result": "PASS",
+  "run": "QA-AVL-1789324961234",
+  "checks": [
+    {
+      "name": "Owner weekly unavailable/single/multiple/add/remove/save/reload; overlap and network failures retain previous persisted schedule",
+      "result": "PASS"
+    },
+    {
+      "name": "Timed/all-day AVAILABLE and BLOCKED overrides persist, BLOCKED wins, deletion refetch/reload agrees",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT calendar displays venue-local times in Los Angeles browser; real competing reservation causes409 and authoritative refetch",
+      "result": "PASS"
+    },
+    {
+      "name": "Unavailable future day offers inquiry rather than locally inventing availability",
+      "result": "PASS"
+    },
+    {
+      "name": "Amsterdam autumn DST date renders backend09:00–17:00 unchanged in Los Angeles browser",
+      "result": "PASS"
+    },
+    {
+      "name": "Calendar availability network failure is safe; retry reloads Spring data",
+      "result": "PASS"
+    },
+    {
+      "name": "Month navigation crosses December–January without browser-timezone date conversion",
+      "result": "PASS"
+    }
+  ]
+}

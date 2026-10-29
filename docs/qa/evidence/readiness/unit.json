@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "command": "mvn test",
+  "readinessInvocations": 43,
+  "serviceTransitionsPerVariant": 3,
+  "serviceMissingVariants": 18,
+  "totals": {
+    "tests": 271,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

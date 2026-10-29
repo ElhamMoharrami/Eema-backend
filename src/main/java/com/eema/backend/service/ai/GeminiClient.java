@@ -67,7 +67,7 @@ public class GeminiClient {
             );
         }
 
-        String url = API_URL + "?key=" + apiKey;
+        String url = API_URL;
 
         GeminiRequest request = new GeminiRequest(
                 List.of(
@@ -82,6 +82,7 @@ public class GeminiClient {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("x-goog-api-key", apiKey);
 
         HttpEntity<GeminiRequest> entity =
                 new HttpEntity<>(request, headers);

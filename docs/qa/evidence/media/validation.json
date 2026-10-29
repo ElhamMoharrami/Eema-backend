@@ -1,0 +1,41 @@
+{
+  "result": "PASS",
+  "backend": {
+    "mvn test": "PASS",
+    "mvn verify -Ppostgres-integration": "PASS; see verify.json",
+    "mvn clean package": {
+      "tests": 308,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "git diff --check": "PASS"
+  },
+  "frontend": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check": "PASS",
+    "clientChecks": 3
+  },
+  "browser": {
+    "groups": 7,
+    "result": "PASS",
+    "realContainerRestart": "PASS"
+  },
+  "mediaScenarios": {
+    "pass": 4,
+    "fail": 0,
+    "blockedLocally": 0
+  },
+  "fixedDefects": 5,
+  "softwareApprovalExcludes": [
+    "EXIF/privacy decision",
+    "deployed S3 and email delivery",
+    "operations backlog"
+  ],
+  "focusedNonMultipartContract": {
+    "result": "PASS",
+    "status": 400
+  }
+}

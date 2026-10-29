@@ -1,0 +1,94 @@
+{
+  "result": "PASS",
+  "run": "QA-VEN-1789243060064",
+  "checks": [
+    {
+      "name": "OWNER real login and UI draft creation without owner verification or policy acceptance",
+      "result": "PASS"
+    },
+    {
+      "name": "All eight tri-state controls → JSON → PostgreSQL → DTO → reload",
+      "result": "PASS",
+      "value": null
+    },
+    {
+      "name": "All eight tri-state controls → JSON → PostgreSQL → DTO → reload",
+      "result": "PASS",
+      "value": false
+    },
+    {
+      "name": "All eight tri-state controls → JSON → PostgreSQL → DTO → reload",
+      "result": "PASS",
+      "value": true
+    },
+    {
+      "name": "Production activity native persistence and actual photo upload",
+      "result": "PASS"
+    },
+    {
+      "name": "Ready verified owner accepts exact current QA policies and submits",
+      "result": "PASS"
+    },
+    {
+      "name": "Request changes → owner correction/resubmit → approve; identical numeric save stays ACTIVE",
+      "result": "PASS"
+    },
+    {
+      "name": "Noncritical price/timezone/weekly availability edits preserve ACTIVE",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner creates and deletes availability override without changing ACTIVE",
+      "result": "PASS"
+    },
+    {
+      "name": "Critical owner edit refetches PENDING, explains re-review and removes catalogue listing",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin suspension/reactivation, owner reason/status and authoritative reload",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT detailed profile preserves all eight tri-state meanings",
+      "result": "PASS",
+      "value": null,
+      "fixture": "ADMIN override on existing ACTIVE venue"
+    },
+    {
+      "name": "SCOUT detailed profile preserves all eight tri-state meanings",
+      "result": "PASS",
+      "value": false,
+      "fixture": "ADMIN override on existing ACTIVE venue"
+    },
+    {
+      "name": "SCOUT detailed profile preserves all eight tri-state meanings",
+      "result": "PASS",
+      "value": true,
+      "fixture": "ADMIN override on existing ACTIVE venue"
+    },
+    {
+      "name": "Photo addition, reorder and removal each trigger owner re-review",
+      "result": "PASS"
+    },
+    {
+      "name": "Stale admin decision keeps actionable 409 message after DRAFT refetch",
+      "result": "PASS",
+      "repeat": 0
+    },
+    {
+      "name": "Stale admin decision keeps actionable 409 message after DRAFT refetch",
+      "result": "PASS",
+      "repeat": 1
+    },
+    {
+      "name": "Stale admin decision keeps actionable 409 message after DRAFT refetch",
+      "result": "PASS",
+      "repeat": 2
+    },
+    {
+      "name": "SCOUT owner-editor and OWNER admin-review guards",
+      "result": "PASS"
+    }
+  ]
+}

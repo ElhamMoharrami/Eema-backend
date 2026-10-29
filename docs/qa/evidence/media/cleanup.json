@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "taskFrontend": "stopped",
+  "taskChrome": "closed; auth cleared",
+  "dedicatedComposeProject": "eema-media-qa removed with named volumes and tmpfs DB",
+  "temporaryBrowserProfileAndBinaryFixtures": "removed",
+  "sharedData": "untouched"
+}

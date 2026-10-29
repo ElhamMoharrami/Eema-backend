@@ -1,0 +1,60 @@
+{
+  "result": "PASS",
+  "fullSuite": 85,
+  "trustCases": 30,
+  "repeatTrustCases": 30,
+  "suites": [
+    {
+      "name": "com.eema.backend.integration.AdminBookingSearchIntegrationTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.eema.backend.integration.AuthSessionIntegrationTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.eema.backend.integration.OwnerTrustIntegrationTest",
+      "tests": "30",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.eema.backend.integration.PolicyIntegrationTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.eema.backend.integration.RegistrationIntegrationTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "raceRepetitionsPerRun": 3,
+  "ordering": "CyclicBarrier and database locks; no timing sleeps",
+  "provider": "disabled"
+}

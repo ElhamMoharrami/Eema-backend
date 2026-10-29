@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "command": "mvn test",
+  "tests": 618,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "newMatchingInvocations": 243,
+  "providerContract": 108,
+  "hardEligibility": 122,
+  "transport": 13
+}

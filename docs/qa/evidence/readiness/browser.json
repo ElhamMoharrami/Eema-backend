@@ -1,0 +1,35 @@
+{
+  "result": "PASS",
+  "run": "QA-READY-1789245107471",
+  "checks": [
+    {
+      "name": "Spring returns all eight API-reachable missing conditions; owner displays complete readable list",
+      "result": "PASS"
+    },
+    {
+      "name": "Incomplete submission returns 409, remains DRAFT and refreshes checklist",
+      "result": "PASS",
+      "errorVisible": true
+    },
+    {
+      "name": "Production activity native persistence and actual photo upload",
+      "result": "PASS"
+    },
+    {
+      "name": "All four required Boolean No answers are complete; fixing fields and uploading a photo clears Spring checklist",
+      "result": "PASS"
+    },
+    {
+      "name": "Complete venue submits successfully and refetches PENDING",
+      "result": "PASS"
+    },
+    {
+      "name": "Stale admin approval returns 409; refetched PENDING shows readable current readiness issue",
+      "result": "PASS"
+    },
+    {
+      "name": "Restore missing field through owner editor; admin approval succeeds",
+      "result": "PASS"
+    }
+  ]
+}

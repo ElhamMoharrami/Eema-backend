@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: eema_ready_qa
+      POSTGRES_USER: eema
+      POSTGRES_PASSWORD: eema
+    ports:
+      - '127.0.0.1:15442:5432'
+    tmpfs:
+      - /var/lib/postgresql/data

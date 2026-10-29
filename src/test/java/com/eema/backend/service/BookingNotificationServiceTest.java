@@ -185,7 +185,7 @@ class BookingNotificationServiceTest {
         booking.setStatus(BookingStatus.EXPIRED);
         service.sendLifecycle(bookingId, BookingLifecycleEvent.Type.REQUEST_EXPIRED);
         verify(email).send(eq("snapshot-scout@example.test"), eq("Your booking request expired"),
-                contains("owner did not respond"), anyString());
+                argThat(body -> body.contains("response deadline or minimum booking lead time") && !body.contains("owner did not respond") && !body.contains("No booking was created")), anyString());
 
         clearInvocations(email);
         booking.setStatus(BookingStatus.UNAVAILABLE);

@@ -1,0 +1,93 @@
+{
+  "tests": "138",
+  "failures": "7",
+  "errors": "10",
+  "cases": [
+    {
+      "test": "actualAvailabilityComposition(String)[1]",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[5]",
+      "kind": "error",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[6]",
+      "kind": "error",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[7]",
+      "kind": "error",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[9]",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[10]",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[11]",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "actualAvailabilityComposition(String)[12]",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "directQuoteAuthBoundsAndNoProvider",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "pipelineBlocksInactiveFilteredInventedAndDuplicateIds",
+      "kind": "failure",
+      "category": "inspect"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[89]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[94]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[99]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[104]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[109]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[114]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    },
+    {
+      "test": "sqlAndJavaAgree(Case)[119]",
+      "kind": "error",
+      "category": "DB fixture contradiction"
+    }
+  ],
+  "productionDefect": "LazyInitializationException during ranker full DTO mapping; no owner needed for list response"
+}

@@ -1,0 +1,77 @@
+{
+  "result": "PASS",
+  "date": "2026-09-14",
+  "scenarios": {
+    "pass": 32,
+    "fail": 0,
+    "locallyBlocked": 0
+  },
+  "defects": {
+    "found": 6,
+    "fixed": 6,
+    "P1": 4,
+    "P2": 2
+  },
+  "backend": {
+    "mvn test": {
+      "tests": 618,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "provider repeat": {
+      "tests": 121,
+      "failures": 0
+    },
+    "mvn verify -Ppostgres-integration": {
+      "tests": 378,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "opt-in browser test": {
+      "tests": 1,
+      "passedGroups": 6
+    },
+    "mvn clean package": {
+      "tests": 618,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "git diff --check": "PASS"
+  },
+  "frontend": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check": "PASS",
+    "clientRuntimeChecks": 7
+  },
+  "pdf": {
+    "result": "PASS",
+    "pages": 659,
+    "matchingPages": [
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64
+    ],
+    "visuallyInspectedPage": 64,
+    "sha256": "5c3346557ee3527d40c291208f2f44e6bf5710ee5e3e3a080fe53c29dba72bf4"
+  },
+  "liveGemini": "NOT_RUN_LIVE: no model quality approval from mocks",
+  "cleanup": {
+    "browser": "Chrome closed; temporary isolated profiles removed",
+    "frontend": "task-owned production server stopped",
+    "backend": "test application context closed",
+    "database": "Testcontainers disposable DB lifecycle; shared history untouched",
+    "sessionFiles": "mode0600 temporary files deleted in finally",
+    "result": "PASS"
+  },
+  "counting": "Counts overlap across commands; one opt-in browser test skipped in default full suite was separately passed."
+}

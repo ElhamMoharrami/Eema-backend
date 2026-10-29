@@ -1,0 +1,70 @@
+{
+  "result": "PASS",
+  "run": "QA-TRUST-1789238417704",
+  "checks": [
+    {
+      "name": "OWNER signs in through real browser form",
+      "result": "PASS"
+    },
+    {
+      "name": "OWNER synthetic UNVERIFIED → submit → PENDING and reload, without policy acceptance",
+      "result": "PASS"
+    },
+    {
+      "name": "Blank rejection returns 400, safe message and unchanged PENDING",
+      "result": "PASS"
+    },
+    {
+      "name": "ADMIN reject; OWNER sees reason and resubmits same record",
+      "result": "PASS"
+    },
+    {
+      "name": "ADMIN MANUAL_REVIEW confirmation; OWNER VERIFIED from backend and reload, no resubmit",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT owner UI and OWNER admin UI role guards",
+      "result": "PASS"
+    },
+    {
+      "name": "Stale review 409 refetch and persistent actionable message",
+      "result": "PASS",
+      "repeat": 0
+    },
+    {
+      "name": "Stale review 409 refetch and persistent actionable message",
+      "result": "PASS",
+      "repeat": 1
+    },
+    {
+      "name": "Stale review 409 refetch and persistent actionable message",
+      "result": "PASS",
+      "repeat": 2
+    },
+    {
+      "name": "Missing review 404 safe UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Controlled 401 detail failure displays safe UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Controlled 403 detail failure displays safe UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Controlled 500 detail failure displays safe UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Controlled network detail failure displays safe UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Unverified-email OWNER gets explicit instruction; no verification row",
+      "result": "PASS"
+    }
+  ],
+  "providerDelivery": "STAGING ONLY"
+}

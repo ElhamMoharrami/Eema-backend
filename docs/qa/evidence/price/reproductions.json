@@ -1,0 +1,32 @@
+[
+  {
+    "id": "PRICE-DEF-001",
+    "before": "0.03 EUR/hour, 30 minutes, minimum 1: displayed 0.01 instead of HALF_UP 0.02",
+    "after": "Exact integer-cent preview",
+    "result": "FIXED"
+  },
+  {
+    "id": "PRICE-DEF-002",
+    "before": "Create response 19.999 / 50.005 differed from PostgreSQL reload 20.00 / 50.01",
+    "after": "Create and update normalize to persisted cents before returning DTO",
+    "result": "FIXED"
+  },
+  {
+    "id": "PRICE-DEF-003",
+    "before": "Maximum hourly rate and 10080-minute minimum overflowed NUMERIC(10,2); HTTP409 incorrectly described unavailable time",
+    "after": "Final price over storage range rejected before persistence with safe400; cap evaluated first",
+    "result": "FIXED"
+  },
+  {
+    "id": "PRICE-DEF-004",
+    "before": "30-second ordered interval returned durationMinutes0",
+    "after": "Calculator rejects less than one whole minute",
+    "result": "FIXED"
+  },
+  {
+    "id": "PRICE-DEF-005",
+    "before": "0.01/hour, 1 selected/minimum minute produces0.00 and checkout passes0.00 to mocked adapter",
+    "after": "Characterized without inventing minimum/free-booking rules",
+    "result": "OPEN ACCOUNTING DECISION"
+  }
+]

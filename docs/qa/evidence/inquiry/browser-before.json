@@ -1,0 +1,64 @@
+{
+  "result": "REPRODUCED",
+  "checks": [
+    {
+      "name": "Offer this time: refetched=false, stale controls=true",
+      "result": "PASS"
+    },
+    {
+      "name": "Decline: refetched=false, stale controls=true",
+      "result": "PASS"
+    },
+    {
+      "name": "Venue-labelled expiry incorrectly formatted in browser timezone",
+      "result": "PASS"
+    }
+  ],
+  "network": [
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/bf07e5ab-c2dd-48e1-9d4d-7729989d45b4/offer",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/bf07e5ab-c2dd-48e1-9d4d-7729989d45b4/offer",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/1a7c5d55-b69b-465c-8d63-f4b023983d71/decline",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/1a7c5d55-b69b-465c-8d63-f4b023983d71/decline",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

@@ -1,0 +1,384 @@
+{
+  "result": "REPRODUCED",
+  "cases": 92,
+  "failures": [
+    {
+      "id": "PRICE-007",
+      "expected": "20.32",
+      "actual": 20.323166666666665,
+      "displayed": "20.32"
+    },
+    {
+      "id": "PRICE-008",
+      "expected": "0.01",
+      "actual": 0.005,
+      "displayed": "0.01"
+    },
+    {
+      "id": "PRICE-009",
+      "expected": "498.33",
+      "actual": 498.3333333333333,
+      "displayed": "498.33"
+    },
+    {
+      "id": "ROUND-001",
+      "expected": "0.02",
+      "actual": 0.014999999999999998,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-002",
+      "expected": "0.00",
+      "actual": 0.004,
+      "displayed": "0.00"
+    },
+    {
+      "id": "ROUND-003",
+      "expected": "0.01",
+      "actual": 0.006,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-005",
+      "expected": "0.00",
+      "actual": 0.00016666666666666666,
+      "displayed": "0.00"
+    },
+    {
+      "id": "ROUND-006",
+      "expected": "0.00",
+      "actual": 0.004833333333333333,
+      "displayed": "0.00"
+    },
+    {
+      "id": "ROUND-007",
+      "expected": "0.01",
+      "actual": 0.005,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-008",
+      "expected": "0.01",
+      "actual": 0.005166666666666667,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-009",
+      "expected": "0.01",
+      "actual": 0.009833333333333333,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-011",
+      "expected": "0.01",
+      "actual": 0.010166666666666666,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-012",
+      "expected": "0.05",
+      "actual": 0.049833333333333334,
+      "displayed": "0.05"
+    },
+    {
+      "id": "ROUND-014",
+      "expected": "0.05",
+      "actual": 0.05016666666666667,
+      "displayed": "0.05"
+    },
+    {
+      "id": "ROUND-016",
+      "expected": "0.00",
+      "actual": 0.0005,
+      "displayed": "0.00"
+    },
+    {
+      "id": "ROUND-017",
+      "expected": "0.01",
+      "actual": 0.0145,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-018",
+      "expected": "0.02",
+      "actual": 0.014999999999999998,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-019",
+      "expected": "0.02",
+      "actual": 0.015499999999999998,
+      "displayed": "0.02"
+    },
+    {
+      "id": "ROUND-020",
+      "expected": "0.03",
+      "actual": 0.029500000000000002,
+      "displayed": "0.03"
+    },
+    {
+      "id": "ROUND-021",
+      "expected": "0.03",
+      "actual": 0.029999999999999995,
+      "displayed": "0.03"
+    },
+    {
+      "id": "ROUND-022",
+      "expected": "0.03",
+      "actual": 0.030499999999999996,
+      "displayed": "0.03"
+    },
+    {
+      "id": "ROUND-023",
+      "expected": "0.15",
+      "actual": 0.1495,
+      "displayed": "0.15"
+    },
+    {
+      "id": "ROUND-025",
+      "expected": "0.15",
+      "actual": 0.1505,
+      "displayed": "0.15"
+    },
+    {
+      "id": "ROUND-026",
+      "expected": "0.24",
+      "actual": 0.23999999999999996,
+      "displayed": "0.24"
+    },
+    {
+      "id": "ROUND-027",
+      "expected": "0.01",
+      "actual": 0.005,
+      "displayed": "0.01"
+    },
+    {
+      "id": "ROUND-028",
+      "expected": "0.15",
+      "actual": 0.145,
+      "displayed": "0.15"
+    },
+    {
+      "id": "ROUND-030",
+      "expected": "0.16",
+      "actual": 0.15499999999999997,
+      "displayed": "0.15"
+    },
+    {
+      "id": "ROUND-031",
+      "expected": "0.30",
+      "actual": 0.295,
+      "displayed": "0.30"
+    },
+    {
+      "id": "ROUND-033",
+      "expected": "0.31",
+      "actual": 0.305,
+      "displayed": "0.31"
+    },
+    {
+      "id": "ROUND-034",
+      "expected": "1.50",
+      "actual": 1.495,
+      "displayed": "1.50"
+    },
+    {
+      "id": "ROUND-036",
+      "expected": "1.51",
+      "actual": 1.505,
+      "displayed": "1.51"
+    },
+    {
+      "id": "ROUND-038",
+      "expected": "0.02",
+      "actual": 0.016833333333333332,
+      "displayed": "0.02"
+    },
+    {
+      "id": "ROUND-039",
+      "expected": "0.49",
+      "actual": 0.48816666666666664,
+      "displayed": "0.49"
+    },
+    {
+      "id": "ROUND-040",
+      "expected": "0.51",
+      "actual": 0.505,
+      "displayed": "0.51"
+    },
+    {
+      "id": "ROUND-041",
+      "expected": "0.52",
+      "actual": 0.5218333333333333,
+      "displayed": "0.52"
+    },
+    {
+      "id": "ROUND-042",
+      "expected": "0.99",
+      "actual": 0.9931666666666668,
+      "displayed": "0.99"
+    },
+    {
+      "id": "ROUND-044",
+      "expected": "1.03",
+      "actual": 1.0268333333333333,
+      "displayed": "1.03"
+    },
+    {
+      "id": "ROUND-045",
+      "expected": "5.03",
+      "actual": 5.033166666666667,
+      "displayed": "5.03"
+    },
+    {
+      "id": "ROUND-047",
+      "expected": "5.07",
+      "actual": 5.066833333333333,
+      "displayed": "5.07"
+    },
+    {
+      "id": "ROUND-049",
+      "expected": "0.33",
+      "actual": 0.33316666666666667,
+      "displayed": "0.33"
+    },
+    {
+      "id": "ROUND-050",
+      "expected": "9.66",
+      "actual": 9.661833333333332,
+      "displayed": "9.66"
+    },
+    {
+      "id": "ROUND-051",
+      "expected": "10.00",
+      "actual": 9.995,
+      "displayed": "10.00"
+    },
+    {
+      "id": "ROUND-052",
+      "expected": "10.33",
+      "actual": 10.328166666666666,
+      "displayed": "10.33"
+    },
+    {
+      "id": "ROUND-053",
+      "expected": "19.66",
+      "actual": 19.65683333333333,
+      "displayed": "19.66"
+    },
+    {
+      "id": "ROUND-055",
+      "expected": "20.32",
+      "actual": 20.323166666666665,
+      "displayed": "20.32"
+    },
+    {
+      "id": "ROUND-056",
+      "expected": "99.62",
+      "actual": 99.61683333333332,
+      "displayed": "99.62"
+    },
+    {
+      "id": "ROUND-057",
+      "expected": "99.95",
+      "actual": 99.94999999999999,
+      "displayed": "99.95"
+    },
+    {
+      "id": "ROUND-058",
+      "expected": "100.28",
+      "actual": 100.28316666666666,
+      "displayed": "100.28"
+    },
+    {
+      "id": "ROUND-060",
+      "expected": "2.09",
+      "actual": 2.091666666666667,
+      "displayed": "2.09"
+    },
+    {
+      "id": "ROUND-061",
+      "expected": "60.66",
+      "actual": 60.65833333333333,
+      "displayed": "60.66"
+    },
+    {
+      "id": "ROUND-063",
+      "expected": "64.84",
+      "actual": 64.84166666666667,
+      "displayed": "64.84"
+    },
+    {
+      "id": "ROUND-064",
+      "expected": "123.41",
+      "actual": 123.40833333333333,
+      "displayed": "123.41"
+    },
+    {
+      "id": "ROUND-066",
+      "expected": "127.59",
+      "actual": 127.59166666666667,
+      "displayed": "127.59"
+    },
+    {
+      "id": "ROUND-067",
+      "expected": "625.41",
+      "actual": 625.4083333333333,
+      "displayed": "625.41"
+    },
+    {
+      "id": "ROUND-069",
+      "expected": "629.59",
+      "actual": 629.5916666666667,
+      "displayed": "629.59"
+    },
+    {
+      "id": "ROUND-071",
+      "expected": "16666.67",
+      "actual": 16666.6665,
+      "displayed": "16666.67"
+    },
+    {
+      "id": "ROUND-072",
+      "expected": "483333.33",
+      "actual": 483333.3285,
+      "displayed": "483333.33"
+    },
+    {
+      "id": "ROUND-073",
+      "expected": "500000.00",
+      "actual": 499999.995,
+      "displayed": "500000.00"
+    },
+    {
+      "id": "ROUND-074",
+      "expected": "516666.66",
+      "actual": 516666.66150000005,
+      "displayed": "516666.66"
+    },
+    {
+      "id": "ROUND-075",
+      "expected": "983333.32",
+      "actual": 983333.3234999999,
+      "displayed": "983333.32"
+    },
+    {
+      "id": "ROUND-077",
+      "expected": "1016666.66",
+      "actual": 1016666.6565,
+      "displayed": "1016666.66"
+    },
+    {
+      "id": "ROUND-078",
+      "expected": "4983333.28",
+      "actual": 4983333.2835,
+      "displayed": "4983333.28"
+    },
+    {
+      "id": "ROUND-080",
+      "expected": "5016666.62",
+      "actual": 5016666.6165000005,
+      "displayed": "5016666.62"
+    }
+  ]
+}

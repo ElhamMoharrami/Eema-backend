@@ -1,0 +1,24 @@
+{
+  "tests": 108,
+  "failures": 17,
+  "errors": 0,
+  "failedCases": [
+    "duplicateAndUnknownIdsCannotConsumeResultSlots",
+    "duplicateEligibleIdsAppearOnce",
+    "malformedRankerRootOrRowFails{String}[5]",
+    "invalidParserValuesFail{String}[9]",
+    "invalidParserValuesFail{String}[10]",
+    "invalidParserValuesFail{String}[11]",
+    "invalidParserValuesFail{String}[12]",
+    "invalidParserValuesFail{String}[13]",
+    "invalidParserValuesFail{String}[20]",
+    "invalidParserValuesFail{String}[22]",
+    "malformedScoresFailSafely{String}[1]",
+    "malformedScoresFailSafely{String}[2]",
+    "malformedScoresFailSafely{String}[3]",
+    "malformedScoresFailSafely{String}[4]",
+    "malformedScoresFailSafely{String}[5]",
+    "malformedScoresFailSafely{String}[6]",
+    "malformedScoresFailSafely{String}[7]"
+  ]
+}

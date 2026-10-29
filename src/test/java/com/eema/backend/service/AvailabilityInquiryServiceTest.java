@@ -43,6 +43,7 @@ class AvailabilityInquiryServiceTest {
 
     @BeforeEach
     void setUp() {
+        lenient().when(venues.findByIdForUpdate(any())).thenAnswer(invocation -> venues.findById(invocation.getArgument(0)));
         service = new AvailabilityInquiryService(inquiries, venues, bookings, currentUserService,
                 availabilityService, bookingService, new AvailabilityInquiryProperties(48, 60000), eventPublisher, leadTimePolicy);
         lenient().when(leadTimePolicy.isSatisfied(any(), any(), any())).thenReturn(true);
@@ -226,6 +227,19 @@ class AvailabilityInquiryServiceTest {
         assertEquals(now, inquiry.getExpiredAt());
         verify(eventPublisher).publishEvent(new AvailabilityInquiryLifecycleEvent(
                 inquiry.getId(), AvailabilityInquiryLifecycleEvent.Type.OFFER_EXPIRED));
+    }
+
+    @Test
+    void suspendedVenueCannotReceiveNewOffer() {
+        AvailabilityInquiry inquiry = openInquiry();
+        venue.setStatus(VenueStatus.SUSPENDED);
+        when(currentUserService.getCurrentUser()).thenReturn(owner);
+        when(inquiries.findByIdForUpdate(inquiry.getId())).thenReturn(Optional.of(inquiry));
+        when(venues.findById(venueId)).thenReturn(Optional.of(venue));
+        assertThrows(ConflictException.class, () -> service.offer(inquiry.getId(),
+                new OfferAvailabilityInquiryRequest(futureDate, time(7), time(9))));
+        assertEquals(AvailabilityInquiryStatus.OPEN, inquiry.getStatus());
+        verifyNoInteractions(eventPublisher, bookingService);
     }
 
     private AvailabilityInquiry openInquiry() {

@@ -16,7 +16,7 @@ WORKDIR /app
 
 COPY --from=build /app/target/*-SNAPSHOT.jar app.jar
 
-RUN addgroup -S eema && adduser -S eema -G eema && chown -R eema:eema /app
+RUN addgroup -S eema && adduser -S eema -G eema && mkdir -p /app/uploads /app/private-documents && chown -R eema:eema /app
 
 USER eema
 

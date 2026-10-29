@@ -1,0 +1,14 @@
+{
+  "source": "Reproduction against unmodified policy production code; sanitized summary only",
+  "defects": [
+    {"id":"POL-D01","priority":"P1","expected":"Two concurrent identical acceptance requests return 200 with one complete acceptance set","actual":"One request returned 500 after PostgreSQL uq_policy_acceptance violation; next statement failed with current transaction is aborted","reproduction":"PolicyIntegrationTest duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet; barrier after both absence queries","impact":"Concurrent acknowledgements could fail despite idempotent intent","fix":"Native ON CONFLICT DO NOTHING, stable version lock order; no caught database exception inside acceptance transaction"},
+    {"id":"POL-D02","priority":"P2","expected":"Unsupported policy edits return client errors","actual":"PUT /api/admin/policies returned 500 through generic GlobalExceptionHandler","reproduction":"PolicyIntegrationTest immutableTransitionsAndRequestContract","impact":"Misleading server error for unsupported requests; no policy mutation occurred","fix":"Preserve 405 and Allow header for unsupported methods, 404 for unmapped resource paths"},
+    {"id":"POL-D03","priority":"P2","expected":"Missing required type must never display all-required-reviewed success","actual":"Four published versions accepted; backend completeness false, policy centre claimed all current required policies reviewed","reproduction":"policy-browser.cjs --local-qa --probe; ui-defect-before.json","impact":"Misleading review completion while commitments remain blocked","fix":"Use backend completeness and full displayed type set; show missing-set notice"}
+  ],
+  "harnessCorrections": [
+    "Repository spy barriers delegate to the Spring Data proxy default answer, not abstract callRealMethod",
+    "Owner payout browser fixture requires completed owner verification and opening Add payout details",
+    "Paid cancellation fixture requires confirmation cancellation snapshot and refund amount value/currency in the actual DTO order"
+  ],
+  "legal": "No legal wording or policy-enforcement rules changed"
+}

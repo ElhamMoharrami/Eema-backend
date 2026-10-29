@@ -361,6 +361,49 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleUnsupportedMethod(
+            org.springframework.web.HttpRequestMethodNotSupportedException ex, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).headers(ex.getHeaders()).body(
+                buildErrorResponse(HttpStatus.METHOD_NOT_ALLOWED, "Method Not Allowed", "This HTTP method is not supported", request));
+    }
+
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleMissingResource(
+            org.springframework.web.servlet.resource.NoResourceFoundException ex, WebRequest request) {
+        return response(HttpStatus.NOT_FOUND,
+                buildErrorResponse(HttpStatus.NOT_FOUND, "Not Found", "Resource not found", request));
+    }
+
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleUploadTooLarge(Exception ex,WebRequest request) {
+        return response(HttpStatus.PAYLOAD_TOO_LARGE,buildErrorResponse(HttpStatus.PAYLOAD_TOO_LARGE,
+                "Payload Too Large","Image exceeds the configured maximum size",request));
+    }
+    @ExceptionHandler(org.springframework.web.multipart.support.MissingServletRequestPartException.class)
+    public ResponseEntity<ErrorResponse> handleMissingUploadPart(Exception ex,WebRequest request) {
+        return response(HttpStatus.BAD_REQUEST,buildErrorResponse(HttpStatus.BAD_REQUEST,
+                "Bad Request","Missing multipart file",request));
+    }
+    @ExceptionHandler(org.springframework.web.multipart.MultipartException.class)
+    public ResponseEntity<ErrorResponse> handleMalformedMultipart(Exception ex,WebRequest request) {
+        return response(HttpStatus.BAD_REQUEST,buildErrorResponse(HttpStatus.BAD_REQUEST,
+                "Bad Request","Malformed multipart request",request));
+    }
+    @ExceptionHandler(org.springframework.web.HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleUnsupportedMediaType(Exception ex,WebRequest request) {
+        return response(HttpStatus.UNSUPPORTED_MEDIA_TYPE,buildErrorResponse(HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+                "Unsupported Media Type","Unsupported request content type",request));
+    }
+
+    @ExceptionHandler(com.eema.backend.service.ai.AiServiceException.class)
+    public ResponseEntity<ErrorResponse> handleMatchingProviderFailure(WebRequest request) {
+        // Provider causes can contain request credentials, user text or raw response bodies.
+        log.warn("Matching provider request failed");
+        return response(HttpStatus.BAD_GATEWAY, buildErrorResponse(HttpStatus.BAD_GATEWAY,
+                "Bad Gateway", "Venue matching is temporarily unavailable. Please try again.", request));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(
             Exception ex,

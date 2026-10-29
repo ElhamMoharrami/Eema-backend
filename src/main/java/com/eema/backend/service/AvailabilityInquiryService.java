@@ -29,8 +29,9 @@ public class AvailabilityInquiryService {
     private final ApplicationEventPublisher eventPublisher;
     private final VenueBookingLeadTimePolicy leadTimePolicy;
     private final PolicyAcceptanceService policyAcceptances;
+    private final Clock clock;
     AvailabilityInquiryService(AvailabilityInquiryRepository a,VenueRepository b,BookingRepository c,CurrentUserService d,
-      VenueAvailabilityService e,BookingService f,AvailabilityInquiryProperties g,ApplicationEventPublisher h,VenueBookingLeadTimePolicy i){this(a,b,c,d,e,f,g,h,i,null);}
+      VenueAvailabilityService e,BookingService f,AvailabilityInquiryProperties g,ApplicationEventPublisher h,VenueBookingLeadTimePolicy i){this(a,b,c,d,e,f,g,h,i,null,Clock.systemUTC());}
 
     @Transactional
     public AvailabilityInquiryDto create(CreateAvailabilityInquiryRequest request) {
@@ -76,7 +77,7 @@ public class AvailabilityInquiryService {
         Venue venue = ownedVenue(inquiry, owner);
         requireStatus(inquiry, AvailabilityInquiryStatus.OPEN);
         inquiry.setStatus(AvailabilityInquiryStatus.DECLINED);
-        inquiry.setDeclinedAt(OffsetDateTime.now());
+        inquiry.setDeclinedAt(OffsetDateTime.now(clock));
         eventPublisher.publishEvent(new AvailabilityInquiryLifecycleEvent(
                 inquiry.getId(), AvailabilityInquiryLifecycleEvent.Type.DECLINED));
         return dto(inquiry, venue);
@@ -87,12 +88,13 @@ public class AvailabilityInquiryService {
         User owner = requireRole(UserRole.OWNER);
         if(policyAcceptances!=null) policyAcceptances.requireCurrentPolicies(owner);
         AvailabilityInquiry inquiry = locked(inquiryId);
-        Venue venue = ownedVenue(inquiry, owner);
+        Venue venue = ownedVenue(inquiry, owner, true);
         requireStatus(inquiry, AvailabilityInquiryStatus.OPEN);
+        if (venue.getStatus() != VenueStatus.ACTIVE) throw new ConflictException("Venue must be active to offer a time");
         validateFutureInterval(venue, request.offeredDate(), request.offeredStartTime(), request.offeredEndTime());
         leadTimePolicy.validate(venue, request.offeredDate(), request.offeredStartTime());
         ensureNoBookingConflict(venue.getId(), request.offeredDate(), request.offeredStartTime(), request.offeredEndTime());
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         inquiry.setOfferedDate(request.offeredDate());
         inquiry.setOfferedStartTime(request.offeredStartTime());
         inquiry.setOfferedEndTime(request.offeredEndTime());
@@ -114,11 +116,19 @@ public class AvailabilityInquiryService {
         AvailabilityInquiry inquiry = locked(inquiryId);
         if (!inquiry.getScoutId().equals(scout.getId())) throw new ForbiddenException("Only the inquiry scout can accept this offer");
         requireStatus(inquiry, AvailabilityInquiryStatus.OFFERED);
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         if (!inquiry.getOfferExpiresAt().isAfter(now)) {
             throw new ConflictException("This availability offer has expired");
         }
-        Venue venue = activeVenue(inquiry.getVenueId());
+        // Serialize new commitments with moderation and normal booking acceptance.
+        Venue venue = venues.findByIdForUpdate(inquiry.getVenueId())
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
+        if (venue.getStatus() != VenueStatus.ACTIVE) throw new NotFoundException("Venue is not active");
+        // Lock contention must not extend an offer beyond its deadline.
+        now = OffsetDateTime.now(clock);
+        if (!inquiry.getOfferExpiresAt().isAfter(now)) {
+            throw new ConflictException("This availability offer has expired");
+        }
         if (!leadTimePolicy.isSatisfied(venue, inquiry.getOfferedDate(), inquiry.getOfferedStartTime())) {
             expire(inquiry, now);
             throw leadTimePolicy.notMet(venue);
@@ -178,7 +188,11 @@ public class AvailabilityInquiryService {
     }
 
     private Venue ownedVenue(AvailabilityInquiry inquiry, User owner) {
-        Venue venue = venues.findById(inquiry.getVenueId()).orElseThrow(() -> new NotFoundException("Venue not found"));
+        return ownedVenue(inquiry, owner, false);
+    }
+
+    private Venue ownedVenue(AvailabilityInquiry inquiry, User owner, boolean lock) {
+        Venue venue = (lock ? venues.findByIdForUpdate(inquiry.getVenueId()) : venues.findById(inquiry.getVenueId())).orElseThrow(() -> new NotFoundException("Venue not found"));
         if (venue.getOwner() == null || !owner.getId().equals(venue.getOwner().getId()))
             throw new ForbiddenException("Only the venue owner can respond to this inquiry");
         return venue;

@@ -1,0 +1,265 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Offer this time: 409 refetch retains feedback and removes stale controls",
+      "result": "PASS"
+    },
+    {
+      "name": "Decline: 409 refetch retains feedback and removes stale controls",
+      "result": "PASS"
+    },
+    {
+      "name": "Offer deadline uses venue timezone with browser in America/Los_Angeles",
+      "result": "PASS"
+    },
+    {
+      "name": "Scout duplicate/stale acceptance refetches existing booking and retains conflict",
+      "result": "PASS"
+    },
+    {
+      "name": "Worker-expired offer is displayed without an accept action",
+      "result": "PASS"
+    },
+    {
+      "name": "Slot occupied after offer: scout sees safe conflict and authoritative OFFERED state",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner stale offer on newly reserved slot: conflict with OPEN preserved",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner declines OPEN inquiry through UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Actual unavailable calendar selection, mode switch, empty-message fallback and OPEN creation",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner different date/time outside weekly hours, requested time preserved and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "Scout accepts into one authoritative AWAITING_PAYMENT booking and shared payment page without provider call",
+      "result": "PASS"
+    },
+    {
+      "name": "User message rendered as text, with no script interpretation",
+      "result": "PASS"
+    }
+  ],
+  "network": [
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/e72e7805-06da-4003-89f3-c0db94479793/offer",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/e72e7805-06da-4003-89f3-c0db94479793/offer",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/91d30576-9657-4ff9-a651-73143727542f/decline",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/91d30576-9657-4ff9-a651-73143727542f/decline",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/69633d3b-50f5-4059-80b6-8c2c26618266/accept",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/69633d3b-50f5-4059-80b6-8c2c26618266/accept",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/cc9774dc-6cb8-4207-88c1-1f6fb9f8f836/accept",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/cc9774dc-6cb8-4207-88c1-1f6fb9f8f836/accept",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/1d19f1e1-f249-43e3-8dd1-1f60f5e16d07/offer",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/1d19f1e1-f249-43e3-8dd1-1f60f5e16d07/offer",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/ca2b3e1e-8510-44c1-8544-72904b1e1966/decline",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/ca2b3e1e-8510-44c1-8544-72904b1e1966/decline",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/52b35ada-ebf8-4614-93ca-53ecf3fb0336/offer",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/52b35ada-ebf8-4614-93ca-53ecf3fb0336/offer",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/owned-venues",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/52b35ada-ebf8-4614-93ca-53ecf3fb0336/accept",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/52b35ada-ebf8-4614-93ca-53ecf3fb0336/accept",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/c13d6950-0f32-4d5f-bb85-370feb642808",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/c13d6950-0f32-4d5f-bb85-370feb642808",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/c13d6950-0f32-4d5f-bb85-370feb642808/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/c13d6950-0f32-4d5f-bb85-370feb642808/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/availability-inquiries/mine",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

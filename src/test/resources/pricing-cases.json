@@ -1,0 +1,922 @@
+[
+  {
+    "id": "PRICE-001",
+    "duration": 30,
+    "minimum": 60,
+    "hourly": "100",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "100.00",
+    "expected": "100.00"
+  },
+  {
+    "id": "PRICE-002",
+    "duration": 60,
+    "minimum": 60,
+    "hourly": "100",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "100.00",
+    "expected": "100.00"
+  },
+  {
+    "id": "PRICE-003",
+    "duration": 90,
+    "minimum": 60,
+    "hourly": "100",
+    "cap": null,
+    "billable": 90,
+    "hourlyTotal": "150.00",
+    "expected": "150.00"
+  },
+  {
+    "id": "PRICE-004",
+    "duration": 270,
+    "minimum": 60,
+    "hourly": "100",
+    "cap": null,
+    "billable": 270,
+    "hourlyTotal": "450.00",
+    "expected": "450.00"
+  },
+  {
+    "id": "PRICE-005",
+    "duration": 480,
+    "minimum": 60,
+    "hourly": "100",
+    "cap": "500",
+    "billable": 480,
+    "hourlyTotal": "800.00",
+    "expected": "500.00"
+  },
+  {
+    "id": "PRICE-006",
+    "duration": 30,
+    "minimum": 240,
+    "hourly": "100",
+    "cap": "200",
+    "billable": 240,
+    "hourlyTotal": "400.00",
+    "expected": "200.00"
+  },
+  {
+    "id": "PRICE-007",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "20.32",
+    "expected": "20.32"
+  },
+  {
+    "id": "PRICE-008",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "PRICE-009",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "100",
+    "cap": "500",
+    "billable": 299,
+    "hourlyTotal": "498.33",
+    "expected": "498.33"
+  },
+  {
+    "id": "PRICE-010",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "100",
+    "cap": "500",
+    "billable": 300,
+    "hourlyTotal": "500.00",
+    "expected": "500.00"
+  },
+  {
+    "id": "PRICE-011",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "100",
+    "cap": "500",
+    "billable": 301,
+    "hourlyTotal": "501.67",
+    "expected": "500.00"
+  },
+  {
+    "id": "ROUND-001",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "0.02",
+    "expected": "0.02"
+  },
+  {
+    "id": "ROUND-002",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "0.24",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.00",
+    "expected": "0.00"
+  },
+  {
+    "id": "ROUND-003",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "0.36",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-004",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "1.00",
+    "cap": "1.00",
+    "billable": 60,
+    "hourlyTotal": "1.00",
+    "expected": "1.00"
+  },
+  {
+    "id": "ROUND-005",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.00",
+    "expected": "0.00"
+  },
+  {
+    "id": "ROUND-006",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "0.00",
+    "expected": "0.00"
+  },
+  {
+    "id": "ROUND-007",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-008",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-009",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-010",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-011",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-012",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "0.05",
+    "expected": "0.05"
+  },
+  {
+    "id": "ROUND-013",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "0.05",
+    "expected": "0.05"
+  },
+  {
+    "id": "ROUND-014",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "0.05",
+    "expected": "0.05"
+  },
+  {
+    "id": "ROUND-015",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "0.01",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "0.08",
+    "expected": "0.08"
+  },
+  {
+    "id": "ROUND-016",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.00",
+    "expected": "0.00"
+  },
+  {
+    "id": "ROUND-017",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-018",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "0.02",
+    "expected": "0.02"
+  },
+  {
+    "id": "ROUND-019",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "0.02",
+    "expected": "0.02"
+  },
+  {
+    "id": "ROUND-020",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "0.03",
+    "expected": "0.03"
+  },
+  {
+    "id": "ROUND-021",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "0.03",
+    "expected": "0.03"
+  },
+  {
+    "id": "ROUND-022",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "0.03",
+    "expected": "0.03"
+  },
+  {
+    "id": "ROUND-023",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "0.15",
+    "expected": "0.15"
+  },
+  {
+    "id": "ROUND-024",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "0.15",
+    "expected": "0.15"
+  },
+  {
+    "id": "ROUND-025",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "0.15",
+    "expected": "0.15"
+  },
+  {
+    "id": "ROUND-026",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "0.03",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "0.24",
+    "expected": "0.24"
+  },
+  {
+    "id": "ROUND-027",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.01",
+    "expected": "0.01"
+  },
+  {
+    "id": "ROUND-028",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "0.15",
+    "expected": "0.15"
+  },
+  {
+    "id": "ROUND-029",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "0.15",
+    "expected": "0.15"
+  },
+  {
+    "id": "ROUND-030",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "0.16",
+    "expected": "0.16"
+  },
+  {
+    "id": "ROUND-031",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "0.30",
+    "expected": "0.30"
+  },
+  {
+    "id": "ROUND-032",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "0.30",
+    "expected": "0.30"
+  },
+  {
+    "id": "ROUND-033",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "0.31",
+    "expected": "0.31"
+  },
+  {
+    "id": "ROUND-034",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "1.50",
+    "expected": "1.50"
+  },
+  {
+    "id": "ROUND-035",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "1.50",
+    "expected": "1.50"
+  },
+  {
+    "id": "ROUND-036",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "1.51",
+    "expected": "1.51"
+  },
+  {
+    "id": "ROUND-037",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "0.30",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "2.40",
+    "expected": "2.40"
+  },
+  {
+    "id": "ROUND-038",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.02",
+    "expected": "0.02"
+  },
+  {
+    "id": "ROUND-039",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "0.49",
+    "expected": "0.49"
+  },
+  {
+    "id": "ROUND-040",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "0.51",
+    "expected": "0.51"
+  },
+  {
+    "id": "ROUND-041",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "0.52",
+    "expected": "0.52"
+  },
+  {
+    "id": "ROUND-042",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "0.99",
+    "expected": "0.99"
+  },
+  {
+    "id": "ROUND-043",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "1.01",
+    "expected": "1.01"
+  },
+  {
+    "id": "ROUND-044",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "1.03",
+    "expected": "1.03"
+  },
+  {
+    "id": "ROUND-045",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "5.03",
+    "expected": "5.03"
+  },
+  {
+    "id": "ROUND-046",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "5.05",
+    "expected": "5.05"
+  },
+  {
+    "id": "ROUND-047",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "5.07",
+    "expected": "5.07"
+  },
+  {
+    "id": "ROUND-048",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "1.01",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "8.08",
+    "expected": "8.08"
+  },
+  {
+    "id": "ROUND-049",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "0.33",
+    "expected": "0.33"
+  },
+  {
+    "id": "ROUND-050",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "9.66",
+    "expected": "9.66"
+  },
+  {
+    "id": "ROUND-051",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "10.00",
+    "expected": "10.00"
+  },
+  {
+    "id": "ROUND-052",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "10.33",
+    "expected": "10.33"
+  },
+  {
+    "id": "ROUND-053",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "19.66",
+    "expected": "19.66"
+  },
+  {
+    "id": "ROUND-054",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "19.99",
+    "expected": "19.99"
+  },
+  {
+    "id": "ROUND-055",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "20.32",
+    "expected": "20.32"
+  },
+  {
+    "id": "ROUND-056",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "99.62",
+    "expected": "99.62"
+  },
+  {
+    "id": "ROUND-057",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "99.95",
+    "expected": "99.95"
+  },
+  {
+    "id": "ROUND-058",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "100.28",
+    "expected": "100.28"
+  },
+  {
+    "id": "ROUND-059",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "19.99",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "159.92",
+    "expected": "159.92"
+  },
+  {
+    "id": "ROUND-060",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "2.09",
+    "expected": "2.09"
+  },
+  {
+    "id": "ROUND-061",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "60.66",
+    "expected": "60.66"
+  },
+  {
+    "id": "ROUND-062",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "62.75",
+    "expected": "62.75"
+  },
+  {
+    "id": "ROUND-063",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "64.84",
+    "expected": "64.84"
+  },
+  {
+    "id": "ROUND-064",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "123.41",
+    "expected": "123.41"
+  },
+  {
+    "id": "ROUND-065",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "125.50",
+    "expected": "125.50"
+  },
+  {
+    "id": "ROUND-066",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "127.59",
+    "expected": "127.59"
+  },
+  {
+    "id": "ROUND-067",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "625.41",
+    "expected": "625.41"
+  },
+  {
+    "id": "ROUND-068",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "627.50",
+    "expected": "627.50"
+  },
+  {
+    "id": "ROUND-069",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "629.59",
+    "expected": "629.59"
+  },
+  {
+    "id": "ROUND-070",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "125.50",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "1004.00",
+    "expected": "1004.00"
+  },
+  {
+    "id": "ROUND-071",
+    "duration": 1,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 1,
+    "hourlyTotal": "16666.67",
+    "expected": "16666.67"
+  },
+  {
+    "id": "ROUND-072",
+    "duration": 29,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 29,
+    "hourlyTotal": "483333.33",
+    "expected": "483333.33"
+  },
+  {
+    "id": "ROUND-073",
+    "duration": 30,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 30,
+    "hourlyTotal": "500000.00",
+    "expected": "500000.00"
+  },
+  {
+    "id": "ROUND-074",
+    "duration": 31,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 31,
+    "hourlyTotal": "516666.66",
+    "expected": "516666.66"
+  },
+  {
+    "id": "ROUND-075",
+    "duration": 59,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 59,
+    "hourlyTotal": "983333.32",
+    "expected": "983333.32"
+  },
+  {
+    "id": "ROUND-076",
+    "duration": 60,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 60,
+    "hourlyTotal": "999999.99",
+    "expected": "999999.99"
+  },
+  {
+    "id": "ROUND-077",
+    "duration": 61,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 61,
+    "hourlyTotal": "1016666.66",
+    "expected": "1016666.66"
+  },
+  {
+    "id": "ROUND-078",
+    "duration": 299,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 299,
+    "hourlyTotal": "4983333.28",
+    "expected": "4983333.28"
+  },
+  {
+    "id": "ROUND-079",
+    "duration": 300,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 300,
+    "hourlyTotal": "4999999.95",
+    "expected": "4999999.95"
+  },
+  {
+    "id": "ROUND-080",
+    "duration": 301,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 301,
+    "hourlyTotal": "5016666.62",
+    "expected": "5016666.62"
+  },
+  {
+    "id": "ROUND-081",
+    "duration": 480,
+    "minimum": 1,
+    "hourly": "999999.99",
+    "cap": null,
+    "billable": 480,
+    "hourlyTotal": "7999999.92",
+    "expected": "7999999.92"
+  }
+]

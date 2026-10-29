@@ -34,6 +34,7 @@ public class OwnerVerificationService {
     @Transactional
     public OwnerVerificationDto submit(OwnerVerificationSubmitRequest request) {
         User owner = requireOwner();
+        verifications.lockOwnerForSubmission(owner.getId());
         OwnerVerification verification = verifications.findByOwnerIdForUpdate(owner.getId())
                 .orElseGet(() -> OwnerVerification.builder().owner(owner).build());
         if (verification.getStatus() == OwnerVerificationStatus.PENDING)

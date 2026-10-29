@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "command": "mvn verify -Ppostgres-integration -Dit.test=VenueDomainIntegrationTest#avlConcurrentAcceptanceReservesOnceAndExpiryReopens",
+  "tests": 3,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "actors": "two distinct scouts per repetition",
+  "invariant": "one AWAITING_PAYMENT, one UNAVAILABLE; HTTP 200/409; expiry reopens availability"
+}

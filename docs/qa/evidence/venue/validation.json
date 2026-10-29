@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-12",
+  "result": "PASS",
+  "scenarioCounts": {
+    "PASS": 18,
+    "FAIL": 0,
+    "BLOCKED_local_deterministic": 0
+  },
+  "defects": {
+    "fixed": 4,
+    "P1": 2,
+    "P2": 2
+  },
+  "backend": {
+    "mvn test": {
+      "result": "PASS",
+      "tests": 228,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mvn verify -Ppostgres-integration": {
+      "result": "PASS",
+      "tests": 191,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "venueIntegrationSubset": {
+      "result": "PASS",
+      "tests": 106
+    },
+    "repeatedPostgresRaces": {
+      "result": "PASS",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 228,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "git diff --check": "PASS"
+  },
+  "frontend": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS, no warnings",
+    "npm run build": "PASS",
+    "git diff --check": "PASS"
+  },
+  "browser": {
+    "result": "PASS",
+    "groups": 19,
+    "staleAdminConflictRepeats": 3,
+    "runner": "scripts/qa/venue-browser.cjs",
+    "realSpringPostgres": true
+  },
+  "pdf": {
+    "result": "PASS",
+    "pages": 688,
+    "sha256": "862db18c5a4a3f3cc0a192befb36fa1c2a2aadf1661b02f887f60bbcbbc7fa17",
+    "inspection": "Extracted VEN-001\u2013018 text and visually inspected page 37"
+  },
+  "isolation": {
+    "database": "Dedicated tmpfs eema_venue_qa removed after browser run; Testcontainers disposed",
+    "servers": "Task-owned backend/frontend stopped, Chrome closed",
+    "fixtures": "QA-only example.test identities; no shared history deleted",
+    "secrets": "Evidence JSON parsed and scanned; no tokens/passwords/Bearer values stored"
+  },
+  "notSoftwarePass": [
+    "ADMIN critical-edit override/readiness semantics: operations decision",
+    "Activity/photo ordering moderation policy: operations decision",
+    "Human UX review",
+    "Deployed providers, storage and authorization checks",
+    "Gemini preference ordering"
+  ]
+}

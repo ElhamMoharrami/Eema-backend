@@ -215,7 +215,7 @@ public class BookingNotificationService {
 
     private void sendRequestExpired(Booking booking, String venue, String timezone, String url) {
         deliverScout(booking, "REQUEST_EXPIRED", "Your booking request expired",
-                "The owner did not respond before the request deadline. No booking was created or confirmed, and you may request the slot again if it is available.",
+                "Your request expired before it was accepted because the response deadline or minimum booking lead time was reached. No reservation or payment was made. Please choose another available time.",
                 lifecycleDetails(booking, venue, timezone, "EXPIRED"),
                 lifecycleDetailsHtml(booking, venue, timezone, "EXPIRED"), "View availability", url);
     }

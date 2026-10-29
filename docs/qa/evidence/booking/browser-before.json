@@ -1,0 +1,85 @@
+{
+  "result": "REPRODUCED",
+  "checks": [
+    {
+      "name": "Decline request: refetched=false, stale controls=true",
+      "result": "PASS"
+    },
+    {
+      "name": "Accept request: refetched=true, stale controls=false",
+      "result": "PASS"
+    }
+  ],
+  "network": [
+    {
+      "path": "/api/bookings/af075d3e-d72c-434f-8a4e-6dbdcf576413",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/af075d3e-d72c-434f-8a4e-6dbdcf576413",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/af075d3e-d72c-434f-8a4e-6dbdcf576413/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/af075d3e-d72c-434f-8a4e-6dbdcf576413/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/af075d3e-d72c-434f-8a4e-6dbdcf576413/decline",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/af075d3e-d72c-434f-8a4e-6dbdcf576413/decline",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2/accept",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2/accept",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/b2c65f25-4bac-4468-b2e9-2e7573bceab2/incidents",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

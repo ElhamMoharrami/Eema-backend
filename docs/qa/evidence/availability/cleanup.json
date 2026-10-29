@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "frontendBackend": "task-owned processes stopped",
+  "browser": "closed; auth cleared; isolated profile removed",
+  "database": "dedicated eema-avl-qa tmpfs database/network removed",
+  "temporaryStorage": "removed",
+  "sharedHistory": "untouched"
+}

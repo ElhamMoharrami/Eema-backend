@@ -1,0 +1,18 @@
+{
+  "result": "REPRODUCED",
+  "database": "PostgreSQL 16",
+  "defects": [
+    {
+      "id": "VEN-D02",
+      "severity": "P1",
+      "expected": "409; suspended venue REQUESTED booking unchanged",
+      "actual": "200; transitioned to AWAITING_PAYMENT"
+    },
+    {
+      "id": "VEN-D03",
+      "severity": "P2",
+      "expected": "unchanged 3.5m remains ACTIVE",
+      "actual": "PENDING after PostgreSQL stored 3.50m and client returned 3.5"
+    }
+  ]
+}

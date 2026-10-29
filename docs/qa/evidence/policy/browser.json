@@ -1,0 +1,39 @@
+{
+  "result": "PASS",
+  "run": "QA-1789234481314",
+  "checks": [
+    {
+      "name": "Empty published set: no injected text",
+      "result": "PASS"
+    },
+    {
+      "name": "Missing required type cannot claim completion",
+      "result": "PASS"
+    },
+    {
+      "name": "OWNER exact plain text, explicit unchecked privacy acknowledgement; UI subset selection does not submit",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT persisted subset shown as reviewed; remaining control unchecked",
+      "result": "PASS"
+    },
+    {
+      "name": "OWNER stale form submits once: backend 403 triggers global policy refresh and gate",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT replacement requires explicit review on revisiting policy centre",
+      "result": "PASS"
+    },
+    {
+      "name": "OWNER previously gated submission succeeds after reviewing replacement",
+      "result": "PASS"
+    },
+    {
+      "name": "ADMIN UI creates drafts, publishes/replaces/retires with confirmation and retains read-only history",
+      "result": "PASS"
+    }
+  ],
+  "legal": "LEGAL REVIEW REQUIRED"
+}

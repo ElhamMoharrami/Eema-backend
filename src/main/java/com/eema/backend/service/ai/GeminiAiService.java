@@ -42,10 +42,6 @@ public class GeminiAiService implements AiService {
             ParsedBrief parsedBrief =
                     briefParser.parseBrief(brief);
 
-            log.debug(
-                    "Brief parsed successfully: {}",
-                    parsedBrief
-            );
 
             // Step 2:
             // Query the database using the hard requirements extracted by Gemini.
@@ -96,10 +92,7 @@ public class GeminiAiService implements AiService {
             throw e;
 
         } catch (Exception e) {
-            log.error(
-                    "Venue matching failed",
-                    e
-            );
+            log.warn("Venue matching failed: {}", e.getClass().getSimpleName());
 
             throw new AiServiceException(
                     "Venue matching failed",

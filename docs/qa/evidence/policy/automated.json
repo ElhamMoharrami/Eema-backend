@@ -1,0 +1,138 @@
+{
+  "postgresFull": {
+    "command": "mvn verify -Ppostgres-integration",
+    "result": "PASS",
+    "tests": 55,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "com.eema.backend.integration.AdminBookingSearchIntegrationTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+        "tests": "7",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.eema.backend.integration.AuthSessionIntegrationTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.eema.backend.integration.PolicyIntegrationTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.eema.backend.integration.RegistrationIntegrationTest",
+        "tests": "11",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "unit": {
+    "command": "mvn test",
+    "result": "PASS",
+    "tests": 226,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "diffCheck": "PASS"
+  },
+  "backendDiffCheck": "PASS",
+  "legal": "LEGAL REVIEW REQUIRED",
+  "policyFocused": {
+    "result": "PASS",
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "testNames": [
+      "immutableTransitionsAndRequestContract",
+      "publicationDuringAcceptanceKeepsHistoryButNextGateRejects",
+      "publicationDuringAcceptanceKeepsHistoryButNextGateRejects",
+      "publicationDuringAcceptanceKeepsHistoryButNextGateRejects",
+      "lifecycleAllFiveAndAuthorization",
+      "lifecycleAndAcceptancePublishNoDomainNotificationEvents",
+      "duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet",
+      "duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet",
+      "duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet",
+      "exactAcceptanceSubsetsDuplicatesAndMissingTypes",
+      "concurrentServicePublicationHasOneCurrentAndSafeConflict",
+      "concurrentServicePublicationHasOneCurrentAndSafeConflict",
+      "concurrentServicePublicationHasOneCurrentAndSafeConflict",
+      "replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots"
+    ],
+    "purpose": "Final policy suite including populated incident history; all three races repeated three times"
+  },
+  "historicalRightsFinal": {
+    "result": "PASS",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "purpose": "Populated incident history and payout list/detail, cancellation/refund, receipt, all mutation gates and immutable booking references"
+  },
+  "cleanPackage": {
+    "command": "mvn clean package",
+    "result": "PASS",
+    "unitTests": 226,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "sourceSha256": {
+    "src/main/java/com/eema/backend/service/PolicyAcceptanceService.java": "10daf29dfa280ab85ac743b618ce6b617f48d4842080f19e3df893d29eb45153",
+    "src/main/java/com/eema/backend/repository/PolicyAcceptanceRepository.java": "5df5c3193da31bcb80e8949a7d4521e61dc93ae0e6a36109517d34e29e3e16da",
+    "src/main/java/com/eema/backend/exception/GlobalExceptionHandler.java": "34e7e9246565bccf11bd4c34e6132b1efec7ccaaa50cc92ee540e32fe9b69dd4",
+    "/home/elham/workspace/Eema-frontend/app/policies/page.tsx": "f7c9930b614246b36c2795339e08444a429ffc692f2bb4733072aacdd126d99a"
+  },
+  "cleanup": "Dedicated eema-policy-qa tmpfs database disposed; QA backend/frontend stopped; shared policy history untouched; dedicated QA browser profile removed",
+  "pdf": {
+    "result": "PASS",
+    "scenarioPages": {
+      "POL-001": 30,
+      "POL-002": 30,
+      "POL-003": 31,
+      "POL-004": 32,
+      "POL-005": 33,
+      "POL-006": 33
+    },
+    "sourceSha256": "0c7c044814d887e0857ffa47e60f7708baa06fa2d45250c1f69bc016464cec26",
+    "pdfSha256": "aa4485fd2c9b5b772dd6bd9d301548a18978900367334d25c51f1030bd734eb4",
+    "checks": [
+      "All six corrected scenario headings present",
+      "All six technical PASS states present",
+      "Separate LEGAL BLOCKED state present",
+      "HTML attack examples rendered as text",
+      "Visual inspection of policy page 33: readable, no clipping",
+      "Final AUTH follow-up content retained"
+    ],
+    "pages": 693
+  }
+}

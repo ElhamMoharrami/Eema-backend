@@ -1,0 +1,1 @@
+{"result":"REPRODUCED","defect":"TRUST-D01","database":"PostgreSQL 16 Testcontainers","barrier":"both first-submission transactions read absent verification before inserts","repetitions":3,"observed":"one request returned HTTP 500 for unique owner constraint violation","testHarnessCorrections":"JDBC timestamp and SQL array comparisons corrected separately; not product defects"}

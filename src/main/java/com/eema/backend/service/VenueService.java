@@ -72,6 +72,7 @@ public class VenueService {
                 venueMapper.toEntity(request);
 
         venue.setOwner(owner);
+        normalizePricing(venue);
         productionProfileValidator.validateConsistency(venue);
 
         Venue savedVenue =
@@ -171,6 +172,7 @@ public class VenueService {
 
         CriticalProfile before = CriticalProfile.of(venue);
         venueMapper.updateEntityFromDto(request, venue);
+        normalizePricing(venue);
         venue.setPhotoPaths(validatedPhotos);
         productionProfileValidator.validateConsistency(venue);
         if (!before.equals(CriticalProfile.of(venue))) moderationService.requireRereviewAfterCriticalEdit(venue, user);
@@ -316,10 +318,16 @@ public class VenueService {
                                    Integer parkingSpaces, Integer floor, Boolean lift, Boolean wheelchair,
                                    Boolean bathrooms, Boolean sound, String rules, String power, Object photos) {
         static CriticalProfile of(Venue v) { return new CriticalProfile(v.getMaxCrewSize(), copy(v.getPermittedActivities()),
-                copy(v.getProhibitedActivities()), v.getNaturalLight(), v.getBlackoutPossible(), v.getCeilingHeightM(),
+                copy(v.getProhibitedActivities()), v.getNaturalLight(), v.getBlackoutPossible(), v.getCeilingHeightM() == null ? null : v.getCeilingHeightM().stripTrailingZeros(),
                 v.getLoadingAccess(), v.getParkingAvailable(), v.getParkingSpaces(), v.getFloorNumber(),
                 v.getLiftAvailable(), v.getWheelchairAccessible(), v.getBathroomsAvailable(),
                 v.getSoundRecordingSuitable(), v.getProductionRules(), v.getPowerDetails(), copy(v.getPhotoPaths())); }
         private static Object copy(List<?> values) { return values == null ? null : List.copyOf(values); }
     }
+    // Match PostgreSQL NUMERIC(10,2) normalization before returning the saved DTO.
+    private void normalizePricing(Venue venue) {
+        if (venue.getHourlyRateEur() != null) venue.setHourlyRateEur(venue.getHourlyRateEur().setScale(2, java.math.RoundingMode.HALF_UP));
+        if (venue.getFullDayRateEur() != null) venue.setFullDayRateEur(venue.getFullDayRateEur().setScale(2, java.math.RoundingMode.HALF_UP));
+    }
+
 }

@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-12",
+  "result": "PASS",
+  "scenarioCounts": {
+    "PASS": 12,
+    "FAIL": 0,
+    "BLOCKED_local_deterministic": 0
+  },
+  "defects": {
+    "productUI_P2_fixed": 2,
+    "testHarness_fixed": 1,
+    "backendReadinessRuleChanges": 0
+  },
+  "backend": {
+    "mvn test": {
+      "result": "PASS",
+      "tests": 271,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "readinessUnitInvocations": 43,
+    "defensiveServiceTransitionCases": 54,
+    "mvn verify -Ppostgres-integration": {
+      "result": "PASS",
+      "tests": 201,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "readinessPostgresInvocations": 10,
+    "persistedRejectRestorePairs": 30,
+    "focusedRacesAfterHarnessRepair": 9,
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 271,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "git diff --check": "PASS"
+  },
+  "frontend": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS, no warnings",
+    "npm run build": "PASS",
+    "git diff --check": "PASS",
+    "sharedIssueLabelContract": 12
+  },
+  "browser": {
+    "result": "PASS",
+    "groups": 7,
+    "realSpringPostgres": true,
+    "runner": "scripts/qa/ready-browser.cjs"
+  },
+  "pdf": {
+    "pages": 685,
+    "sha256": "3f1a257f6beacb464d71c4b9f830813e0d32c84fa27302e3afad2ab1c2d85c07",
+    "inspection": "READY text extracted; page 45 visually inspected"
+  },
+  "cleanup": "Dedicated tmpfs browser database/network disposed; task-owned servers stopped, Chrome profile/uploads/jar/image removed; Testcontainers dispose whole DBs; no shared history deletion",
+  "limitations": [
+    "Human checklist UX review",
+    "Existing VEN ADMIN direct-edit override operations decision",
+    "Deployed storage/media, lifecycle email and authorization/migration checks"
+  ],
+  "previousRegressionAttempt": "Failed in pre-existing Mockito barrier setup; repaired test-only interceptor, repeated nine races, reran full suite; see harness-before.json"
+}

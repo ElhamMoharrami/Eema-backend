@@ -1,0 +1,23 @@
+{
+  "command": "mvn verify -Ppostgres-integration",
+  "result": "PASS",
+  "counts": {
+    "surefire": {
+      "tests": 308,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failsafe": {
+      "tests": 213,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "venueDomain": 128,
+  "mediaPrefixedInvocations": 13,
+  "mediaNewPostgresInvocations": 12,
+  "barrierRaceRepetitionsPerFullRun": 9,
+  "finalRunDate": "2026-09-13"
+}

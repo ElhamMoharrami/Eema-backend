@@ -6,7 +6,6 @@ import com.eema.backend.entity.enums.*;
 import com.eema.backend.exception.*;
 import com.eema.backend.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
@@ -32,18 +31,20 @@ public class PolicyAcceptanceService {
     }
     @Transactional(readOnly=true) public PolicyStatusDto status(User user){
         Set<UUID> accepted=acceptances.findPolicyVersionIdByUserId(user.getId());
-        List<PolicyVersionDto> missing=currentRequired().stream().filter(p->!accepted.contains(p.getId())).map(p->dto(p,false)).toList();
-        return new PolicyStatusDto(missing.isEmpty()&&hasEveryRequiredType(currentRequired()),missing);
+        List<PolicyVersion> current=currentRequired();
+        List<PolicyVersionDto> missing=current.stream().filter(p->!accepted.contains(p.getId())).map(p->dto(p,false)).toList();
+        return new PolicyStatusDto(missing.isEmpty()&&hasEveryRequiredType(current),missing);
     }
     @Transactional public PolicyStatusDto accept(User user,Set<UUID> ids,String requestId,String agent){
-        List<PolicyVersion> supplied=versions.findAllById(ids);
+        List<PolicyVersion> supplied=new ArrayList<>(versions.findAllById(ids));
         if(supplied.size()!=ids.size())throw new BadRequestException("One or more policy versions do not exist");
         Map<PolicyType,PolicyVersion> current=byType(currentRequired());
         for(PolicyVersion p:supplied){PolicyVersion active=current.get(p.getPolicyType());if(p.getStatus()!=PolicyStatus.PUBLISHED||active==null||!active.getId().equals(p.getId()))throw new BadRequestException("Only exact current published policy versions may be accepted");}
         OffsetDateTime now=OffsetDateTime.now();
+        // Consistent lock order also prevents deadlocks for overlapping acceptance sets.
+        supplied.sort(Comparator.comparing(PolicyVersion::getId));
         for(PolicyVersion p:supplied)if(!acceptances.existsByUserIdAndPolicyVersionId(user.getId(),p.getId())){
-            try{acceptances.saveAndFlush(PolicyAcceptance.builder().userId(user.getId()).policyVersionId(p.getId()).acceptedAt(now).requestId(requestId).userAgentSummary(summarize(agent)).build());}
-            catch(DataIntegrityViolationException ignored){/* concurrent duplicate is idempotent */}
+            acceptances.insertIfAbsent(UUID.randomUUID(),user.getId(),p.getId(),now,requestId,summarize(agent));
         }
         return status(user);
     }

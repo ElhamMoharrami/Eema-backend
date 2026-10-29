@@ -1,0 +1,228 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "QA Price Minimum: exact preview, actual request, saved price 100.00 and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "QA Price Prorated: exact preview, actual request, saved price 20.32 and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "QA Price Capped: exact preview, actual request, saved price 500.00 and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "QA Price Hourly: exact preview, actual request, saved price 150.00 and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "QA Price Server Authority: exact preview, actual request, saved price 165.00 and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "All five browser booking requests omit client monetary amounts",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner zero hourly rate fails native form validation",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner decimal pricing, one-minute minimum and optional absent cap save and reload exactly",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner optional full-day cap saves and reloads",
+      "result": "PASS"
+    }
+  ],
+  "network": [
+    {
+      "path": "/api/bookings",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/82c2220e-ed1c-476b-a956-fdbb6743dd7a",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/82c2220e-ed1c-476b-a956-fdbb6743dd7a",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/82c2220e-ed1c-476b-a956-fdbb6743dd7a/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/82c2220e-ed1c-476b-a956-fdbb6743dd7a/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/82c2220e-ed1c-476b-a956-fdbb6743dd7a",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/82c2220e-ed1c-476b-a956-fdbb6743dd7a/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/436b1ef9-cd39-4ede-a151-3331993d9963",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/436b1ef9-cd39-4ede-a151-3331993d9963",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/436b1ef9-cd39-4ede-a151-3331993d9963/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/436b1ef9-cd39-4ede-a151-3331993d9963/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/436b1ef9-cd39-4ede-a151-3331993d9963",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/436b1ef9-cd39-4ede-a151-3331993d9963/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/03b24efe-9056-425f-9d41-1ecce6b3bfad",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/03b24efe-9056-425f-9d41-1ecce6b3bfad",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/03b24efe-9056-425f-9d41-1ecce6b3bfad/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/03b24efe-9056-425f-9d41-1ecce6b3bfad/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/03b24efe-9056-425f-9d41-1ecce6b3bfad",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/03b24efe-9056-425f-9d41-1ecce6b3bfad/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/bc7d4eff-23a1-43ed-bdd9-73b8cdeb0dce",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/bc7d4eff-23a1-43ed-bdd9-73b8cdeb0dce",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/bc7d4eff-23a1-43ed-bdd9-73b8cdeb0dce/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/bc7d4eff-23a1-43ed-bdd9-73b8cdeb0dce/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/bc7d4eff-23a1-43ed-bdd9-73b8cdeb0dce",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/bc7d4eff-23a1-43ed-bdd9-73b8cdeb0dce/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/47e6f12e-ba06-494d-91e5-e89bb4c1b37d",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/47e6f12e-ba06-494d-91e5-e89bb4c1b37d",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/47e6f12e-ba06-494d-91e5-e89bb4c1b37d/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/47e6f12e-ba06-494d-91e5-e89bb4c1b37d/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/47e6f12e-ba06-494d-91e5-e89bb4c1b37d",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/47e6f12e-ba06-494d-91e5-e89bb4c1b37d/incidents",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

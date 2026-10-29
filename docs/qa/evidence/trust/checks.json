@@ -1,0 +1,58 @@
+{
+  "result": "PASS",
+  "checks": {
+    "backendUnit": {
+      "result": "PASS",
+      "summary": "[INFO] Tests run: 227, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    "backendPostgres": {
+      "result": "PASS",
+      "summary": "[INFO] Tests run: 85, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    "trustPostgresRepeat": {
+      "result": "PASS",
+      "summary": "[INFO] Tests run: 30, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    "backendCleanPackage": {
+      "result": "PASS",
+      "summary": "[INFO] Tests run: 227, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    "frontendTypecheck": {
+      "result": "PASS"
+    },
+    "frontendLint": {
+      "result": "PASS"
+    },
+    "frontendBuild": {
+      "result": "PASS"
+    },
+    "diffCheck": {
+      "backend": "PASS",
+      "frontend": "PASS"
+    },
+    "browser": {
+      "result": "PASS",
+      "groups": 15,
+      "runsAfterFix": 2,
+      "finalArtifact": "clean-packaged backend and production frontend build",
+      "staleReviewRepetitionsPerRun": 3
+    },
+    "masterPlanPdf": {
+      "result": "PASS",
+      "pages": 693,
+      "trustPages": [
+        34,
+        35,
+        36
+      ],
+      "textAndVisualInspection": "PASS"
+    },
+    "cleanup": {
+      "result": "PASS",
+      "dedicatedDatabase": "disposed via compose down; tmpfs data removed",
+      "browser": "session cleared, browser closed, isolated profile removed",
+      "services": "only QA backend/frontend stopped",
+      "sharedHistory": "untouched"
+    }
+  }
+}

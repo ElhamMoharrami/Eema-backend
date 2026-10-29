@@ -24,6 +24,7 @@ public class BookingPriceCalculator {
         }
         BookingOverlapRule.requireValid(startTime, endTime);
         long duration = Duration.between(startTime, endTime).toMinutes();
+        if (duration < 1) throw new IllegalArgumentException("Booking duration must be at least one minute");
         if (duration > Integer.MAX_VALUE) throw new IllegalArgumentException("Booking duration is too large");
         int durationMinutes = (int) duration;
         int billableMinutes = Math.max(durationMinutes, minimumBookingMinutes);
@@ -34,6 +35,9 @@ public class BookingPriceCalculator {
                 : fullDayRateEur.setScale(2, RoundingMode.HALF_UP);
         BigDecimal finalPrice = normalizedFullDay == null || hourlyTotal.compareTo(normalizedFullDay) <= 0
                 ? hourlyTotal : normalizedFullDay;
+        // Booking monetary columns are NUMERIC(10,2); reject overflow before persistence.
+        if (finalPrice.compareTo(new BigDecimal("99999999.99")) > 0)
+            throw new IllegalArgumentException("Calculated booking price exceeds the supported amount");
         return new PricingQuote(durationMinutes, billableMinutes, normalizedHourlyRate,
                 minimumBookingMinutes, normalizedFullDay, hourlyTotal, finalPrice);
     }

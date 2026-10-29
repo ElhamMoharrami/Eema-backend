@@ -262,12 +262,12 @@ public class VenueFilterBuilder {
     private void addProductionActivityFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
                                              List<Predicate> predicates) {
         if (brief.productionActivity() == null) return;
-        Predicate permitted = cb.isTrue(cb.function("array_contains", Boolean.class,
-                venue.get("permittedActivities"), cb.literal(brief.productionActivity())));
+        Predicate permitted = cb.isTrue(cb.function("eema_activity_contains", Boolean.class,
+                venue.get("permittedActivities"), cb.literal(brief.productionActivity().name())));
         Predicate notProhibited = cb.or(
                 cb.isNull(venue.get("prohibitedActivities")),
-                cb.isFalse(cb.function("array_contains", Boolean.class,
-                        venue.get("prohibitedActivities"), cb.literal(brief.productionActivity())))
+                cb.isFalse(cb.function("eema_activity_contains", Boolean.class,
+                        venue.get("prohibitedActivities"), cb.literal(brief.productionActivity().name())))
         );
         predicates.add(cb.and(cb.isNotNull(venue.get("permittedActivities")), permitted, notProhibited));
     }

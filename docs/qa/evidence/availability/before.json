@@ -1,0 +1,23 @@
+{
+  "result": "REPRODUCED",
+  "tests": 4,
+  "failures": 2,
+  "defects": [
+    {
+      "id": "AVL-D01",
+      "severity": "P1",
+      "now": "2026-09-10T19:59:30Z",
+      "leadMinutes": 120,
+      "actual": "00:00\u201317:00 exposed on threshold day",
+      "expected": "empty; rounded threshold is next midnight"
+    },
+    {
+      "id": "AVL-D02",
+      "severity": "P1",
+      "now": "2026-10-24T23:30:00Z",
+      "leadMinutes": 120,
+      "actual": "02:30\u201317:00 exposed in autumn overlap",
+      "expected": "03:00\u201317:00; earlier-offset 02:30 fails authoritative lead policy"
+    }
+  ]
+}

@@ -70,11 +70,15 @@ public class Venue {
     @Column(name = "max_crew_size")
     private Integer maxCrewSize;
 
+    @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.ARRAY)
+    @org.hibernate.annotations.ColumnTransformer(write = "?::production_activity[]")
     @Column(name = "permitted_activities", columnDefinition = "production_activity[]")
     private List<ProductionActivity> permittedActivities;
 
+    @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.ARRAY)
+    @org.hibernate.annotations.ColumnTransformer(write = "?::production_activity[]")
     @Column(name = "prohibited_activities", columnDefinition = "production_activity[]")
     private List<ProductionActivity> prohibitedActivities;
 

@@ -148,6 +148,41 @@ class VenueServiceTest {
         verify(storage).delete(uploaded);
     }
 
+
+    @Test
+    void cleanupFailureNeverReplacesOriginalPersistenceFailure() {
+        when(currentUser.getCurrentUser()).thenReturn(owner);
+        String uploaded=photo("55555555-5555-4555-8555-555555555555");
+        var file=mock(org.springframework.web.multipart.MultipartFile.class);
+        when(storage.store(file)).thenReturn(uploaded);
+        var original=new org.springframework.dao.DataIntegrityViolationException("QA original persistence failure");
+        when(venues.saveAndFlush(any())).thenThrow(original);
+        doThrow(new IllegalStateException("QA cleanup unavailable")).when(storage).delete(uploaded);
+        assertSame(original,assertThrows(org.springframework.dao.DataIntegrityViolationException.class,
+                ()->service.uploadAndAttachPhoto(venueId,file)));
+        verify(storage).delete(uploaded);
+    }
+
+    @Test
+    void persistenceFailureCompensatesThroughRealS3Adapter() {
+        when(currentUser.getCurrentUser()).thenReturn(owner);
+        var client=mock(software.amazon.awssdk.services.s3.S3Client.class);
+        var properties=MediaStorageContractTest.properties(java.nio.file.Path.of("/tmp/unused-media-mock"));
+        var adapter=new S3PublicMediaStorage(client,properties,"qa-public","media/");
+        var realAdapterService=new VenueService(venues,users,new VenueMapper(new UserMapper()),currentUser,
+                new VenueMediaPolicy(properties),adapter,new VenueProductionProfileValidator(),moderation);
+        var original=new org.springframework.dao.DataIntegrityViolationException("QA original DB failure");
+        when(venues.saveAndFlush(any())).thenThrow(original);
+        var file=new org.springframework.mock.web.MockMultipartFile("file","qa.jpg","image/jpeg",
+                com.eema.backend.support.MediaFixtures.bytes("qa.jpg"));
+        assertSame(original,assertThrows(org.springframework.dao.DataIntegrityViolationException.class,
+                ()->realAdapterService.uploadAndAttachPhoto(venueId,file)));
+        var put=org.mockito.ArgumentCaptor.forClass(software.amazon.awssdk.services.s3.model.PutObjectRequest.class);
+        verify(client).putObject(put.capture(),any(software.amazon.awssdk.core.sync.RequestBody.class));
+        verify(client).deleteObject(argThat((software.amazon.awssdk.services.s3.model.DeleteObjectRequest r)->
+                r.bucket().equals("qa-public")&&r.key().equals(put.getValue().key())));
+    }
+
     private UpdateVenueRequest request(List<String> photos) {
         return new UpdateVenueRequest("Updated Studio", "Centre", 250, new BigDecimal("175.00"), 240, 1440,
                 new BigDecimal("1200.00"), 30,

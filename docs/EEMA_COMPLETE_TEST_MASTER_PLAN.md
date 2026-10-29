@@ -1,8 +1,8 @@
 # Eema Complete End-to-End Test Master Plan
 
-Authoritative planning baseline: **2026-09-09**, backend `b1c33b09ecb7b405a9113021586e03b996c45f1c`, frontend `8eb69a824772caf794945bdb3ac036a6654fb90a`; working-tree source inspected in both repositories. This is a test plan with a complete AUTH execution addendum dated 2026-09-10: **15 LOCAL PASS, 0 FAIL, 0 BLOCKED (rerun after pre-launch fixes; historical failures retained in the execution report)**. All non-AUTH scenarios and acceptance gates remain NOT RUN. Existing automated means a test exists, not that its associated business scenario has passed. AUTH-001 results and newly added coverage are recorded in its companion guide; original suite inventories/counts below describe the 2026-09-09 baseline.
+Authoritative planning baseline: **2026-09-09**, backend `b1c33b09ecb7b405a9113021586e03b996c45f1c`, frontend `8eb69a824772caf794945bdb3ac036a6654fb90a`; working-tree source inspected in both repositories. This is a test plan with a complete AUTH execution addendum dated 2026-09-10: **15 LOCAL PASS, 0 FAIL, 0 BLOCKED (rerun after pre-launch fixes; historical failures retained in the execution report)**. Subsequent domain execution sections and linked reports supersede baseline NOT RUN labels. PRICE-001–011 were audited and executed on 2026-09-15: **11 LOCAL PASS**, with the zero-price accounting decision still open; see [PRICE execution report](qa/PRICE_EXECUTION_REPORT.md). Existing automated means a test exists, not that its associated business scenario has passed. AUTH-001 results and newly added coverage are recorded in its companion guide; original suite inventories/counts below describe the 2026-09-09 baseline.
 
-Scope: current business workflows, UI, APIs, service contracts, persistent constraints, scheduled work and external-provider boundaries. No application changes, browser framework, real provider calls, deployment, legal publication or price/policy changes are part of this task. Explicit characterization of a limitation is not approval of it for launch.
+Scope: current business workflows, UI, APIs, service contracts, persistent constraints, scheduled work and external-provider boundaries. The original planning baseline did not execute application changes or provider calls. Later authorized execution passes record their narrow source fixes, automated/browser evidence and remaining provider/product gates in their domain reports. Explicit characterization of a limitation is not approval of it for launch.
 
 Use the system map first, then fixtures/runbook, domain scenarios and the release gate. Tables and parameterized scenarios are executable checklists: record each named variant separately, and fail the parent scenario if any required variant fails. Counts below count unique test IDs, not each permutation or browser viewport. An API role case and a unit case intentionally cover different layers of the same capability.
 
@@ -796,1277 +796,505 @@ Auth-input contract update (2026-09-10): register/login/resend/forgot email is t
 <a id="pol-001"></a>
 #### POL-001 — Policy draft, publish, replacement and retire
 
-**Area:** POL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** POL · **Priority:** P0 · **Test level:** API, PostgreSQL, browser where mapped · **Result:** LOCAL TECHNICAL PASS — see [POL execution report](qa/POL_EXECUTION_REPORT.md)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** ADMIN creates/lists/publishes/retires. SCOUT and OWNER authenticate for current/status reads; they cannot administer policies. Anonymous is denied.
 
+**Preconditions:** Disposable PostgreSQL migrated through V11; active authenticated ADMIN, SCOUT and OWNER. Policy endpoints do not require email verification or prior acceptance. Begin with no current policies in the disposable database.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Test data:** Unique QA-<RUN_ID>-v1/v2 versions; every test policy says `QA TEST CONTENT — NOT LEGAL TERMS`.
 
+**Exact steps:** For each of the five PolicyType values, POST /api/admin/policies with unique QA-<RUN_ID>-v1, exact plain QA text and future effectiveAt. Confirm draft is absent from GET /api/policies/{type}/current (404). POST /api/admin/policies/{id}/publish (200); create/publish v2; retire v2 (200). Create returns 201. Check current/status after each. Repeat admin list/create/publish/retire as SCOUT and OWNER (403), and anonymous (401). Denials leave state unchanged.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Expected API/UI behavior:** Publication is immediate, including future effectiveAt. No scheduler. Replacement retires the previous published version. Retiring the current version leaves that type absent and completeness false. ADMIN needs no prior acceptance. Browser admin controls require confirmation for publication/retirement.
 
+**Expected database/domain state:** Persist exact content, SHA-256 of its UTF-8 bytes, and non-null published_at; retain v1 content/hash after replacement and retirement. At most one PUBLISHED row per type (partial unique index). Hash is integrity metadata, not a digital signature.
 
-**Exact steps:** As ADMIN POST /admin/policies for each of five types using version QA-RUN-v1 and plain test-only text. Publish; create/publish v2 of one type; retire v2. GET current/status after each.
+**Email/provider contract:** AdminPolicyService and PolicyAcceptanceService publish no notification events or provider calls. Other domains retain their own lifecycle behavior.
 
+**Cleanup/reset:** Testcontainers owns disposable automation databases. Browser suite uses a separate disposable local QA database and temporary Chrome profile. Retain history until disposing that whole QA environment; never manually delete published shared local/staging policies or assume a snapshot-restore harness.
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Automation mapping:** PolicyIntegrationTest.lifecycleAllFiveAndAuthorization; lifecycleAndAcceptancePublishNoDomainNotificationEvents; concurrentServicePublicationHasOneCurrentAndSafeConflict. Existing PostgresCriticalPathIntegrationTest.policyPublishRaceLeavesExactlyOneCurrentVersion. scripts/qa/policy-browser.cjs admin create/publish/replace/retire/reload.
 
+**Human/legal limitation:** Production publication requires externally approved content. Local QA text is not legal approval.
 
-**Expected API/backend behavior:** Draft not current; publish stamps hash/time; replacement retires v1; one PUBLISHED per type; retire leaves type missing and completeness false. effectiveAt is metadata, not a publication scheduler.
-
-
-**Expected database/domain state:** Draft not current; publish stamps hash/time; replacement retires v1; one PUBLISHED per type; retire leaves type missing and completeness false. effectiveAt is metadata, not a publication scheduler.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminPolicyService, PolicyAcceptanceService, PolicyVersion; /policies and /admin/policies
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Execution evidence:** [POL execution report](qa/POL_EXECUTION_REPORT.md), `docs/qa/evidence/policy/`. PASS requires mapped deterministic checks to execute successfully; legal approval remains separate. No H2, production fake policies, or live provider calls.
 
 
 <a id="pol-002"></a>
 #### POL-002 — Policy immutability and unsupported edit
 
-**Area:** POL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** POL · **Priority:** P0 · **Test level:** API, PostgreSQL, browser where mapped · **Result:** LOCAL TECHNICAL PASS — see [POL execution report](qa/POL_EXECUTION_REPORT.md)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** ADMIN exercises unsupported methods and transitions. Global policy versions have no participant ownership variants.
 
+**Preconditions:** Authenticated active ADMIN; disposable draft, published and retired versions. No email-verification or policy-acceptance prerequisite.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Test data:** Unique QA-<RUN_ID>-v1/v2 versions; every test policy says `QA TEST CONTENT — NOT LEGAL TERMS`.
 
+**Exact steps:** At each lifecycle state, attempt PUT/PATCH /api/admin/policies (405) and /api/admin/policies/{id} (404: no resource mapping). Attempt republish PUBLISHED, publish RETIRED, retire DRAFT and duplicate type/version (409). Exercise blank/overlong version/title/content, invalid type/date (400). Unknown fields currently ignored. Do not invent draft-edit or internal entity-update methods.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Expected API/UI behavior:** No content edit endpoint exists, including drafts. Published/retired cards are read-only; replacement is a new draft. Unsupported requests are client errors, never 500. Effective date/title/version are not mutable via an API either.
 
+**Expected database/domain state:** Content/hash on original rows remain stable. Type/version uniqueness and historical foreign keys remain enforced. Application immutability does not claim a database trigger that prohibits privileged manual SQL changes.
 
-**Exact steps:** Attempt PUT/PATCH published and retired IDs; call entity update methods in unit fixture; republish or retire DRAFT; duplicate type/version.
+**Email/provider contract:** AdminPolicyService and PolicyAcceptanceService publish no notification events or provider calls. Other domains retain their own lifecycle behavior.
 
+**Cleanup/reset:** Testcontainers owns disposable automation databases. Browser suite uses a separate disposable local QA database and temporary Chrome profile. Retain history until disposing that whole QA environment; never manually delete published shared local/staging policies or assume a snapshot-restore harness.
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Automation mapping:** PolicyIntegrationTest.immutableTransitionsAndRequestContract; lifecycleAllFiveAndAuthorization; replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots. Browser admin historical rows have no input/select/textarea editor.
 
+**Human/legal limitation:** No legal decision is needed to validate technical immutability. Approved version/title conventions remain business input.
 
-**Expected API/backend behavior:** No edit endpoint exists, including draft edit. Published/retired content immutable; illegal transitions/duplicate version conflict. Historical hash/content and booking links preserved.
-
-
-**Expected database/domain state:** No edit endpoint exists, including draft edit. Published/retired content immutable; illegal transitions/duplicate version conflict. Historical hash/content and booking links preserved.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminPolicyService, PolicyAcceptanceService, PolicyVersion; /policies and /admin/policies
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Execution evidence:** [POL execution report](qa/POL_EXECUTION_REPORT.md), `docs/qa/evidence/policy/`. PASS requires mapped deterministic checks to execute successfully; legal approval remains separate. No H2, production fake policies, or live provider calls.
 
 
 <a id="pol-003"></a>
 #### POL-003 — Exact acceptance IDs and duplicates
 
-**Area:** POL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** POL · **Priority:** P0 · **Test level:** API, PostgreSQL, browser where mapped · **Result:** LOCAL TECHNICAL PASS — see [POL execution report](qa/POL_EXECUTION_REPORT.md)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Authenticated SCOUT, OWNER and ADMIN can read and accept; anonymous receives 401. Acceptance is tied to the authenticated user, with no userId in the request.
 
+**Preconditions:** Active authenticated accounts; no prior acceptance or email-verification prerequisite. Publish all five current types using isolated QA versions.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Test data:** Unique QA-<RUN_ID>-v1/v2 versions; every test policy says `QA TEST CONTENT — NOT LEGAL TERMS`.
 
+**Exact steps:** POST /api/policies/accept with {policyVersionIds:[UUID,...]}. Accept exact five (200), repeat (200), accept a subset (200, incomplete), and duplicate IDs (deduplicated Set). Empty, more than five distinct IDs, null ID, nonexistent, draft, retired or stale previous ID are 400. Distinguish API subset support from the UI, which requires selecting all currently unaccepted cards.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Expected API/UI behavior:** All five types are required for status completeness: TERMS_OF_SERVICE, PRIVACY_POLICY, ACCEPTABLE_USE_POLICY, PRODUCTION_POLICY, INSURANCE_REQUIREMENTS. ADMIN can accept and receives normal completeness status but bypasses commitment enforcement. Missing publication cannot mean complete, even if all available versions were accepted.
 
+**Expected database/domain state:** One acceptance per user/version; repeated acknowledgement preserves original row, timestamp and request metadata. Failed requests create no partial set. Booking snapshot set has four types, excluding PRIVACY_POLICY. No acceptance history is deleted when a replacement appears.
 
-**Exact steps:** Fetch /policies/current; POST /policies/accept with exact five IDs; repeat; accept subset, nonexistent, old retired, draft, empty and >5 IDs separately.
+**Email/provider contract:** AdminPolicyService and PolicyAcceptanceService publish no notification events or provider calls. Other domains retain their own lifecycle behavior.
 
+**Cleanup/reset:** Testcontainers owns disposable automation databases. Browser suite uses a separate disposable local QA database and temporary Chrome profile. Retain history until disposing that whole QA environment; never manually delete published shared local/staging policies or assume a snapshot-restore harness.
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Automation mapping:** PolicyIntegrationTest.exactAcceptanceSubsetsDuplicatesAndMissingTypes; duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet (three barrier repetitions); lifecycleAndAcceptancePublishNoDomainNotificationEvents. Existing PolicyAcceptanceServiceTest plus browser persisted subset/all checks.
 
+**Human/legal limitation:** Privacy wording remains review/acknowledgement, not invented consent. Whether role-specific required sets should differ is a business/legal decision.
 
-**Expected API/backend behavior:** Exact current IDs persist once per user/version; subset remains incomplete; unknown/stale/draft 400; empty/>5 400. All five types required, but booking snapshots only four: privacy is excluded.
-
-
-**Expected database/domain state:** Exact current IDs persist once per user/version; subset remains incomplete; unknown/stale/draft 400; empty/>5 400. All five types required, but booking snapshots only four: privacy is excluded.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminPolicyService, PolicyAcceptanceService, PolicyVersion; /policies and /admin/policies
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Execution evidence:** [POL execution report](qa/POL_EXECUTION_REPORT.md), `docs/qa/evidence/policy/`. PASS requires mapped deterministic checks to execute successfully; legal approval remains separate. No H2, production fake policies, or live provider calls.
 
 
 <a id="pol-004"></a>
 #### POL-004 — Policy replacement gating and history
 
-**Area:** POL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** POL · **Priority:** P0 · **Test level:** API, PostgreSQL, browser where mapped · **Result:** LOCAL TECHNICAL PASS — see [POL execution report](qa/POL_EXECUTION_REPORT.md)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** SCOUT/OWNER act on their eligible resources; ADMIN publishes replacement. Resource ownership matters for bookings/venues/inquiries, not global policy IDs.
 
+**Preconditions:** Current v1 accepted by SCOUT and OWNER; verified email where independently required. Real created booking with four v1 references; active venue and valid availability. Paid-receipt/refund fixtures must independently meet financial eligibility. Payout form additionally requires verified owner status.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Test data:** Unique QA-<RUN_ID>-v1/v2 versions; every test policy says `QA TEST CONTENT — NOT LEGAL TERMS`.
 
+**Exact steps:** Publish replacement after v1 acceptance. Verify authenticated booking list/detail, incident history, cancellation preview, eligible cancellation/refund status, PDF receipt and owner payout history remain available; login and public browsing work. Attempt new booking, checkout, owner booking accept/decline, inquiry create/offer/decline/accept, payout-destination submit and venue submit-for-review: policy-specific 403. Accept replacement and retry new booking/owner decline; browser retries payout submission successfully. Replace/retire a booking-relevant type and compare original references.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Expected API/UI behavior:** New commitments are gated; historical rights retain independent role/eligibility rules. Direct full refund initiation remains ADMIN-only; users retain eligible cancellation and refund-status access. Existing incident reads are ungated. No publication push/poll is implied: backend always checks new mutations; 403 dispatches eema:policy-stale and refreshes frontend policy status without replaying mutation.
 
+**Expected database/domain state:** Original booking_policy_versions rows continue to point to original four version IDs after replacement and retirement. Privacy is absent. Denied actions leave aggregate state unchanged. Paid cancellation/refund is tested with a mocked provider response and real PostgreSQL persistence; this is not provider delivery verification.
 
-**Exact steps:** Accept v1 then create booking; publish v2. Read booking, receipt and payout history, cancel eligible booking; attempt new request/inquiry/accept/decline/checkout/destination/venue submission. Accept v2 then retry blocked action.
+**Email/provider contract:** AdminPolicyService and PolicyAcceptanceService publish no notification events or provider calls. Other domains retain their own lifecycle behavior.
 
+**Cleanup/reset:** Testcontainers owns disposable automation databases. Browser suite uses a separate disposable local QA database and temporary Chrome profile. Retain history until disposing that whole QA environment; never manually delete published shared local/staging policies or assume a snapshot-restore harness.
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Automation mapping:** PolicyIntegrationTest.replacementGatesCommitmentsAndPreservesBookingRightsAndSnapshots; scripts/qa/policy-browser.cjs OWNER stale form/403/review/retry; scripts/qa/policy-client-check.cjs repeated policy-versus-ownership 403 distinction. Existing financial/cancellation/inquiry suites remain additional coverage.
 
+**Human/legal limitation:** Policy services themselves emit no email; successful booking/cancellation/payout actions can emit their own existing events. Do not apply generic provider-silence expectations to those actions.
 
-**Expected API/backend behavior:** Reads and cancellation/refund rights remain available; new gated actions reject 403 until acceptance. Existing booking_policy_versions still references original four IDs.
-
-
-**Expected database/domain state:** Reads and cancellation/refund rights remain available; new gated actions reject 403 until acceptance. Existing booking_policy_versions still references original four IDs.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminPolicyService, PolicyAcceptanceService, PolicyVersion; /policies and /admin/policies
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Execution evidence:** [POL execution report](qa/POL_EXECUTION_REPORT.md), `docs/qa/evidence/policy/`. PASS requires mapped deterministic checks to execute successfully; legal approval remains separate. No H2, production fake policies, or live provider calls.
 
 
 <a id="pol-005"></a>
 #### POL-005 — Privacy wording and missing-set UI
 
-**Area:** POL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** POL · **Priority:** P0 · **Test level:** API, PostgreSQL, browser where mapped · **Result:** LOCAL TECHNICAL PASS / LEGAL BLOCKED — see [POL execution report](qa/POL_EXECUTION_REPORT.md)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Authenticated SCOUT and OWNER policy centre; ADMIN prepares isolated versions and exercises admin UI. Anonymous sees sign-in and API reads return 401.
 
+**Preconditions:** Disposable local backend and Chrome QA profile. Exercise no publications, one missing type, full set, persisted subset, all accepted, and replacement. Email verification is not required to review policies.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Test data:** Unique QA-<RUN_ID>-v1/v2 versions; every test policy says `QA TEST CONTENT — NOT LEGAL TERMS`.
 
+**Exact steps:** Open /policies for each set. Compare exact backend content with rendered text, including literal markup characters; assert no interpreted HTML. No unchecked version may be preselected. API subset acceptance is reflected as reviewed cards; UI selection of only part of the remaining set leaves submit disabled. Accept all remaining controls, reload, replace one policy, and verify explicit review is required again. On /admin/policies create/review draft, confirm publish, replace and retire; reload retains read-only history.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Expected API/UI behavior:** No placeholder legal text is substituted. A missing type shows the incomplete required-set notice and must not show all-required-reviewed success. Backend allRequiredAccepted controls success, together with the complete displayed set. Privacy card says “I acknowledge that I have reviewed this privacy notice.” Plain React text rendering does not interpret HTML.
 
+**Expected database/domain state:** UI acceptance must agree with exact-version records and backend completeness. No policy content is generated by the UI. Legal validity is not a database/software assertion.
 
-**Exact steps:** Open /policies with no published policies, one missing type, then all five; inspect privacy card checkbox and other acceptance controls; accept current set.
+**Email/provider contract:** AdminPolicyService and PolicyAcceptanceService publish no notification events or provider calls. Other domains retain their own lifecycle behavior.
 
+**Cleanup/reset:** Testcontainers owns disposable automation databases. Browser suite uses a separate disposable local QA database and temporary Chrome profile. Retain history until disposing that whole QA environment; never manually delete published shared local/staging policies or assume a snapshot-restore harness.
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Automation mapping:** scripts/qa/policy-browser.cjs (existing AUTH CDP/ws harness, no new framework); sanitized screenshots and browser.json under docs/qa/evidence/policy. PolicyIntegrationTest covers authoritative completeness and accepted flags.
 
+**Human/legal limitation:** LEGAL REVIEW REQUIRED: final content and privacy acknowledgement semantics remain unapproved. Technical UI results cannot turn this legal gate into PASS. Eli reviews understandability, review notices and deliberate admin publication.
 
-**Expected API/backend behavior:** No placeholder substituted; controls never prechecked. Privacy review/acknowledgement copy must be assessed against pending approved semantics; record BLOCKED legal gate until approved. Missing type cannot produce allRequiredAccepted=true.
-
-
-**Expected database/domain state:** No placeholder substituted; controls never prechecked. Privacy review/acknowledgement copy must be assessed against pending approved semantics; record BLOCKED legal gate until approved. Missing type cannot produce allRequiredAccepted=true.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminPolicyService, PolicyAcceptanceService, PolicyVersion; /policies and /admin/policies
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Execution evidence:** [POL execution report](qa/POL_EXECUTION_REPORT.md), `docs/qa/evidence/policy/`. PASS requires mapped deterministic checks to execute successfully; legal approval remains separate. No H2, production fake policies, or live provider calls.
 
 
 <a id="pol-006"></a>
 #### POL-006 — Acceptance publication race
 
-**Area:** POL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** POL · **Priority:** P0 · **Test level:** API, PostgreSQL, browser where mapped · **Result:** LOCAL TECHNICAL PASS — see [POL execution report](qa/POL_EXECUTION_REPORT.md)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Roles involved:** Authenticated accepting SCOUT (same production acceptance service as OWNER/ADMIN); ADMIN publishes. No unrelated ownership UUID variants.
 
+**Preconditions:** Disposable Testcontainers PostgreSQL, V11 constraints, current published set and fresh unaccepted user. Transaction barriers/latches; no timing sleeps. Separate publication/acceptance race, duplicate acceptance race and competing publications.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Test data:** Unique QA-<RUN_ID>-v1/v2 versions; every test policy says `QA TEST CONTENT — NOT LEGAL TERMS`.
 
+**Exact steps:** Pause acceptance after its real current-set query, publish replacement, release acceptance. Assert old exact acceptances may persist; next policy gate rejects until replacement accepted. Force two identical HTTP acceptance requests past their initial absence check; both return 200 with one row per user/version and complete sets. Force two different drafts past the current-publication read; one publishes and the other safely conflicts (200/409), leaving one current version. Repeat each race three times.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Expected API/UI behavior:** Acceptance records valid exact historical versions, not a perpetual complete flag. Completeness is recalculated for the next gated action. Concurrent duplicates use PostgreSQL ON CONFLICT DO NOTHING, without swallowing a uniqueness exception in an aborted transaction. Inserts have consistent version order. Competing publications retain the partial unique-index authority.
 
+**Expected database/domain state:** No duplicate acceptance rows, no partial committed set, no rewritten/deleted stale history, no duplicate current publication. A losing publication transaction rolls back; losing draft remains draft. The existing SQL-only race supplements, but does not replace, service/HTTP transaction evidence.
 
-**Exact steps:** Pause acceptance after current query; publish a replacement concurrently; also submit duplicate acceptance simultaneously. Reload status and count acceptance rows.
+**Email/provider contract:** AdminPolicyService and PolicyAcceptanceService publish no notification events or provider calls. Other domains retain their own lifecycle behavior.
 
+**Cleanup/reset:** Testcontainers owns disposable automation databases. Browser suite uses a separate disposable local QA database and temporary Chrome profile. Retain history until disposing that whole QA environment; never manually delete published shared local/staging policies or assume a snapshot-restore harness.
 
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
+**Automation mapping:** PolicyIntegrationTest.publicationDuringAcceptanceKeepsHistoryButNextGateRejects; duplicateConcurrentAcceptanceCommitsBothRequestsWithoutPartialSet; concurrentServicePublicationHasOneCurrentAndSafeConflict (each repeated three times). Existing PostgresCriticalPathIntegrationTest SQL publication race.
 
+**Human/legal limitation:** No manual concurrency or row-count work for Eli. No software race test approves legal content.
 
-**Expected API/backend behavior:** Unique acceptance per user/version; stale completeness rejected on next gated action. Inspect transaction rollback after caught DataIntegrityViolationException; a uniqueness unit test does not prove concurrent HTTP idempotency.
-
-
-**Expected database/domain state:** Unique acceptance per user/version; stale completeness rejected on next gated action. Inspect transaction rollback after caught DataIntegrityViolationException; a uniqueness unit test does not prove concurrent HTTP idempotency.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AdminPolicyService, PolicyAcceptanceService, PolicyVersion; /policies and /admin/policies
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Execution evidence:** [POL execution report](qa/POL_EXECUTION_REPORT.md), `docs/qa/evidence/policy/`. PASS requires mapped deterministic checks to execute successfully; legal approval remains separate. No H2, production fake policies, or live provider calls.
 
 
 <a id="family-trust"></a>
 ### TRUST scenarios
 
 <a id="trust-001"></a>
-#### TRUST-001 — Owner submit, duplicate, reject and resubmit
+#### TRUST-001 — Owner review lifecycle, audit and first-submission concurrency
 
-**Area:** TRUST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** TRUST · **Priority:** P0 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS (local software; staging/operations follow-ups separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actual actors/prerequisites:** Active OWNER; current DB email verification required for submission, not GET. ADMIN reviews; no admin email-verification prerequisite. Neither actor needs policy acceptance. Use unique RUN_ID fictional accounts; email delivery disabled locally.
 
+**Exact API journey:** GET /api/owner/verification synthesizes UNVERIFIED with null ID before first submission without creating a row. POST /api/owner/verification/submit with optional QA note returns 200 PENDING. Duplicate PENDING submission returns 200 unchanged. ADMIN POST /api/admin/owner-verifications/{id}/reject with reason returns 200 REJECTED. Owner resubmits (200 PENDING, same ID); admin approves with MANUAL_REVIEW (200 VERIFIED).
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/audit:** One row per owner. Initial submission records ownerNote/submittedAt and version 0. Duplicate changes neither note nor timestamps/version and emits no event. Rejection records reviewer/reviewedAt/trimmed owner-visible reason, no method. Resubmission replaces ownerNote/submittedAt and clears all review fields. Approval records reviewer/time/method/optional note. Audit sequence SUBMITTED, REJECTED, SUBMITTED, APPROVED retains correct subject and OWNER/ADMIN actor; only rejection carries the reason. Current entity fields do not preserve previous owner/approval notes as separate audit evidence.
 
+**Browser:** Owner UNVERIFIED → PENDING → reload → owner-visible rejection → resubmit → VERIFIED → reload. Admin queue/detail, explicit reject/approve confirmation. Owner consumes Spring's returned DTO; admin reloads from Spring. No locally invented status.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Notifications:** Every legitimate submission/resubmission, rejection and approval emits an asynchronous AFTER_COMMIT lifecycle notification. Disabled EmailService skips delivery; listener failure cannot roll back the committed transition. Duplicate pending and denied/invalid commands emit none. Real Resend delivery remains staging-only.
 
+**Concurrency:** Barrier-coordinated simultaneous first submissions use real PostgreSQL: both 200, same ID, one PENDING row and one submission audit/notification. Lock the existing owner before looking up the potentially absent verification. Reject/resubmit race must serialize to a valid lifecycle without mixed review fields.
 
-**Exact steps:** As email-verified OWNER submit /owner/verification/submit with note; repeat pending; ADMIN rejects with reason; owner resubmits; ADMIN approves with MANUAL_REVIEW.
+**Automation:** OwnerTrustIntegrationTest lifecycle, simultaneousFirstSubmissionIsOneCommittedLifecycle, rejectionVersusResubmissionHasOnlyLegalOrderedOutcomes, notificationRunsAfterCommitAndFailureCannotRollBackTrust; TrustNotificationServiceTest and EmailServiceTest; scripts/qa/trust-browser.cjs.
 
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** UNVERIFIED→PENDING; duplicate PENDING returns existing pending result (no additional submission); reject→REJECTED with reason; resubmit→PENDING; approve→VERIFIED.
-
-
-**Expected database/domain state:** UNVERIFIED→PENDING; duplicate PENDING returns existing pending result (no additional submission); reject→REJECTED with reason; resubmit→PENDING; approve→VERIFIED.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerVerificationService, OwnerVerificationController, AdminOwnerVerificationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup/limits:** Dispose Testcontainers DB and dedicated browser QA DB/profile; discard session credentials. Never delete shared trust history or restore a fictional snapshot. Operations must define manual review criteria/SLA; software execution does not approve them. See docs/qa/TRUST_EXECUTION_REPORT.md and docs/qa/evidence/trust/.
 
 <a id="trust-002"></a>
-#### TRUST-002 — Owner verification actor and state restrictions
+#### TRUST-002 — Actor, transition and trust-boundary enforcement
 
-**Area:** TRUST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** TRUST · **Priority:** P0 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS (local software; staging/operations follow-ups separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actual actors/prerequisites:** OWNER owns the implicit current-user endpoint; no owner UUID parameter exists. ADMIN alone lists/gets/reviews admin records. Fixtures include verified/unverified OWNER, SCOUT, ADMIN and anonymous; no policy prerequisite.
 
+**Authorization:** Owner GET: OWNER 200 including unverified email; SCOUT/ADMIN 403; anonymous 401. Owner submit: verified active OWNER 200, unverified OWNER/SCOUT/ADMIN 403, anonymous/inactive 401. Admin list/detail/approve/reject: ADMIN allowed, OWNER/SCOUT 403, anonymous 401. Verify controller and global /admin security. Current DB email/active/role state controls authorization even with an older token.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Transitions:** VERIFIED submit is 409 and preserves review method/time. Only PENDING can be approved/rejected; VERIFIED, REJECTED and persisted schema-valid UNVERIFIED return 409. Logical no-row UNVERIFIED has no review ID; a nonexistent UUID returns 404. Repeat review is 409. Denied/invalid calls leave row/version/audit/notifications unchanged.
 
+**Separation/privacy:** Approval must leave existing DRAFT/PENDING venues unchanged and create no payout destination/payout or identity/bank evidence. Owner DTO contains id, ownerId, status, submittedAt, reviewedAt, reviewNote, verificationMethod; no reviewer ID or private operations fields. Admin DTO adds ownerNote, reviewedBy, createdAt/updatedAt. Queue filters status/ownerId and caps page size at 100.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Concurrency/browser:** Real PostgreSQL approve/approve and approve/reject races yield one 200 and one 409; exactly one consistent review/audit wins. Browser wrong-role guards, missing review, safe validation/session/network errors; stale admin decision refetches authoritative state and keeps actionable conflict text visible after PENDING controls disappear.
 
+**Automation:** OwnerTrustIntegrationTest currentDbEmailRoleAndAdminSecurityAreAuthoritative, onlyPendingCanBeReviewedAndApprovalHasNoVenueOrBankSideEffects, queueFiltersProjectionAndDatabaseConstraints, competingAdminReviewsHaveOneWinner; existing security annotations/AUTH current-user tests; scripts/qa/trust-browser.cjs.
 
-**Exact steps:** Submit as unverified OWNER, SCOUT and ADMIN; approve/reject as non-admin; submit again after VERIFIED; approve/reject non-PENDING record.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Forbidden role/email calls denied; VERIFIED cannot self-downgrade; invalid review states 409; no venue automatically activated.
-
-
-**Expected database/domain state:** Forbidden role/email calls denied; VERIFIED cannot self-downgrade; invalid review states 409; no venue automatically activated.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerVerificationService, OwnerVerificationController, AdminOwnerVerificationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup/limits:** Unique accounts in disposable PostgreSQL, isolated browser session; no deletion of shared audit history. No revoke/downgrade operation exists. Any future revocation or reviewer-note visibility change requires an operations/product decision.
 
 <a id="trust-003"></a>
-#### TRUST-003 — Verification method and notes boundaries
+#### TRUST-003 — Manual methods, input boundaries and neutral wording
 
-**Area:** TRUST · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** TRUST · **Priority:** P0 · **Test level:** parameterized HTTP/PostgreSQL, browser · **Result:** PASS (local software; staging/operations follow-ups separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actual actors/prerequisites:** Verified-email OWNER submits; ADMIN approves an independent PENDING owner per method. No policy acceptance prerequisite.
 
+**Exact contract:** Supported required approval method: MANUAL_REVIEW, VIDEO_CALL, BUSINESS_DOCUMENT, VENUE_CONTROL_EVIDENCE. Each persists/returns exactly. Missing/null/unknown method returns 400 with no transition. Submit and approval notes are optional: null/empty/blank normalize to null; 1/1000 characters allowed, 1001 rejected (Java string length before trimming). Rejection reason is required nonblank, ≤1000; missing/null/empty/whitespace/1001 return 400, valid/1000 persist trimmed. Invalid input creates no audit/notification or partial review.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Unknown fields:** Record DTO binding safely ignores unknown properties; injected ownerId/status/reviewedAt cannot assign entity state. Do not impose unrelated AUTH strict-JSON rules.
 
+**UI/semantics:** Optional note and required reason/method controls enforce documented bounds; backend remains authoritative. Labels describe manual Eema review, not regulated KYC/KYB, government identity verification or bank verification. VENUE_CONTROL_EVIDENCE records a manual method without activating a venue. No sensitive evidence upload is supported; do not collect or attach real evidence for QA.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Notifications/storage:** Valid transitions retain TRUST-001 behavior; invalid inputs emit none. Rejection text is escaped in HTML email. Database stores notes/method/timestamps and reviewer FK, not passport/face/business-document/bank files.
 
+**Automation:** OwnerTrustIntegrationTest parameterized methods/submission/approval boundaries, invalidMethodsReasonsAndUnknownFieldsCannotAssignState; TrustNotificationServiceTest HTML escaping; scripts/qa/trust-browser.cjs actual form/review lifecycle.
 
-**Exact steps:** Approve independent pending owner for every VerificationMethod; try absent/unknown method, note 1000/1001 and blank rejection reason.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Supported manual methods stored and displayed; required/length validation 400; no automated identity/bank check implied by method label.
-
-
-**Expected database/domain state:** Supported manual methods stored and displayed; required/length validation 400; no automated identity/bank check implied by method label.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** OwnerVerificationService, OwnerVerificationController, AdminOwnerVerificationController
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup/limits:** Dispose unique fictional QA fixtures with the whole dedicated DB/profile. Never delete shared trust history. Operations must define what each method proves, reviewer checklist, retention, SLA and owner-visible notes. No software PASS constitutes approval of an identity/KYC policy.
 
 <a id="family-ven"></a>
 ### VEN scenarios
 
 <a id="ven-001"></a>
-#### VEN-001 — Create minimum valid incomplete draft
+#### VEN-001 — Create an incomplete owner draft
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Verified-email OWNER creates own venue; OWNER without owner verification/policies is eligible. SCOUT/ADMIN 403, unverified OWNER 403, anonymous 401.
 
+**Execution:** POST /api/venues with minimum required name, neighbourhood, sizeM2, hourlyRateEur, minimumBookingMinutes, minimumLeadTimeMinutes and tags. Expect 201 DRAFT with server-assigned owner. Injected ownerId/status/reviewedAt/photoPaths/timezone cannot assign fields absent from CreateVenueRequest. Reload own detail and /venues/my.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** Nullable production facts remain unknown; empty photos and Europe/Amsterdam come from entity defaults. No weekly hours, overrides, moderation event or notification is created. Creating a draft requires neither policy acceptance nor owner review.
 
+**Automation:** VenueDomainIntegrationTest.creationAuthorizationDefaultsAndServerOwnedFields; actual browser new-listing form.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** At /owner/venues/new enter Studio fixture required fields and empty tags; leave nullable production fields unknown. Submit then GET /venues/my and owned detail.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 201 DRAFT; incomplete production profile allowed at creation; owner set from authenticated account, not input. Create DTO has no timezone/photos fields; default timezone comes from entity/mapper and is edited separately.
-
-
-**Expected database/domain state:** 201 DRAFT; incomplete production profile allowed at creation; owner set from authenticated account, not input. Create DTO has no timezone/photos fields; default timezone comes from entity/mapper and is edited separately.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-002"></a>
-#### VEN-002 — Save, remove optional data and unauthorized update
+#### VEN-002 — Full PUT replacement and immutable booking snapshots
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER or ADMIN (admin email exemption) may PUT; other OWNER/SCOUT 403, anonymous 401. No policy/owner-review gate for editing.
 
+**Execution:** PUT /api/venues/{id} is full replacement: required base/pricing/timezone/tags/photoPaths must be present. Populate supported fields then explicitly null optional fields and empty lists; reload exact null/empty distinctions. Unsupported owner/status/audit fields are safely ignored by request DTO binding.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** No ownership/status injection; unauthorized requests leave row unchanged. Venue edits must preserve existing booking price/duration/billable/contact fields and booking policy references. Venue name is not asserted as an immutable booking snapshot. Current status may change only through the critical-owner-edit rule.
 
+**Automation:** VenueDomainIntegrationTest.fullUpdateClearsOptionalDataAndCannotAssignOwnershipOrModeration; noncriticalEditsKeepApprovalAndBookingSnapshots; browser editor.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** PUT full venue update with description, clip, nullable cap and production fields; reload; clear optional cap/fields and reload. Repeat with Owner B and SCOUT.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Update persists explicit null semantics; unauthorized 403; full update is not PATCH. Existing bookings retain price/policy/contact snapshots.
-
-
-**Expected database/domain state:** Update persists explicit null semantics; unauthorized 403; full update is not PATCH. Existing bookings retain price/policy/contact snapshots.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-003"></a>
-#### VEN-003 — Activity list semantics and contradictions
+#### VEN-003 — Native activity arrays and readiness semantics
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Same edit actors as VEN-002; verified OWNER may also supply activities during creation.
 
+**Execution:** Round-trip null, empty and every ProductionActivity: PHOTO, FILM, VIDEO, INTERVIEW, COMMERCIAL, MUSIC_VIDEO, CONTENT_CREATION. Duplicate entries, overlapping permitted/prohibited entries, null elements and unknown enum values are invalid (400).
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** PostgreSQL production_activity[] stores exact enum names; null means unanswered, [] explicitly none. Permitted null/empty both fail readiness. An explicit hard activity must be permitted and not prohibited. Verify SQL filtering as well as final evaluator.
 
+**Automation:** VenueDomainIntegrationTest.activityArraysPreserveUnknownEmptyAndEveryEnumAndRejectContradictions; VenueProductionProfileValidatorTest; browser activity controls.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Save permitted/prohibited as null and [] separately; use each valid activity; duplicate a value, overlap PHOTO across arrays and send unknown value.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Null means unknown; [] explicitly none; permitted null/empty fails readiness. Duplicates/overlap 400; unsupported enum 400; no normalization hiding contradictions.
-
-
-**Expected database/domain state:** Null means unknown; [] explicitly none; permitted null/empty fails readiness. Duplicates/overlap 400; unsupported enum 400; no normalization hiding contradictions.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-004"></a>
-#### VEN-004 — Parking contradictions
+#### VEN-004 — Parking consistency and deterministic matching
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Same edit actors as VEN-002. Deterministic matching uses controlled ParsedBrief, no live AI provider.
 
+**Execution:** Parameterize parkingAvailable/spaces: false+null/0 allowed, false+positive 400; true+null/0/positive allowed; null+null/positive allowed. Reload exact values.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** Hard parking requires known true. A minimum spaces requirement also requires known true availability and sufficient known spaces, including a requested minimum of zero. Preference alone does not exclude unknown. The owner UI clears spaces when parking is changed away from Yes; that UI normalization is distinct from the broader backend contract.
 
+**Automation:** VenueDomainIntegrationTest.parkingConsistencyAndHardRequirements; VenueHardRequirementEvaluatorTest; tri-state browser groups.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Save parkingAvailable=false with parkingSpaces null, 0 and 1; true/null with spaces 0 and 2.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** False+positive rejected 400; false+0/null allowed. Unknown parking never satisfies hard parking requirement even when spaces are known.
-
-
-**Expected database/domain state:** False+positive rejected 400; false+0/null allowed. Unknown parking never satisfies hard parking requirement even when spaces are known.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-005"></a>
-#### VEN-005 — Clip URL and timezone
+#### VEN-005 — Clip text and venue timezone contracts
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Same edit actors as VEN-002; timezone also has owned/ADMIN availability settings PUT. Create DTO has no timezone.
 
+**Execution:** Accept absolute HTTP/HTTPS clip text including localhost/internal hosts; reject javascript/data/file, relative, missing-host, malformed and >500 characters (400). Backend never fetches the clip. Current public detail has no clip-link renderer; owner input displays the stored value safely.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** Update timezone through listing PUT and PUT /api/venues/{id}/availability/settings. Europe/Amsterdam, America/New_York and other ZoneId-supported identifiers persist; invalid/blank/whitespace/case-invalid names return 400 unchanged. ZoneId also accepts fixed offsets; do not invent an IANA-only restriction. Availability, booking lead-time and existing cancellation tests cover downstream time interpretation.
 
+**Automation:** VenueDomainIntegrationTest.clipAllowsHttpLinksWithoutServerFetch; unsafeOrMalformedClipsAreRejected; supportedZonesPersistAcrossBothRoutes; invalidZonesDoNotMutateEitherRoute; existing availability/lead-time tests.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Save https://example.test/clip and http URL; try javascript:, relative, malformed, >500 chars; update timezone Europe/Amsterdam then Invalid/Zone and blank.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Absolute HTTP(S) host accepted; invalid URLs 400. Timezone update validates ZoneId; blank/invalid 400. Clip is a link, not executed HTML.
-
-
-**Expected database/domain state:** Absolute HTTP(S) host accepted; invalid URLs 400. Timezone update validates ZoneId; blank/invalid 400. Clip is a link, not executed HTML.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-006"></a>
-#### VEN-006 — Production-critical active edit matrix
+#### VEN-006 — Critical owner edits and identical-save semantics
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits an independently ACTIVE, production-ready venue for each field. ADMIN override is characterized separately in VEN-007.
 
+**Execution:** Critical fields exactly: maxCrewSize, permittedActivities, prohibitedActivities, naturalLight, blackoutPossible, ceilingHeightM, loadingAccess, parkingAvailable, parkingSpaces, floorNumber, liftAvailable, wheelchairAccessible, bathroomsAvailable, soundRecordingSuitable, productionRules, powerDetails, ordered photoPaths. Change one at a time. Exercise photo upload/addition, removal and reorder independently.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** ACTIVE → PENDING; submittedForReviewAt renewed, review metadata cleared; one VENUE_SUBMITTED audit/notification. Removed from public catalogue/unrelated detail/matching; owner can still read. Existing booking rows/policy references remain unchanged. Identical semantic numeric save remains ACTIVE: 3.5 and 3.50 are equal heights. Activity/photo order remains significant under current contract; null versus [] is distinct. Tag order is noncritical.
 
+**Automation:** VenueDomainIntegrationTest.everyCriticalOwnerEditRequiresReviewAndPreservesBooking; photoListChangesRequireReview; numericallyIdenticalCeilingSaveDoesNotTriggerRereview; browser critical notice/media edits.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** For each CriticalProfile field independently reset ACTIVE, change one field and save as owner: crew, activity lists, eight booleans, ceiling, spaces, floor, rules, power, photos including order/removal.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Each changed critical value returns PENDING and trust event; public listing disappears until review; historical bookings intact. Identical save stays ACTIVE.
-
-
-**Expected database/domain state:** Each changed critical value returns PENDING and trust event; public listing disappears until review; historical bookings intact. Identical save stays ACTIVE.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-007"></a>
-#### VEN-007 — Non-critical active edit matrix
+#### VEN-007 — Noncritical edits, availability and admin override
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER or ADMIN; ACTIVE fixtures, no new policy/owner-review prerequisites for editing.
 
+**Execution:** Independently change name, neighbourhood, sizeM2, hourlyRateEur, minimumBookingMinutes, minimumLeadTimeMinutes, fullDayRateEur, tags, description, clipUrl, timezone, weekly availability and overrides.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** Remain ACTIVE with no moderation event. Required pricing/lead-time/timezone cannot be cleared or made invalid by DTO validation. Empty availability is permitted: ACTIVE means moderation approved, not guaranteed slots. Exact-interval matching excludes venues with no availability. ADMIN critical edits currently bypass owner-only re-review and can clear readiness fields while retaining ACTIVE: PRODUCT/OPERATIONS DECISION, do not silently alter that rule.
 
+**Automation:** VenueDomainIntegrationTest.noncriticalEditsKeepApprovalAndBookingSnapshots; identicalAndAdminEditsAndEmptyAvailabilityCharacterizeApproval; mediaUploadLimitsAuthorizationAndAvailabilityAreIndependent; browser availability/pricing.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Reset ACTIVE per variant; change name, neighbourhood, size, description, clip URL, hourly price, minimum billing, cap, lead time, tags or timezone; then change weekly schedule/overrides.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** These are outside CriticalProfile and do not automatically trigger review; ACTIVE remains. Admin critical edit also bypasses owner-only re-review. Record risk of readiness-critical fields becoming invalid by noncritical routes.
-
-
-**Expected database/domain state:** These are outside CriticalProfile and do not automatically trigger review; ACTIVE remains. Admin critical edit also bypasses owner-only re-review. Record risk of readiness-critical fields becoming invalid by noncritical routes.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-008"></a>
-#### VEN-008 — Venue public status and tag filtering
+#### VEN-008 — Public visibility, own listings and tag behavior
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Catalogue ACTIVE is public. Non-ACTIVE detail is own OWNER/ADMIN only; anonymous/SCOUT/other OWNER get 403. /my is OWNER only (including unverified email); anonymous/SCOUT/ADMIN get 403 at its method-security boundary.
 
+**Execution:** GET /api/venues across DRAFT/PENDING/ACTIVE/SUSPENDED. No/blank tag is unfiltered; tag input trimmed/lowercased, stored tags are not normalized. Known lowercase matches; unknown and stored uppercase-only mismatch are characterized. GET /venues/{id} full actor/status matrix; missing UUID 404, malformed UUID 400.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** /venues/my is unpaged and returns only authenticated owner venues across statuses. Catalogue is unpaged ACTIVE only. No audit/notification writes from reads. Use real browser catalogue/detail and role guards without inventing ownership variants on admin queue endpoints.
 
+**Automation:** VenueDomainIntegrationTest.visibilityStatusActorMatrixAndExactTagNormalization; browser SCOUT catalogue/detail and OWNER/ADMIN guards.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create one venue per DRAFT/PENDING/ACTIVE/SUSPENDED; GET /venues with blank, known and unknown tag; GET each ID anonymously, own owner, unrelated owner/scout and ADMIN.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Catalogue only ACTIVE; non-active detail own owner/admin only (403 for others, including anonymous); nonexistent 404. /venues/my is OWNER only despite broad public GET matcher.
-
-
-**Expected database/domain state:** Catalogue only ACTIVE; non-active detail own owner/admin only (403 for others, including anonymous); nonexistent 404. /venues/my is OWNER only despite broad public GET matcher.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-009"></a>
-#### VEN-009 — Moderation valid sequence
+#### VEN-009 — Moderation lifecycle, metadata, audit and notifications
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Submission: own OWNER, current verified email, owner VERIFIED, all current required policies, DRAFT and ready. ADMIN reviews without personal policy/email prerequisites.
 
+**Execution:** Submit → PENDING; admin request-changes with required nonblank reason → DRAFT; owner fixes/resubmits → PENDING; admin approves → ACTIVE; suspend with reason → SUSPENDED; reactivate → ACTIVE. Browser confirmation and authoritative reload after transitions.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** Persist submittedForReviewAt, reviewedAt, reviewedBy and moderationReason according to current transition. Resubmission clears review fields; review/suspension/reactivation overwrite current review metadata but retain historical events. Audit sequence SUBMITTED, CHANGES_REQUESTED, SUBMITTED, APPROVED, SUSPENDED, REACTIVATED with exact OWNER/ADMIN actor and safe note. Each legitimate transition sends AFTER_COMMIT lifecycle event; disabled EmailService skips provider, invalid commands send none. Actual inbox delivery is staging-only.
 
+**Automation:** VenueDomainIntegrationTest.fullModerationLifecycleMetadataAuditNotificationsAndAdminQueue; TrustNotificationServiceTest; real browser lifecycle.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Submit complete DRAFT by verified owner with policies; admin request changes with reason; resubmit then approve; suspend with reason; reactivate.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** DRAFT→PENDING→DRAFT→PENDING→ACTIVE→SUSPENDED→ACTIVE; review actor/time/reason and chronological trust events persist; notifications match transition.
-
-
-**Expected database/domain state:** DRAFT→PENDING→DRAFT→PENDING→ACTIVE→SUSPENDED→ACTIVE; review actor/time/reason and chronological trust events persist; notifications match transition.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-010"></a>
-#### VEN-010 — Moderation revalidation and historical reservations
+#### VEN-010 — Revalidation, suspension commitments and concurrent decisions
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** HTTP, PostgreSQL, browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own OWNER submits/accepts requested bookings; ADMIN moderates. Each test establishes its actual policies/email/owner-review/readiness prerequisites independently.
 
+**Execution:** Reject submission for unverified email, unverified owner, missing/stale policies, incomplete readiness, wrong status or wrong owner without mutation. Approval/reactivation recheck current readiness and owner verification. Use allowed pending/suspended edits to remove photo/rules; no invented trust-revocation endpoint. Admin approval does not recheck owner email/policy acceptance.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/behavior:** Suspension removes public/matching access, blocks new booking/inquiry requests, and must block REQUESTED → AWAITING_PAYMENT acceptance (409 while venue lock held). Historical REQUESTED remains; previously AWAITING_PAYMENT remains payable until deadline; CONFIRMED remains confirmed. No automatic cancellations or booking snapshot rewrites. Real PostgreSQL barriers cover approve/approve, approve/request-changes, critical edit/approval and suspension/acceptance; serialize coherent state with safe conflicts and no contradictory events.
 
+**Automation:** VenueDomainIntegrationTest.suspendedVenueCannotAcceptRequestedButKeepsAcceptedAndConfirmedHistory; submissionPrerequisitesAndReviewRevalidationUseSupportedTransitions; policiesAreRecheckedForSubmissionButNotAdminApproval; wrongStateRoleAndInvalidReasonHaveNoModerationEffects; three repeated concurrency methods.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Try submit without owner verification or readiness, approve after prerequisite removed, reactivate incomplete suspended venue, and repeat action in wrong status. Suspend ACTIVE with confirmed and requested bookings.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Prerequisite/state rejection leaves status unchanged except authorized transitions. New requests blocked; confirmed booking retained. Existing requested booking acceptance has no ACTIVE check; reproduce EDGE suspension gap.
-
-
-**Expected database/domain state:** Prerequisite/state rejection leaves status unchanged except authorized transitions. New requests blocked; confirmed booking retained. Existing requested booking acceptance has no ACTIVE check; reproduce EDGE suspension gap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueService, VenueModerationService, VenueMapper, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers DB and isolated browser DB/profile/media. Dispose the whole dedicated environment; never delete shared venue/moderation history or restore a fictional snapshot. See docs/qa/VEN_EXECUTION_REPORT.md for evidence and human/staging/operations follow-ups.
 
 <a id="ven-011"></a>
 #### VEN-011 — naturalLight: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set naturalLight to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresNaturalLight=true admits only known true; false/null fail closed. prefersNaturalLight is a supported soft preference and must not exclude null. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set naturalLight to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-012"></a>
 #### VEN-012 — blackoutPossible: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set blackoutPossible to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresBlackout=true admits only known true; false/null fail closed. prefersBlackout is a supported soft preference and must not exclude null. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set blackoutPossible to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-013"></a>
 #### VEN-013 — loadingAccess: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set loadingAccess to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresLoadingAccess=true admits only known true; false/null fail closed. prefersLoadingAccess is a supported soft preference and must not exclude null. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set loadingAccess to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-014"></a>
 #### VEN-014 — parkingAvailable: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set parkingAvailable to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresParking=true admits only known true; false/null fail closed. prefersParking is a supported soft preference and must not exclude null. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set parkingAvailable to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-015"></a>
 #### VEN-015 — liftAvailable: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set liftAvailable to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresLift=true admits only known true; false/null fail closed. prefersLift is a supported soft preference and must not exclude null. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set liftAvailable to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-016"></a>
 #### VEN-016 — wheelchairAccessible: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set wheelchairAccessible to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresWheelchairAccessibility=true admits only known true; false/null fail closed. No dedicated preference flag exists for this field; do not invent one. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set wheelchairAccessible to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-017"></a>
 #### VEN-017 — bathroomsAvailable: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set bathroomsAvailable to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresBathrooms=true admits only known true; false/null fail closed. No dedicated preference flag exists for this field; do not invent one. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set bathroomsAvailable to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="ven-018"></a>
 #### VEN-018 — soundRecordingSuitable: unknown/no/yes round trip
 
-**Area:** VEN · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** VEN · **Priority:** P1 · **Test level:** parameterized HTTP/PostgreSQL + browser · **Result:** PASS — local deterministic contract; human/staging/operations limits remain
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER edits; ADMIN may edit; other OWNER/SCOUT denied. No owner-review/policy gate for saving a draft. Public detail fixture must be ACTIVE; required unknown facts cannot be approved through normal readiness checks.
 
+**Execution:** Set soundRecordingSuitable to null, false and true in turn. Owner Not specified / No / Yes control must produce JSON null / false / true, persist exactly to PostgreSQL, return exactly and reload unchanged. Public detailed profile renders neutral unknown, explicit negative and positive; sound uses suitable/not suitable, parking may show known space count. Cards may omit negative/unknown facts.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Matching:** requiresSoundRecordingSuitable=true admits only known true; false/null fail closed. No dedicated preference flag exists for this field; do not invent one. The Gemini prompt requests known matches above unknown above mismatch; actual provider ranking is staging/provider-dependent, not proved by deterministic unit scores.
 
+**Automation:** Shared VenueDomainIntegrationTest.allEightBooleansPreserveThreeStatesThroughPostgresAndHardMatching; existing VenueHardRequirementEvaluatorTest/GeminiVenueRankerTest; shared browser tri-state loops. No eight duplicated test classes. Public unknown-required-fact fixtures explicitly characterize existing ADMIN override behavior.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In owner production profile set soundRecordingSuitable to Unknown, No, Yes in turn; save, reload, inspect GET DTO and public production display after review. Run the associated hard-match fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected database/domain state:** JSON/database preserve null, false, true distinctly. UI says unknown rather than no for null; true satisfies required predicate; false/null do not.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** ProductionProfileFields, VenueProductionProfile, VenueHardRequirementEvaluator
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Effects/cleanup/limits:** DRAFT edits emit no moderation events; ACTIVE owner critical edits follow VEN-006. Use unique disposable DB/profile/media fixtures, never shared-history deletion. Human wording/usability and operations approval of admin overrides remain separate.
 
 <a id="family-ready"></a>
 ### READY scenarios
@@ -2074,566 +1302,182 @@ Auth-input contract update (2026-09-10): register/login/resend/forgot email is t
 <a id="ready-001"></a>
 #### READY-001 — Readiness issue maxCrewSize
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Clear maxCrewSize to null: exact issue maxCrewSize. Restore 20: no issues. Zero/negative and DTO maximum 10,000 belong to numeric validation, not readiness presence.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only maxCrewSize (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains maxCrewSize; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains maxCrewSize; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-002"></a>
 #### READY-002 — Readiness issue permittedActivities
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Test null and [] independently: both return permittedActivities while preserving their distinct model values. Restore a supported activity: no issues. Reuse VEN contradiction/enum-array coverage.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only permittedActivities (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains permittedActivities; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains permittedActivities; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-003"></a>
 #### READY-003 — Readiness issue productionRules
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Test null, empty and whitespace-only productionRules: exact issue productionRules. Restore nonblank QA text. No content-quality/minimum-prose policy is invented.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only productionRules (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains productionRules; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains productionRules; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-004"></a>
 #### READY-004 — Readiness issue naturalLight
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** null returns naturalLight; false and true are both answered and ready. Matching eligibility is separate (VEN coverage).
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only naturalLight (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains naturalLight; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains naturalLight; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-005"></a>
 #### READY-005 — Readiness issue loadingAccess
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** null returns loadingAccess; false and true are both answered and ready. No requirement to provide loading access is invented.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only loadingAccess (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains loadingAccess; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains loadingAccess; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-006"></a>
 #### READY-006 — Readiness issue bathroomsAvailable
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** null returns bathroomsAvailable; false and true are both answered and ready. Readiness does not mandate bathrooms.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only bathroomsAvailable (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains bathroomsAvailable; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains bathroomsAvailable; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-007"></a>
 #### READY-007 — Readiness issue soundRecordingSuitable
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** null returns soundRecordingSuitable; false is a complete answer despite unsuitability for a sound hard requirement.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only soundRecordingSuitable (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains soundRecordingSuitable; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains soundRecordingSuitable; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-008"></a>
 #### READY-008 — Readiness issue hourlyRateEur
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service; representative browser and reused VEN validation · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Null internal fixture returns hourlyRateEur. DB NOT NULL/positive and DTO 0.01–99,999,999.99 prevent missing/invalid live values; test HTTP/DTO validation separately. Readiness itself checks null, not positivity. fullDayRateEur remains optional.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. Service parameterization proves defensive workflow gating; current DTO/DB restrictions are explicit. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only hourlyRateEur (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains hourlyRateEur; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains hourlyRateEur; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-009"></a>
 #### READY-009 — Readiness issue minimumBookingMinutes
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service; representative browser and reused VEN validation · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Null internal fixture returns minimumBookingMinutes. DB NOT NULL/positive; DTO 1–10,080. Zero/negative fail validation earlier, not a fabricated persisted readiness 409.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. Service parameterization proves defensive workflow gating; current DTO/DB restrictions are explicit. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only minimumBookingMinutes (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains minimumBookingMinutes; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains minimumBookingMinutes; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-010"></a>
 #### READY-010 — Readiness issue minimumLeadTimeMinutes
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service; representative browser and reused VEN validation · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Null returns minimumLeadTimeMinutes. Current DTO requires 60–43,200; V7 intentionally permits legacy NULL. Use internal service fixture for missing-value gating; do not bypass the live DTO. Test numeric boundaries separately.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. Service parameterization proves defensive workflow gating; current DTO/DB restrictions are explicit. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only minimumLeadTimeMinutes (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains minimumLeadTimeMinutes; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains minimumLeadTimeMinutes; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-011"></a>
 #### READY-011 — Readiness issue timezone
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service; representative browser and reused VEN validation · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Null/blank internal timezone returns timezone. DB forbids null/empty/space-only values; DTO rejects all blank values and media validation rejects invalid ZoneId before update. ZoneId also supports UTC/fixed offsets: do not impose an IANA-region-only rule. Readiness itself does not parse ZoneId.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. Service parameterization proves defensive workflow gating; current DTO/DB restrictions are explicit. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only timezone (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains timezone; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains timezone; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="ready-012"></a>
 #### READY-012 — Readiness issue photoPaths
 
-**Area:** READY · **Priority:** P1 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** READY · **Priority:** P1 · **Test level:** UNIT + service + PostgreSQL; representative browser · **Result:** PASS — local deterministic contract; UX/operations/staging limits remain
 
-**Roles involved:** Owner A, Admin
+**Actors/prerequisites:** Validator has no actor. Workflow fixture: active verified-email owning OWNER, owner review VERIFIED, current policies accepted; ADMIN reviews/reactivates. No repeated unrelated ownership checks; VEN covers authorization.
 
+**Exact contract:** Empty attached-reference list returns photoPaths and is reachable through PUT. Null is defensive internal-only coverage because DB/DTO prohibit it. One or multiple valid Eema photo references satisfy readiness; no object-storage lookup occurs.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Execution and effects:** Start from the centralized complete fixture with no issues. Remove only this condition; assert exact single issue, no mutation; restore and assert empty. Submit/approve/reactivate must refuse readiness-incomplete fixtures before changing status, timestamps, trust events or notifications. Restore then transition successfully. Use real API/PG only for reachable absent states; never insert an impossible row or disable a constraint.
 
+**Automation:** ReadyVenueFixture; VenueReadinessContractTest parameterization, full key set, purity, Boolean and numeric-boundary cases. VenueDomainIntegrationTest.readinessMissingFieldBlocksSubmitApproveAndReactivateUntilRestored covers persisted absence and restoration across all three transitions. ready-browser.cjs covers representative multi-issue, false, restore and stale-admin states. VEN provides matching/availability and critical-edit/approval concurrency evidence.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Clone complete Studio in a service fixture; clear only photoPaths (empty list/string where relevant); call readinessIssues and submit/approve. Restore value and repeat.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Issue list contains photoPaths; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected database/domain state:** Issue list contains photoPaths; readiness gates refuse transition (409). Restoring complete fixture yields no issues. Fields required by DTO/DB need a service fixture, not an invalid live row.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueProductionProfileValidator#readinessIssues
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and limits:** Unique RUN_ID fictional fixtures, disposable Testcontainers and dedicated browser DB/profile/media. Dispose whole QA environments; never delete shared history or restore fictional snapshots. Failed readiness emits no lifecycle notification; successful transitions retain existing emails (delivery staging-only). Human checklist wording and existing ADMIN override decision remain separate. See docs/qa/READY_EXECUTION_REPORT.md.
 
 <a id="family-media"></a>
 ### MEDIA scenarios
@@ -2641,3495 +1485,806 @@ Auth-input contract update (2026-09-10): register/login/resend/forgot email is t
 <a id="media-001"></a>
 #### MEDIA-001 — Valid image upload and durable reference
 
-**Area:** MEDIA · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MEDIA · **Priority:** P1 · **Test level:** UNIT, API, REAL POSTGRES, LOCAL FILESYSTEM, BROWSER · **Result:** PASS (LOCAL; staging/privacy decisions separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Standalone upload: authenticated, verified-email OWNER; ADMIN and SCOUT denied 403, anonymous 401. Scoped upload: own verified-email OWNER or ADMIN (email exemption); other OWNER/SCOUT 403, anonymous 401. Neither policies nor owner verification is required. Unique RUN_ID venues; no shared fixture reset.
 
+**Actual endpoints:** POST `/api/upload/venue-photo`, multipart `file`, returns 200 `{message,url}` and stores only. POST `/api/venues/{id}/photos`, multipart `file`, returns 200 authoritative VenueDto after locked append and persistence. GET `/api/upload/files/{filename}` is public and proxies local/S3 bytes.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Steps/assertions:** Upload real decodable JPEG (.jpg/.jpeg), PNG and WebP. Confirm generated UUID key, controlled reference, exact bytes/Content-Type/nosniff on public read, original filename discarded, scoped ordered DB attachment, and standalone no attachment. Reload editor and restart the production-Dockerfile backend with a dedicated named media volume; references and bytes survive. S3 mock verifies bucket/prefix/content type, conditional create and proxy read; it does not prove deployed storage.
 
+**Side effects:** Ordinary DRAFT upload has no moderation event/email. Owner ACTIVE photo change invokes re-review and VENUE_SUBMITTED notification; ADMIN retains existing override behavior. Local emails disabled; actual delivery belongs to staging.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Upload actual JPG/JPEG, PNG and WebP, separately through /upload/venue-photo and venue-scoped /venues/{id}/photos. GET returned reference; reload editor and restart local backend.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Valid nonempty ≤5 MiB images get generated UUID filename; scoped upload attaches in order. Standalone upload creates reference only. Restart preserves mounted media; UI primary uses first photo.
-
-
-**Expected database/domain state:** Valid nonempty ≤5 MiB images get generated UUID filename; scoped upload attaches in order. Standalone upload creates reference only. Restart preserves mounted media; UI primary uses first photo.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** StorageService, S3PublicMediaStorage, VenueService#uploadAndAttachPhoto, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation/cleanup/limits:** `MediaStorageContractTest`, `VenueDomainIntegrationTest#media*`, `scripts/qa/media-browser.cjs`. Disposable Testcontainers, temporary media root, dedicated compose volume/browser profile. Dispose whole QA environment, never shared media/history. Human gallery UX and deployed S3 durability/access remain separate; see `docs/qa/MEDIA_EXECUTION_REPORT.md`.
 
 <a id="media-002"></a>
-#### MEDIA-002 — Image boundaries and fake media
+#### MEDIA-002 — Image content, size, multipart and public-path security
 
-**Area:** MEDIA · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MEDIA · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT, API, REAL POSTGRES, REAL HTTP · **Result:** PASS (LOCAL; staging/privacy decisions separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Use an authorized actor from MEDIA-001 and an owned DRAFT to isolate validation. Reuse endpoint authorization matrix; there is no standalone resource-ownership UUID.
 
+**Steps/assertions:** Both adapters reject empty, one-byte, truncated/fake image, GIF/SVG/BMP/text/octet-stream, missing/unsupported filename/type, MIME-extension mismatch and decoded-format mismatch before durable write. Validate JPEG/PNG with ImageIO and WebP with TwelveMonkeys; headers/extensions alone are not proof. Decode only after geometry checks: ≤10,000 pixels per side and ≤25 million pixels total, at most two decoders/JVM. No re-encoding, EXIF stripping or malware scanning is claimed.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Boundary layers:** Default file limit 5,242,880 bytes. A decodable JPEG padded to exactly 5 MiB succeeds; +1 fails storage validation with 400 in service/MockMvc, and the real servlet rejects oversized multipart with 413. Missing part, malformed multipart and non-multipart upload requests return 400. Parameterize unsafe client filenames: generated UUID ignores all path components. Public nonexistent/invalid/traversal/private-document names cannot expose files; valid-shaped symlinks are refused. Missing object 404.
 
+**Persistence/side effects:** Invalid and denied uploads leave no new object, photo reference, moderation event or lifecycle email. No raw provider error, bytes or credentials in client response. Browser errors explain corrupt/type/size failures; HTML accept attribute is UX only.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Upload empty, GIF, SVG, text, 5 MiB and 5 MiB+1, fake .jpg with text bytes/image/jpeg, extension/MIME mismatch, and ../../x.jpg filename.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Invalid MIME/extension/size rejected; generated names prevent path traversal. Content decoding is absent, so fake bytes with allowed MIME+extension can pass; flag security acceptance failure, do not claim signature validation.
-
-
-**Expected database/domain state:** Invalid MIME/extension/size rejected; generated names prevent path traversal. Content decoding is absent, so fake bytes with allowed MIME+extension can pass; flag security acceptance failure, do not claim signature validation.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** StorageService, S3PublicMediaStorage, VenueService#uploadAndAttachPhoto, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation/cleanup/limits:** Shared binary fixtures and parameterized `MediaStorageContractTest`, `VenueDomainIntegrationTest#mediaAuthorizationInvalidContentAndMaxLimitNeverLeaveOrphans`, representative real-browser/HTTP runner. Temporary media/disposable DB; preserve shared objects. Pre-change fake bytes acceptance was a reproduced P1 defect, not acceptable behavior. Existing legacy objects are not retroactively validated. Privacy/EXIF and staging object permissions require separate decisions.
 
 <a id="media-003"></a>
-#### MEDIA-003 — Photo list ordering, primary and maximum
+#### MEDIA-003 — Ordered photos, maximum, readiness and moderation
 
-**Area:** MEDIA · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MEDIA · **Priority:** P1 · **Test level:** API, REAL POSTGRES, BROWSER · **Result:** PASS (LOCAL; staging/privacy decisions separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER or ADMIN for scoped upload/PUT; use independent ACTIVE fixture only for moderation case. ADMIN edit override is an existing operations decision, not changed here.
 
+**Steps/assertions:** Upload A/B/C and persist `[A,B,C]`; first reference is primary in editor/card/detail. Full PUT `[C,A,B]` changes order without copying bytes. PUT `[B,C]` detaches A, with no physical deletion promise. Empty list restores photo readiness issue; first attachment removes it. Accept 1/11/12 photos and reject the thirteenth before storage. Reject duplicate references, external/file/traversal/non-UUID references and >12 arrays without mutation. Reference shape does not establish existence or exclusive ownership; do not invent that guarantee.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Moderation/concurrency:** Owner ACTIVE add/remove/reorder → PENDING with existing re-review event/notification; historical booking behavior is covered by VEN. Ordinary DRAFT reorder/remove has no email. Real PostgreSQL barriers prove two successful simultaneous uploads both persist exactly once; at 11 one wins and one safely fails, with no orphan. Concurrent full PUT/upload serializes, but a later stale whole-array PUT may detach the uploaded reference; row locking does not provide client revision detection.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Attach 12 distinct references; attempt 13th; duplicate one reference; reorder last to first; remove first; reload catalogue/gallery; try arbitrary remote URL and crafted path.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 12 maximum; duplicates/invalid stored references 400; order persists, first becomes primary; active owner photo edits return PENDING. Removed reference is detached, not a guaranteed physical object deletion.
-
-
-**Expected database/domain state:** 12 maximum; duplicates/invalid stored references 400; order persists, first becomes primary; active owner photo edits return PENDING. Removed reference is detached, not a guaranteed physical object deletion.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** StorageService, S3PublicMediaStorage, VenueService#uploadAndAttachPhoto, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation/cleanup/limits:** Reuse VEN photo criticality/READY-012 and add `VenueDomainIntegrationTest#mediaConcurrent*`, max-limit/reorder checks and representative browser primary/removal/12-photo journey. Repeat race groups; no timing sleeps. Dispose unique test environment. Orphans (standalone, detached, abandoned draft) remain an operations backlog; no GC or ownership table is introduced.
 
 <a id="media-004"></a>
-#### MEDIA-004 — Upload persistence failure and orphan cleanup
+#### MEDIA-004 — Storage compensation after persistence failure
 
-**Area:** MEDIA · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MEDIA · **Priority:** P1 · **Test level:** SERVICE, REAL POSTGRES, S3 MOCK · **Result:** PASS (LOCAL; staging/privacy decisions separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email OWNER with room for a photo, valid real image; use test-controlled persistence failure after storage succeeds. No provider credentials or shared-row deletion.
 
+**Steps/assertions:** Scoped upload writes object, then save/saveAndFlush fails. Original persistence exception remains primary; deletion of the newly unattached object is attempted. Real PostgreSQL flush-then-fail proves transaction rollback: unchanged photo array/status/trust events and no after-commit notification. Repeat with delete failure; retain original error, log only safe venue/reference/error-class metadata, never report success. Mock S3 verifies deletion bucket/key.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Transaction limitation:** Object storage is outside the DB transaction. Immediate save/flush compensation does not guarantee cleanup if transaction completion fails after the service returns, or process death/delete failure occurs. These are explicitly recorded orphan risks; no garbage collection is claimed.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** In scoped upload service fixture fail saveAndFlush after storage succeeds; repeat with cleanup delete failing.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Original save failure propagates; stored unattached reference deletion attempted; cleanup failure logged without replacing original failure. No attached photo or successful moderation state persisted.
-
-
-**Expected database/domain state:** Original save failure propagates; stored unattached reference deletion attempted; cleanup failure logged without replacing original failure. No attached photo or successful moderation state persisted.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** StorageService, S3PublicMediaStorage, VenueService#uploadAndAttachPhoto, VenueMediaPolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
+**Automation/cleanup/limits:** `VenueServiceTest` persistence/delete-failure checks; `VenueDomainIntegrationTest#mediaAttachmentFailureAfterRealFlushRollsBackRowsAndDeletesNewObject`; S3 adapter mock contract. Temporary filesystem and disposable Testcontainers only. Real provider outages, credentials, lifecycle retention and orphan monitoring remain staging/operations work, not manual deterministic DB testing.
 
 
 <a id="family-avl"></a>
 ### AVL scenarios
 
+**Shared AVL execution contract:** Spring computes normalized weekly ∪ AVAILABLE, subtracts BLOCKED ∪ reserving bookings, clips by elapsed lead time in venue timezone, then normalizes. Intervals are ordered same-day half-open [start,end); adjacent union intervals merge. Empty week is empty base, not 24/7. ACTIVE means approved listing, not guaranteed current slots.
+
+**Actors and isolation:** Public effective GET respects venue visibility (ACTIVE public; non-ACTIVE own OWNER/ADMIN). Settings GET is own OWNER/ADMIN; anonymous returns403 under the public GET route plus method guard. Mutation is own verified-email OWNER or ADMIN (email exemption); other OWNER/SCOUT403, anonymous401. No owner review/current policies needed for ordinary settings changes. Use unique RUN_ID fixtures, fixed test Clock, disposable Testcontainers and isolated browser DB/profile; never delete shared history or restore fictional snapshots. Schedule mutations have no lifecycle email. Booking/inquiry expiry retains real lifecycle events; email delivery is separate.
+
 <a id="avl-001"></a>
-#### AVL-001 — Weekly schedule replacement
+#### AVL-001 — Weekly full replacement
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** API, REAL POSTGRES, BROWSER · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** PUT `/api/venues/{id}/availability/weekly` with `{intervals:[]}` clears all rows. Replace with one then multiple Monday ranges; parameterize every weekday. GET settings returns persisted rows sorted by stored day/start, not guaranteed Monday-first lexical order. Effective output agrees; AVAILABLE override can add a one-off interval to an empty week. No status/moderation mutation.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** PUT /venues/{id}/availability/weekly with [], Monday 09:00–17:00, then Monday 09:00–12:00 and 13:00–17:00. GET settings and effective availability after each.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Empty week yields no base intervals; full replacement deletes prior schedule; multiple intervals preserved in venue timezone.
-
-
-**Expected database/domain state:** Empty week yields no base intervals; full replacement deletes prior schedule; multiple intervals preserved in venue timezone.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** VenueDomainIntegrationTest#avlWeeklyReplacementAllWeekdays; owner browser. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
 <a id="avl-002"></a>
 #### AVL-002 — Weekly validation and adjacency
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** API, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** DTO requires intervals, max50; each interval has dayOfWeek/startTime/endTime. Missing day/time, reversed/equal/overnight, overlap and51 rows return400 without replacing old rows. Exactly50 valid rows accepted. Adjacent09:00–12:00 and12:00–15:00 persist legally and normalize to09:00–15:00. Wrong actors cannot mutate.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Try Monday 12:00–09:00, equal times, missing day/time, overlapping 09–12/11–13, adjacent 09–12/12–15 and 51 intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Reversed/equal/missing/overlap/>50 rejected; adjacency accepted and effective output merged. No overnight interval representation.
-
-
-**Expected database/domain state:** Reversed/equal/missing/overlap/>50 rejected; adjacency accepted and effective output merged. No overnight interval representation.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** VenueDomainIntegrationTest#avlWeeklyValidationAndAuthorizationAreAtomic; all-weekday adjacency. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
 <a id="avl-003"></a>
-#### AVL-003 — Available and blocked override algebra
+#### AVL-003 — AVAILABLE/BLOCKED override algebra
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** UNIT, API, REAL POSTGRES, BROWSER · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** POST overrides returns201. Base09:00–17:00 plus AVAILABLE08:00–10:00/16:00–18:00 minus BLOCKED11:00–12:00/16:00–19:00 yields08:00–11:00 and12:00–16:00. BLOCKED wins regardless of creation order. All-day AVAILABLE uses[00:00,23:59:59.999999999), then subtraction/clipping; all-day BLOCKED empties the date, with or without base hours. DELETE own override204; immediate requery uses remaining rows.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Base Monday 09–17. Add AVAILABLE 08–10 and 16–18; BLOCKED 11–12 and 16–19. GET day; remove override; repeat all-day AVAILABLE/BLOCKED and empty week.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Effective intervals union available, subtract blocked, then lead-time/bookings; example yields 08–11 and 12–16 before lead clipping. Deleting restores previous result; blocked wins overlaps.
-
-
-**Expected database/domain state:** Effective intervals union available, subtract blocked, then lead-time/bookings; example yields 08–11 and 12–16 before lead clipping. Deleting restores previous result; blocked wins overlaps.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** AvailabilityAlgebraTest; VenueDomainIntegrationTest#avlOverrides* / avlAllDay*; browser override matrix. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
 <a id="avl-004"></a>
-#### AVL-004 — Override validation and conflicts
+#### AVL-004 — Override validation, duplicates and scoped deletion
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** API, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** All-day with supplied times, partial missing a time, equal/reversed times return400. Duplicate AVAILABLE/BLOCKED and opposite types are legal: union/subtraction determines result, no invented uniqueness rule. Delete through own venue route using another venue override ID returns404 and retains that row. No rejected-action event/email.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** POST allDay=true with times; partial with one missing time; reversed/equal times; duplicate AVAILABLE, duplicate BLOCKED, same-range opposite types; delete override belonging to other venue.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** All-day must omit both times; partial valid ordered interval required. Duplicate/conflicting rows follow union-minus algebra, not an invented uniqueness ban. Cross-venue delete 404.
-
-
-**Expected database/domain state:** All-day must omit both times; partial valid ordered interval required. Duplicate/conflicting rows follow union-minus algebra, not an invented uniqueness ban. Cross-venue delete 404.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** VenueDomainIntegrationTest#avlOverridesUnionBlockedPrecedenceDuplicatesAndDelete. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
 <a id="avl-005"></a>
-#### AVL-005 — Availability query boundary
+#### AVL-005 — Query range and visibility
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** API, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** GET `/api/venues/{id}/availability?from=YYYY-MM-DD&to=YYYY-MM-DD` returns inclusive date list and venue timezone. Same day and93 days succeed;94, reversed/missing/malformed bounds400. Test all four venue statuses against anonymous/SCOUT/own OWNER/other OWNER/ADMIN. Empty public availability leaves ACTIVE unchanged. Settings and effective reads are separate authorization contracts.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** GET from=to then reversed range, missing dates, malformed dates and maximum supported inclusive days plus one.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** MAX_RANGE_DAYS=93; 93 accepted, 94 rejected 400. Invalid/missing parameters 400. Settings requires owning owner/admin, effective availability enforces venue visibility.
-
-
-**Expected database/domain state:** MAX_RANGE_DAYS=93; 93 accepted, 94 rejected 400. Invalid/missing parameters 400. Settings requires owning owner/admin, effective availability enforces venue visibility.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** VenueDomainIntegrationTest#avlQueryRangeVisibilityAndTimezoneChange / avlAllDay*. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
 <a id="avl-006"></a>
-#### AVL-006 — Lead-time exact boundary and clipping
+#### AVL-006 — Lead-time boundary, rounding and DST
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT, BROWSER REPRESENTATIVE · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** Fixed Clock with lead120: exact+120 allowed,+119 rejected; display clips earlier intervals and rounds fractional minutes upward. Round on the Instant timeline before comparing local dates:23:59:xx carries into tomorrow. In autumn overlap, requested wall time resolves earlier offset, so a threshold in the second occurrence clips beyond the overlap. Prove elapsed24h across spring/autumn; Java gap-shift/earlier-offset semantics are explicit, not new scheduling policy. Displayed starts must satisfy the lead policy.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** At fixed T0 set 120-minute lead and operating interval T0+60 to T0+240. Query; request at +120 and +119; test interval wholly before threshold. Repeat Amsterdam DST transitions.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Earliest start equals instant T0+120; exact allowed, +119 rejected; clip to threshold, remove fully past interval; use elapsed minutes across DST.
-
-
-**Expected database/domain state:** Earliest start equals instant T0+120; exact allowed, +119 rejected; clip to threshold, remove fully past interval; use elapsed minutes across DST.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** AvailabilityAlgebraTest (including reproduced AVL-D01/D02); VenueBookingLeadTimePolicyTest; calendar client/browser. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
 <a id="avl-007"></a>
-#### AVL-007 — Lead-time expires between stages
+#### AVL-007 — Lead time between workflow stages
 
-**Area:** AVL · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P1 · **Test level:** SERVICE, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** Create a valid REQUESTED booking, advance injected availability Clock inside lead window, accept→409 with persisted EXPIRED and REQUEST_EXPIRED payload.data.reason=MINIMUM_LEAD_TIME_NOT_MET. Inquiry begins outside normal schedule, is OFFERED, then too-late acceptance→409, persisted EXPIRED, OFFER_EXPIRED and no booking. Accepted AWAITING_PAYMENT remains payable inside lead window while payment deadline is future. Do not expire accepted commitments solely due to lead time.
 
+**Automation:** VenueDomainIntegrationTest#avlLeadExpiryCommitsForRequestAndInquiryButCheckoutIsExempt; existing PaymentServiceLeadTimeExemptionTest. Shared actors, cleanup and limitations above apply. See `docs/qa/AVL_EXECUTION_REPORT.md`.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create request with start safely above lead threshold; advance acceptance beyond threshold; repeat inquiry offer acceptance; separately accept while valid then checkout after threshold but before payment deadline.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Too-late owner accept/inquiry acceptance expires request/offer and refuses booking. Accepted booking checkout does not reapply lead time; payment deadline still enforced.
-
-
-**Expected database/domain state:** Too-late owner accept/inquiry acceptance expires request/offer and refuses booking. Accepted booking checkout does not reapply lead time; payment deadline still enforced.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** VenueAvailabilityService, BookingAvailabilityValidator, VenueBookingLeadTimePolicy
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Shared AVL-008–015 matrix:** One parameterized suite covers all eight BookingStatus values. Base09:00–17:00 minus11:00–13:00 splits only for AWAITING_PAYMENT/CONFIRMED; full cover empties only those two. Unit shape matrix covers containment, start/end overlap and touching boundaries. PostgreSQL actual exclusion predicate must exactly match Java reservation policy, using tsrange `[)`. Overlapping non-reserving states coexist; reserving overlap rejected. Two real overlapping requests remain visible until acceptance; concurrent accepts yield one AWAITING_PAYMENT and one UNAVAILABLE, no500 or double reservation. Expiry reopens; confirmation stays blocked; cancellation/refund reopen via actual service transitions with provider transport mocked. A stale calendar request409 cannot force a reservation and the frontend refetches. VEN suspension rights/accepted commitments are reused, not changed.
 
 <a id="avl-008"></a>
 #### AVL-008 — Booking subtraction REQUESTED
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** REQUESTED → 09:00–17:00 unchanged, including full-cover fixture. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in REQUESTED; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-009"></a>
 #### AVL-009 — Booking subtraction AWAITING_PAYMENT
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** AWAITING_PAYMENT → 09:00–11:00 and13:00–17:00; full cover→empty. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in AWAITING_PAYMENT; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-010"></a>
 #### AVL-010 — Booking subtraction CONFIRMED
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** CONFIRMED → 09:00–11:00 and13:00–17:00; full cover→empty. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in CONFIRMED; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-011"></a>
 #### AVL-011 — Booking subtraction DECLINED
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** DECLINED → 09:00–17:00 unchanged, including full-cover fixture. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in DECLINED; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-012"></a>
 #### AVL-012 — Booking subtraction EXPIRED
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** EXPIRED → 09:00–17:00 unchanged, including full-cover fixture. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in EXPIRED; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-013"></a>
 #### AVL-013 — Booking subtraction UNAVAILABLE
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** UNAVAILABLE → 09:00–17:00 unchanged, including full-cover fixture. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in UNAVAILABLE; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-014"></a>
 #### AVL-014 — Booking subtraction CANCELLED
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** CANCELLED → 09:00–17:00 unchanged, including full-cover fixture. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in CANCELLED; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="avl-015"></a>
 #### AVL-015 — Booking subtraction REFUNDED
 
-**Area:** AVL · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** AVL · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local; product/deployed checks separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Matrix row:** REFUNDED → 09:00–17:00 unchanged, including full-cover fixture. Read-only subtraction fixture is distinct from a lifecycle transition; no email is caused by querying availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Seed base 09–17 and a booking 11–13 in REFUNDED; GET availability. Repeat full cover 09–17, adjacency 07–09/17–19 and separated intervals.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected database/domain state:** Only AWAITING_PAYMENT/CONFIRMED reserve: expected 09–11,13–17 for blocking states; all other statuses leave 09–17. Half-open boundaries never overlap.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingReservationPolicy, booking exclusion constraint V1
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** `AvailabilityAlgebraTest#statusAndHalfOpenSubtraction`, `VenueDomainIntegrationTest#avlAllBookingStatusesMatchDatabaseExclusion`, shared concurrent acceptance/transition tests and representative calendar browser journey. Shared matrix, actor/isolation contract and operations limitations above apply.
 
 <a id="family-match"></a>
 ### MATCH scenarios
 
+**Shared MATCH contract (source audited 2026-09-14):** authenticated discovery for SCOUT/OWNER/ADMIN, no verified-email/current-policy/owner-review prerequisite. Parser UNIT fixtures have no roles. Gemini maps intent; ACTIVE SQL plus Java decide eligibility; VenueAvailabilityService decides complete exact-interval availability; Gemini ranks only surviving IDs; booking/pricing remain authoritative. Direct venueId uses detail visibility, bypasses Gemini, and is not a reservation. Brief10–1000 required for both routes. No search writes or lifecycle email.
+
+**Isolation and evidence:** parameterized controlled provider fixtures, RUN_ID venues, disposable Testcontainers PostgreSQL, existing isolated Chrome harness. No fictional snapshot restore or deletion of shared history. See docs/qa/MATCH_EXECUTION_REPORT.md and docs/qa/evidence/match/. Local PASS proves mapping/containment, never live Gemini extraction accuracy or explanation truthfulness. Live language/model/privacy/operations approval remains separate.
+
 <a id="match-001"></a>
 #### MATCH-001 — Parser extraction: productionActivity
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** All seven ProductionActivity values map exactly from controlled JSON. Unknown enum fails safely; ambiguous model fixture null stays null. Prompt requires conservative activity inference, never EVENTS.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “A PHOTO production”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured productionActivity; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured productionActivity; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-002"></a>
 #### MATCH-002 — Parser extraction: numPeople
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** numPeople must be a positive JSON integer within Java Integer range; zero/negative/fraction/string/overflow fail safely. Mapping a controlled12 is not proof of live understanding of “a dozen”.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “A production with 12 people”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured numPeople; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured numPeople; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-003"></a>
 #### MATCH-003 — Parser extraction: requiresNaturalLight
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresNaturalLight and prefersNaturalLight are distinct nullable Booleans. Hard true filters, false/null do not prohibit daylight. Weak language is preference by prompt contract.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Natural light is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresNaturalLight; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresNaturalLight; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-004"></a>
 #### MATCH-004 — Parser extraction: requiresBlackout
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresBlackout and prefersBlackout have distinct hard/preference semantics; true/false/null preserved, wrong scalar type rejected.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Blackout is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresBlackout; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresBlackout; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-005"></a>
 #### MATCH-005 — Parser extraction: requiresLoadingAccess
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresLoadingAccess and prefersLoadingAccess stay separate; unknown output does not invent loading access.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Loading access is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresLoadingAccess; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresLoadingAccess; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-006"></a>
 #### MATCH-006 — Parser extraction: requiresParking
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresParking and prefersParking stay separate; structured parking cannot be satisfied by a parking tag.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Parking is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresParking; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresParking; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-007"></a>
 #### MATCH-007 — Parser extraction: minimumParkingSpaces
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** minimumParkingSpaces is a nonnegative JSON integer. Zero remains an explicit minimum and requires parkingAvailable=true in deterministic filtering.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “At least 2 parking spaces”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured minimumParkingSpaces; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured minimumParkingSpaces; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-008"></a>
 #### MATCH-008 — Parser extraction: requiresWheelchairAccessibility
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresWheelchairAccessibility is nullable Boolean. There is no dedicated wheelchair preference field; do not invent one.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Wheelchair access is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresWheelchairAccessibility; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresWheelchairAccessibility; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-009"></a>
 #### MATCH-009 — Parser extraction: requiresLift
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresLift and prefersLift are separate nullable Booleans. False requirement is not a prohibition.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “A lift is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresLift; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresLift; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-010"></a>
 #### MATCH-010 — Parser extraction: requiresBathrooms
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresBathrooms is nullable Boolean; there is no dedicated bathroom preference field.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Bathrooms are required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresBathrooms; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresBathrooms; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-011"></a>
 #### MATCH-011 — Parser extraction: requiresSoundRecordingSuitable
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** requiresSoundRecordingSuitable is nullable Boolean; no soundproof/acoustic guarantee can be inferred.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Sound recording suitability is required”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requiresSoundRecordingSuitable; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requiresSoundRecordingSuitable; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-012"></a>
 #### MATCH-012 — Parser extraction: minimumCeilingHeightM
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** minimumCeilingHeightM is positive numeric metres, BigDecimal comparison; null is absent requirement. String/zero/negative invalid.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Ceiling height at least 3.5 metres”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured minimumCeilingHeightM; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured minimumCeilingHeightM; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-013"></a>
 #### MATCH-013 — Parser extraction: requestedDate
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** ISO requestedDate maps strictly. Prompt only populates exact timing when one reliable date and both bounds exist. Date-only fixture does not run availability.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Use the exact ISO date D14”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requestedDate; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requestedDate; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-014"></a>
 #### MATCH-014 — Parser extraction: requestedStartTime/requestedEndTime
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** Local requestedStartTime/requestedEndTime map strictly. Equal/reversed pairs fail; no overnight support. Complete date/start/end invokes availability; partial fields do not.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “D14 from 09:15 until 13:45”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured requestedStartTime/requestedEndTime; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured requestedStartTime/requestedEndTime; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-015"></a>
 #### MATCH-015 — Parser extraction: relative timing
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** Prompt receives fixed reference date and Europe/Amsterdam. Controlled tomorrow response maps against that fixture; local tests do not prove model relative-date resolution.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Tomorrow afternoon”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured relative timing; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured relative timing; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-016"></a>
 #### MATCH-016 — Parser extraction: ambiguous timing
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** “Tomorrow afternoon” and alternatives stay timingDatePreferences context in controlled response; prompt forbids fabricated bounds. Availability skips incomplete timing.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Next Friday, maybe morning or evening”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured ambiguous timing; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured ambiguous timing; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-017"></a>
 #### MATCH-017 — Parser extraction: budget context
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, INTEGRATION · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** PARAMETERIZED UNIT · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A; parser harness
+**Exact contract:** budgetMinEur/budgetMaxEur are nonnegative ordered numeric context. No total-price SQL predicate or authoritative budget-fit claim. Duration-aware quote remains pricing responsibility.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use parser fixture with explicit reference date D0 and brief “Budget EUR 500 for the shoot”; capture Gemini structured response. Run valid, missing-field, wrong enum/type and ambiguous-response variants; compare parsed object.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only explicit facts populate structured budget context; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected database/domain state:** Only explicit facts populate structured budget context; ambiguous timing remains context unless exact interval resolved by current parser. Budget is context, not an invented price filter. Invalid provider output fails safely; deterministic tests do not prove live model accuracy.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** GeminiBriefParserService, ParsedBrief, MatchingReferenceDateProvider
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingProviderContractTest (shared parser matrix); MatchingTransportContractTest. Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-018"></a>
 #### MATCH-018 — Hard requirement activity
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** Activity must be known permitted; explicit prohibition wins even if also permitted. Null/empty permitted fails. Null prohibited permits a known allowed activity. Parameterize all seven enum values.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with activity matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-019"></a>
 #### MATCH-019 — Hard requirement maxCrewSize
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** numPeople12 requires maxCrewSize>=12;12/13 pass,11/null fail. SQL and Java agree.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with maxCrewSize matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-020"></a>
 #### MATCH-020 — Hard requirement naturalLight
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresNaturalLight=true requires naturalLight=true; false/null venue fails. Requirement false/null does not filter.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with naturalLight matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-021"></a>
 #### MATCH-021 — Hard requirement blackoutPossible
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresBlackout=true requires blackoutPossible=true; false/null fails. Preference alone retains all.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with blackoutPossible matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-022"></a>
 #### MATCH-022 — Hard requirement loadingAccess
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresLoadingAccess=true requires loadingAccess=true; false/null fails.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with loadingAccess matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-023"></a>
 #### MATCH-023 — Hard requirement parkingAvailable
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresParking=true requires parkingAvailable=true; false/null fails; a tag does not replace the structured fact.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with parkingAvailable matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-024"></a>
 #### MATCH-024 — Hard requirement parkingSpaces
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** minimumParkingSpaces N requires known spaces>=N AND parkingAvailable=true, including N=0. Equality inclusive.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with parkingSpaces matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-025"></a>
 #### MATCH-025 — Hard requirement wheelchairAccessible
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresWheelchairAccessibility=true requires wheelchairAccessible=true; false/null fails.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with wheelchairAccessible matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-026"></a>
 #### MATCH-026 — Hard requirement liftAvailable
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresLift=true requires liftAvailable=true; false/null fails; prefersLift alone never excludes.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with liftAvailable matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-027"></a>
 #### MATCH-027 — Hard requirement bathroomsAvailable
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresBathrooms=true requires bathroomsAvailable=true; false/null fails, distinct from readiness completeness.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with bathroomsAvailable matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-028"></a>
 #### MATCH-028 — Hard requirement soundRecordingSuitable
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** requiresSoundRecordingSuitable=true requires soundRecordingSuitable=true; false/null fails; no acoustic guarantee.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with soundRecordingSuitable matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-029"></a>
 #### MATCH-029 — Hard requirement ceilingHeightM
 
-**Area:** MATCH · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P0 · **Test level:** PARAMETERIZED UNIT, REAL POSTGRES · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** minimumCeilingHeightM3.5 requires known height>=3.5;3.49/null fail; BigDecimal-safe inclusive comparison.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create three otherwise identical ACTIVE candidates with ceilingHeightM matching, mismatching and unknown; parse one explicit required constraint. For numeric fields use exact minimum, minimum−1 and null; for activity also prohibited and permitted/prohibited-null/empty. Run deterministic filter.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected database/domain state:** Only known matching candidate survives; unknown fails closed, explicit prohibition wins; preferences do not eliminate candidates. Supplied minimumParkingSpaces including zero implies parkingAvailable=true requirement.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** VenueHardRequirementEvaluator, VenueFilterBuilder
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** MatchingEligibilityContractTest + MatchingIntegrationTest#sqlAndJavaAgree (shared SQL/Java matrix). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-030"></a>
 #### MATCH-030 — Preference ranking and zero candidates
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** Production eligibility precedes ranking. Only ACTIVE candidates pass SQL, ordered hourly price ascending/size descending/name ascending; up to30 after Java filtering and before availability. Five soft preference fields retain match/unknown/mismatch candidates. No candidates skips ranker. Ranker receives catalogue facts only and returns at most five distinct eligible IDs; numeric scores clamp0–1. SQL currently materializes all predicate matches before limiting: record growth risk, not a fictitious SQL LIMIT.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use same hard-eligible venues with preferred natural light yes/null/no; run captured ranker prompt then remove all deterministic candidates.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Preference candidates all remain; prompt asks known match above unknown above mismatch, but rank order is model-mediated. Zero candidates skips ranker, not initial Gemini parser; no impossible venue added.
-
-
-**Expected database/domain state:** Preference candidates all remain; prompt asks known match above unknown above mismatch, but rank order is model-mediated. Zero candidates skips ranker, not initial Gemini parser; no impossible venue added.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** MatchService, GeminiAiService, GeminiVenueRanker, VenueMatchAvailabilityFilter
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** GeminiAiServiceTest; MatchingProviderContractTest; MatchingIntegrationTest; MatchingBrowserIntegrationTest (opt-in real UI). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-031"></a>
 #### MATCH-031 — Availability-aware match and direct quote
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** Exact complete date/start/end requires whole interval inside one authoritative available interval. PostgreSQL matrix covers partial/unavailable/BLOCKED/two blocking statuses/REQUESTED/lead/AVAILABLE/partial timing. Empty availability returns empty without relaxing. Direct venueId bypasses both Gemini calls; active accessible venue returns score1 and current hourly/minimum/optional full-day labels, not total price. Non-ACTIVE direct access is own OWNER/ADMIN only. No special booking bypass; AVL stale-reservation coverage reused.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Use exact interval fully inside, partially overlapping, blocked override, confirmed booking, REQUESTED and lead threshold; inspect candidate IDs delivered to ranker. Repeat absent/relative/ambiguous timing; then POST /match with venueId.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Exact complete timing filters availability without relaxing constraints; incomplete timing bypasses availability filtering. Direct quote path bypasses Gemini and hard-requirement parsing, uses permitted detail access and score 1.0; booking still validates.
-
-
-**Expected database/domain state:** Exact complete timing filters availability without relaxing constraints; incomplete timing bypasses availability filtering. Direct quote path bypasses Gemini and hard-requirement parsing, uses permitted detail access and score 1.0; booking still validates.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** MatchService, GeminiAiService, GeminiVenueRanker, VenueMatchAvailabilityFilter
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** GeminiAiServiceTest; MatchingProviderContractTest; MatchingIntegrationTest; MatchingBrowserIntegrationTest (opt-in real UI). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="match-032"></a>
 #### MATCH-032 — Ranker malicious/malformed response
 
-**Area:** MATCH · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** MATCH · **Priority:** P1 · **Test level:** UNIT, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS (local contract; live model quality not approved)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Exact contract:** Unknown and filtered-out IDs never appear; filter membership and deduplicate before five-result limit. Invalid score types/nonfinite values and malformed roots/rows return safe502, not generic500 or raw provider body; ordinary finite numbers preserve existing0–1 clamping. Missing/null explanation stays empty. Code fences strip at transport boundary. No parser/ranker fallback is invented. User/venue text is untrusted prompt data; explanation renders as React text. Prompt semantic compliance remains live-model review. Header key transport and safe logging prevent application error leakage.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Mock ranker response with unknown IDs, duplicate IDs, extra venues, nonnumeric score, code fences, empty/invalid JSON and provider timeout; include prompt-injection text in brief/description.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Use current parser/ranker validation; never present invented venue or price or expand deterministic candidates. Capture any unhandled schema/type case as defect; no provider error/key exposure.
-
-
-**Expected database/domain state:** Use current parser/ranker validation; never present invented venue or price or expand deterministic candidates. Capture any unhandled schema/type case as defect; no provider error/key exposure.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** MatchService, GeminiAiService, GeminiVenueRanker, VenueMatchAvailabilityFilter
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** GeminiAiServiceTest; MatchingProviderContractTest; MatchingIntegrationTest; MatchingBrowserIntegrationTest (opt-in real UI). Shared actors, prerequisites, cleanup and live-provider limitations above apply.
 
 <a id="family-bk"></a>
 ### BK scenarios
 
+The BK contract is audited against BookingService, BookingStateMachine, BookingController, BookingAvailabilityValidator, BookingReservationPolicy and V1 exclusion constraint. Execution/evidence: [BK execution report](qa/BK_EXECUTION_REPORT.md). Payment settlement, refunds and payouts remain separate domains.
+
+**Shared environment / cleanup:** UNIT and real disposable PostgreSQL via `mvn verify -Ppostgres-integration`; unique fictional RUN_ID accounts/venues; fixed Clock for core deadlines; isolated Chrome profile. Never delete shared booking, policy or audit history. QA policies say “QA TEST CONTENT — NOT LEGAL TERMS”. No fake snapshot reset.
+
+**Shared prerequisites:** SCOUT request and OWNER response need active account, verified email and all current required policies. ADMIN response is explicitly supported and exempt from email/policy acceptance, but ADMIN cannot create a scout request. Booking endpoints do not directly require owner verification. Request venue must be ACTIVE and interval satisfy availability/lead time. Read history remains available after policy replacement. Unit fixtures have no irrelevant role prerequisites.
+
+**Notification boundary:** Request publication targets owner + scout; acceptance, decline, request expiry and unavailable target scout. After-commit listener contains delivery failures and suppresses stale status notifications. Denied/invalid operations do not publish lifecycle transitions, except deadline/lead-time acceptance conflicts deliberately commit request expiry. Request and acceptance create no provider payment/refund. Local email-disabled mode is not real delivery proof. Human UX and staging email/deployment review remain separate from local software results.
+
 <a id="bk-001"></a>
 #### BK-001 — Standard request and immutable snapshots
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** SCOUT creates; current venue OWNER or ADMIN accepts; both participants/admin read.
 
+**Execution and assertions:** POST /api/bookings with D14 09:15–13:45, request contact and complete brief → 201 REQUESTED. Selected duration 270; billable duration max(270, venue minimum). Compare quote with BookingPriceCalculator, not a second formula. Capture hourly/minimum/full-day, commission and both contact snapshots, then change venue pricing/live contacts and publish replacement policy. Historical snapshots/references remain unchanged after authorized acceptance. Checkout claim takes stored venuePriceEur; no live provider payment.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** REQUESTED does not reserve. Four references: TERMS_OF_SERVICE, ACCEPTABLE_USE_POLICY, PRODUCTION_POLICY, INSURANCE_REQUIREMENTS. PRIVACY_POLICY excluded. Scout contact comes from request; owner contact from profile. Commission config is captured at creation, not recalculated on accept.
 
+**Automation:** BookingCoreIntegrationTest.exact270MinutesAndHistoricalSnapshotsSurviveAcceptance (minimum 60/360); policyReplacementAndLiveEmailsDoNotRewriteBookingHistory; BookingPriceCalculatorTest; BookingBrowserIntegrationTest.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** As Scout A choose Studio on /, select D14 09:15–13:45, brief and contact; submit. GET booking and inspect snapshots before Owner A changes rate/contact/policies. Accept and checkout afterward.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** 201 REQUESTED; exact 270-minute duration/price persisted; no payment or reservation yet. Hourly/minimum/cap, commission configuration, scout/owner contact and four production policy IDs captured. Acceptance and checkout do not reprice.
-
-
-**Expected database/domain state:** 201 REQUESTED; exact 270-minute duration/price persisted; no payment or reservation yet. Hourly/minimum/cap, commission configuration, scout/owner contact and four production policy IDs captured. Acceptance and checkout do not reprice.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-002"></a>
-#### BK-002 — Request invalid interval and trust boundaries
+#### BK-002 — Invalid creation and side-effect boundaries
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** SCOUT valid/invalid trust; OWNER and ADMIN creation denied; anonymous denied.
 
+**Execution and assertions:** Parameterized HTTP matrix: malformed/null required data, blank brief/contact and reversed/equal interval → 400; past/too-soon/unavailable/blocked → 409; non-ACTIVE venue → 404; wrong role/unverified/stale policies → 403; anonymous → 401. Past date reaches lead-time validation first. No booking/event/notification/provider side effects on rejection. A short positive interval is legal with minimum billable minutes.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** Do not flatten domain conflicts into 400. Email authority is current backend user state. Policy replacement is a prerequisite failure, not booking mutation.
 
+**Automation:** BookingCoreIntegrationTest.rejectedCreationHasNoRowsEventsOrProviderEffects; exact270MinutesAndHistoricalSnapshotsSurviveAcceptance; POL/VEN/AVL prerequisite coverage; BookingAvailabilityValidatorTest.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Try past shootDate, start=end, start>end, out-of-hours, blocked interval, too-soon and non-ACTIVE venue. Repeat SCOUT unverified/policies missing, OWNER and ADMIN.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Past/malformed interval 400; availability/lead conflict as service dictates; nonactive venue 404; role/trust denied. Short valid interval is billed to minimum rather than rejected for duration alone.
-
-
-**Expected database/domain state:** Past/malformed interval 400; availability/lead conflict as service dictates; nonactive venue 404; role/trust denied. Short valid interval is billed to minimum rather than rejected for duration alone.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-003"></a>
-#### BK-003 — Overlapping requests coexist
+#### BK-003 — Overlapping REQUESTED bookings coexist
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** Two authenticated eligible SCOUT accounts; venue OWNER later accepts.
 
+**Execution and assertions:** Create exact, partial and contained overlapping requests, plus adjacent requests; all return distinct 201 REQUESTED. Effective availability is unchanged until acceptance. Database permits these overlaps. Each successful request has REQUEST_SUBMITTED; no payment ID or reservation.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** REQUESTED is non-blocking. Do not add a request-capacity rule or infer inventory from an email.
 
+**Automation:** BookingCoreIntegrationTest.halfOpenCompetitorsOnlyBecomeUnavailable; VenueDomainIntegrationTest.avlAllBookingStatusesMatchDatabaseExclusion; BookingNotificationServiceTest.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Scout A and B POST same available slot. GET availability and both histories.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Both 201 REQUESTED, distinct IDs; no overlap exclusion for REQUESTED; schedule remains open; each owner/scout notification sent for own request.
-
-
-**Expected database/domain state:** Both 201 REQUESTED, distinct IDs; no overlap exclusion for REQUESTED; schedule remains open; each owner/scout notification sent for own request.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-004"></a>
-#### BK-004 — Owner response deadline snapshot and equality
+#### BK-004 — Owner response deadline and committed expiry
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** Eligible owning OWNER or ADMIN; fixed Clock and independent bookings at each boundary.
 
+**Execution and assertions:** At T0 create request; ownerResponseExpiresAt = T0 + configured owner-response-window-hours (default24), not capped to shoot start. Accept one microsecond before → 200 AWAITING_PAYMENT. Equality/after → 409 while EXPIRED and REQUEST_EXPIRED commit once. Repeat accept/expiry worker; no duplicate event/notification. Reads never extend deadline.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** Direct acceptance enforces expiry independently of scheduler. Request expiry differs from payment-window expiry and explicit decline. Lead-time expiry may occur before response deadline. No owner reminder/escalation is implemented.
 
+**Automation:** BookingCoreIntegrationTest.exactResponseDeadlineCommitsExpiryBeforeConflict; persistedExpiryIsIdempotent (3 repetitions); PostgresCriticalPathIntegrationTest bounded SKIP LOCKED workers.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create request at T0 with configured 24h response window; compare ownerResponseExpiresAt to T0+configured 24h (not capped to shoot start). Accept just before, at and after deadline in separate fixtures; run expiry twice.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Before allowed; equality/after expires and rejects; persisted EXPIRED survives deadline exception. Deadline is snapshotted, not extended by read/retry; expiry event/email once.
-
-
-**Expected database/domain state:** Before allowed; equality/after expires and rejects; persisted EXPIRED survives deadline exception. Deadline is snapshotted, not extended by read/retry; expiry event/email once.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-005"></a>
-#### BK-005 — Owner accept and competing requests
+#### BK-005 — Owner acceptance reserves and resolves competitors
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** Owning OWNER or ADMIN accepts; unrelated actors denied.
 
+**Execution and assertions:** POST /api/bookings/{id}/accept → 200 AWAITING_PAYMENT. acceptedAt and paymentExpiresAt = acceptance + configured payment-window-hours (default24), not capped to shoot start. Lock venue then booking, flush reservation, resolve only half-open overlapping REQUESTED to UNAVAILABLE. Adjacent and different-day requests remain; terminal rows stay terminal. No Mollie call/payment ID at acceptance.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** Exactly AWAITING_PAYMENT/CONFIRMED block in Java, availability and PostgreSQL. UNAVAILABLE is not owner decline. Two concurrent acceptances cannot reserve overlapping intervals. Failed competitor transaction rolls back winner and audit.
 
+**Automation:** BookingCoreIntegrationTest.halfOpenCompetitorsOnlyBecomeUnavailable; actorBoundaryAndExplicitAdminDelegation; competitorFailureRollsBackFlushedWinnerAndAudit; afterCommitNotificationFailureCannotUndoReservation; VenueDomainIntegrationTest.avlConcurrentAcceptanceReservesOnceAndExpiryReopens (3 races).
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Owner A accepts one requested slot; read all overlapping/adjacent requests and availability; inspect paymentExpiresAt.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** AWAITING_PAYMENT reserves slot; only overlapping REQUESTED become UNAVAILABLE; adjacent requests remain REQUESTED; payment expiry now+configured window (not capped to shoot start). No provider payment until checkout.
-
-
-**Expected database/domain state:** AWAITING_PAYMENT reserves slot; only overlapping REQUESTED become UNAVAILABLE; adjacent requests remain REQUESTED; payment expiry now+configured window (not capped to shoot start). No provider payment until checkout.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-006"></a>
-#### BK-006 — Owner accept changed availability and actors
+#### BK-006 — Acceptance rechecks changed conditions
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** Owning OWNER or ADMIN, current policies; request was valid when created.
 
+**Execution and assertions:** Independently add BLOCKED override, advance inside lead window, suspend venue, or reserve overlapping slot before accept. BLOCKED/suspended/reserved conflict cannot promote request. Lead failure commits EXPIRED + REQUEST_EXPIRED with MINIMUM_LEAD_TIME_NOT_MET then 409. Suspension itself does not cancel historical commitments or invalidate existing AWAITING_PAYMENT checkout.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** Existing VEN suspension fix is a required regression. Override/suspension conflict leaves REQUESTED; successful competing acceptance resolves overlapping requests to UNAVAILABLE. Do not invent automatic expiry/cancellation for every failure.
 
+**Automation:** BookingCoreIntegrationTest.acceptanceRevalidatesCurrentConditions; VenueDomainIntegrationTest.suspendedVenueCannotAcceptRequestedButKeepsAcceptedAndConfirmedHistory; suspensionVersusRequestAcceptanceSerializesCommitmentBoundary; avlLeadExpiryCommitsForRequestAndInquiryButCheckoutIsExempt.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Create REQUESTED then block slot, alter lead time, suspend venue or accept another booking. Attempt Owner B, Scout A, then owning Owner A/admin.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Unauthorized 403; stale state/availability cannot double reserve; owner/admin decision scope enforced. Record current suspended-venue behavior from BookingService rather than assuming historical request acceptance allowed.
-
-
-**Expected database/domain state:** Unauthorized 403; stale state/availability cannot double reserve; owner/admin decision scope enforced. Record current suspended-venue behavior from BookingService rather than assuming historical request acceptance allowed.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-007"></a>
-#### BK-007 — Decline wrong actor and duplicate
+#### BK-007 — Decline authorization and state transitions
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P1 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** Owning OWNER or ADMIN; other OWNER, both SCOUT roles and anonymous denied.
 
+**Execution and assertions:** POST /api/bookings/{id}/decline → 200 DECLINED only from REQUESTED. Repeat →409, no duplicate event/email. Parameterize all seven other statuses:409 unchanged. Unauthorized →403; anonymous401. No payment/refund; availability stays open. Current decline does not recheck deadline, venue status or lead time.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** REQUEST_DECLINED targets scout. UI must refetch on both review-action409 responses and display safe error, never force a local status.
 
+**Automation:** BookingCoreIntegrationTest.actorBoundaryAndExplicitAdminDelegation; declineRejectsEveryNonRequestStateWithoutEffects; BookingStateMachineTest complete64-pair contract; BookingBrowserIntegrationTest stale decline and successful decline.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Owner A declines own REQUESTED; repeat; try every terminal status and Owner B/SCOUT; compare availability.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** REQUESTED→DECLINED once; wrong actor denied; repeat/non-request state 409; no payment/refund and availability unaffected. Scout email says declined, not expired.
-
-
-**Expected database/domain state:** REQUESTED→DECLINED once; wrong actor denied; repeat/non-request state 409; no payment/refund and availability unaffected. Scout email says declined, not expired.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="bk-008"></a>
-#### BK-008 — Booking reads and contact exposure
+#### BK-008 — Actor-scoped history and contact privacy
 
-**Area:** BK · **Priority:** P0 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** BK · **Priority:** P0 · **Levels:** UNIT / API / REAL POSTGRES / representative BROWSER · **Result:** LOCAL PASS (2026-09-14; human/staging separate)
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors:** SCOUT participants; current venue OWNER; ADMIN operational read; unrelated users/anonymous denied.
 
+**Execution and assertions:** GET /api/bookings returns SCOUT own, OWNER venue bookings, ADMIN all. Matrix of two scouts/two owners/three bookings. Detail participant/admin200; unrelated403; missing404; malformedUUID400; anonymous401. Inspect serialized response for absence of account secrets/bank data. Snapshot contacts remain historical after live contact changes.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Contract notes:** Ordinary ADMIN list is supported, not just admin operations route. Shared BookingDto includes participant contacts and financial snapshot fields. No live User serialization. Contact visibility/retention is a product privacy decision, not permission to invent redaction.
 
+**Automation:** BookingCoreIntegrationTest.ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets; policyReplacementAndLiveEmailsDoNotRewriteBookingHistory; BookingServiceTest; BookingBrowserIntegrationTest.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Get /bookings and /bookings/{id} as both scouts, both owners, ADMIN and anonymous, with valid/nonexistent/malformed IDs. Change live account contact after request.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Histories scoped to actor, ADMIN operational access allowed; unrelated detail 403, nonexistent 404, malformed 400. DTO contact is booking snapshot; no token/hash/IBAN in normal responses.
-
-
-**Expected database/domain state:** Histories scoped to actor, ADMIN operational access allowed; unrelated detail 403, nonexistent 404, malformed 400. DTO contact is booking snapshot; no token/hash/IBAN in normal responses.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** BookingService, BookingController, BookingDto, BookingStateMachine
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Cleanup and human limitation:** Shared disposable-fixture strategy above; human UX/staging deployment and actual email delivery remain separate. See BK report for results and evidence.
 
 <a id="family-inq"></a>
 ### INQ scenarios
 
+**Execution:** [INQ execution report](qa/INQ_EXECUTION_REPORT.md). Source is authoritative; the four IDs map to parameterized HTTP/PostgreSQL matrices and a representative real browser journey.
+
+**Shared fixtures/cleanup:** Unique fictional QA users and venues, fixed Clock, disposable PostgreSQL Testcontainers, isolated Chrome profile; temporary auth configuration is mode 0600 and removed after execution. Do not delete shared inquiry/booking history or restore a nonexistent snapshot. No real payment or email provider calls. Unit notification tests and local disabled-email logs prove software behavior; deployed delivery is separate.
+
+**State model:** OPEN → OFFERED/DECLINED; OFFERED → ACCEPTED/EXPIRED. OPEN and OFFERED are not reservations. Acceptance alone creates AWAITING_PAYMENT and a unique booking link atomically. Inquiry actions never write weekly operating hours or availability overrides. No custom offer price, offer revision/withdrawal, scout decline, OPEN expiry, or inquiry event-history table exists.
+
 <a id="inq-001"></a>
 #### INQ-001 — Unavailable-slot inquiry creation
 
-**Area:** INQ · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** INQ · **Priority:** P1 · **Test level:** API, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS locally — see execution report
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Active, verified-email SCOUT with current policies; ACTIVE venue and valid interval meeting venue lead time. No scout owner-verification/payout requirement. OWNER/ADMIN 403, anonymous 401. GET mine is SCOUT-only; GET owned-venues OWNER-only. Lists are actor-scoped and do not require policy acceptance.
 
+**Contract:** POST `/availability-inquiries` with venueId, requestedDate, requestedStartTime, requestedEndTime, message. Outside weekly 09–17, D14 18–20 returns 201 OPEN. Exact local requested times/message persist; DTO timezone is current venue metadata, not a historical timezone snapshot. Normally available 09–11 returns 400 directing normal booking requests, including with an overlapping non-blocking REQUESTED booking. A blocking booking may make an inquiry eligible, but cannot be bypassed during offer/accept.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Validation:** Nonblank message max 1000 before service trim; null/empty/whitespace/1001→400, one character/1000→201. Browser empty input supplies “I'd like to ask about this time.” Invalid/missing date/time or same-day unordered interval→400; past/too-soon valid interval→409 via lead policy. Exact lead threshold allowed. Non-ACTIVE→404. Unknown command fields cannot set status/link.
 
+**Persistence/side effects:** One OPEN row and CREATED lifecycle event/email to owner; no booking, reservation, calendar mutation or payment. Denied/invalid requests leave no row/event/notification. Dashboard DTO has no contact/private financial data; owner creation email currently includes scout contact information, documented for privacy review. React renders message as text.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** On Studio calendar choose unavailable future day; open inquiry form, submit D14 18–20 and message. Repeat normally available 09–11; message blank/1000/1001; invalid order; too-soon.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Unavailable valid request 201 OPEN; normally available slot 400 directing standard request; message validation 400; lead/interval enforced; fallback text must remain meaningful and within limit.
-
-
-**Expected database/domain state:** Unavailable valid request 201 OPEN; normally available slot 400 directing standard request; message validation 400; lead/interval enforced; fallback text must remain meaningful and within limit.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AvailabilityInquiryService, AvailabilityInquiryController, AvailabilityInquiryExpirationJob
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** InquiryIntegrationTest message, invalid creation, routing, exact lead, actor/read/privacy matrices; existing AvailabilityInquiryServiceTest and AvailabilityInquiryNotificationServiceTest; InquiryBrowserIntegrationTest calendar mode/fallback/OPEN. Shared cleanup above. Human review is wording and flow clarity, not binary/API edge cases.
 
 <a id="inq-002"></a>
-#### INQ-002 — Owner offers same or different slot
+#### INQ-002 — Owner offers same or different one-off slot
 
-**Area:** INQ · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** INQ · **Priority:** P1 · **Test level:** API, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS locally — see execution report
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Only the venue's active verified-email OWNER with current policies may POST `/{id}/offer`; other owner/scouts/ADMIN 403, anonymous 401. Existing OPEN inquiry, ACTIVE venue, ordered valid offered interval meeting lead time and no blocking overlap.
 
+**Contract:** Body offeredDate/offeredStartTime/offeredEndTime; same or different slot allowed, including outside weekly hours or through calendar BLOCKED overrides. Existing AWAITING_PAYMENT/CONFIRMED overlap→409; other booking statuses do not block. Half-open adjacency is legal. Expiry is min(now+configured 48h default, offered slot start in venue timezone). Duplicate/non-OPEN offer→409 with no rewrite or expiry extension. Missing/malformed fields→400; past/too-soon→409. Suspended venue→409, no OFFERED transition.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/side effects:** Preserve requested interval; persist offered interval/offeredAt/offerExpiresAt and OFFERED status. One OFFERED lifecycle notification to scout. No booking, price snapshot, reservation or calendar write. Offers serialize with venue moderation; an offer remains non-blocking even after successful save.
 
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Owner A opens /owner/inquiries, offers requested interval then in independent fixture D15 18–20; offer conflict with blocking booking and too-soon; repeat Owner B.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** OPEN→OFFERED; offered interval and expiry min(now+48h, slotStart); no permanent weekly/override mutation; conflict/actor denied.
-
-
-**Expected database/domain state:** OPEN→OFFERED; offered interval and expiry min(now+48h, slotStart); no permanent weekly/override mutation; conflict/actor denied.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AvailabilityInquiryService, AvailabilityInquiryController, AvailabilityInquiryExpirationJob
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** InquiryIntegrationTest blocking-status/adjacency, expiry cap, exact lead, invalid offer, all-state/action, current account/policy and suspension cases. Browser requested versus different offered time, reload, stale owner offer/decline conflict refetch with retained feedback. Shared cleanup above. Product decisions: price locking, temporary reservation and offer revision are not implemented by this test pass.
 
 <a id="inq-003"></a>
-#### INQ-003 — Offer acceptance and late conflict
+#### INQ-003 — Atomic offer acceptance and late conflict
 
-**Area:** INQ · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** INQ · **Priority:** P0 · **Test level:** API, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS locally — see execution report
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Only originating active verified-email SCOUT with current policies accepts via POST `/{id}/accept`; other scout/owners/ADMIN 403, anonymous 401. OFFERED, before expiry, ACTIVE venue, valid lead time and no blocking overlap. No ordinary weekly-availability requirement for the exception booking.
 
+**Contract:** Returns 200 BookingDto directly AWAITING_PAYMENT; inquiry ACCEPTED with acceptedBookingId. Standard payment deadline defaults acceptance+24h; no owner-response deadline or second owner acceptance. Current authoritative venue price/commission/live participant contacts/four booking policy references are snapshotted at conversion. Offer is not a price lock. Normal shared checkout uses stored booking amount (mocked provider only).
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Late outcomes:** At/after offerExpiresAt→409, remains OFFERED until worker expires it. Lead failure→EXPIRED committed before 409. Occupied→409 remains OFFERED. Non-ACTIVE→404 remains OFFERED. Duplicate acceptance→409 with original single booking/link. Missing ID 404/malformed UUID 400. No failed path may leave ACCEPTED with a missing booking.
 
+**Persistence/concurrency:** Same-inquiry lock plus venue lock serializes double acceptance, different overlapping offers, normal reservation and suspension. PostgreSQL exclusion permits exactly one blocking reservation. Added stricter disposable-DB failure injection proves booking/policy/audit writes roll back if inquiry save fails and no after-commit success notification is emitted. Calendar tables remain unchanged; the created booking now blocks inventory.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
+**Events/UI:** Only booking REQUEST_ACCEPTED event with source availability_inquiry and its scout payment notification; no duplicate inquiry-accepted event/email. Browser accepts, redirects `/bookings/{id}`, reloads AWAITING_PAYMENT; stale acceptance refetches and retains safe feedback. No real Mollie call or payment success claim.
 
-
-**Exact steps:** Scout A accepts valid offer; repeat same offer, Scout B, expired-at-equality, too-late and newly occupied slot fixtures.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Valid creates AWAITING_PAYMENT booking and ACCEPTED inquiry with booking ID atomically; no duplicate booking, no calendar rewrite. Expired/lead elapsed fails and expires where implemented; conflict preserves consistent state.
-
-
-**Expected database/domain state:** Valid creates AWAITING_PAYMENT booking and ACCEPTED inquiry with booking ID atomically; no duplicate booking, no calendar rewrite. Expired/lead elapsed fails and expires where implemented; conflict preserves consistent state.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AvailabilityInquiryService, AvailabilityInquiryController, AvailabilityInquiryExpirationJob
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** InquiryIntegrationTest conversion snapshots/shared mocked checkout, deadlines, policy replacement, changed account authority, atomicity, repeated double/two-offer/normal-accept/suspension races; BK/AVL exclusion and checkout tests reused. InquiryBrowserIntegrationTest. Shared cleanup above. Product review: current acceptance-time price and live venue timezone semantics.
 
 <a id="inq-004"></a>
-#### INQ-004 — Inquiry decline and expiry visibility
+#### INQ-004 — Decline, expiry and scoped dashboard history
 
-**Area:** INQ · **Priority:** P1 · **Test level:** API, LOCAL E2E · **Result:** NOT RUN
+**Area:** INQ · **Priority:** P1 · **Test level:** API, REAL POSTGRES, BROWSER REPRESENTATIVE · **Result:** PASS locally — see execution report
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+**Actors/prerequisites:** Own verified-email/current-policy OWNER declines OPEN via POST `/{id}/decline`; no ADMIN delegation. Decline does not require ACTIVE because it creates no commitment. Other actors 403/anonymous 401. No decline reason field exists. Only due OFFERED rows expire.
 
+**Contract:** OPEN→DECLINED with declinedAt; duplicate/other status→409 without extra notification. Worker `expireOffers(now)` locks at most 100 due offers with SKIP LOCKED; OFFERED→EXPIRED with expiredAt and one OFFER_EXPIRED notification. Repeated processing is idempotent. Default scan 60s; direct accept rejects overdue offers independently of scheduler. OPEN has no response deadline/expiry.
 
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
+**Persistence/notifications:** Neither decline nor expiry creates booking/payment/refund/calendar changes. DECLINED email means inquiry declined, not booking declined. OFFER_EXPIRED means offer expired. Application lifecycle events are not a persisted inquiry timeline; booking audit begins at conversion.
 
+**Dashboard/privacy:** `/scout/inquiries` shows own waiting/declined/offered/expired/accepted history and booking link; `/owner/inquiries` only owned-venue inquiries. Original requested and offered intervals both remain visible; expiry uses venue timezone even with a different browser timezone. No contact data is added to inquiry DTO/UI. Lists currently unpaginated.
 
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Owner declines OPEN; repeat and attempt decline OFFERED; make OFFERED due then run expiry twice and refresh both dashboards.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** Only allowed state changes succeed; due OFFERED→EXPIRED once. No booking/payment/refund on decline/expiry; scout receives corresponding email.
-
-
-**Expected database/domain state:** Only allowed state changes succeed; due OFFERED→EXPIRED once. No booking/payment/refund on decline/expiry; scout receives corresponding email.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL REAL POSTGRES
-
-
-**Source / existing evidence:** AvailabilityInquiryService, AvailabilityInquiryController, AvailabilityInquiryExpirationJob
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Automation:** InquiryIntegrationTest five-state×four-action matrix, actor-scoped reads, repeated expiry/idempotency; PostgresCriticalPathIntegrationTest inquiry SKIP LOCKED disjoint-worker coverage; existing notification recipient/template/failure tests; representative browser decline/stale refetch/offer/accept. Shared cleanup above. Human UX and real deployed email/scheduler behavior remain separately listed in execution report.
 
 <a id="family-price"></a>
-### PRICE scenarios
+### PRICE scenarios — audited 2026-09-15
+
+**Source authority:** `BookingPriceCalculator`, venue DTO/entity money constraints, `BookingService`, `PaymentCreationCoordinator`, `BookingFinancials`, cancellation/payout accounting, receipt renderer and frontend `lib/pricing.ts`. Execution and defects: [PRICE execution report](qa/PRICE_EXECUTION_REPORT.md); evidence: `docs/qa/evidence/price/`.
+
+**Shared contract:** selected duration is same-date LocalTime minutes. Billable minutes = max(selected, minimum). Hourly total = rate × billable /60 rounded to two decimals HALF_UP. Optional cap is separately normalized to two decimals HALF_UP; final price = min(rounded hourly total, normalized cap). Cap changes money, never selected/billable minutes. Minimum is a billing minimum, not a minimum selectable interval. No hidden quarter/hour increments. Overnight intervals are unsupported. DST billing uses selected wall-clock minutes; elapsed-time scheduling remains a separate contract.
+
+**Execution:** all eleven IDs map to one parameterized `PriceContractTest` shared fixture and `scripts/qa/price-client-check.cjs`; exact cent parity, no tolerance. No actors, authentication, policies, database, clock, emails or providers are required for pure math. Representative PRICE-001/006/007/010 use actual HTTP/real PostgreSQL in `PriceIntegrationTest` to verify immutable snapshots and mocked checkout. Browser representatives cover minimum, prorating, cap, uncapped price and server price winning over a stale preview. No live Mollie payment is claimed.
+
+**Money authority:** preview is indicative. Spring snapshots price/rate/minimum/cap/durations/commission at normal request creation or inquiry acceptance. Acceptance never reprices an existing booking. Checkout ignores client monetary fields and uses `Booking.venuePriceEur`. Commission, cancellation, payout and receipt consume stored historical economics. Matching before duration only describes rate/minimum/optional cap.
+
+**Bounds:** rate/cap DTOs require 0.01..99,999,999.99; minimum 1..10,080. Fractional-cent configuration remains accepted and now normalizes to PostgreSQL cents before returning a venue DTO. Sub-minute selected duration and a final price exceeding NUMERIC(10,2) fail safely with HTTP 400 before booking persistence. A fitting cap may bring a large uncapped calculation into range. Positive settings can still round to 0.00: documented accounting decision, not an invented minimum price or verified provider capability.
+
+**Cleanup:** shared deterministic fixtures, unique fictional QA accounts/venues, disposable Testcontainers PostgreSQL, isolated Chrome profile and temporary auth config. Never delete shared booking history. Successful booking integration has existing BK lifecycle notifications; pure pricing has none; provider transport is mocked locally.
+
+| ID | Selected minutes | Billing minimum | EUR/hour | Cap EUR | Billable minutes | Expected EUR |
+|---|---:|---:|---:|---:|---:|---:|
+| [PRICE-001](#price-001) | 30 | 60 | 100 | none | 60 | 100.00 |
+| [PRICE-002](#price-002) | 60 | 60 | 100 | none | 60 | 100.00 |
+| [PRICE-003](#price-003) | 90 | 60 | 100 | none | 90 | 150.00 |
+| [PRICE-004](#price-004) | 270 | 60 | 100 | none | 270 | 450.00 |
+| [PRICE-005](#price-005) | 480 | 60 | 100 | 500 | 480 | 500.00 |
+| [PRICE-006](#price-006) | 30 | 240 | 100 | 200 | 240 | 200.00 |
+| [PRICE-007](#price-007) | 61 | 1 | 19.99 | none | 61 | 20.32 |
+| [PRICE-008](#price-008) | 1 | 1 | 0.30 | none | 1 | 0.01 |
+| [PRICE-009](#price-009) | 299 | 1 | 100 | 500 | 299 | 498.33 |
+| [PRICE-010](#price-010) | 300 | 1 | 100 | 500 | 300 | 500.00 |
+| [PRICE-011](#price-011) | 301 | 1 | 100 | 500 | 301 | 500.00 |
 
 <a id="price-001"></a>
-#### PRICE-001 — 30 minutes, minimum 60, rate 100, cap None
+#### PRICE-001 — 30 selected minutes, 60 minimum, 100/hour, cap none
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT + REAL POSTGRES/API + MOCKED CHECKOUT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 00:30, hourlyRateEur=100, minimumBookingMinutes=60, fullDayRateEur=null. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=30; billableMinutes=60; hourly total=round_HALF_UP(100 × 60 / 60,2); cap=none; venuePriceEur=100.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=30; billableMinutes=60; hourly total=round_HALF_UP(100 × 60 / 60,2); cap=none; venuePriceEur=100.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-001` through Java calculator and actual frontend pricing module. Assert selected=30, billable=60, rounded hourly=100.00, final=100.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-002"></a>
-#### PRICE-002 — 60 minutes, minimum 60, rate 100, cap None
+#### PRICE-002 — 60 selected minutes, 60 minimum, 100/hour, cap none
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 01:00, hourlyRateEur=100, minimumBookingMinutes=60, fullDayRateEur=null. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=60; billableMinutes=60; hourly total=round_HALF_UP(100 × 60 / 60,2); cap=none; venuePriceEur=100.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=60; billableMinutes=60; hourly total=round_HALF_UP(100 × 60 / 60,2); cap=none; venuePriceEur=100.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-002` through Java calculator and actual frontend pricing module. Assert selected=60, billable=60, rounded hourly=100.00, final=100.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-003"></a>
-#### PRICE-003 — 90 minutes, minimum 60, rate 100, cap None
+#### PRICE-003 — 90 selected minutes, 60 minimum, 100/hour, cap none
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 01:30, hourlyRateEur=100, minimumBookingMinutes=60, fullDayRateEur=null. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=90; billableMinutes=90; hourly total=round_HALF_UP(100 × 90 / 60,2); cap=none; venuePriceEur=150.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=90; billableMinutes=90; hourly total=round_HALF_UP(100 × 90 / 60,2); cap=none; venuePriceEur=150.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-003` through Java calculator and actual frontend pricing module. Assert selected=90, billable=90, rounded hourly=150.00, final=150.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-004"></a>
-#### PRICE-004 — 270 minutes, minimum 60, rate 100, cap None
+#### PRICE-004 — 270 selected minutes, 60 minimum, 100/hour, cap none
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 04:30, hourlyRateEur=100, minimumBookingMinutes=60, fullDayRateEur=null. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=270; billableMinutes=270; hourly total=round_HALF_UP(100 × 270 / 60,2); cap=none; venuePriceEur=450.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=270; billableMinutes=270; hourly total=round_HALF_UP(100 × 270 / 60,2); cap=none; venuePriceEur=450.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-004` through Java calculator and actual frontend pricing module. Assert selected=270, billable=270, rounded hourly=450.00, final=450.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-005"></a>
-#### PRICE-005 — 480 minutes, minimum 60, rate 100, cap 500
+#### PRICE-005 — 480 selected minutes, 60 minimum, 100/hour, cap 500
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 08:00, hourlyRateEur=100, minimumBookingMinutes=60, fullDayRateEur=500. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=480; billableMinutes=480; hourly total=round_HALF_UP(100 × 480 / 60,2); cap=500; venuePriceEur=500.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=480; billableMinutes=480; hourly total=round_HALF_UP(100 × 480 / 60,2); cap=500; venuePriceEur=500.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-005` through Java calculator and actual frontend pricing module. Assert selected=480, billable=480, rounded hourly=800.00, final=500.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-006"></a>
-#### PRICE-006 — 30 minutes, minimum 240, rate 100, cap 200
+#### PRICE-006 — 30 selected minutes, 240 minimum, 100/hour, cap 200
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT + REAL POSTGRES/API + MOCKED CHECKOUT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 00:30, hourlyRateEur=100, minimumBookingMinutes=240, fullDayRateEur=200. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=30; billableMinutes=240; hourly total=round_HALF_UP(100 × 240 / 60,2); cap=200; venuePriceEur=200.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=30; billableMinutes=240; hourly total=round_HALF_UP(100 × 240 / 60,2); cap=200; venuePriceEur=200.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-006` through Java calculator and actual frontend pricing module. Assert selected=30, billable=240, rounded hourly=400.00, final=200.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-007"></a>
-#### PRICE-007 — 61 minutes, minimum 1, rate 19.99, cap None
+#### PRICE-007 — 61 selected minutes, 1 minimum, 19.99/hour, cap none
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT + REAL POSTGRES/API + MOCKED CHECKOUT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 01:01, hourlyRateEur=19.99, minimumBookingMinutes=1, fullDayRateEur=null. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=61; billableMinutes=61; hourly total=round_HALF_UP(19.99 × 61 / 60,2); cap=none; venuePriceEur=20.32. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=61; billableMinutes=61; hourly total=round_HALF_UP(19.99 × 61 / 60,2); cap=none; venuePriceEur=20.32. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-007` through Java calculator and actual frontend pricing module. Assert selected=61, billable=61, rounded hourly=20.32, final=20.32 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-008"></a>
-#### PRICE-008 — 1 minutes, minimum 1, rate 0.30, cap None
+#### PRICE-008 — 1 selected minutes, 1 minimum, 0.30/hour, cap none
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 00:01, hourlyRateEur=0.30, minimumBookingMinutes=1, fullDayRateEur=null. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=1; billableMinutes=1; hourly total=round_HALF_UP(0.30 × 1 / 60,2); cap=none; venuePriceEur=0.01. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=1; billableMinutes=1; hourly total=round_HALF_UP(0.30 × 1 / 60,2); cap=none; venuePriceEur=0.01. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-008` through Java calculator and actual frontend pricing module. Assert selected=1, billable=1, rounded hourly=0.01, final=0.01 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-009"></a>
-#### PRICE-009 — 299 minutes, minimum 1, rate 100, cap 500
+#### PRICE-009 — 299 selected minutes, 1 minimum, 100/hour, cap 500
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 04:59, hourlyRateEur=100, minimumBookingMinutes=1, fullDayRateEur=500. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=299; billableMinutes=299; hourly total=round_HALF_UP(100 × 299 / 60,2); cap=500; venuePriceEur=498.33. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=299; billableMinutes=299; hourly total=round_HALF_UP(100 × 299 / 60,2); cap=500; venuePriceEur=498.33. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-009` through Java calculator and actual frontend pricing module. Assert selected=299, billable=299, rounded hourly=498.33, final=498.33 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-010"></a>
-#### PRICE-010 — 300 minutes, minimum 1, rate 100, cap 500
+#### PRICE-010 — 300 selected minutes, 1 minimum, 100/hour, cap 500
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT + REAL POSTGRES/API + MOCKED CHECKOUT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
-
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 05:00, hourlyRateEur=100, minimumBookingMinutes=1, fullDayRateEur=500. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=300; billableMinutes=300; hourly total=round_HALF_UP(100 × 300 / 60,2); cap=500; venuePriceEur=500.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=300; billableMinutes=300; hourly total=round_HALF_UP(100 × 300 / 60,2); cap=500; venuePriceEur=500.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+Run shared fixture `PRICE-010` through Java calculator and actual frontend pricing module. Assert selected=300, billable=300, rounded hourly=500.00, final=500.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
 <a id="price-011"></a>
-#### PRICE-011 — 301 minutes, minimum 1, rate 100, cap 500
+#### PRICE-011 — 301 selected minutes, 1 minimum, 100/hour, cap 500
 
-**Area:** PRICE · **Priority:** P0 · **Test level:** UNIT, API · **Result:** NOT RUN
+**Priority:** P0 · **Level:** UNIT + FRONTEND CLIENT · **Result:** PASS
 
-**Roles involved:** Scout A, Owner A; repeat denial with Scout B, Owner B and anonymous
+Run shared fixture `PRICE-011` through Java calculator and actual frontend pricing module. Assert selected=301, billable=301, rounded hourly=501.67, final=500.00 exactly. Assert frontend returns the same cent amount. Shared snapshot, downstream and browser evidence applies as described above; no duplicated authorization matrix or database arithmetic implementation.
 
-
-**Preconditions:** Local stack healthy; relevant actor active, email verified and current policies accepted unless varied.
-
-
-**Test data:** Standard fixtures below; use a fresh aggregate for each independent variant.
-
-
-**Exact steps:** Call BookingPriceCalculator with start 00:00 and end 05:01, hourlyRateEur=100, minimumBookingMinutes=1, fullDayRateEur=500. Compare frontend estimate and booking snapshot in matching API fixture.
-
-
-**Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
-
-
-**Expected API/backend behavior:** durationMinutes=301; billableMinutes=301; hourly total=round_HALF_UP(100 × 301 / 60,2); cap=500; venuePriceEur=500.00. Checkout amount is this snapshot.
-
-
-**Expected database/domain state:** durationMinutes=301; billableMinutes=301; hourly total=round_HALF_UP(100 × 301 / 60,2); cap=500; venuePriceEur=500.00. Checkout amount is this snapshot.
-
-
-**Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
-
-
-**Security/authorization expectation:** Use the endpoint role matrix and a different owner/scout UUID; denial must leave domain state unchanged.
-
-
-**Cleanup/reset steps:** Restore the isolated fixture snapshot; clear browser session and discard captured tokens. Never delete shared staging history.
-
-
-**Automation recommendation:** SHOULD AUTOMATE
-
-
-**Local/staging requirement:** LOCAL MOCKED
-
-
-**Source / existing evidence:** BookingPriceCalculator, lib/pricing.ts
-
-
-**Pass/fail criteria:** PASS only when every listed variant meets all expectations and cleanup/evidence are recorded; FAIL for any mismatch or forbidden side effect; BLOCKED when required harness/provider/fixture is unavailable. Existing source-level characterization does not close a separate launch-acceptance gap.
-
+**Local conclusion:** canonical PRICE-001–011 pass. The wider domain is not unconditionally clear for paid launch until zero-price handling is decided; see PRICE-DEF-005 and product/staging boundaries in the execution report.
 
 <a id="family-pay"></a>
 ### PAY scenarios
@@ -9142,10 +5297,10 @@ Auth-input contract update (2026-09-10): register/login/resend/forgot email is t
 **Expected UI behavior:** Show the authoritative returned state or a safe actionable error; refresh/reload must agree. No optimistic money or status claim.
 
 
-**Expected API/backend behavior:** Current acceptRequest has no ACTIVE check and internal interval calculation does not check visibility; otherwise valid suspended request can become AWAITING_PAYMENT. New POST booking remains blocked. Record P0 trust/product decision, not an assumed passing suspension gate.
+**Expected API/backend behavior:** VEN-D02 reproduced and fixed this gap: acceptance now checks ACTIVE under the venue row lock and returns 409 for a suspended REQUESTED booking. Existing AWAITING_PAYMENT remains payable; CONFIRMED history is preserved. New requests remain blocked. See VEN-010 and docs/qa/VEN_EXECUTION_REPORT.md for PostgreSQL race evidence.
 
 
-**Expected database/domain state:** Current acceptRequest has no ACTIVE check and internal interval calculation does not check visibility; otherwise valid suspended request can become AWAITING_PAYMENT. New POST booking remains blocked. Record P0 trust/product decision, not an assumed passing suspension gate.
+**Expected database/domain state:** VEN-D02 reproduced and fixed this gap: acceptance now checks ACTIVE under the venue row lock and returns 409 for a suspended REQUESTED booking. Existing AWAITING_PAYMENT remains payable; CONFIRMED history is preserved. New requests remain blocked. See VEN-010 and docs/qa/VEN_EXECUTION_REPORT.md for PostgreSQL race evidence.
 
 
 **Expected email/provider behavior:** No email/provider operation unless the lifecycle email matrix explicitly names this transition; capture calls and verify none on rejection.
@@ -36962,7 +33117,7 @@ These are source-observed limitations or focused validation hypotheses, not chan
 |---|---|---|---|---|
 | G01 | P0 | Existing REQUESTED booking may be accepted after venue suspension: acceptRequest never checks ACTIVE and internal availability ignores status. | EDGE-004, BK-006, JOURNEY-007 | BookingService#acceptRequest; VenueAvailabilityService#getAvailableIntervalsExcludingBooking |
 | G02 | P0 | Password reset removes refresh tokens but issued access JWT remains valid until expiry; logout does not revoke refresh tokens. “Old sessions invalid” must distinguish these cases. | AUTH-007, AUTH-015, JOURNEY-008 | AccountRecoveryService; JwtAuthenticationFilter; AuthProvider |
-| G03 | P0 | Image MIME/extension checks do not decode image bytes; fabricated image/jpeg can be stored. Stored reference validation checks shape, not existence or ownership of referenced media. | MEDIA-002/003, SEC-002 | StorageService; S3PublicMediaStorage; VenueMediaPolicy |
+| G03 | P0 | MEDIA-D01 fixed: both adapters now decode supported images with bounded dimensions/resources and reject fabricated content before storage. Reference shape still does not prove existence/exclusive ownership; EXIF and legacy objects remain unmodified. See MEDIA execution report. | MEDIA-002/003, SEC-002 | StorageService; S3PublicMediaStorage; VenueMediaPolicy |
 | G04 | P1 | Fee gauge counts only CONFIRMED, while exception queue includes paid CANCELLED; counts can disagree despite shared age thresholds. Queue also limits each category to 200 candidates. | OPS-007, ADMIN exception cases | BookingRepository#countOldUnreconciledMollieFees/#findOldUnreconciledMollieFees; AdminOperationsService |
 | G05 | P1 | Refresh single-flight remains per JS module/tab. The pre-launch stale-loser clearing defect is FIXED by generation comparison; simultaneous rotation still has one server winner. Second 401 after a successful refresh does not explicitly clear session. | AUTH-009/010, UXACT expiry cases | lib/api/client.ts; lib/auth/token.ts |
 | G06 | P0 | No browser E2E framework/tests or frontend CI workflow found. Backend mocks cannot be used as a local browser fake-provider server without a separately prepared harness. | All UX/JOURNEY; PROVIDER | Frontend package.json and repository inventory; backend test configurations |
@@ -36979,7 +33134,7 @@ These are source-observed limitations or focused validation hypotheses, not chan
 | G17 | P1 | PDF uses current venue/owner display details at first issuance, then immutable bytes; unsupported Unicode becomes ?, text is truncated at 180 and single-page layout can overflow. Not every document field is booking-time snapshotted. | DOC-002/004 | FinancialDocumentService; FinancialDocumentPdfRenderer |
 | G18 | P0 | Document controller lacks explicit no-store policy; reveal endpoint explicitly has it. Tokens in localStorage remain accessible to same-origin JS. Frontend malformed stored session validation is partial. | SEC-005/007, AUTH | FinancialDocumentController; lib/auth/token.ts |
 | G19 | P1 | Event payload allowlist filters only keys at first level, not nested values under allowed keys. Generic frontend 403 copy says ADMIN required even for owner/scout ownership denial; short validation text may include backend-provided content. | ADMIN-003, SEC-002, UX | AdminOperationsService#safePayload; lib/api/error-message.ts |
-| G20 | P0 | No universal idempotency key for booking/inquiry/incident creation; UI busy states alone do not guarantee exactly one action under replay/network loss. Concurrent duplicate policy acceptance catches a DB exception inside a transaction and needs real transaction behavior validation. | UXACT, POL-006 | Create controllers/services; PolicyAcceptanceService#accept |
+| G20 | P0 | No universal idempotency key for booking/inquiry/incident creation; UI busy states alone do not guarantee exactly one action under replay/network loss. Concurrent duplicate policy acceptance was reproduced as HTTP 500 and corrected with PostgreSQL conflict-safe inserts; see POL execution evidence for repeated real-transaction checks. | UXACT, POL-006 | Create controllers/services; PolicyAcceptanceService#accept |
 | G21 | P1 | Frontend verification gate applies broadly to required non-GET calls, while backend policy acceptance/incident report/matching do not all have identical verified-email enforcement. Preserve backend actual role matrix and test UI asymmetry. | AUTH-013, API, INC, POL | lib/api/client.ts; VerifiedEmailEnforcementSurfaceTest; controllers |
 | G22 | P1 | Optional Cala BFF publicly accepts company input, logs company/provider error text and returns raw provider data on success; compatibility component reachability needs confirmation. It is not owner verification. | CALA-001, EDGE-006 | app/api/verify-booker/route.ts; lib/cala.ts |
 | G23 | P0 | Frontend README records dependency security findings and required patched-major migration before public/untrusted deployment. This documentation task does not re-audit advisories or resolve them. | Alpha SECURITY gate | Frontend README dependency section, package/package-lock baseline |

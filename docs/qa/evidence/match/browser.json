@@ -1,0 +1,74 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Simple brief: loading, real backend results, authoritative pricing and model explanation rendered as text",
+      "result": "PASS"
+    },
+    {
+      "name": "Match card opens full authoritative venue detail",
+      "result": "PASS"
+    },
+    {
+      "name": "Zero hard-eligible candidates: clear empty state without relaxed constraints",
+      "result": "PASS"
+    },
+    {
+      "name": "Exact unavailable interval: clear empty state without relaxed constraints",
+      "result": "PASS"
+    },
+    {
+      "name": "Provider failure: safe actionable error, no raw provider payload",
+      "result": "PASS"
+    },
+    {
+      "name": "Network failure: actionable retry state",
+      "result": "PASS"
+    }
+  ],
+  "provider": "Mocked generateContent only; real parser, ranker, PostgreSQL and Spring HTTP",
+  "network": [
+    {
+      "path": "/api/match",
+      "query": "",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/match",
+      "query": "",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/venues/ff9adbaf-38f8-4338-a5a8-7b0b2d4bc607",
+      "query": "",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/venues/ff9adbaf-38f8-4338-a5a8-7b0b2d4bc607",
+      "query": "",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/match",
+      "query": "",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/match",
+      "query": "",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/match",
+      "query": "",
+      "method": "POST",
+      "status": 502
+    }
+  ]
+}

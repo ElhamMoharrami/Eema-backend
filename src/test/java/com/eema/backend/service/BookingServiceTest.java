@@ -362,7 +362,7 @@ class BookingServiceTest {
         booking.setOwnerContact(com.eema.backend.entity.BookingContactSnapshot.builder().name("Owner").email("owner@example.com").build());
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(booking));
-        Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).timezone("Europe/Amsterdam").build();
+        Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).status(VenueStatus.ACTIVE).timezone("Europe/Amsterdam").build();
         when(venueRepository.findById(booking.getVenueId())).thenReturn(Optional.of(venue));
         when(venueRepository.findByIdForUpdate(booking.getVenueId())).thenReturn(Optional.of(venue));
         when(currentUserService.getCurrentUser()).thenReturn(owner);

@@ -1,0 +1,9 @@
+{
+  "result": "REPRODUCED",
+  "defect": "MEDIA-D04",
+  "containerUser": "eema (uid 100)",
+  "freshVolumeOwner": "root:root 0755",
+  "actual": "Valid scoped upload fails with AccessDeniedException creating /app/uploads/upload-*.tmp; HTTP 500",
+  "expected": "Non-root backend can write its configured named media volume",
+  "fix": "Create upload/document directories before image chown; fresh named volumes inherit ownership"
+}

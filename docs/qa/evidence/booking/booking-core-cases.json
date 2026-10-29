@@ -1,0 +1,157 @@
+{
+  "name": "com.eema.backend.integration.BookingCoreIntegrationTest",
+  "tests": "37",
+  "failures": "0",
+  "errors": "0",
+  "skipped": "0",
+  "cases": [
+    {
+      "name": "afterCommitNotificationFailureCannotUndoReservation",
+      "result": "PASS"
+    },
+    {
+      "name": "persistedExpiryIsIdempotent",
+      "result": "PASS"
+    },
+    {
+      "name": "persistedExpiryIsIdempotent",
+      "result": "PASS"
+    },
+    {
+      "name": "persistedExpiryIsIdempotent",
+      "result": "PASS"
+    },
+    {
+      "name": "competitorFailureRollsBackFlushedWinnerAndAudit",
+      "result": "PASS"
+    },
+    {
+      "name": "actorBoundaryAndExplicitAdminDelegation(String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "actorBoundaryAndExplicitAdminDelegation(String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "exact270MinutesAndHistoricalSnapshotsSurviveAcceptance(int)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "exact270MinutesAndHistoricalSnapshotsSurviveAcceptance(int)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "acceptanceRevalidatesCurrentConditions(String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "acceptanceRevalidatesCurrentConditions(String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "acceptanceRevalidatesCurrentConditions(String)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[4]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[5]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[6]",
+      "result": "PASS"
+    },
+    {
+      "name": "declineRejectsEveryNonRequestStateWithoutEffects(BookingStatus)[7]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[4]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[5]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[6]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[7]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[8]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[9]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[10]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[11]",
+      "result": "PASS"
+    },
+    {
+      "name": "rejectedCreationHasNoRowsEventsOrProviderEffects(String)[12]",
+      "result": "PASS"
+    },
+    {
+      "name": "ordinaryReadListsAreScopedAndDetailsDoNotSerializeUserSecrets",
+      "result": "PASS"
+    },
+    {
+      "name": "exactResponseDeadlineCommitsExpiryBeforeConflict(long)[1]",
+      "result": "PASS"
+    },
+    {
+      "name": "exactResponseDeadlineCommitsExpiryBeforeConflict(long)[2]",
+      "result": "PASS"
+    },
+    {
+      "name": "exactResponseDeadlineCommitsExpiryBeforeConflict(long)[3]",
+      "result": "PASS"
+    },
+    {
+      "name": "policyReplacementAndLiveEmailsDoNotRewriteBookingHistory",
+      "result": "PASS"
+    },
+    {
+      "name": "halfOpenCompetitorsOnlyBecomeUnavailable",
+      "result": "PASS"
+    }
+  ]
+}

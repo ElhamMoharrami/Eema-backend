@@ -1,0 +1,79 @@
+{
+  "date": "2026-09-14",
+  "checks": [
+    {
+      "name": "backend-unit",
+      "command": "mvn test",
+      "result": "PASS",
+      "summary": "Tests run: 680, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    {
+      "name": "postgres",
+      "command": "mvn verify -Ppostgres-integration",
+      "result": "PASS",
+      "summary": "Tests run: 416, Failures: 0, Errors: 0, Skipped: 2"
+    },
+    {
+      "name": "browser-final",
+      "command": "mvn verify -Ppostgres-integration -Dit.test=BookingBrowserIntegrationTest -Deema.booking.browser=true",
+      "result": "PASS",
+      "summary": "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    {
+      "name": "backend-package",
+      "command": "mvn clean package",
+      "result": "PASS",
+      "summary": "Tests run: 680, Failures: 0, Errors: 0, Skipped: 0"
+    },
+    {
+      "name": "frontend-typecheck",
+      "result": "PASS",
+      "evidence": "Command completed successfully; tsc --noEmit completed"
+    },
+    {
+      "name": "frontend-lint",
+      "result": "PASS",
+      "evidence": "Command completed successfully; No ESLint warnings or errors"
+    },
+    {
+      "name": "frontend-build",
+      "result": "PASS",
+      "evidence": "Command completed successfully; production build completed"
+    },
+    {
+      "name": "booking-focused-final",
+      "result": "PASS",
+      "summary": "37 tests, 0 failures/errors; see booking-core-cases.json"
+    },
+    {
+      "name": "master-plan-pdf",
+      "result": "PASS",
+      "pages": 656,
+      "bkPages": [
+        64,
+        65,
+        66,
+        67
+      ],
+      "sha256": "9cafce8b3c26718aaf24b671137882b0a4ebd877b1dce893386aa5a61028875d"
+    },
+    {
+      "name": "backend-and-frontend-diff-check",
+      "result": "PASS"
+    },
+    {
+      "name": "evidence-sanitization-and-disposable-browser-cleanup",
+      "result": "PASS"
+    }
+  ],
+  "note": "Focused combined run had a frontend startup timing failure after all37 core cases passed; final browser-only rerun passed. Historical failures are not hidden.",
+  "historicalAttempts": [
+    {
+      "name": "booking-focused",
+      "command": "mvn verify -Ppostgres-integration -Dit.test=BookingCoreIntegrationTest,BookingBrowserIntegrationTest -Deema.booking.browser=true",
+      "result": "FAIL",
+      "summary": "Tests run: 38, Failures: 1, Errors: 0, Skipped: 0"
+    }
+  ],
+  "result": "PASS"
+}

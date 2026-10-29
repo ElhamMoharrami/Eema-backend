@@ -1,0 +1,15 @@
+{
+  "defect": "VEN-D01",
+  "severity": "P1",
+  "database": "PostgreSQL 16",
+  "result": "REPRODUCED",
+  "action": "PUT nonempty permittedActivities while preparing production-ready draft",
+  "expected": "200, native production_activity[] names persisted",
+  "actual": "500; Hibernate binds smallint[] to production_activity[]",
+  "occurrences": 2,
+  "matchingReproduction": {
+    "expected": "deterministic permitted/prohibited activity SQL filter",
+    "actual": "Hibernate enum QueryLiteral assertion; using string with generic array_contains also rejects inferred type",
+    "resolutionUnderValidation": "native PostgreSQL containment pattern with explicitly cast production_activity[] literal"
+  }
+}

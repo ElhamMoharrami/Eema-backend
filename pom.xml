@@ -65,6 +65,13 @@
             <version>1.84</version>
         </dependency>
 
+        <!-- Pure-Java WebP ImageIO reader; preserve supported WebP while validating decoded content. -->
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-webp</artifactId>
+            <version>3.15.0</version>
+        </dependency>
+
         <!-- PostgreSQL Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>

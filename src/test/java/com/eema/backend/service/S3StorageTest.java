@@ -19,7 +19,7 @@ class S3StorageTest {
 
     @Test void publicUploadUsesConfiguredPublicBucketAndGeneratedKey() {
         S3PublicMediaStorage storage = new S3PublicMediaStorage(client, properties(), "venue-media", "media/");
-        String reference = storage.store(new MockMultipartFile("file", "../../photo.jpg", "image/jpeg", new byte[]{1, 2}));
+        String reference = storage.store(new MockMultipartFile("file", "../../photo.jpg", "image/jpeg", com.eema.backend.support.MediaFixtures.bytes("qa.jpg")));
         assertThat(reference).matches("/api/upload/files/[0-9a-f-]{36}\\.jpg");
         verify(client).putObject(org.mockito.ArgumentMatchers.argThat((PutObjectRequest request) ->
                 request.bucket().equals("venue-media") && request.key().matches("media/[0-9a-f-]{36}\\.jpg")), any(software.amazon.awssdk.core.sync.RequestBody.class));
@@ -37,7 +37,7 @@ class S3StorageTest {
     }
 
     private static AppProperties properties() {
-        return new AppProperties(null, new AppProperties.StorageProperties("s3", "/tmp/unused", "/api/upload/files/", 10),
+        return new AppProperties(null, new AppProperties.StorageProperties("s3", "/tmp/unused", "/api/upload/files/", 5242880),
                 new AppProperties.CorsProperties(List.of("https://app.example")), null, null, null, null, null, null);
     }
 }

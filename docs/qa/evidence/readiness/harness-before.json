@@ -1,0 +1,11 @@
+{
+  "result": "REPRODUCED",
+  "id": "READY-H01",
+  "scope": "test harness",
+  "test": "VenueDomainIntegrationTest.suspensionVersusRequestAcceptanceSerializesCommitmentBoundary",
+  "actual": "Mockito InvocationContainerImpl.setMethodForStubbing AssertionError while installing repository race stub; suppressed UnfinishedStubbingException",
+  "cause": "shared repository spy may receive asynchronous notification reads while doAnswer stubbing is being configured",
+  "readinessParameterizedResult": "10 readiness invocations passed in this run",
+  "resolution": "test-only repository interceptor with atomically armed barrier; no production locking changes",
+  "severity": "P2 \u2014 test reliability, no production readiness failure"
+}

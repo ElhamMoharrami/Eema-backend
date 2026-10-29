@@ -1,0 +1,55 @@
+{
+  "result": "PASS",
+  "keys": 12,
+  "labels": [
+    {
+      "key": "maxCrewSize",
+      "label": "Crew capacity"
+    },
+    {
+      "key": "permittedActivities",
+      "label": "Permitted production activities"
+    },
+    {
+      "key": "productionRules",
+      "label": "Production rules"
+    },
+    {
+      "key": "naturalLight",
+      "label": "Natural-light information"
+    },
+    {
+      "key": "loadingAccess",
+      "label": "Loading-access information"
+    },
+    {
+      "key": "bathroomsAvailable",
+      "label": "Bathroom information"
+    },
+    {
+      "key": "soundRecordingSuitable",
+      "label": "Sound-recording suitability"
+    },
+    {
+      "key": "hourlyRateEur",
+      "label": "Pricing"
+    },
+    {
+      "key": "minimumBookingMinutes",
+      "label": "Minimum booking duration"
+    },
+    {
+      "key": "minimumLeadTimeMinutes",
+      "label": "Minimum lead time"
+    },
+    {
+      "key": "timezone",
+      "label": "Timezone"
+    },
+    {
+      "key": "photoPaths",
+      "label": "Listing photos"
+    }
+  ],
+  "contract": "Both views explain the exact Spring key set; no local completeness calculation"
+}

@@ -1,0 +1,7 @@
+{
+  "result": "REPRODUCED",
+  "defect": "INQ-D01",
+  "test": "AvailabilityInquiryServiceTest.suspendedVenueCannotReceiveNewOffer",
+  "expected": "ConflictException, unchanged OPEN",
+  "actual": "No exception; offer allowed on SUSPENDED"
+}

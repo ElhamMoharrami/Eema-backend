@@ -1,0 +1,9 @@
+{
+  "result": "REPRODUCED",
+  "browserTimezone": "Pacific/Kiritimati",
+  "venueTimezone": "Europe/Amsterdam",
+  "instant": "2026-10-24T21:30:00Z",
+  "actualToday": "2026-10-25",
+  "expectedToday": "2026-10-24",
+  "impact": "Valid venue-local date disabled when browser is a day ahead"
+}

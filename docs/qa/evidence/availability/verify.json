@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "command": "mvn verify -Ppostgres-integration",
+  "counts": {
+    "surefire": {
+      "tests": 375,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failsafe": {
+      "tests": 239,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "availabilityInvocations": 26,
+  "venueDomainTotal": 154,
+  "unitCommand": "mvn test run separately; postgres profile skips unit execution"
+}

@@ -66,12 +66,21 @@ public class VenueAvailabilityService {
     }
 
     private List<Interval> applyLeadTime(List<Interval> intervals, Venue venue, LocalDate date) {
-        ZonedDateTime threshold = leadTimePolicy.earliestStart(venue).atZone(ZoneId.of(venue.getTimezone()));
+        ZoneId zone = ZoneId.of(venue.getTimezone());
+        Instant earliestInstant = leadTimePolicy.earliestStart(venue);
+        Instant rounded = earliestInstant.truncatedTo(ChronoUnit.MINUTES);
+        if (rounded.isBefore(earliestInstant)) rounded = rounded.plus(1, ChronoUnit.MINUTES);
+        ZonedDateTime threshold = rounded.atZone(zone);
+        // Requests resolve an ambiguous local time to its earlier offset. The second occurrence
+        // therefore cannot be selected: move beyond the overlap, without inventing offset input.
+        if (threshold.withEarlierOffsetAtOverlap().toInstant().isBefore(rounded)) {
+            threshold = zone.getRules().getTransition(threshold.toLocalDateTime())
+                    .getDateTimeBefore().atZone(zone);
+        }
+        // Compare dates after rounding so 23:59:xx cannot wrap to 00:00 on the same day.
         if (date.isBefore(threshold.toLocalDate())) return List.of();
         if (date.isAfter(threshold.toLocalDate())) return intervals;
-        LocalTime earliest = threshold.toLocalTime().truncatedTo(ChronoUnit.MINUTES);
-        if (threshold.getSecond() != 0 || threshold.getNano() != 0) earliest = earliest.plusMinutes(1);
-        LocalTime clip = earliest;
+        LocalTime clip = threshold.toLocalTime();
         return intervals.stream().filter(interval -> interval.end().isAfter(clip))
                 .map(interval -> new Interval(interval.start().isBefore(clip) ? clip : interval.start(), interval.end()))
                 .toList();

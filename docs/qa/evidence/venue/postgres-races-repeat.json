@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "command": "mvn verify -Ppostgres-integration -Dit.test=VenueDomainIntegrationTest#concurrentAdminReviewsHaveOneAuthoritativeWinner+criticalEditVersusApprovalHasCoherentSerialization+suspensionVersusRequestAcceptanceSerializesCommitmentBoundary",
+  "totals": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "synchronization": "CyclicBarrier before real PostgreSQL row locking; three repetitions per group"
+}

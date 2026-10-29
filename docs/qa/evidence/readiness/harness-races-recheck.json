@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "tests": 9,
+  "failures": 0,
+  "errors": 0,
+  "description": "Nine PostgreSQL race repetitions pass with test-only real-repository interceptor; full rerun additionally asserts both transactions reach barrier"
+}

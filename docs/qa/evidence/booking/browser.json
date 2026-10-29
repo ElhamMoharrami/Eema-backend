@@ -1,0 +1,260 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "Decline request: 409 refetch, terminal state, retained safe error",
+      "result": "PASS"
+    },
+    {
+      "name": "Accept request: 409 refetch, terminal state, retained safe error",
+      "result": "PASS"
+    },
+    {
+      "name": "Lead-time expiry before response deadline uses accurate request-expiry wording",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT actual calendar request, 270 minutes, response deadline, non-reservation copy and reload",
+      "result": "PASS"
+    },
+    {
+      "name": "Owner queue prioritizes REQUESTED by authoritative response deadline",
+      "result": "PASS"
+    },
+    {
+      "name": "OWNER accepts winner, overlapping request becomes unavailable, adjacent request stays actionable then declines",
+      "result": "PASS"
+    },
+    {
+      "name": "SCOUT authoritative AWAITING_PAYMENT and payment deadline; no checkout/provider call",
+      "result": "PASS"
+    }
+  ],
+  "network": [
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9/decline",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9/decline",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/bookings/f3ab945d-9c7e-4785-a845-4df6e2623cd9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e/accept",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e/accept",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/bookings/1f515fee-2b32-4019-b0b0-13eaab3f725e",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/fd9a1b5e-3678-43c4-9234-75f9d3e8cfd0",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/fd9a1b5e-3678-43c4-9234-75f9d3e8cfd0",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/fd9a1b5e-3678-43c4-9234-75f9d3e8cfd0/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/fd9a1b5e-3678-43c4-9234-75f9d3e8cfd0/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/accept",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/accept",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/8ae47faa-9cd6-4df0-b3ef-1279c5bf0141",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/8ae47faa-9cd6-4df0-b3ef-1279c5bf0141",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/8ae47faa-9cd6-4df0-b3ef-1279c5bf0141/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/8ae47faa-9cd6-4df0-b3ef-1279c5bf0141/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d/incidents",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d/decline",
+      "method": "OPTIONS",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d/decline",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/598aaa00-bf8c-45dd-af0b-3c648708016d",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/bookings/1c6dd5d8-1f32-4cbb-b3cd-d04aef12bcb7/incidents",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

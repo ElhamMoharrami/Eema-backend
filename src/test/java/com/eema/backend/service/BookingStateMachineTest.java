@@ -2,33 +2,27 @@ package com.eema.backend.service;
 
 import com.eema.backend.entity.enums.BookingStatus;
 import com.eema.backend.exception.ConflictException;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+import java.util.*;
+import java.util.stream.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BookingStateMachineTest {
     private final BookingStateMachine machine = new BookingStateMachine();
-
-    @Test
-    void permitsDefinedTransitions() {
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.AWAITING_PAYMENT));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.DECLINED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.EXPIRED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.UNAVAILABLE));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.AWAITING_PAYMENT, BookingStatus.CONFIRMED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.AWAITING_PAYMENT, BookingStatus.EXPIRED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.CONFIRMED, BookingStatus.REFUNDED));
-        assertDoesNotThrow(() -> machine.requireTransition(BookingStatus.CONFIRMED, BookingStatus.CANCELLED));
+    static Stream<Arguments> transitions() {
+        return Arrays.stream(BookingStatus.values()).flatMap(from -> Arrays.stream(BookingStatus.values()).map(to -> Arguments.of(from,to)));
     }
-
-    @Test
-    void rejectsUserSkippingPaymentAndTerminalMutations() {
-        assertThrows(ConflictException.class,
-                () -> machine.requireTransition(BookingStatus.REQUESTED, BookingStatus.CONFIRMED));
-        assertThrows(ConflictException.class,
-                () -> machine.requireTransition(BookingStatus.CANCELLED, BookingStatus.CONFIRMED));
-        assertThrows(ConflictException.class,
-                () -> machine.requireTransition(BookingStatus.UNAVAILABLE, BookingStatus.AWAITING_PAYMENT));
+    @ParameterizedTest @MethodSource("transitions")
+    void completeTransitionContract(BookingStatus from, BookingStatus to) {
+        Set<BookingStatus> allowed = switch(from) {
+            case REQUESTED -> Set.of(BookingStatus.AWAITING_PAYMENT,BookingStatus.DECLINED,BookingStatus.EXPIRED,BookingStatus.UNAVAILABLE,BookingStatus.CANCELLED);
+            case AWAITING_PAYMENT -> Set.of(BookingStatus.CONFIRMED,BookingStatus.EXPIRED,BookingStatus.CANCELLED);
+            case CONFIRMED -> Set.of(BookingStatus.CANCELLED,BookingStatus.REFUNDED);
+            default -> Set.of();
+        };
+        if(allowed.contains(to)) assertDoesNotThrow(() -> machine.requireTransition(from,to));
+        else assertThrows(ConflictException.class,() -> machine.requireTransition(from,to));
     }
 }

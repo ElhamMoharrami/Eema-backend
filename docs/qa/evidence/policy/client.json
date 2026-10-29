@@ -1,0 +1,54 @@
+{
+  "result": "PASS",
+  "source": "Actual frontend client, auth and error-message modules; controlled transport",
+  "checks": [
+    {
+      "repeat": 0,
+      "variant": "policy",
+      "result": "PASS",
+      "mutations": 1,
+      "refresh": 0,
+      "policyStaleEvents": 1
+    },
+    {
+      "repeat": 0,
+      "variant": "ownership",
+      "result": "PASS",
+      "mutations": 1,
+      "refresh": 0,
+      "policyStaleEvents": 0
+    },
+    {
+      "repeat": 1,
+      "variant": "policy",
+      "result": "PASS",
+      "mutations": 1,
+      "refresh": 0,
+      "policyStaleEvents": 1
+    },
+    {
+      "repeat": 1,
+      "variant": "ownership",
+      "result": "PASS",
+      "mutations": 1,
+      "refresh": 0,
+      "policyStaleEvents": 0
+    },
+    {
+      "repeat": 2,
+      "variant": "policy",
+      "result": "PASS",
+      "mutations": 1,
+      "refresh": 0,
+      "policyStaleEvents": 1
+    },
+    {
+      "repeat": 2,
+      "variant": "ownership",
+      "result": "PASS",
+      "mutations": 1,
+      "refresh": 0,
+      "policyStaleEvents": 0
+    }
+  ]
+}

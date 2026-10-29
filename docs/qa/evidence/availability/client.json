@@ -1,0 +1,5 @@
+{
+  "result": "PASS",
+  "checks": 20,
+  "contract": "Venue-zone dates independent of browser timezone; calendar month arithmetic only, no client inventory calculation"
+}

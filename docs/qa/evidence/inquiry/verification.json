@@ -1,0 +1,55 @@
+{
+  "unit": {
+    "total": 681,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "fullPostgres": {
+    "total": 509,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3
+  },
+  "finalFocusedPostgresAndBrowser": {
+    "total": 95,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "inquiryPostgresCases": 94,
+  "browserChecks": 12,
+  "realEmailProvider": "NOT_RUN_STAGING",
+  "realPaymentProvider": "OUT_OF_SCOPE",
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  },
+  "diffChecks": {
+    "backend": "PASS",
+    "frontend": "PASS"
+  },
+  "cleanPackage": {
+    "total": 681,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios": {
+    "PASS": 4,
+    "FAIL": 0,
+    "BLOCKED": 0
+  },
+  "defectsFixed": {
+    "P1": 2,
+    "P2": 3
+  },
+  "fullProfileTiming": "Before final lock-wait expiry recheck; final focused suite reran all inquiry cases on final implementation.",
+  "finalBrowserRerun": {
+    "total": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

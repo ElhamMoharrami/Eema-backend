@@ -1,0 +1,53 @@
+{
+  "result": "PASS",
+  "scenarios": {
+    "pass": 15,
+    "fail": 0,
+    "locallyBlocked": 0
+  },
+  "defects": {
+    "found": 4,
+    "fixed": 4,
+    "P1": 3,
+    "P2": 1
+  },
+  "backend": {
+    "mvn test": {
+      "pass": 375
+    },
+    "mvn verify -Ppostgres-integration": {
+      "pass": 239,
+      "availability": 26
+    },
+    "final distinct-scout race": {
+      "pass": 3
+    },
+    "mvn clean package": {
+      "result": "PASS",
+      "tests": 375
+    },
+    "git diff --check": "PASS"
+  },
+  "frontend": {
+    "npm run typecheck": "PASS",
+    "npm run lint": "PASS",
+    "npm run build": "PASS",
+    "git diff --check": "PASS",
+    "clientChecks": 20,
+    "browserGroups": 7
+  },
+  "pdf": {
+    "result": "PASS",
+    "pages": 677,
+    "availabilityPages": [
+      53,
+      54,
+      55,
+      56
+    ],
+    "visualInspectionPage": 54,
+    "sha256": "038b0ae40ddbfb11a54761a3a6fb9ed94c5032800e3f973059f6ebb46510e749"
+  },
+  "evidenceSanitization": "JSON parsed and checked for credential/token patterns; screenshots use fictional QA identities",
+  "limitations": "Product and staging decisions remain separate from local pass; counts overlap across verification commands."
+}

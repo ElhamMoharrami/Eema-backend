@@ -1,0 +1,9 @@
+{
+  "result":"REPRODUCED",
+  "defects":[
+    {"id":"MEDIA-D01","severity":"P1","expected":"fake JPEG rejected before durable write","actual":"local and mocked S3 store accepted text bytes; standalone controller returned HTTP 200"},
+    {"id":"MEDIA-D02","severity":"P2","expected":"missing public media 404","actual":"local missing UUID returned HTTP 500"},
+    {"id":"MEDIA-D03","severity":"P2","expected":"malformed multipart missing file is 400","actual":"standalone controller returned HTTP 500"}
+  ],
+  "reproduction":"MediaStorageContractTest before production changes; real local storage and controller, S3 client mocked"
+}

@@ -1,0 +1,5 @@
+{
+  "result": "PASS",
+  "checks": 7,
+  "scope": "Three authenticated roles can search unverified; three unrelated mutation guards retained; anonymous client denied"
+}

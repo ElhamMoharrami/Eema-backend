@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "pages": 659,
+  "matchingPages": [
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64
+  ],
+  "visuallyInspectedPage": 64,
+  "sha256": "5c3346557ee3527d40c291208f2f44e6bf5710ee5e3e3a080fe53c29dba72bf4"
+}
