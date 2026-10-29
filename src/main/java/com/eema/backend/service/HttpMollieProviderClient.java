@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,12 +23,14 @@ public class HttpMollieProviderClient implements MollieProviderClient {
 
     @Override
     public MolliePaymentResponse createPayment(UUID bookingId, BigDecimal amount, UUID key) {
-        Map<String, Object> body = Map.of(
-                "amount", amount(amount),
-                "description", "Eema booking #" + bookingId,
-                "redirectUrl", required(properties.mollie().redirectUrl(), "Mollie redirect URL"),
-                "webhookUrl", required(properties.mollie().webhookUrl(), "Mollie webhook URL"),
-                "metadata", Map.of("bookingId", bookingId.toString()));
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("amount", amount(amount));
+        body.put("description", "Eema booking #" + bookingId);
+        body.put("redirectUrl", required(properties.mollie().redirectUrl(), "Mollie redirect URL"));
+        if (properties.mollie().webhookUrl() != null && !properties.mollie().webhookUrl().isBlank()) {
+            body.put("webhookUrl", properties.mollie().webhookUrl());
+        }
+        body.put("metadata", Map.of("bookingId", bookingId.toString()));
         return exchange(API + "/payments", HttpMethod.POST, body, key, MolliePaymentResponse.class);
     }
 

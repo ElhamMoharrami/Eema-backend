@@ -1,4 +1,4 @@
-# Example local configuration. Copy to application-local.yml and fill in the values.
+# Local development profile. Docker Compose overrides the datasource URL with Docker DNS.
 spring:
   application:
     name: eema-backend
@@ -36,11 +36,10 @@ app:
     access-token-expiry-minutes: 15
     refresh-token-expiry-days: 7
   storage:
-    upload-dir: ./uploads
+    upload-dir: ${UPLOAD_DIR:./uploads}
   cors:
-    allowed-origins: http://localhost:3000
-  admin:
-    email-allowlist: admin@example.com
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  admin-email-allowlist: ${ADMIN_EMAIL_ALLOWLIST:}
   mollie:
     api-key: ${MOLLIE_API_KEY:}
     redirect-url: ${MOLLIE_REDIRECT_URL:http://localhost:3000/booked}
@@ -48,10 +47,8 @@ app:
   gemini:
     api-key: ${GEMINI_API_KEY:}
   resend:
-    api-key: your-resend-api-key
-    from-email: bookings@eema.co
-  sentry:
-    dsn: your-sentry-dsn
+    api-key: ${RESEND_API_KEY:}
+    from-email: ${RESEND_FROM_EMAIL:bookings@eema.local}
   commission:
     percentage: 4.00  # Commission percentage (e.g., 4.00 for 4%)
 

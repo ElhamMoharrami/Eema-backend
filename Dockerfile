@@ -4,13 +4,10 @@ FROM maven:3.9.11-eclipse-temurin-21 AS build
 WORKDIR /app
 
 COPY pom.xml .
-
-# Download dependencies first
-RUN mvn dependency:go-offline
-
 COPY src ./src
 
-RUN mvn clean package
+# Tests run in CI and via `mvn test`; image assembly avoids rerunning them on every local startup.
+RUN --mount=type=cache,target=/root/.m2 mvn -Dmaven.test.skip=true clean package
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre-alpine
