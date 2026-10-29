@@ -49,7 +49,7 @@ class HttpMollieProviderClientTest {
         AppProperties properties = new AppProperties(null, null, null,
                 new AppProperties.MollieProperties("test_key", "http://localhost:3000/booked",
                         webhookUrl, null, false, 3_600_000, 60_000),
-                null, null, null, null);
+                null, null, null, null, null);
         HttpMollieProviderClient client = new HttpMollieProviderClient(restTemplate, properties);
 
         client.createPayment(UUID.randomUUID(), new BigDecimal("42.00"), UUID.randomUUID());

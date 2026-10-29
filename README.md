@@ -96,6 +96,21 @@ Restart the backend before creating the payment. No tunnel provider or tunnel so
 
 Fee reconciliation additionally requires `MOLLIE_REPORTING_ACCESS_TOKEN` and `MOLLIE_FEE_RECONCILIATION_ENABLED=true`.
 
+### Transactional booking email
+
+Payment-received email is triggered only after the authoritative Mollie webhook causes a committed `PENDING` to `PAID` transition. It is disabled locally by default. To test with Resend, set:
+
+```dotenv
+EMAIL_NOTIFICATIONS_ENABLED=true
+RESEND_API_KEY=re_your_development_key
+RESEND_FROM_EMAIL=Eema Bookings <bookings@your-verified-domain.example>
+APP_FRONTEND_BASE_URL=http://localhost:3000
+```
+
+Restart the backend, create and pay a booking with a Resend-approved scout and owner snapshot address, then deliver the Mollie webhook as described above. Never commit the key. Production enables notifications by default and fails startup clearly when the Resend key or sender is absent. Set `EMAIL_NOTIFICATIONS_ENABLED=false` only for an intentional operational disable.
+
+Email links use `{APP_FRONTEND_BASE_URL}/bookings/{bookingId}`. The frontend must provide that booking-detail route; this backend task does not add it.
+
 ### Logs, stop, and common checks
 
 ```bash

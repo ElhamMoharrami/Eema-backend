@@ -19,6 +19,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.context.ApplicationEventPublisher;
+import com.eema.backend.event.BookingPaidEvent;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -30,6 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BookingServiceTest {
@@ -38,10 +42,11 @@ class BookingServiceTest {
     @Mock UserRepository userRepository;
     @Mock BookingEventRepository bookingEventRepository;
     AppProperties appProperties = new AppProperties(null, null, null, null, null, null,
-            new AppProperties.CommissionProperties(new BigDecimal("20.00")), null);
+            new AppProperties.CommissionProperties(new BigDecimal("20.00")), null, null);
     @Mock CurrentUserService currentUserService;
     @Spy BookingStateMachine stateMachine = new BookingStateMachine();
     @Spy BookingFinancials financials = new BookingFinancials();
+    @Mock ApplicationEventPublisher eventPublisher;
     BookingService service;
 
     private UUID bookingId;
@@ -51,7 +56,7 @@ class BookingServiceTest {
     @BeforeEach
     void setUp() {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
-                appProperties, currentUserService, stateMachine, financials);
+                appProperties, currentUserService, stateMachine, financials, eventPublisher);
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()
@@ -95,6 +100,16 @@ class BookingServiceTest {
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
         service.processPaidPayment(paidPayment("tr_expected", "100.00"));
         verifyNoInteractions(bookingEventRepository);
+        verifyNoInteractions(eventPublisher);
+    }
+
+    @Test
+    void firstPaidTransitionPublishesNotificationOnceAndDuplicateDoesNot() {
+        when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
+        service.processPaidPayment(paidPayment("tr_expected", "100.00"));
+        service.processPaidPayment(paidPayment("tr_expected", "100.00"));
+        assertEquals(BookingStatus.PAID, booking.getStatus());
+        verify(eventPublisher, times(1)).publishEvent(new BookingPaidEvent(bookingId));
     }
 
     @Test

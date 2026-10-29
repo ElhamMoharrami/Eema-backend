@@ -47,8 +47,10 @@ app:
   gemini:
     api-key: ${GEMINI_API_KEY:}
   resend:
+    enabled: ${EMAIL_NOTIFICATIONS_ENABLED:false}
     api-key: ${RESEND_API_KEY:}
     from-email: ${RESEND_FROM_EMAIL:bookings@eema.local}
+  frontend-base-url: ${APP_FRONTEND_BASE_URL:http://localhost:3000}
   commission:
     percentage: 4.00  # Commission percentage (e.g., 4.00 for 4%)
 

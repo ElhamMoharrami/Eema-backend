@@ -29,7 +29,7 @@ class AuthServiceTest {
     private final PasswordEncoder passwords = mock(PasswordEncoder.class);
     private final JwtService jwt = mock(JwtService.class);
     private final AppProperties properties = new AppProperties(
-            new AppProperties.JwtProperties("unused", 15, 7), null, null, null, null, null, null, null);
+            new AppProperties.JwtProperties("unused", 15, 7), null, null, null, null, null, null, null, null);
     private final AuthService service = new AuthService(users, tokens, passwords, jwt, new UserMapper(), properties);
 
     @Test

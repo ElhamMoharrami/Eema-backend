@@ -21,7 +21,7 @@ class MollieFeeReconciliationJobTest {
         BookingService service = mock(BookingService.class);
         AppProperties properties = new AppProperties(null, null, null,
                 new AppProperties.MollieProperties(null, null, null, "token", true, 1000, 1000),
-                null, null, null, null);
+                null, null, null, null, null);
         Booking booking = Booking.builder().id(UUID.randomUUID()).molliePaymentId("tr_1").build();
         when(repository.findPendingFeeReconciliation(any())).thenReturn(List.of(booking), List.of());
         when(client.findAuthoritativePaymentFee("tr_1")).thenReturn(Optional.of(new BigDecimal("0.49")));

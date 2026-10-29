@@ -20,7 +20,7 @@ public record AppProperties(
         @Valid JwtProperties jwt, @Valid StorageProperties storage, @Valid CorsProperties cors,
         @Valid MollieProperties mollie, @Valid ResendProperties resend, @Valid CalendlyProperties calendly,
         @Valid CommissionProperties commission,
-
+        String frontendBaseUrl,
         String adminEmailAllowlist
 
 ) {
@@ -40,7 +40,7 @@ public record AppProperties(
                                    long feeReconciliationDelayMs, long feeReconciliationInitialDelayMs) {
     }
 
-    public record ResendProperties(String apiKey, String fromEmail) {
+    public record ResendProperties(boolean enabled, String apiKey, String fromEmail) {
     }
 
     public record CalendlyProperties(String baseUrl) {

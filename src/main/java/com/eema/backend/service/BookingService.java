@@ -23,6 +23,7 @@ import com.eema.backend.entity.enums.VenueStatus;
 import com.eema.backend.exception.ForbiddenException;
 import com.eema.backend.exception.ConflictException;
 import com.eema.backend.exception.NotFoundException;
+import com.eema.backend.event.BookingPaidEvent;
 
 import com.eema.backend.repository.BookingEventRepository;
 import com.eema.backend.repository.BookingRepository;
@@ -33,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -63,6 +65,7 @@ public class BookingService {
     private final CurrentUserService currentUserService;
     private final BookingStateMachine stateMachine;
     private final BookingFinancials financials;
+    private final ApplicationEventPublisher eventPublisher;
 
     // --------------------------------------------------
     // CREATE BOOKING
@@ -307,6 +310,8 @@ public class BookingService {
         payload.put("currency", payment.amount().currency());
 
         appendEvent(booking.getId(), BookingEventType.PAYMENT_SUCCEEDED, null, "Mollie", ActorType.WEBHOOK, payload);
+
+        eventPublisher.publishEvent(new BookingPaidEvent(booking.getId()));
 
         log.info("Booking marked PAID: bookingId={}, paymentId={}, commission={}, provisionalOwnerPayout={}", booking.getId(), payment.id(), commissionEur, ownerPayoutEur);
     }

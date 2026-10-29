@@ -22,7 +22,7 @@ class JwtServiceTest {
     void validatesSignatureExpiryAndExpectedIssuer() {
         AppProperties properties = new AppProperties(
                 new AppProperties.JwtProperties(Base64.getEncoder().encodeToString(KEY), 15, 7),
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null);
         JwtService service = new JwtService(properties);
         service.init();
         User user = User.builder().id(UUID.randomUUID()).email("scout@example.com").role(UserRole.SCOUT).build();
