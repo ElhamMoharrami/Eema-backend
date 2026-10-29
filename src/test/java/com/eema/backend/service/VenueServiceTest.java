@@ -29,6 +29,7 @@ class VenueServiceTest {
     private final UserRepository users = mock(UserRepository.class);
     private final CurrentUserService currentUser = mock(CurrentUserService.class);
     private final FileStorage storage = mock(FileStorage.class);
+    private final VenueModerationService moderation = mock(VenueModerationService.class);
     private final UUID venueId = UUID.randomUUID();
     private final User owner = User.builder().id(UUID.randomUUID()).email("owner@example.test").role(UserRole.OWNER).build();
     private Venue venue;
@@ -41,7 +42,7 @@ class VenueServiceTest {
                 null, null, null, null, null, null, null);
         VenueMapper mapper = new VenueMapper(new UserMapper());
         service = new VenueService(venues, users, mapper, currentUser, new VenueMediaPolicy(properties), storage,
-                new VenueProductionProfileValidator());
+                new VenueProductionProfileValidator(), moderation);
         venue = Venue.builder().id(venueId).owner(owner).name("Old Studio").neighbourhood("West")
                 .sizeM2(100).hourlyRateEur(new BigDecimal("100.00"))
                 .minimumBookingMinutes(240).fullDayRateEur(new BigDecimal("500.00")).tags(List.of("old"))

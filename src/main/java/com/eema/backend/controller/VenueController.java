@@ -7,6 +7,8 @@ import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.User;
 import com.eema.backend.repository.UserRepository;
 import com.eema.backend.service.VenueService;
+import com.eema.backend.service.VenueModerationService;
+import com.eema.backend.dto.response.VenueModerationDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ public class VenueController {
 
     private final VenueService venueService;
     private final UserRepository userRepository;
+    private final VenueModerationService moderationService;
 
     @GetMapping
     public ResponseEntity<List<VenueListDto>> getAllVenues(
@@ -93,4 +96,12 @@ public class VenueController {
         if (file.isEmpty()) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(venueService.uploadAndAttachPhoto(id, file));
     }
+
+    @PostMapping("/{id}/submit-for-review")
+    @PreAuthorize("hasRole('OWNER') and @verifiedUserPolicy.isVerified()")
+    public VenueModerationDto submitForReview(@PathVariable UUID id) { return moderationService.submit(id); }
+
+    @GetMapping("/{id}/moderation")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    public VenueModerationDto moderation(@PathVariable UUID id) { return moderationService.ownerDetail(id); }
 }

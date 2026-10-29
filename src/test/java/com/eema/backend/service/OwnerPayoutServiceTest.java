@@ -23,12 +23,14 @@ class OwnerPayoutServiceTest {
     private final BookingRepository bookings = mock(BookingRepository.class);
     private final VenueRepository venues = mock(VenueRepository.class);
     private final BookingEventRepository events = mock(BookingEventRepository.class);
+    private final OwnerPayoutDestinationRepository destinations = mock(OwnerPayoutDestinationRepository.class);
+    private final MarketplaceTrustAuditService trustAudit = mock(MarketplaceTrustAuditService.class);
     private final UUID bookingId = UUID.randomUUID();
     private final UUID venueId = UUID.randomUUID();
     private final UUID ownerId = UUID.randomUUID();
     private final AtomicReference<OwnerPayout> stored = new AtomicReference<>();
     private final OwnerPayoutService service = new OwnerPayoutService(
-            payouts, liabilities, bookings, venues, events, new BookingFinancials());
+            payouts, liabilities, bookings, venues, events, new BookingFinancials(), destinations, trustAudit);
     private Booking booking;
 
     @BeforeEach
@@ -50,6 +52,17 @@ class OwnerPayoutServiceTest {
             return value;
         });
         when(liabilities.findByBookingIdAndType(any(), any())).thenReturn(Optional.empty());
+        when(destinations.findByOwnerIdAndStatus(ownerId, PayoutDestinationStatus.VERIFIED)).thenReturn(Optional.of(
+                OwnerPayoutDestination.builder().id(UUID.randomUUID()).ownerId(ownerId).status(PayoutDestinationStatus.VERIFIED).ibanLast4("4300").build()));
+    }
+
+    @Test
+    void otherwiseEligiblePayoutWaitsForVerifiedDestination() {
+        when(destinations.findByOwnerIdAndStatus(ownerId, PayoutDestinationStatus.VERIFIED)).thenReturn(Optional.empty());
+        OwnerPayout payout = service.recalculateForBooking(bookingId);
+        assertThat(payout.getStatus()).isEqualTo(OwnerPayoutStatus.HELD);
+        assertThat(payout.getHoldReason()).isEqualTo(OwnerPayoutHoldReason.WAITING_FOR_PAYOUT_DESTINATION);
+        assertThat(payout.getPayoutDestination()).isNull();
     }
 
     @Test

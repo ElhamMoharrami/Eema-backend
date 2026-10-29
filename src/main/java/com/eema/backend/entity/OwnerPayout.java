@@ -43,6 +43,9 @@ public class OwnerPayout {
     @Column(name = "paid_at") private OffsetDateTime paidAt;
     @Column(name = "external_transfer_reference", length = 200)
     private String externalTransferReference;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payout_destination_id")
+    private OwnerPayoutDestination payoutDestination;
     @CreationTimestamp @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
     @UpdateTimestamp @Column(name = "updated_at", nullable = false)

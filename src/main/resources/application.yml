@@ -55,6 +55,10 @@ logging:
     org.apache.http.wire: WARN
 
 app:
+  payout-destination:
+    enabled: ${PAYOUT_DESTINATIONS_ENABLED:true}
+    encryption-key: ${PAYOUT_DATA_ENCRYPTION_KEY:MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=}
+    fingerprint-key: ${PAYOUT_DATA_FINGERPRINT_KEY:ZmVkY2JhOTg3NjU0MzIxMGZlZGNiYTk4NzY1NDMyMTA=}
   auth-recovery:
     email-verification-token-hours: ${EMAIL_VERIFICATION_TOKEN_HOURS:24}
     password-reset-token-minutes: ${PASSWORD_RESET_TOKEN_MINUTES:60}

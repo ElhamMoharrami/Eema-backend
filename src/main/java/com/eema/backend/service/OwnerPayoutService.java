@@ -27,6 +27,8 @@ public class OwnerPayoutService {
     private final VenueRepository venues;
     private final BookingEventRepository events;
     private final BookingFinancials financials;
+    private final OwnerPayoutDestinationRepository destinations;
+    private final MarketplaceTrustAuditService trustAudit;
 
     @Transactional
     public OwnerPayout recalculateForBooking(UUID bookingId) {
@@ -85,6 +87,9 @@ public class OwnerPayoutService {
             throw new ConflictException("Payout was already marked paid with a different reference");
         }
         if (payout.getStatus() != OwnerPayoutStatus.READY) throw new ConflictException("Only READY payouts can be marked paid");
+        if (payout.getPayoutDestination() == null || (payout.getPayoutDestination().getStatus() != PayoutDestinationStatus.VERIFIED
+                && payout.getPayoutDestination().getStatus() != PayoutDestinationStatus.REPLACED))
+            throw new ConflictException("Payout has no historically valid verified destination");
         payout.setStatus(OwnerPayoutStatus.PAID);
         payout.setPaidAt(OffsetDateTime.now());
         payout.setExternalTransferReference(normalized);
@@ -124,12 +129,22 @@ public class OwnerPayoutService {
         payout.setPayoutAmountEur(economics.payout());
         payout.setEligibleAt(eligibleAt);
 
-        State state = state(booking, economics.payout(), eligibleAt, now);
+        OwnerPayoutDestination currentDestination = destinations.findByOwnerIdAndStatus(ownerId, PayoutDestinationStatus.VERIFIED).orElse(null);
+        OwnerPayoutDestination intendedDestination = payout.getPayoutDestination() == null ? currentDestination : payout.getPayoutDestination();
+        State state = state(booking, economics.payout(), eligibleAt, now, intendedDestination != null);
+        boolean snapshotDestination = state.status() == OwnerPayoutStatus.READY
+                && previous != OwnerPayoutStatus.READY && payout.getPayoutDestination() == null;
         payout.setStatus(state.status());
         payout.setHoldReason(state.holdReason());
-        if (state.status() == OwnerPayoutStatus.READY && previous != OwnerPayoutStatus.READY) payout.setReadyAt(now);
+        if (state.status() == OwnerPayoutStatus.READY && previous != OwnerPayoutStatus.READY) {
+            payout.setReadyAt(now);
+            if (payout.getPayoutDestination() == null) payout.setPayoutDestination(currentDestination);
+        }
         if (state.status() != OwnerPayoutStatus.READY) payout.setReadyAt(null);
         payout = payouts.save(payout);
+        if (snapshotDestination)
+            trustAudit.append(TrustSubjectType.PAYOUT_DESTINATION, payout.getPayoutDestination().getId(),
+                    TrustEventType.PAYOUT_DESTINATION_SNAPSHOTTED, null, ActorType.SYSTEM, "Owner payout destination snapshotted");
 
         if (previous == null) append(booking.getId(), BookingEventType.PAYOUT_CALCULATED, null, "SYSTEM", ActorType.SYSTEM,
                 Map.of("payoutId", payout.getId(), "amountEur", payout.getPayoutAmountEur()));
@@ -163,7 +178,7 @@ public class OwnerPayoutService {
         return new Economics(gross, commission, provider, financials.money(amount));
     }
 
-    private State state(Booking b, BigDecimal amount, OffsetDateTime eligibleAt, OffsetDateTime now) {
+    private State state(Booking b, BigDecimal amount, OffsetDateTime eligibleAt, OffsetDateTime now, boolean hasVerifiedDestination) {
         if (amount.signum() == 0 || b.getStatus() == BookingStatus.REFUNDED || b.getLatePaymentDetectedAt() != null)
             return new State(OwnerPayoutStatus.CANCELLED, null);
         if (ACTIVE_REFUNDS.contains(b.getRefundStatus()))
@@ -172,7 +187,15 @@ public class OwnerPayoutService {
             return new State(OwnerPayoutStatus.HELD, OwnerPayoutHoldReason.WAITING_FOR_PROVIDER_COST);
         if (now.isBefore(eligibleAt))
             return new State(OwnerPayoutStatus.CALCULATED, OwnerPayoutHoldReason.WAITING_FOR_BOOKING_END);
+        if (!hasVerifiedDestination)
+            return new State(OwnerPayoutStatus.HELD, OwnerPayoutHoldReason.WAITING_FOR_PAYOUT_DESTINATION);
         return new State(OwnerPayoutStatus.READY, null);
+    }
+
+    @Transactional
+    public void reconcileHeldForOwner(UUID ownerId) {
+        for (OwnerPayout payout : payouts.findByOwnerIdAndStatus(ownerId, OwnerPayoutStatus.HELD))
+            evaluateReadiness(payout.getId());
     }
 
     private void createLiability(UUID ownerId, UUID bookingId, OwnerFinancialLiabilityType type,
@@ -190,8 +213,9 @@ public class OwnerPayoutService {
                 .actorName(actorName).actorType(actorType).payload(new BookingEventPayload(data)).build());
     }
     private String actorName(User user) { return user.getFullName() == null || user.getFullName().isBlank() ? user.getEmail() : user.getFullName(); }
-    public OwnerPayoutDto dto(OwnerPayout p) { return new OwnerPayoutDto(p.getId(), p.getBookingId(), p.getOwnerId(), p.getVenueId(), p.getCurrency(), p.getGrossRetainedAmountEur(), p.getCommissionEur(), p.getProviderCostEur(), p.getPayoutAmountEur(), p.getStatus(), p.getHoldReason(), p.getEligibleAt(), p.getReadyAt(), p.getPaidAt(), p.getExternalTransferReference(), p.getCreatedAt(), p.getUpdatedAt()); }
-    private OwnerPayoutSummaryDto ownerDto(OwnerPayout p) { return new OwnerPayoutSummaryDto(p.getId(), p.getBookingId(), p.getVenueId(), p.getCurrency(), p.getGrossRetainedAmountEur(), p.getCommissionEur(), p.getProviderCostEur(), p.getPayoutAmountEur(), p.getStatus(), p.getHoldReason(), p.getEligibleAt(), p.getReadyAt(), p.getPaidAt(), p.getStatus() == OwnerPayoutStatus.PAID); }
+    public OwnerPayoutDto dto(OwnerPayout p) { OwnerPayoutDestination d=p.getPayoutDestination(); return new OwnerPayoutDto(p.getId(), p.getBookingId(), p.getOwnerId(), p.getVenueId(), p.getCurrency(), p.getGrossRetainedAmountEur(), p.getCommissionEur(), p.getProviderCostEur(), p.getPayoutAmountEur(), p.getStatus(), p.getHoldReason(), p.getEligibleAt(), p.getReadyAt(), p.getPaidAt(), p.getExternalTransferReference(), d==null?null:d.getId(),d==null?null:d.getAccountHolderName(),masked(d),p.getCreatedAt(), p.getUpdatedAt()); }
+    private OwnerPayoutSummaryDto ownerDto(OwnerPayout p) { OwnerPayoutDestination d=p.getPayoutDestination();return new OwnerPayoutSummaryDto(p.getId(), p.getBookingId(), p.getVenueId(), p.getCurrency(), p.getGrossRetainedAmountEur(), p.getCommissionEur(), p.getProviderCostEur(), p.getPayoutAmountEur(), p.getStatus(), p.getHoldReason(), p.getEligibleAt(), p.getReadyAt(), p.getPaidAt(),d==null?null:d.getId(),masked(d),p.getStatus() == OwnerPayoutStatus.PAID); }
+    private String masked(OwnerPayoutDestination d){return d==null?null:"••••••••••"+d.getIbanLast4();}
     private record Economics(BigDecimal gross, BigDecimal commission, BigDecimal providerCost, BigDecimal payout) {}
     private record State(OwnerPayoutStatus status, OwnerPayoutHoldReason holdReason) {}
 }

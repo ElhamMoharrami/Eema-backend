@@ -102,7 +102,7 @@ class AdminOperationsServiceTest {
         when(payouts.findByBookingId(id)).thenReturn(Optional.of(payout));
         when(liabilities.findByBookingIdOrderByCreatedAtAsc(id)).thenReturn(List.of(liability));
         var payoutDto = new com.eema.backend.dto.response.OwnerPayoutDto(payout.getId(), id, null, null, "EUR",
-                null, null, null, null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         var liabilityDto = new com.eema.backend.dto.response.OwnerFinancialLiabilityDto(liability.getId(), null,
                 id, null, null, null, null, null, null);
         when(payoutService.dto(payout)).thenReturn(payoutDto);

@@ -12,5 +12,7 @@ public record OwnerPayoutDto(
         BigDecimal providerCostEur, BigDecimal payoutAmountEur,
         OwnerPayoutStatus status, OwnerPayoutHoldReason holdReason,
         OffsetDateTime eligibleAt, OffsetDateTime readyAt, OffsetDateTime paidAt,
-        String externalTransferReference, OffsetDateTime createdAt, OffsetDateTime updatedAt
+        String externalTransferReference, UUID payoutDestinationId,
+        String payoutDestinationAccountHolderName, String payoutDestinationMaskedIban,
+        OffsetDateTime createdAt, OffsetDateTime updatedAt
 ) {}

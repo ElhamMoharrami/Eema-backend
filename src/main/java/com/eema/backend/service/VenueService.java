@@ -44,6 +44,7 @@ public class VenueService {
     private final VenueMediaPolicy mediaPolicy;
     private final FileStorage fileStorage;
     private final VenueProductionProfileValidator productionProfileValidator;
+    private final VenueModerationService moderationService;
 
     @Transactional
     public VenueDto createVenue(
@@ -168,9 +169,11 @@ public class VenueService {
         mediaPolicy.validateClipUrl(request.clipUrl());
         mediaPolicy.validateTimezone(request.timezone());
 
+        CriticalProfile before = CriticalProfile.of(venue);
         venueMapper.updateEntityFromDto(request, venue);
         venue.setPhotoPaths(validatedPhotos);
         productionProfileValidator.validateConsistency(venue);
+        if (!before.equals(CriticalProfile.of(venue))) moderationService.requireRereviewAfterCriticalEdit(venue, user);
 
         Venue updatedVenue =
                 venueRepository.save(venue);
@@ -204,6 +207,7 @@ public class VenueService {
             if (!mediaPolicy.isStoredReference(reference)) throw new IllegalStateException("Storage returned an invalid media reference");
             photos.add(reference);
             venue.setPhotoPaths(mediaPolicy.validatePhotos(photos));
+            moderationService.requireRereviewAfterCriticalEdit(venue, user);
             Venue saved = venueRepository.saveAndFlush(venue);
             log.info("Venue photo attached: venueId={}, userId={}", id, user.getId());
             return venueMapper.toDto(saved);
@@ -305,5 +309,17 @@ public class VenueService {
                 && venue.getOwner()
                 .getId()
                 .equals(user.getId());
+    }
+
+    private record CriticalProfile(Integer maxCrew, Object permitted, Object prohibited, Boolean naturalLight,
+                                   Boolean blackout, Object ceiling, Boolean loading, Boolean parking,
+                                   Integer parkingSpaces, Integer floor, Boolean lift, Boolean wheelchair,
+                                   Boolean bathrooms, Boolean sound, String rules, String power, Object photos) {
+        static CriticalProfile of(Venue v) { return new CriticalProfile(v.getMaxCrewSize(), copy(v.getPermittedActivities()),
+                copy(v.getProhibitedActivities()), v.getNaturalLight(), v.getBlackoutPossible(), v.getCeilingHeightM(),
+                v.getLoadingAccess(), v.getParkingAvailable(), v.getParkingSpaces(), v.getFloorNumber(),
+                v.getLiftAvailable(), v.getWheelchairAccessible(), v.getBathroomsAvailable(),
+                v.getSoundRecordingSuitable(), v.getProductionRules(), v.getPowerDetails(), copy(v.getPhotoPaths())); }
+        private static Object copy(List<?> values) { return values == null ? null : List.copyOf(values); }
     }
 }

@@ -3,6 +3,7 @@ package com.eema.backend.repository;
 import com.eema.backend.entity.Venue;
 import com.eema.backend.entity.enums.VenueStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import java.util.UUID;
  * Spring Data JPA repository for the Venue entity.
  */
 @Repository
-public interface VenueRepository extends JpaRepository<Venue, UUID> {
+public interface VenueRepository extends JpaRepository<Venue, UUID>, JpaSpecificationExecutor<Venue> {
 
     List<Venue> findByStatus(VenueStatus status);
 
@@ -38,6 +39,8 @@ public interface VenueRepository extends JpaRepository<Venue, UUID> {
     List<Venue> findByOwnerId(UUID ownerId);
 
     Page<Venue> findByStatus(VenueStatus status, Pageable pageable);
+
+    Page<Venue> findByOwnerId(UUID ownerId, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select v from Venue v where v.id = :id")

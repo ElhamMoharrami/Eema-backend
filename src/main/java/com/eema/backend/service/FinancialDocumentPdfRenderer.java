@@ -40,6 +40,8 @@ public class FinancialDocumentPdfRenderer {
         rows.add(new Row("Reference", number)); rows.add(new Row("Booking reference", b.getId().toString()));
         rows.add(new Row("Payout reference", p.getId().toString()));
         rows.add(new Row("External transfer reference", p.getExternalTransferReference()));
+        if (p.getPayoutDestination() != null)
+            rows.add(new Row("Payout destination", "••••••••••" + p.getPayoutDestination().getIbanLast4()));
         rows.add(new Row("Paid at", DATE.format(p.getPaidAt()))); rows.add(Row.section("Owner and venue"));
         rows.add(new Row("Owner", owner.getFullName())); rows.add(new Row("Owner email", owner.getEmail()));
         rows.add(new Row("Venue", venue.getName())); rows.add(new Row("Shoot date", DAY.format(b.getShootDate())));

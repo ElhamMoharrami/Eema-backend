@@ -29,6 +29,12 @@ public class ProductionConfigurationValidator implements ApplicationRunner {
         validateStorage();
         validateMollie();
         validateEmail();
+        validatePayoutDestination();
+    }
+    private void validatePayoutDestination() {
+        if (!environment.getProperty("app.payout-destination.enabled", Boolean.class, true)) return;
+        require("PAYOUT_DATA_ENCRYPTION_KEY");
+        require("PAYOUT_DATA_FINGERPRINT_KEY");
     }
 
     private void validateJwt() {

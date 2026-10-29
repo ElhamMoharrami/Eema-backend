@@ -9,4 +9,5 @@ public record OwnerPayoutSummaryDto(UUID id, UUID bookingId, UUID venueId, Strin
         BigDecimal grossRetainedAmountEur, BigDecimal commissionEur, BigDecimal providerCostEur,
         BigDecimal payoutAmountEur, OwnerPayoutStatus status, OwnerPayoutHoldReason holdReason,
         OffsetDateTime eligibleAt, OffsetDateTime readyAt, OffsetDateTime paidAt,
+        UUID payoutDestinationId, String payoutDestinationMaskedIban,
         boolean statementAvailable) {}

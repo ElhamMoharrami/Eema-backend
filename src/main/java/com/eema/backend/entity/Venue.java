@@ -150,6 +150,19 @@ public class Venue {
     @Builder.Default
     private VenueStatus status = VenueStatus.DRAFT;
 
+    @Column(name = "submitted_for_review_at")
+    private OffsetDateTime submittedForReviewAt;
+
+    @Column(name = "reviewed_at")
+    private OffsetDateTime reviewedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewed_by")
+    private User reviewedBy;
+
+    @Column(name = "moderation_reason", length = 1000)
+    private String moderationReason;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;

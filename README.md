@@ -132,3 +132,10 @@ docker compose down
 ```
 
 Configuration avoids HTTP wire logging and must never log JWT secrets, provider API keys, Authorization headers, or refresh tokens.
+# Owner payout destinations
+
+Owner bank destinations are EUR/IBAN-only and manually verified by Eema. IBANs are normalized and structurally validated, encrypted with AES-256-GCM, and indexed only through an HMAC-SHA-256 fingerprint. API responses expose a masked value. Production must provide independent `PAYOUT_DATA_ENCRYPTION_KEY` and `PAYOUT_DATA_FINGERPRINT_KEY` Base64 secrets; startup fails when the feature is enabled without them.
+
+The current encryption format is versioned (`v1`), but online key rotation is not implemented. Preserve both keys in durable secret management and plan a deliberate re-encryption migration before rotating them.
+
+Payouts snapshot the current verified destination when they first become `READY`. Replacement destinations do not redirect already-ready or paid payouts. Eema still executes transfers manually outside the application.
