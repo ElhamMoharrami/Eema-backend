@@ -41,6 +41,8 @@ logging:
     org.apache.http.wire: WARN
 
 app:
+  documents:
+    storage-dir: ${DOCUMENT_STORAGE_DIR:/tmp/eema-private-documents}
   workflow-observability:
     scan-delay-ms: ${WORKFLOW_OBSERVABILITY_SCAN_DELAY_MS:300000}
     payment-creating-stuck-minutes: ${PAYMENT_CREATING_STUCK_MINUTES:60}

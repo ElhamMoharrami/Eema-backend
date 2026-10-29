@@ -1,6 +1,7 @@
 package com.eema.backend.service;
 
 import com.eema.backend.dto.response.OwnerPayoutDto;
+import com.eema.backend.dto.response.OwnerPayoutSummaryDto;
 import com.eema.backend.entity.*;
 import com.eema.backend.entity.enums.*;
 import com.eema.backend.exception.*;
@@ -57,6 +58,19 @@ public class OwnerPayoutService {
     @Transactional(readOnly = true)
     public OwnerPayoutStatus statusForBooking(UUID bookingId) {
         return payouts.findByBookingId(bookingId).map(OwnerPayout::getStatus).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OwnerPayoutSummaryDto> listForOwner(UUID ownerId, Pageable pageable) {
+        return payouts.findOwnerPayouts(ownerId, AdminPagePolicy.bounded(pageable)).map(this::ownerDto);
+    }
+
+    @Transactional(readOnly = true)
+    public OwnerPayoutSummaryDto getForOwner(UUID payoutId, UUID ownerId) {
+        OwnerPayout payout = payouts.findById(payoutId)
+                .orElseThrow(() -> new NotFoundException("Owner payout not found: " + payoutId));
+        if (!payout.getOwnerId().equals(ownerId)) throw new ForbiddenException("Owner cannot access another owner's payout");
+        return ownerDto(payout);
     }
 
     @Transactional
@@ -177,6 +191,7 @@ public class OwnerPayoutService {
     }
     private String actorName(User user) { return user.getFullName() == null || user.getFullName().isBlank() ? user.getEmail() : user.getFullName(); }
     public OwnerPayoutDto dto(OwnerPayout p) { return new OwnerPayoutDto(p.getId(), p.getBookingId(), p.getOwnerId(), p.getVenueId(), p.getCurrency(), p.getGrossRetainedAmountEur(), p.getCommissionEur(), p.getProviderCostEur(), p.getPayoutAmountEur(), p.getStatus(), p.getHoldReason(), p.getEligibleAt(), p.getReadyAt(), p.getPaidAt(), p.getExternalTransferReference(), p.getCreatedAt(), p.getUpdatedAt()); }
+    private OwnerPayoutSummaryDto ownerDto(OwnerPayout p) { return new OwnerPayoutSummaryDto(p.getId(), p.getBookingId(), p.getVenueId(), p.getCurrency(), p.getGrossRetainedAmountEur(), p.getCommissionEur(), p.getProviderCostEur(), p.getPayoutAmountEur(), p.getStatus(), p.getHoldReason(), p.getEligibleAt(), p.getReadyAt(), p.getPaidAt(), p.getStatus() == OwnerPayoutStatus.PAID); }
     private record Economics(BigDecimal gross, BigDecimal commission, BigDecimal providerCost, BigDecimal payout) {}
     private record State(OwnerPayoutStatus status, OwnerPayoutHoldReason holdReason) {}
 }

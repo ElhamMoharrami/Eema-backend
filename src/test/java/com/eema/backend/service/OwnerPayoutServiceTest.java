@@ -158,4 +158,16 @@ class OwnerPayoutServiceTest {
         verify(payouts).search(eq(OwnerPayoutStatus.HELD), eq(ownerId), eq(bookingId), eq(venueFilter),
                 argThat(p -> p.getPageSize() == 100));
     }
+
+    @Test
+    void ownerHistoryIsScopedAndDoesNotExposeTransferReference() {
+        OwnerPayout payout = OwnerPayout.builder().id(UUID.randomUUID()).ownerId(ownerId).bookingId(bookingId)
+                .venueId(venueId).status(OwnerPayoutStatus.PAID).externalTransferReference("private-bank-ref").build();
+        when(payouts.findOwnerPayouts(eq(ownerId), any())).thenReturn(new PageImpl<>(List.of(payout)));
+        var result = service.listForOwner(ownerId, PageRequest.of(0, 20)).getContent().getFirst();
+        assertThat(result.id()).isEqualTo(payout.getId());
+        assertThat(result.statementAvailable()).isTrue();
+        assertThat(Arrays.stream(result.getClass().getRecordComponents()).map(java.lang.reflect.RecordComponent::getName))
+                .doesNotContain("externalTransferReference", "ownerId", "updatedAt");
+    }
 }

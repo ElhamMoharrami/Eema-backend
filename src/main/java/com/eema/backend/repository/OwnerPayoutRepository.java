@@ -48,4 +48,7 @@ public interface OwnerPayoutRepository extends JpaRepository<OwnerPayout, UUID> 
     List<OwnerPayout> findByStatusOrderByCreatedAtAsc(OwnerPayoutStatus status, Pageable pageable);
     List<OwnerPayout> findByStatusAndReadyAtBeforeOrderByReadyAtAsc(
             OwnerPayoutStatus status, OffsetDateTime cutoff, Pageable pageable);
+
+    @Query("select p from OwnerPayout p where p.ownerId = :ownerId order by p.createdAt desc")
+    Page<OwnerPayout> findOwnerPayouts(@Param("ownerId") UUID ownerId, Pageable pageable);
 }

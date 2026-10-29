@@ -22,7 +22,7 @@ public class AdminOperationsService {
             "liabilityId", "type", "from", "to", "reason", "source", "policyTier",
             "refundPercentage", "refundAmountEur", "retainedAmountEur", "commissionEur",
             "ownerPayoutEur", "mollieFeeEur", "ownerResponseExpiresAt", "paymentExpiresAt",
-            "externalTransferReference");
+            "externalTransferReference", "documentId", "documentNumber", "templateVersion");
     private static final int EXCEPTION_CANDIDATE_LIMIT = 200;
 
     private final BookingRepository bookings;
