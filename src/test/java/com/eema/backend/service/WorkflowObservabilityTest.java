@@ -22,12 +22,18 @@ class WorkflowObservabilityTest {
 
         visibility.bookingLifecycle(new BookingLifecycleEvent(java.util.UUID.randomUUID(),
                 BookingLifecycleEvent.Type.APPROVAL_EXPIRED));
+        visibility.bookingLifecycle(new BookingLifecycleEvent(java.util.UUID.randomUUID(),
+                BookingLifecycleEvent.Type.REQUEST_EXPIRED));
+        visibility.bookingLifecycle(new BookingLifecycleEvent(java.util.UUID.randomUUID(),
+                BookingLifecycleEvent.Type.REQUEST_BECAME_UNAVAILABLE));
         visibility.inquiryLifecycle(new AvailabilityInquiryLifecycleEvent(java.util.UUID.randomUUID(),
                 AvailabilityInquiryLifecycleEvent.Type.OFFER_EXPIRED));
         visibility.latePayment(new LatePaymentDetectedEvent(java.util.UUID.randomUUID()));
         visibility.automaticRefund(new LatePaymentRefundInitiatedEvent(java.util.UUID.randomUUID()));
 
         assertEquals(1, registry.counter("eema.workflow.booking.approval.expired").count());
+        assertEquals(1, registry.counter("eema.workflow.booking.request.expired").count());
+        assertEquals(1, registry.counter("eema.workflow.booking.request.unavailable").count());
         assertEquals(1, registry.counter("eema.workflow.inquiry.offer.expired").count());
         assertEquals(1, registry.counter("eema.workflow.payment.late.detected").count());
         assertEquals(1, registry.counter("eema.workflow.refund.automatic.initiated").count());

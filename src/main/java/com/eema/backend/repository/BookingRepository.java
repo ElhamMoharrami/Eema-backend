@@ -36,16 +36,12 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     boolean existsByMolliePaymentId(String molliePaymentId);
 
-    @Query("""
-            select b from Booking b
-            where b.venueId = :venueId and b.shootDate = :date
-              and b.status in (com.eema.backend.entity.enums.BookingStatus.PENDING,
-                               com.eema.backend.entity.enums.BookingStatus.REQUESTED,
-                               com.eema.backend.entity.enums.BookingStatus.AWAITING_PAYMENT,
-                               com.eema.backend.entity.enums.BookingStatus.PAID,
-                               com.eema.backend.entity.enums.BookingStatus.CONFIRMED)
-            order by b.startTime
-            """)
+    @Query(value = """
+            select * from bookings
+            where venue_id = :venueId and shoot_date = :date
+              and status in ('PENDING', 'AWAITING_PAYMENT', 'PAID', 'CONFIRMED')
+            order by start_time
+            """, nativeQuery = true)
     List<Booking> findBlockingBookings(@Param("venueId") UUID venueId, @Param("date") LocalDate date);
 
     List<Booking> findByStatusAndPaymentExpiresAtBefore(BookingStatus status, java.time.OffsetDateTime cutoff);
@@ -56,13 +52,11 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     long countByRefundStatusInAndRefundRequestedAtBefore(
             List<RefundStatus> statuses, OffsetDateTime cutoff);
 
-    @Query("""
-            select count(b) from Booking b
-            where b.status in (com.eema.backend.entity.enums.BookingStatus.PAID,
-                               com.eema.backend.entity.enums.BookingStatus.CONFIRMED)
-              and b.mollieFeeReconciled = false
-              and b.paidAt < :cutoff
-            """)
+    @Query(value = """
+            select count(*) from bookings
+            where status in ('PAID', 'CONFIRMED')
+              and mollie_fee_reconciled = false and paid_at < :cutoff
+            """, nativeQuery = true)
     long countOldUnreconciledMollieFees(@Param("cutoff") OffsetDateTime cutoff);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
@@ -72,4 +66,25 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             where b.id = :id
             """)
     Optional<Booking> findByIdForUpdate(@Param("id") UUID id);
+
+    @Query(value = """
+            select * from bookings
+            where status = CAST('REQUESTED' AS booking_status)
+              and owner_response_expires_at <= :now
+            order by owner_response_expires_at
+            for update skip locked
+            limit :limit
+            """, nativeQuery = true)
+    List<Booking> lockDueRequestedBookings(@Param("now") OffsetDateTime now, @Param("limit") int limit);
+
+    @Query(value = """
+            select * from bookings
+            where venue_id = :venueId and shoot_date = :date
+              and status = CAST('REQUESTED' AS booking_status) and id <> :winnerId
+              and start_time < :endTime and end_time > :startTime
+            for update
+            """, nativeQuery = true)
+    List<Booking> findOverlappingRequestedForUpdate(@Param("venueId") UUID venueId,
+            @Param("date") LocalDate date, @Param("startTime") java.time.LocalTime startTime,
+            @Param("endTime") java.time.LocalTime endTime, @Param("winnerId") UUID winnerId);
 }

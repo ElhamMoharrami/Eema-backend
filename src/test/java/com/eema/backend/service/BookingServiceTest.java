@@ -69,7 +69,7 @@ class BookingServiceTest {
     void setUp() {
         service = new BookingService(bookingRepository, venueRepository, userRepository, bookingEventRepository,
                 appProperties, currentUserService, stateMachine, financials, eventPublisher, availabilityValidator,
-                new BookingWorkflowProperties(24, 60000));
+                new BookingWorkflowProperties(24, 24, 60000));
         bookingId = UUID.randomUUID();
         scoutId = UUID.randomUUID();
         booking = Booking.builder()
@@ -218,6 +218,7 @@ class BookingServiceTest {
         assertEquals(LocalTime.of(10, 0), result.startTime());
         assertEquals(LocalTime.of(14, 0), result.endTime());
         assertEquals(null, result.molliePaymentId());
+        org.junit.jupiter.api.Assertions.assertNotNull(result.ownerResponseExpiresAt());
     }
 
     @Test
@@ -240,6 +241,48 @@ class BookingServiceTest {
         when(currentUserService.getCurrentUser()).thenReturn(
                 User.builder().id(UUID.randomUUID()).email("other@example.com").role(UserRole.OWNER).build());
         assertThrows(ForbiddenException.class, () -> service.acceptRequest(bookingId));
+    }
+
+    @Test
+    void acceptedRequestMakesOnlyOverlappingRequestsUnavailable() {
+        User owner = ownerForBooking();
+        prepareRequestedBooking(owner);
+        Booking overlapping = Booking.builder().id(UUID.randomUUID()).venueId(booking.getVenueId())
+                .status(BookingStatus.REQUESTED).shootDate(booking.getShootDate())
+                .startTime(LocalTime.of(16, 0)).endTime(LocalTime.of(18, 0)).build();
+        when(bookingRepository.findOverlappingRequestedForUpdate(booking.getVenueId(), booking.getShootDate(),
+                booking.getStartTime(), booking.getEndTime(), bookingId)).thenReturn(java.util.List.of(overlapping));
+
+        service.acceptRequest(bookingId);
+
+        assertEquals(BookingStatus.AWAITING_PAYMENT, booking.getStatus());
+        assertEquals(BookingStatus.UNAVAILABLE, overlapping.getStatus());
+        verify(eventPublisher).publishEvent(new BookingLifecycleEvent(
+                overlapping.getId(), BookingLifecycleEvent.Type.REQUEST_BECAME_UNAVAILABLE));
+    }
+
+    @Test
+    void acceptanceAfterOwnerDeadlineExpiresRequestAndFailsClearly() {
+        User owner = ownerForBooking();
+        prepareRequestedBooking(owner);
+        booking.setOwnerResponseExpiresAt(OffsetDateTime.now().minusMinutes(1));
+
+        assertThrows(com.eema.backend.exception.RequestDeadlineExpiredException.class,
+                () -> service.acceptRequest(bookingId));
+        assertEquals(BookingStatus.EXPIRED, booking.getStatus());
+        verify(availabilityValidator, never()).validate(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void dueRequestExpirationIsIdempotentAndIgnoresAcceptedRows() {
+        OffsetDateTime now = OffsetDateTime.now();
+        Booking due = Booking.builder().id(UUID.randomUUID()).status(BookingStatus.REQUESTED)
+                .ownerResponseExpiresAt(now.minusSeconds(1)).build();
+        when(bookingRepository.lockDueRequestedBookings(now, 100)).thenReturn(java.util.List.of(due));
+        assertEquals(1, service.expireDueRequests(now, 100));
+        assertEquals(BookingStatus.EXPIRED, due.getStatus());
+        when(bookingRepository.lockDueRequestedBookings(now, 100)).thenReturn(java.util.List.of());
+        assertEquals(0, service.expireDueRequests(now, 100));
     }
 
     @Test
@@ -304,12 +347,15 @@ class BookingServiceTest {
         booking.setShootDate(LocalDate.now().plusDays(2));
         booking.setStartTime(LocalTime.of(9, 0));
         booking.setEndTime(LocalTime.of(17, 0));
+        booking.setOwnerResponseExpiresAt(OffsetDateTime.now().plusHours(24));
         booking.setMolliePaymentId("tr_expected");
         booking.setScoutContact(com.eema.backend.entity.BookingContactSnapshot.builder().name("Scout").email("scout@example.com").build());
         booking.setOwnerContact(com.eema.backend.entity.BookingContactSnapshot.builder().name("Owner").email("owner@example.com").build());
         when(bookingRepository.findByIdForUpdate(bookingId)).thenReturn(Optional.of(booking));
-        when(venueRepository.findById(booking.getVenueId())).thenReturn(Optional.of(
-                Venue.builder().id(booking.getVenueId()).owner(owner).timezone("Europe/Amsterdam").build()));
+        when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(booking));
+        Venue venue = Venue.builder().id(booking.getVenueId()).owner(owner).timezone("Europe/Amsterdam").build();
+        when(venueRepository.findById(booking.getVenueId())).thenReturn(Optional.of(venue));
+        when(venueRepository.findByIdForUpdate(booking.getVenueId())).thenReturn(Optional.of(venue));
         when(currentUserService.getCurrentUser()).thenReturn(owner);
     }
 

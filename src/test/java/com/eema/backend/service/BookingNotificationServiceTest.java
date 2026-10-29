@@ -99,12 +99,15 @@ class BookingNotificationServiceTest {
         Booking booking = bookings.findById(bookingId).orElseThrow();
         booking.setStatus(BookingStatus.REQUESTED);
         booking.setRawBrief("Editorial shoot with a small crew");
+        booking.setOwnerResponseExpiresAt(OffsetDateTime.parse("2026-08-26T18:00:00+02:00"));
 
         service.sendLifecycle(bookingId, BookingLifecycleEvent.Type.REQUEST_SUBMITTED);
 
         verify(email).send(eq("snapshot-owner@example.test"), eq("New booking request"),
                 contains("Editorial shoot"), contains("https://app.eema.test/bookings/" + bookingId));
         verify(email).send(eq("snapshot-scout@example.test"), eq("Your request was sent"), anyString(), anyString());
+        verify(email).send(eq("snapshot-scout@example.test"), eq("Your request was sent"),
+                contains("owner has until 26 August 2026 at 18:00 CEST"), anyString());
     }
 
     @Test
@@ -142,5 +145,20 @@ class BookingNotificationServiceTest {
                 .when(email).send(anyString(), anyString(), anyString(), anyString());
 
         assertDoesNotThrow(() -> service.sendLifecycle(bookingId, BookingLifecycleEvent.Type.REQUEST_DECLINED));
+    }
+
+    @Test
+    void requestExpiryAndUnavailableUseDistinctNonDeclineWording() {
+        Booking booking = bookings.findById(bookingId).orElseThrow();
+        booking.setStatus(BookingStatus.EXPIRED);
+        service.sendLifecycle(bookingId, BookingLifecycleEvent.Type.REQUEST_EXPIRED);
+        verify(email).send(eq("snapshot-scout@example.test"), eq("Your booking request expired"),
+                contains("owner did not respond"), anyString());
+
+        clearInvocations(email);
+        booking.setStatus(BookingStatus.UNAVAILABLE);
+        service.sendLifecycle(bookingId, BookingLifecycleEvent.Type.REQUEST_BECAME_UNAVAILABLE);
+        verify(email).send(eq("snapshot-scout@example.test"), eq("The requested time is no longer available"),
+                argThat(body -> body.contains("Another booking reserved") && body.contains("did not explicitly decline")), anyString());
     }
 }

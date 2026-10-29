@@ -7,5 +7,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "app.booking-workflow")
 public record BookingWorkflowProperties(@Positive long paymentWindowHours,
+                                        @Positive long ownerResponseWindowHours,
                                         @Positive long expirationScanDelayMs) {
 }

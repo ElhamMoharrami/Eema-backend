@@ -132,6 +132,28 @@ class VenueAvailabilityServiceTest {
     }
 
     @Test
+    void onlyReservationStatusesBlockEffectiveAvailability() {
+        LocalDate date = LocalDate.of(2026, 9, 8);
+        when(weekly.findByVenueIdAndDayOfWeekOrderByStartTime(venueId, date.getDayOfWeek()))
+                .thenReturn(List.of(hours(date.getDayOfWeek(), 8, 20)));
+        when(overrides.findByVenueIdAndDateOrderByStartTime(venueId, date)).thenReturn(List.of());
+        for (var status : List.of(com.eema.backend.entity.enums.BookingStatus.REQUESTED,
+                com.eema.backend.entity.enums.BookingStatus.DECLINED,
+                com.eema.backend.entity.enums.BookingStatus.EXPIRED,
+                com.eema.backend.entity.enums.BookingStatus.UNAVAILABLE)) {
+            when(bookings.findBlockingBookings(venueId, date)).thenReturn(List.of(
+                    Booking.builder().status(status).startTime(time(10)).endTime(time(12)).build()));
+            assertEquals(List.of(interval(8, 20)), service.getAvailableIntervals(venueId, date), status.name());
+        }
+        for (var status : List.of(com.eema.backend.entity.enums.BookingStatus.AWAITING_PAYMENT,
+                com.eema.backend.entity.enums.BookingStatus.CONFIRMED)) {
+            when(bookings.findBlockingBookings(venueId, date)).thenReturn(List.of(
+                    Booking.builder().status(status).startTime(time(10)).endTime(time(12)).build()));
+            assertEquals(List.of(interval(8, 10), interval(12, 20)), service.getAvailableIntervals(venueId, date), status.name());
+        }
+    }
+
+    @Test
     void rejectsExcessiveDateRange() {
         LocalDate from = LocalDate.of(2026, 1, 1);
         assertThrows(BadRequestException.class, () -> service.getAvailability(venueId, from, from.plusDays(93)));

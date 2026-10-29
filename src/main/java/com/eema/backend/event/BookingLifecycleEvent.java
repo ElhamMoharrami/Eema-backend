@@ -7,6 +7,8 @@ public record BookingLifecycleEvent(UUID bookingId, Type type) {
         REQUEST_SUBMITTED,
         REQUEST_ACCEPTED,
         REQUEST_DECLINED,
+        REQUEST_EXPIRED,
+        REQUEST_BECAME_UNAVAILABLE,
         APPROVAL_EXPIRED
     }
 }

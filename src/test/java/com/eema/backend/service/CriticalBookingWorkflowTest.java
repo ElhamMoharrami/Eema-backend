@@ -51,7 +51,7 @@ class CriticalBookingWorkflowTest {
                 new AppProperties.CommissionProperties(new BigDecimal("20.00")), null, null);
         bookingService = new BookingService(bookings, venues, users, audit, properties, current,
                 new BookingStateMachine(), new BookingFinancials(), events, availability,
-                new BookingWorkflowProperties(24, 60000));
+                new BookingWorkflowProperties(24, 24, 60000));
         Venue venue = Venue.builder().id(venueId).owner(owner).name("Workflow Studio")
                 .timezone("Europe/Amsterdam").status(VenueStatus.ACTIVE)
                 .dayRateEur(new BigDecimal("100.00")).build();
@@ -65,17 +65,20 @@ class CriticalBookingWorkflowTest {
         });
         when(bookings.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(bookings.findByIdForUpdate(bookingId)).thenAnswer(invocation -> Optional.ofNullable(stored.get()));
+        when(bookings.findById(bookingId)).thenAnswer(invocation -> Optional.ofNullable(stored.get()));
+        when(venues.findByIdForUpdate(venueId)).thenReturn(Optional.of(venue));
     }
 
     @Test
     void requestApprovalCheckoutAndAuthoritativePaymentCompleteOneReservedBooking() {
         Booking booking = createRequest();
         assertEquals(BookingStatus.REQUESTED, booking.getStatus());
-        assertTrue(BookingReservationPolicy.blocksAvailability(booking.getStatus()));
+        assertFalse(BookingReservationPolicy.blocksAvailability(booking.getStatus()));
 
         when(current.getCurrentUser()).thenReturn(owner);
         bookingService.acceptRequest(bookingId);
         assertEquals(BookingStatus.AWAITING_PAYMENT, booking.getStatus());
+        assertTrue(BookingReservationPolicy.blocksAvailability(booking.getStatus()));
 
         PaymentCreationCoordinator coordinator = new PaymentCreationCoordinator(bookings, new BookingFinancials());
         PaymentService payments = new PaymentService(coordinator, mollie);

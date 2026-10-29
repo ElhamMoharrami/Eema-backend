@@ -24,6 +24,7 @@ import com.eema.backend.entity.enums.VenueStatus;
 import com.eema.backend.exception.ForbiddenException;
 import com.eema.backend.exception.ConflictException;
 import com.eema.backend.exception.NotFoundException;
+import com.eema.backend.exception.RequestDeadlineExpiredException;
 import com.eema.backend.event.BookingPaidEvent;
 import com.eema.backend.event.BookingLifecycleEvent;
 import com.eema.backend.event.LatePaymentDetectedEvent;
@@ -125,6 +126,8 @@ public class BookingService {
          */
         BigDecimal ownerPayoutEur = calculateOwnerPayout(venuePriceEur, commissionEur, mollieFeeEur);
 
+        OffsetDateTime ownerResponseExpiresAt = OffsetDateTime.now()
+                .plusHours(workflowProperties.ownerResponseWindowHours());
         Booking booking = Booking.builder().venueId(venue.getId()).scoutId(scout.getId()).molliePaymentId(null).status(BookingStatus.REQUESTED)
 
                 .venuePriceEur(venuePriceEur).totalPaidEur(totalPaidEur).commissionPercentage(commissionPercentage).commissionEur(commissionEur).mollieFeeEur(mollieFeeEur).ownerPayoutEur(ownerPayoutEur)
@@ -136,7 +139,7 @@ public class BookingService {
                  * not JSON strings.
                  */.scoutContact(buildScoutContact(request.scoutContact())).ownerContact(buildOwnerContact(owner))
 
-                .build();
+                .ownerResponseExpiresAt(ownerResponseExpiresAt).build();
 
         Booking savedBooking;
         try {
@@ -145,7 +148,8 @@ public class BookingService {
             throw new ConflictException("Requested time is no longer available for this venue");
         }
 
-        appendEvent(savedBooking.getId(), BookingEventType.REQUEST_SUBMITTED, scout.getId(), actorName(scout), ActorType.SCOUT, Map.of());
+        appendEvent(savedBooking.getId(), BookingEventType.REQUEST_SUBMITTED, scout.getId(), actorName(scout), ActorType.SCOUT,
+                Map.of("ownerResponseExpiresAt", ownerResponseExpiresAt.toString()));
         eventPublisher.publishEvent(new BookingLifecycleEvent(savedBooking.getId(), BookingLifecycleEvent.Type.REQUEST_SUBMITTED));
 
         log.info("Booking created: bookingId={}, venueId={}, scoutId={}, venuePrice={}, commission={}, provisionalOwnerPayout={}", savedBooking.getId(), venue.getId(), scout.getId(), venuePriceEur, commissionEur, ownerPayoutEur);
@@ -231,23 +235,52 @@ public class BookingService {
         return toBookingDto(booking);
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = RequestDeadlineExpiredException.class)
     public BookingDto acceptRequest(UUID bookingId) {
         User user = currentUserService.getCurrentUser();
+        Booking snapshot = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
+        // Serialize decisions for one venue so two request-row locks cannot deadlock
+        // while the exclusion constraint remains the authoritative final safety net.
+        Venue venue = venueRepository.findByIdForUpdate(snapshot.getVenueId())
+                .orElseThrow(() -> new NotFoundException("Venue not found"));
         Booking booking = bookingRepository.findByIdForUpdate(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking not found with id: " + bookingId));
         authorizeOwnerOrAdmin(user, booking);
         if (booking.getStatus() != BookingStatus.REQUESTED) throw new ConflictException("Only requested bookings can be accepted");
-        Venue venue = venueRepository.findById(booking.getVenueId()).orElseThrow(() -> new NotFoundException("Venue not found"));
+        OffsetDateTime now = OffsetDateTime.now();
+        if (booking.getOwnerResponseExpiresAt() == null || !booking.getOwnerResponseExpiresAt().isAfter(now)) {
+            transition(booking, BookingStatus.EXPIRED);
+            appendEvent(bookingId, BookingEventType.REQUEST_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
+            eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.REQUEST_EXPIRED));
+            throw new RequestDeadlineExpiredException("The owner response deadline has passed; this request is expired");
+        }
         availabilityValidator.validate(venue, booking.getShootDate(), booking.getStartTime(), booking.getEndTime(), booking.getId());
         transition(booking, BookingStatus.AWAITING_PAYMENT);
-        OffsetDateTime now = OffsetDateTime.now();
         booking.setAcceptedAt(now);
         booking.setPaymentExpiresAt(now.plusHours(workflowProperties.paymentWindowHours()));
+        try {
+            bookingRepository.saveAndFlush(booking);
+        } catch (DataIntegrityViolationException exception) {
+            throw new ConflictException("Requested time is no longer available for this venue");
+        }
         appendEvent(bookingId, BookingEventType.REQUEST_ACCEPTED, user.getId(), actorName(user), actorTypeForUser(user),
                 Map.of("paymentExpiresAt", booking.getPaymentExpiresAt().toString()));
+        resolveOverlappingRequests(booking);
         eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.REQUEST_ACCEPTED));
         return toBookingDto(booking);
+    }
+
+    private void resolveOverlappingRequests(Booking winner) {
+        List<Booking> overlapping = bookingRepository.findOverlappingRequestedForUpdate(
+                winner.getVenueId(), winner.getShootDate(), winner.getStartTime(), winner.getEndTime(), winner.getId());
+        for (Booking request : overlapping) {
+            transition(request, BookingStatus.UNAVAILABLE);
+            appendEvent(request.getId(), BookingEventType.REQUEST_BECAME_UNAVAILABLE, null, "SYSTEM", ActorType.SYSTEM,
+                    Map.of("winningBookingId", winner.getId().toString()));
+            eventPublisher.publishEvent(new BookingLifecycleEvent(
+                    request.getId(), BookingLifecycleEvent.Type.REQUEST_BECAME_UNAVAILABLE));
+        }
     }
 
     @Transactional
@@ -271,6 +304,21 @@ public class BookingService {
         transition(booking, BookingStatus.EXPIRED);
         appendEvent(bookingId, BookingEventType.APPROVAL_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
         eventPublisher.publishEvent(new BookingLifecycleEvent(bookingId, BookingLifecycleEvent.Type.APPROVAL_EXPIRED));
+    }
+
+    @Transactional
+    public int expireDueRequests(OffsetDateTime now, int batchSize) {
+        List<Booking> due = bookingRepository.lockDueRequestedBookings(now, batchSize);
+        for (Booking booking : due) {
+            if (booking.getStatus() != BookingStatus.REQUESTED
+                    || booking.getOwnerResponseExpiresAt() == null
+                    || booking.getOwnerResponseExpiresAt().isAfter(now)) continue;
+            transition(booking, BookingStatus.EXPIRED);
+            appendEvent(booking.getId(), BookingEventType.REQUEST_EXPIRED, null, "SYSTEM", ActorType.SYSTEM, Map.of());
+            eventPublisher.publishEvent(new BookingLifecycleEvent(
+                    booking.getId(), BookingLifecycleEvent.Type.REQUEST_EXPIRED));
+        }
+        return due.size();
     }
 
     @Transactional
@@ -613,7 +661,7 @@ public class BookingService {
                 yield BookingEventType.SCOUT_CANCELLED;
             }
 
-            case PAID, REQUESTED, AWAITING_PAYMENT, DECLINED, EXPIRED ->
+            case PAID, REQUESTED, AWAITING_PAYMENT, DECLINED, EXPIRED, UNAVAILABLE ->
                     throw new ForbiddenException("Status cannot be set directly by a user");
 
             default -> throw new IllegalArgumentException("Unsupported user-driven booking status: " + status);
@@ -798,6 +846,7 @@ public class BookingService {
                 booking.getScoutContact(), booking.getOwnerContact(),
 
                 booking.getCreatedAt(), booking.getPaidAt(), booking.getConfirmedAt(), booking.getCancelledAt(),
-                booking.getAcceptedAt(), booking.getPaymentExpiresAt(), booking.getDeclinedAt(), booking.getExpiredAt());
+                booking.getAcceptedAt(), booking.getOwnerResponseExpiresAt(), booking.getPaymentExpiresAt(),
+                booking.getDeclinedAt(), booking.getExpiredAt());
     }
 }

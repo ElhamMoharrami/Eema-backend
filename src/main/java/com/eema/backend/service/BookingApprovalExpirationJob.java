@@ -17,6 +17,7 @@ public class BookingApprovalExpirationJob {
     @Scheduled(fixedDelayString = "${app.booking-workflow.expiration-scan-delay-ms:60000}")
     public void expireUnpaidApprovals() {
         OffsetDateTime now = OffsetDateTime.now();
+        bookingService.expireDueRequests(now, 100);
         for (Booking booking : bookingRepository.findByStatusAndPaymentExpiresAtBefore(BookingStatus.AWAITING_PAYMENT, now)) {
             bookingService.expireApproval(booking.getId(), now);
         }

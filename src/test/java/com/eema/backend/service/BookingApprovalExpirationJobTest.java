@@ -20,6 +20,7 @@ class BookingApprovalExpirationJobTest {
         when(repository.findByStatusAndPaymentExpiresAtBefore(eq(BookingStatus.AWAITING_PAYMENT), any()))
                 .thenReturn(List.of(Booking.builder().id(id).build()));
         new BookingApprovalExpirationJob(repository, service).expireUnpaidApprovals();
+        verify(service).expireDueRequests(any(), eq(100));
         verify(service).expireApproval(eq(id), any());
     }
 }

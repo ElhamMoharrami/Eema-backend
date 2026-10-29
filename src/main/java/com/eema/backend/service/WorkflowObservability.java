@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class WorkflowObservability {
     private final BookingRepository bookings;
     private final Counter approvalExpirations;
+    private final Counter requestExpirations;
+    private final Counter requestUnavailable;
     private final Counter latePayments;
     private final Counter automaticRefunds;
     private final Counter inquiryOfferExpirations;
@@ -41,6 +43,8 @@ public class WorkflowObservability {
         this.refundStuckMinutes = refundStuckMinutes;
         this.feeStuckMinutes = feeStuckMinutes;
         this.approvalExpirations = Counter.builder("eema.workflow.booking.approval.expired").register(registry);
+        this.requestExpirations = Counter.builder("eema.workflow.booking.request.expired").register(registry);
+        this.requestUnavailable = Counter.builder("eema.workflow.booking.request.unavailable").register(registry);
         this.latePayments = Counter.builder("eema.workflow.payment.late.detected").register(registry);
         this.automaticRefunds = Counter.builder("eema.workflow.refund.automatic.initiated").register(registry);
         this.inquiryOfferExpirations = Counter.builder("eema.workflow.inquiry.offer.expired").register(registry);
@@ -52,6 +56,8 @@ public class WorkflowObservability {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void bookingLifecycle(BookingLifecycleEvent event) {
         if (event.type() == BookingLifecycleEvent.Type.APPROVAL_EXPIRED) approvalExpirations.increment();
+        if (event.type() == BookingLifecycleEvent.Type.REQUEST_EXPIRED) requestExpirations.increment();
+        if (event.type() == BookingLifecycleEvent.Type.REQUEST_BECAME_UNAVAILABLE) requestUnavailable.increment();
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)

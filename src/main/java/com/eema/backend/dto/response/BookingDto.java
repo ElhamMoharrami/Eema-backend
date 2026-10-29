@@ -50,6 +50,7 @@ public record BookingDto(
         OffsetDateTime confirmedAt,
         OffsetDateTime cancelledAt,
         OffsetDateTime acceptedAt,
+        OffsetDateTime ownerResponseExpiresAt,
         OffsetDateTime paymentExpiresAt,
         OffsetDateTime declinedAt,
         OffsetDateTime expiredAt

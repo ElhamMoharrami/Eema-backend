@@ -52,6 +52,7 @@ app:
     expiration-scan-delay-ms: ${AVAILABILITY_INQUIRY_EXPIRATION_SCAN_DELAY_MS:60000}
   booking-workflow:
     payment-window-hours: ${BOOKING_PAYMENT_WINDOW_HOURS:24}
+    owner-response-window-hours: ${BOOKING_OWNER_RESPONSE_WINDOW_HOURS:24}
     expiration-scan-delay-ms: ${BOOKING_EXPIRATION_SCAN_DELAY_MS:60000}
   jwt:
     secret: ${JWT_SECRET}

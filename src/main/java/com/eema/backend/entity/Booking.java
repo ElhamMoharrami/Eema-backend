@@ -254,6 +254,9 @@ public class Booking {
     @Column(name = "accepted_at")
     private OffsetDateTime acceptedAt;
 
+    @Column(name = "owner_response_expires_at")
+    private OffsetDateTime ownerResponseExpiresAt;
+
     @Column(name = "payment_expires_at")
     private OffsetDateTime paymentExpiresAt;
 

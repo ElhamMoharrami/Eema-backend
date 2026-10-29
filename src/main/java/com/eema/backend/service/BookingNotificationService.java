@@ -83,6 +83,8 @@ public class BookingNotificationService {
             case REQUEST_SUBMITTED -> BookingStatus.REQUESTED;
             case REQUEST_ACCEPTED -> BookingStatus.AWAITING_PAYMENT;
             case REQUEST_DECLINED -> BookingStatus.DECLINED;
+            case REQUEST_EXPIRED -> BookingStatus.EXPIRED;
+            case REQUEST_BECAME_UNAVAILABLE -> BookingStatus.UNAVAILABLE;
             case APPROVAL_EXPIRED -> BookingStatus.EXPIRED;
         };
         if (booking.getStatus() != expectedStatus) {
@@ -93,13 +95,17 @@ public class BookingNotificationService {
             case REQUEST_SUBMITTED -> sendRequestSubmitted(booking, venueName, timezone, url);
             case REQUEST_ACCEPTED -> sendRequestAccepted(booking, venueName, timezone, url);
             case REQUEST_DECLINED -> sendRequestDeclined(booking, venueName, timezone, url);
+            case REQUEST_EXPIRED -> sendRequestExpired(booking, venueName, timezone, url);
+            case REQUEST_BECAME_UNAVAILABLE -> sendRequestUnavailable(booking, venueName, timezone, url);
             case APPROVAL_EXPIRED -> sendApprovalExpired(booking, venueName, timezone, url);
         }
     }
 
     private void sendRequestSubmitted(Booking booking, String venue, String timezone, String url) {
         String bookingDetails = lifecycleDetails(booking, venue, timezone, "REQUESTED");
-        String acknowledgement = "Your request was sent to the venue owner. This is not yet a confirmed or paid booking.";
+        String deadline = formatDeadline(booking.getOwnerResponseExpiresAt(), timezone);
+        String acknowledgement = "Your request was sent to the venue owner. This is not yet a confirmed or paid booking. "
+                + "The owner has until " + deadline + " to respond.";
         attempt("REQUEST_SUBMITTED", "scout", booking.getId(), () -> emailService.send(
                 booking.getScoutContact().getEmail(), "Your request was sent",
                 text(booking.getScoutContact().getName(), acknowledgement, bookingDetails, "View booking", url),
@@ -111,13 +117,14 @@ public class BookingNotificationService {
                 scout.getPhone() == null || scout.getPhone().isBlank() ? "" : ", " + scout.getPhone());
         String brief = "Brief: " + (booking.getRawBrief() == null || booking.getRawBrief().isBlank()
                 ? "No brief provided" : booking.getRawBrief());
-        String ownerMessage = "A scout submitted a new booking request. Review it before the requested time is reserved for payment.";
+        String ownerMessage = "A scout submitted a new booking request. Please respond by " + deadline
+                + ". The requested time is not reserved until a request is accepted.";
         String extraHtml = lifecycleDetailsHtml(booking, venue, timezone, "REQUESTED")
-                + "<p>" + esc(scoutLine) + "</p><p>" + esc(brief) + "</p>";
+                + rowTable("Response deadline", deadline) + "<p>" + esc(scoutLine) + "</p><p>" + esc(brief) + "</p>";
         attempt("REQUEST_SUBMITTED", "owner", booking.getId(), () -> emailService.send(
                 booking.getOwnerContact().getEmail(), "New booking request",
                 text(booking.getOwnerContact().getName(), ownerMessage,
-                        bookingDetails + "\n" + scoutLine + "\n" + brief, "Review booking", url),
+                        bookingDetails + "\nResponse deadline: " + deadline + "\n" + scoutLine + "\n" + brief, "Review booking", url),
                 html("New booking request", booking.getOwnerContact().getName(), ownerMessage,
                         extraHtml, "Review booking", url)));
     }
@@ -146,6 +153,26 @@ public class BookingNotificationService {
                 "The booking was not confirmed and the slot was released. You may make a new request if it is still available.",
                 lifecycleDetails(booking, venue, timezone, "EXPIRED"),
                 lifecycleDetailsHtml(booking, venue, timezone, "EXPIRED"), "View booking", url);
+    }
+
+    private void sendRequestExpired(Booking booking, String venue, String timezone, String url) {
+        deliverScout(booking, "REQUEST_EXPIRED", "Your booking request expired",
+                "The owner did not respond before the request deadline. No booking was created or confirmed, and you may request the slot again if it is available.",
+                lifecycleDetails(booking, venue, timezone, "EXPIRED"),
+                lifecycleDetailsHtml(booking, venue, timezone, "EXPIRED"), "View availability", url);
+    }
+
+    private void sendRequestUnavailable(Booking booking, String venue, String timezone, String url) {
+        deliverScout(booking, "REQUEST_BECAME_UNAVAILABLE", "The requested time is no longer available",
+                "Another booking reserved this time. The owner did not explicitly decline your request; please choose another available time.",
+                lifecycleDetails(booking, venue, timezone, "UNAVAILABLE"),
+                lifecycleDetailsHtml(booking, venue, timezone, "UNAVAILABLE"), "View availability", url);
+    }
+
+    private String formatDeadline(java.time.OffsetDateTime deadline, String timezone) {
+        return deadline == null ? "the deadline shown in the booking"
+                : deadline.atZoneSameInstant(ZoneId.of(timezone))
+                .format(DateTimeFormatter.ofPattern("d MMMM uuuu 'at' HH:mm z", Locale.ENGLISH));
     }
 
     private void deliverScout(Booking booking, String type, String subject, String message,
