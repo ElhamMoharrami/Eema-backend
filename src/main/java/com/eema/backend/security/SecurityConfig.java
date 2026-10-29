@@ -16,7 +16,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.SecurityFilterChain;
@@ -146,8 +147,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+    public PasswordEncoder passwordEncoder(
+            @Value("${app.password.argon2.memory-kib:65536}") int memory,
+            @Value("${app.password.argon2.iterations:3}") int iterations,
+            @Value("${app.password.argon2.parallelism:1}") int parallelism) {
+        // The PHC representation identifies Argon2id, version, costs and salt itself.
+        if (memory < 19456 || iterations < 2 || parallelism < 1) {
+            throw new IllegalArgumentException("Argon2 costs are below the supported security floor");
+        }
+        return new Argon2PasswordEncoder(16, 32, parallelism, memory, iterations);
     }
 
     @Bean

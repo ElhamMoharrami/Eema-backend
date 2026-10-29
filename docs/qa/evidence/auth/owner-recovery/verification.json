@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-10T19:52:48.293236+00:00",
+  "frontend": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "diffCheck": "PASS"
+  },
+  "backendApplicationUnchanged": true,
+  "backendFilesCompared": 384,
+  "backendTests": "Not rerun: backend read-only; previous41 PostgreSQL/226 unit results remain historical.",
+  "ownerRecoveryRepetitions": 3,
+  "browserCheckGroups": 22,
+  "newClientChecks": 11,
+  "existingClientChecks": 13,
+  "repeatedClientRunsEach": 20
+}

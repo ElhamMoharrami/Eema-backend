@@ -1,0 +1,1 @@
+{"algorithm":"Argon2id","memoryKiB":65536,"iterations":3,"parallelism":1,"samples":5,"meanEncodeMs":929.9544902,"meanMatchMs":914.552705}

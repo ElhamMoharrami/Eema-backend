@@ -1,0 +1,98 @@
+{
+  "date": "2026-09-10",
+  "environment": "LOCAL REAL POSTGRES, email disabled",
+  "liveApi": {
+    "result": "PASS",
+    "http": 201,
+    "email": "scout-a+20260910-161346-b06ba24c@example.test",
+    "user": {
+      "id": "a4f9b8b0-51cb-4d7c-97db-5d9c3d57fd81",
+      "email": "scout-a+20260910-161346-b06ba24c@example.test",
+      "role": "SCOUT",
+      "fullName": "QA Scout A",
+      "phone": null,
+      "active": true,
+      "emailVerified": false
+    },
+    "responseFields": [
+      "accessToken",
+      "expiresIn",
+      "refreshToken",
+      "tokenType",
+      "user"
+    ],
+    "meAgreement": true,
+    "safeDatabase": [
+      {
+        "users": 1,
+        "bcrypt_shape": true,
+        "role": true,
+        "active": true,
+        "unverified": true
+      },
+      {
+        "refresh_records": 1,
+        "active": true,
+        "hash_matches": true
+      },
+      {
+        "verification_records": 1,
+        "active": true,
+        "hash_shape": true
+      }
+    ]
+  },
+  "browser": {
+    "result": "PASS",
+    "email": "scout-a+ui-1789057365876@example.test",
+    "registrationStatuses": [
+      201
+    ],
+    "beforeReload": {
+      "path": "/",
+      "identity": true,
+      "scoutLinks": true,
+      "unverifiedNotice": true,
+      "user": {
+        "id": "3fc52234-4742-4e26-a272-c7b0b2f5f79a",
+        "email": "scout-a+ui-1789057365876@example.test",
+        "role": "SCOUT",
+        "fullName": "QA Scout A",
+        "phone": null,
+        "active": true,
+        "emailVerified": false
+      }
+    },
+    "afterReload": {
+      "path": "/",
+      "identity": true,
+      "scoutLinks": true,
+      "unverifiedNotice": true,
+      "user": {
+        "id": "3fc52234-4742-4e26-a272-c7b0b2f5f79a",
+        "email": "scout-a+ui-1789057365876@example.test",
+        "role": "SCOUT",
+        "fullName": "QA Scout A",
+        "phone": null,
+        "active": true,
+        "emailVerified": false
+      }
+    },
+    "authoritative": {
+      "status": 200,
+      "agrees": true
+    },
+    "sessionCleared": true
+  },
+  "checks": {
+    "mvn test": "PASS: 223 tests",
+    "mvn verify -Ppostgres-integration": "PASS: 20 tests",
+    "mvn clean package": "PASS: 223 tests and package",
+    "frontend typecheck/lint/build": "PASS",
+    "reset guard tests": "PASS: 9 fake-Docker tests",
+    "reset dry run": "PASS",
+    "destructive local reset": "NOT RUN",
+    "staging delivery": "NOT RUN"
+  },
+  "cleanup": "Isolated browser signed out; RUN_ID rows retained; no shared fixture deletion."
+}

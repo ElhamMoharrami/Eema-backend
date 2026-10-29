@@ -17,6 +17,13 @@ class EmailServiceTest {
         assertThrows(IllegalStateException.class, () -> new EmailService(properties(true, "", "")));
     }
 
+    @Test
+    void disabledDeliveryNeverCallsProvider() {
+        com.resend.Resend provider = org.mockito.Mockito.mock(com.resend.Resend.class);
+        new EmailService(false, null, provider).send("scout@example.test", "Verify", "placeholder", "placeholder");
+        org.mockito.Mockito.verifyNoInteractions(provider);
+    }
+
     private AppProperties properties(boolean enabled, String key, String sender) {
         return new AppProperties(null, null, null, null,
                 new AppProperties.ResendProperties(enabled, key, sender), null, null,

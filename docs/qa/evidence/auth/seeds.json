@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "seedCount": 2,
+  "argon2id": true,
+  "migration103": true,
+  "logins": [
+    {
+      "role": "OWNER",
+      "loginStatus": 200
+    },
+    {
+      "role": "SCOUT",
+      "loginStatus": 200
+    }
+  ]
+}

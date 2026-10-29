@@ -1,0 +1,16 @@
+{
+  "id": "AUTH-D03",
+  "result": "FIXED",
+  "file": "src/main/java/com/eema/backend/repository/PolicyAcceptanceRepository.java",
+  "before": "QueryTypeMismatchException: UUID result type versus PolicyAcceptance entity; HTTP500",
+  "after": {
+    "policyStatus": 200,
+    "verifiedScoutWithoutPolicies": 403,
+    "acceptedIdsAreUserScoped": true
+  },
+  "evidence": [
+    "AuthRecoveryIntegrationTest.policyAcceptanceProjectionReturnsOnlyTheUsersVersionIds",
+    "AuthRecoveryIntegrationTest.verifiedMutationBoundary"
+  ],
+  "policyRulesChanged": false
+}

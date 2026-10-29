@@ -1,0 +1,1960 @@
+{
+  "unit": {
+    "tests": 226,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "com.eema.backend.SimpleTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "testTrue",
+            "class": "com.eema.backend.SimpleTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.config.AsyncConfigurationTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "createsBoundedNamedExecutor",
+            "class": "com.eema.backend.config.AsyncConfigurationTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.config.FlywayLocationTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "developmentSeedsAreNotInCommonProductionLocation",
+            "class": "com.eema.backend.config.FlywayLocationTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.config.ProductionConfigurationValidatorTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "rejectsWeakJwtInProduction",
+            "class": "com.eema.backend.config.ProductionConfigurationValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsLocalStorageInProduction",
+            "class": "com.eema.backend.config.ProductionConfigurationValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsSharedBuckets",
+            "class": "com.eema.backend.config.ProductionConfigurationValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsWildcardCorsInProduction",
+            "class": "com.eema.backend.config.ProductionConfigurationValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "requiresS3Credentials",
+            "class": "com.eema.backend.config.ProductionConfigurationValidatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.controller.AdminOperationsSurfaceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "everyAdminControllerHasDefenseInDepthRoleGuard",
+            "class": "com.eema.backend.controller.AdminOperationsSurfaceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "surfaceContainsNoGenericPutPatchOrBookingStatusMutation",
+            "class": "com.eema.backend.controller.AdminOperationsSurfaceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.controller.AdminOwnerFinancialLiabilityControllerTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "scoutAndOwnerAreDeniedAllLiabilityOperations",
+            "class": "com.eema.backend.controller.AdminOwnerFinancialLiabilityControllerTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.controller.AdminOwnerPayoutControllerTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "adminCanUseOperationsEndpoints",
+            "class": "com.eema.backend.controller.AdminOwnerPayoutControllerTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutAndOwnerCannotReadOrMarkPayouts",
+            "class": "com.eema.backend.controller.AdminOwnerPayoutControllerTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.controller.FinancialDocumentControllerTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "authorizedEndpointReturnsPdfAttachmentWithoutStoragePath",
+            "class": "com.eema.backend.controller.FinancialDocumentControllerTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.controller.TrustWorkflowSecuritySurfaceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "adminQueuesAndActionsAreAdminOnly",
+            "class": "com.eema.backend.controller.TrustWorkflowSecuritySurfaceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerVerificationAndSubmissionAreOwnerOnly",
+            "class": "com.eema.backend.controller.TrustWorkflowSecuritySurfaceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.controller.VerifiedEmailEnforcementSurfaceTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "launchBlockerMarketplaceMutationsUseCentralVerifiedUserPolicy",
+            "class": "com.eema.backend.controller.VerifiedEmailEnforcementSurfaceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.dto.request.AuthInputContractTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "strictnessIsScopedToAllSixAuthDtos",
+            "class": "com.eema.backend.dto.request.AuthInputContractTest",
+            "result": "PASS"
+          },
+          {
+            "name": "bindingNormalizesHumanInputButPreservesSecrets",
+            "class": "com.eema.backend.dto.request.AuthInputContractTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.security.JwtServiceTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "validatesSignatureExpiryAndExpectedIssuer",
+            "class": "com.eema.backend.security.JwtServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.security.RequestCorrelationFilterTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "replacesUnsafeRequestId",
+            "class": "com.eema.backend.security.RequestCorrelationFilterTest",
+            "result": "PASS"
+          },
+          {
+            "name": "propagatesSafeRequestId",
+            "class": "com.eema.backend.security.RequestCorrelationFilterTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.AccountEmailNotificationServiceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "resetUsesAuthoritativeEmailAndFrontendResetRoute",
+            "class": "com.eema.backend.service.AccountEmailNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "verificationUsesAuthoritativeEmailAndFrontendVerificationRoute",
+            "class": "com.eema.backend.service.AccountEmailNotificationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.AccountRecoveryServiceTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "expiredAndInactiveVerificationAreRejectedWithoutActivation",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "validVerificationIsSingleUseAndSameUsedTokenIsIdempotent",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "forgotIsGenericAndResetChangesPasswordAndRevokesEveryRefreshSession",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "unknownForgotResponseMatchesExistingAndExpiredResetIsRejected",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "resendIsGenericAndDoesNothingForVerifiedOrUnknownAccount",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "recoveryTokensRejectExactExpiryEquality",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "issueStoresOnlyHashAndPublishesRawTokenAfterTransactionBoundary",
+            "class": "com.eema.backend.service.AccountRecoveryServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.AdminOperationsServiceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "eventTimelineIsChronologicalPagedAndRedactsUnknownSensitiveKeys",
+            "class": "com.eema.backend.service.AdminOperationsServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "bookingSearchForwardsControlledFiltersAndCapsPageSize",
+            "class": "com.eema.backend.service.AdminOperationsServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "bookingDetailCombinesAuthoritativeRefundFeePayoutAndLiabilityState",
+            "class": "com.eema.backend.service.AdminOperationsServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "exceptionQueueAggregatesAllRequiredOperationalCategories",
+            "class": "com.eema.backend.service.AdminOperationsServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.AuthServiceTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "registerAndLoginIssueTokensWithoutPersistingRawRefreshToken",
+            "class": "com.eema.backend.service.AuthServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "loginRejectsInactiveUser",
+            "class": "com.eema.backend.service.AuthServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "refreshRotatesAndRejectsReuse",
+            "class": "com.eema.backend.service.AuthServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.AvailabilityInquiryNotificationServiceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "scoutReceivesOfferWithDeadlineAndExistingScoutRoute",
+            "class": "com.eema.backend.service.AvailabilityInquiryNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "providerFailureDoesNotEscapeNotificationBoundary",
+            "class": "com.eema.backend.service.AvailabilityInquiryNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerReceivesNewInquiryWithExistingOwnerRoute",
+            "class": "com.eema.backend.service.AvailabilityInquiryNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutReceivesDeclineAndOfferExpiry",
+            "class": "com.eema.backend.service.AvailabilityInquiryNotificationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "offeredSlotThatBecomesTooLateExpiresWithoutCreatingBooking",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownOfferCreatesApprovedBookingAndDoesNotChangeWeeklyAvailability",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "unauthorizedOwnerCannotRespond",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scheduledExpiryReleasesOutstandingOffers",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "inquiryIsAllowedForUnavailableInterval",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "offerExpiresAndCannotBeAccepted",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "offeringOneOffSlotDoesNotModifyWeeklyAvailability",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "onlyInquiryScoutCanAcceptOffer",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerDeclineEmitsOneLifecycleEventAndDuplicateIsRejected",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerCannotOfferIntervalConflictingWithBooking",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "inquiryIsRejectedWhenNormalAvailabilityAlreadyContainsInterval",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "inquiryAndOwnerOfferCannotBypassLeadTime",
+            "class": "com.eema.backend.service.AvailabilityInquiryServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingApprovalExpirationJobTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "scheduledScanExpiresApprovedUnpaidBookings",
+            "class": "com.eema.backend.service.BookingApprovalExpirationJobTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingAvailabilityValidatorTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "acceptsSlotContainedInEffectiveAvailability",
+            "class": "com.eema.backend.service.BookingAvailabilityValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsSlotOutsideEffectiveAvailability",
+            "class": "com.eema.backend.service.BookingAvailabilityValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsInvalidVenueTimezone",
+            "class": "com.eema.backend.service.BookingAvailabilityValidatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingCancellationCoordinatorTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "scoutWithdrawsRequestedAndAwaitingPaymentWithoutRefund",
+            "class": "com.eema.backend.service.BookingCancellationCoordinatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerCanCancelOwnConfirmedBookingButNotAnotherVenue",
+            "class": "com.eema.backend.service.BookingCancellationCoordinatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "adminRequiresReasonAndReceivesFullRefundPolicy",
+            "class": "com.eema.backend.service.BookingCancellationCoordinatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingCancellationPolicyTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "exactSevenDaysAndExact48HoursUsePartialTier",
+            "class": "com.eema.backend.service.BookingCancellationPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerAndAdminAlwaysProduceFullCustomerRefundAndZeroSettlement",
+            "class": "com.eema.backend.service.BookingCancellationPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "moneyRoundingIsHalfUpAtTwoDecimals",
+            "class": "com.eema.backend.service.BookingCancellationPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "cancellationEconomicsUseRetainedAmountAndCommissionSnapshot",
+            "class": "com.eema.backend.service.BookingCancellationPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "snapshotUsesVenueTimezoneAcrossAmsterdamDstTransition",
+            "class": "com.eema.backend.service.BookingCancellationPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "gracePeriodRequiresConfirmationWithin24HoursAndShootMoreThan48HoursAway",
+            "class": "com.eema.backend.service.BookingCancellationPolicyTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingFinancialsTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "roundsMoneyExplicitlyAndEnforcesInvariants",
+            "class": "com.eema.backend.service.BookingFinancialsTest",
+            "result": "PASS"
+          },
+          {
+            "name": "calculatesCommissionAndActualFeePayout",
+            "class": "com.eema.backend.service.BookingFinancialsTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingNotificationServiceTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "usesSnapshotRecipientsAndRendersConfirmedDetails",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "requestExpiryAndUnavailableUseDistinctNonDeclineWording",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutFailureStillAttemptsOwner",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutReceivesDeclineAndApprovalExpiryMessages",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "authoritativeCancellationRefundCompletionUsesProcessedCopy",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerAndScoutAreNotifiedWhenRequestIsSubmitted",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutAcceptanceEmailContainsDeadlinePayCtaAndDeepLink",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "cancellationEmailDistinguishesInitiatedFromCompletedRefund",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "lifecycleEmailFailureIsContained",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "latePaymentMessageSaysNotConfirmedAndRefundInitiated",
+            "class": "com.eema.backend.service.BookingNotificationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingOverlapRuleTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "permitsBackToBackBefore",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          },
+          {
+            "name": "detectsOverlappingStart",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          },
+          {
+            "name": "permitsBackToBackAfter",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          },
+          {
+            "name": "permitsSeparatedBooking",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          },
+          {
+            "name": "detectsOverlappingEnd",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          },
+          {
+            "name": "detectsCandidateContainingBooking",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          },
+          {
+            "name": "detectsCandidateInsideBooking",
+            "class": "com.eema.backend.service.BookingOverlapRuleTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingPriceCalculatorTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "exposesAuthoritativeQuoteDetails",
+            "class": "com.eema.backend.service.BookingPriceCalculatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsInvalidConfigurationAndIntervals",
+            "class": "com.eema.backend.service.BookingPriceCalculatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "appliesMinimumExactMinutesAndFullDayCap",
+            "class": "com.eema.backend.service.BookingPriceCalculatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "capAlsoAppliesToMinimumDerivedTotalAndRoundsHalfUpToCents",
+            "class": "com.eema.backend.service.BookingPriceCalculatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingServiceTest",
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "acceptanceAfterOwnerDeadlineExpiresRequestAndFailsClearly",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "paymentAfterDeadlineExpiresBookingEvenBeforeSchedulerRuns",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsWebhookWhoseAmountDoesNotMatchDatabasePrice",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "requestAcceptPaymentEndsConfirmedWithoutSecondOwnerAction",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "firstPaidTransitionPublishesNotificationOnceAndDuplicateDoesNot",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "databaseConflictFromConcurrentAttemptCannotCreateSecondBooking",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "duplicatePaidWebhookDoesNotCreateAnotherEvent",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "acceptedInquiryBookingPublishesOnlyAcceptedBookingLifecycleEmail",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "acceptedRequestMakesOnlyOverlappingRequestsUnavailable",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "acceptanceThatHasBecomeTooLateExpiresRequest",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "unauthorizedOwnerCannotAcceptRequest",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "approvedRequestExpiresAndLatePaymentIsMarkedForRefund",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerCanDeclineRequestAndDoubleAcceptanceIsRejected",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerAndAdminCanReadAuthorizedBooking",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutCanReadOwnBookingButNotAnotherScoutsBooking",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutCreatesRequestWithSelectedTimesWithoutStartingPayment",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsWebhookWhosePaymentIdDoesNotMatchStoredPayment",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "dueRequestExpirationIsIdempotentAndIgnoresAcceptedRows",
+            "class": "com.eema.backend.service.BookingServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.BookingStateMachineTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "rejectsUserSkippingPaymentAndTerminalMutations",
+            "class": "com.eema.backend.service.BookingStateMachineTest",
+            "result": "PASS"
+          },
+          {
+            "name": "permitsDefinedTransitions",
+            "class": "com.eema.backend.service.BookingStateMachineTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.CancellationServiceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "openAwaitingPaymentIsCancelledAtMollieBeforeWithdrawal",
+            "class": "com.eema.backend.service.CancellationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "duplicateCancellationResumesAmbiguousRefundWithPersistedClaim",
+            "class": "com.eema.backend.service.CancellationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "paidProviderStateIsAppliedBeforeConfirmedCancellationPolicy",
+            "class": "com.eema.backend.service.CancellationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "zeroRefundCancellationNeverCallsRefundProvider",
+            "class": "com.eema.backend.service.CancellationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.CriticalBookingWorkflowTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "paidCallbackAfterDeadlineKeepsSlotReleasedAndInitiatesOneRefund",
+            "class": "com.eema.backend.service.CriticalBookingWorkflowTest",
+            "result": "PASS"
+          },
+          {
+            "name": "requestApprovalCheckoutAndAuthoritativePaymentCompleteOneReservedBooking",
+            "class": "com.eema.backend.service.CriticalBookingWorkflowTest",
+            "result": "PASS"
+          },
+          {
+            "name": "declineAndExpiryReleaseSlotsAndRejectCheckout",
+            "class": "com.eema.backend.service.CriticalBookingWorkflowTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.EmailServiceTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "disabledDeliveryNeverCallsProvider",
+            "class": "com.eema.backend.service.EmailServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "enabledEmailRequiresCredentials",
+            "class": "com.eema.backend.service.EmailServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "disabledEmailNeedsNoCredentials",
+            "class": "com.eema.backend.service.EmailServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.FinancialDocumentConcurrencyContractTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "issuanceLocksAuthoritativeAggregateRowsBeforeUniqueDocumentCreation",
+            "class": "com.eema.backend.service.FinancialDocumentConcurrencyContractTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.FinancialDocumentPdfRendererTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "payoutStatementUsesExactLedgerValuesAndTransferReference",
+            "class": "com.eema.backend.service.FinancialDocumentPdfRendererTest",
+            "result": "PASS"
+          },
+          {
+            "name": "receiptContainsPaymentSnapshotAndExcludesInternalEconomics",
+            "class": "com.eema.backend.service.FinancialDocumentPdfRendererTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.FinancialDocumentServiceTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "confirmedScoutReceiptIssuesOnceAndAdminCanReuseIt",
+            "class": "com.eema.backend.service.FinancialDocumentServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "onlyPaidPayoutUsesExactLedgerAndIssuesOneStatement",
+            "class": "com.eema.backend.service.FinancialDocumentServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "documentNumbersAreUniqueAndHistoricalReceiptIsNotRewritten",
+            "class": "com.eema.backend.service.FinancialDocumentServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "unpaidStatesAndUnauthorizedPeopleCannotObtainReceipt",
+            "class": "com.eema.backend.service.FinancialDocumentServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "readyHeldScoutAndUnrelatedOwnerCannotObtainStatement",
+            "class": "com.eema.backend.service.FinancialDocumentServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "confirmedPaymentRemainsReceiptEligibleAfterCancellationBeforeFirstDownload",
+            "class": "com.eema.backend.service.FinancialDocumentServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.HttpMollieProviderClientTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "omitsWebhookUrlForManualLocalWebhookMode",
+            "class": "com.eema.backend.service.HttpMollieProviderClientTest",
+            "result": "PASS"
+          },
+          {
+            "name": "sendsWebhookUrlWhenPublicTunnelIsConfigured",
+            "class": "com.eema.backend.service.HttpMollieProviderClientTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.IbanPolicyTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "rejectsChecksumAndUnsupportedCountry",
+            "class": "com.eema.backend.service.IbanPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "normalizesAndAcceptsValidSepaIbans",
+            "class": "com.eema.backend.service.IbanPolicyTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.IncidentReportTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "transitionsAreNarrowAndExplicit",
+            "class": "com.eema.backend.service.IncidentReportTest",
+            "result": "PASS"
+          },
+          {
+            "name": "cannotResolveBeforeReview",
+            "class": "com.eema.backend.service.IncidentReportTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.LocalPrivateDocumentStorageTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "publicUploadControllerHasNoPrivateDocumentStorageDependency",
+            "class": "com.eema.backend.service.LocalPrivateDocumentStorageTest",
+            "result": "PASS"
+          },
+          {
+            "name": "storesOpaqueRelativeReferencesAndRejectsTraversal",
+            "class": "com.eema.backend.service.LocalPrivateDocumentStorageTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.MollieFeeReconciliationJobTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "reconcilesAuthoritativeFeeOncePerPendingBooking",
+            "class": "com.eema.backend.service.MollieFeeReconciliationJobTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.OwnerFinancialLiabilityServiceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "settleUsesStoredAmountAuditsAndIsIdempotent",
+            "class": "com.eema.backend.service.OwnerFinancialLiabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "nonAdminCannotSettleAndWaivedCannotBeSettled",
+            "class": "com.eema.backend.service.OwnerFinancialLiabilityServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.OwnerPayoutServiceTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "normalEconomicsBecomeReadyOnlyAfterEndAndAuthoritativeFee",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutPartialCancellationUsesAuthoritativeSnapshot",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "adminCancellationIsCancelledWithoutOwnerLiability",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "adminListForwardsAllFiltersAndCapsPageSize",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerCancellationCreatesProviderCostLiabilityWithoutNegativePayout",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "markPaidIsIdempotentOnlyForSameReference",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "paidHistoryIsImmutableAndReversalCreatesRecoveryLiability",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerHistoryIsScopedAndDoesNotExposeTransferReference",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "otherwiseEligiblePayoutWaitsForVerifiedDestination",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "latePaymentCancelsAnyDefensivePayoutRecord",
+            "class": "com.eema.backend.service.OwnerPayoutServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.OwnerVerificationServiceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "adminApprovesPendingAndRejectsPendingWithReason",
+            "class": "com.eema.backend.service.OwnerVerificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerSubmitsAndCannotDowngradeVerifiedState",
+            "class": "com.eema.backend.service.OwnerVerificationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.PaymentCreationCoordinatorTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "checkoutBeforeOwnerApprovalIsRejected",
+            "class": "com.eema.backend.service.PaymentCreationCoordinatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "concurrentClaimsReuseDurableProviderKeyAndCompletionIsIdempotent",
+            "class": "com.eema.backend.service.PaymentCreationCoordinatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "checkoutAfterApprovalExpirationIsRejected",
+            "class": "com.eema.backend.service.PaymentCreationCoordinatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "refusesUnsafeRetryOutsideMollieReplayWindow",
+            "class": "com.eema.backend.service.PaymentCreationCoordinatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.PaymentServiceLeadTimeExemptionTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "acceptedBookingCanCheckoutWithoutReapplyingLeadTime",
+            "class": "com.eema.backend.service.PaymentServiceLeadTimeExemptionTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.PayoutDestinationCryptoTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "authenticatedEncryptionUsesRandomNonceAndRoundTrips",
+            "class": "com.eema.backend.service.PayoutDestinationCryptoTest",
+            "result": "PASS"
+          },
+          {
+            "name": "tamperingFailsAuthentication",
+            "class": "com.eema.backend.service.PayoutDestinationCryptoTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.PolicyAcceptanceServiceTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "snapshotReferencesExactFourCurrentVersions",
+            "class": "com.eema.backend.service.PolicyAcceptanceServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "duplicateAcceptanceIsIdempotent",
+            "class": "com.eema.backend.service.PolicyAcceptanceServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "publishingANewVersionMakesTheOldAcceptanceIncomplete",
+            "class": "com.eema.backend.service.PolicyAcceptanceServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.RefundCoordinatorLatePaymentTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "authoritativeRefundCompletionKeepsBookingExpired",
+            "class": "com.eema.backend.service.RefundCoordinatorLatePaymentTest",
+            "result": "PASS"
+          },
+          {
+            "name": "duplicateClaimReusesOneProviderIdempotencyKeyAndOneNotification",
+            "class": "com.eema.backend.service.RefundCoordinatorLatePaymentTest",
+            "result": "PASS"
+          },
+          {
+            "name": "cancellationRefundCompletionIsIdempotentAndKeepsCancelledStatus",
+            "class": "com.eema.backend.service.RefundCoordinatorLatePaymentTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.RefundServiceTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "cancellationRefundUsesExactClaimedPartialAmount",
+            "class": "com.eema.backend.service.RefundServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "onlyAdminMayRefund",
+            "class": "com.eema.backend.service.RefundServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "duplicateCancellationClaimDoesNotCreateAnotherProviderRefund",
+            "class": "com.eema.backend.service.RefundServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "latePaymentProviderFailureRetainsCoordinatorStateForSafeRetry",
+            "class": "com.eema.backend.service.RefundServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "definitiveProviderRejectionIsRecordedAndSanitized",
+            "class": "com.eema.backend.service.RefundServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.S3StorageTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "privateStorageRejectsTraversal",
+            "class": "com.eema.backend.service.S3StorageTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsOversizedAndUnsupportedImages",
+            "class": "com.eema.backend.service.S3StorageTest",
+            "result": "PASS"
+          },
+          {
+            "name": "publicUploadUsesConfiguredPublicBucketAndGeneratedKey",
+            "class": "com.eema.backend.service.S3StorageTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.TrustNotificationServiceTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "sendsVerificationApprovalAndSafeRejectionReason",
+            "class": "com.eema.backend.service.TrustNotificationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "sendsApprovalChangesAndSuspensionMessages",
+            "class": "com.eema.backend.service.TrustNotificationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueAvailabilityServiceTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "blockedOverrideSubtractsPartialRange",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsInvalidAndOverlappingWeeklyIntervals",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsExcessiveDateRange",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "onlyReservationStatusesBlockEffectiveAvailability",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "leadTimeRemovesClipsAndPreservesIntervals",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "confirmedBookingSplitsAvailabilityAndCancelledBookingDoesNotBlock",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "blocksPartOfSpecialAvailabilityWhenNoWeeklyHoursExist",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerMayManageOwnVenueAndTimezoneIsValidated",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scoutCannotMutateAvailability",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "availableOverrideAddsAndNormalizesOutsideWeeklyHours",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "calculatesWeeklyAndEmptyDay",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerCannotManageAnotherOwnersVenue",
+            "class": "com.eema.backend.service.VenueAvailabilityServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueBookingLeadTimePolicyTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "usesElapsedTimeAcrossAmsterdamDstChange",
+            "class": "com.eema.backend.service.VenueBookingLeadTimePolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "allowsTwentyFiveHoursAndExactBoundary",
+            "class": "com.eema.backend.service.VenueBookingLeadTimePolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectsOneMinuteInsideBoundary",
+            "class": "com.eema.backend.service.VenueBookingLeadTimePolicyTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "minimumCeilingHeightMustBeKnownAndHighEnough",
+            "class": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "explicitActivityMustBePermittedAndNotProhibited",
+            "class": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "requiredBooleanFactsFailClosedWhenFalseOrUnknown",
+            "class": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "preferencesNeverRemoveCandidatesEvenWhenFactsAreUnknown",
+            "class": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "parkingRequirementAndMinimumSpacesFailClosed",
+            "class": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "crewCapacityMustBeKnownAndMeetTheRequirement",
+            "class": "com.eema.backend.service.VenueHardRequirementEvaluatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueMatchAvailabilityFilterTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "partialOverlapAndFullyUnavailableDateAreRejected",
+            "class": "com.eema.backend.service.VenueMatchAvailabilityFilterTest",
+            "result": "PASS"
+          },
+          {
+            "name": "completeIntervalInsideAvailabilityPasses",
+            "class": "com.eema.backend.service.VenueMatchAvailabilityFilterTest",
+            "result": "PASS"
+          },
+          {
+            "name": "noCompleteTimingPreservesCandidatesAndDoesNotQueryAvailability",
+            "class": "com.eema.backend.service.VenueMatchAvailabilityFilterTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueModerationServiceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "adminApprovesRequestsChangesSuspendsAndReactivatesWithoutTouchingBookings",
+            "class": "com.eema.backend.service.VenueModerationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "verifiedOwnerSubmitsCompleteVenueButOtherOwnerCannot",
+            "class": "com.eema.backend.service.VenueModerationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "unverifiedOrIncompleteOwnerCannotSubmit",
+            "class": "com.eema.backend.service.VenueModerationServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "approvalRechecksReadiness",
+            "class": "com.eema.backend.service.VenueModerationServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueProductionProfileValidatorTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "completeProfileIsReady",
+            "class": "com.eema.backend.service.VenueProductionProfileValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "contradictoryActivitiesAndParkingAreRejected",
+            "class": "com.eema.backend.service.VenueProductionProfileValidatorTest",
+            "result": "PASS"
+          },
+          {
+            "name": "incompleteProfileReportsUnknownFieldsWithoutTreatingThemAsFalse",
+            "class": "com.eema.backend.service.VenueProductionProfileValidatorTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VenueServiceTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "ownerUpdatesMetadataAndPersistsMediaOrderAndRemoval",
+            "class": "com.eema.backend.service.VenueServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "invalidOrDuplicateStorageReferencesAreRejected",
+            "class": "com.eema.backend.service.VenueServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "scopedUploadIsAttachedAndCleanupRunsIfPersistenceFails",
+            "class": "com.eema.backend.service.VenueServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "venuePricingRequestValidationRejectsInvalidRequiredValuesAndAcceptsNullCap",
+            "class": "com.eema.backend.service.VenueServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerMayRemoveOptionalFullDayRate",
+            "class": "com.eema.backend.service.VenueServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "anotherOwnerAndScoutCannotUpdateVenue",
+            "class": "com.eema.backend.service.VenueServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.VerifiedUserPolicyTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "activeAdminOperationsAreNotBlockedByMarketplaceVerification",
+            "class": "com.eema.backend.service.VerifiedUserPolicyTest",
+            "result": "PASS"
+          },
+          {
+            "name": "requiresCurrentDatabaseVerificationForMarketplaceUsers",
+            "class": "com.eema.backend.service.VerifiedUserPolicyTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.WebhookServiceTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "latePaidWebhookStartsRefundInsteadOfNormalConfirmationPath",
+            "class": "com.eema.backend.service.WebhookServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.WorkflowObservabilityTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "stuckScanPublishesReadOnlyGauges",
+            "class": "com.eema.backend.service.WorkflowObservabilityTest",
+            "result": "PASS"
+          },
+          {
+            "name": "recordsLifecycleCountersWithoutHighCardinalityLabels",
+            "class": "com.eema.backend.service.WorkflowObservabilityTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.ai.GeminiAiServiceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "onlyAvailableCandidatesReachRanking",
+            "class": "com.eema.backend.service.ai.GeminiAiServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ranksOnlyCandidatesReturnedByDeterministicFiltering",
+            "class": "com.eema.backend.service.ai.GeminiAiServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "zeroEligibleCandidatesReturnsEmptyResponseWithoutCallingGeminiRanker",
+            "class": "com.eema.backend.service.ai.GeminiAiServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "availabilityRemovalSkipsRankingAndIsNotRelaxed",
+            "class": "com.eema.backend.service.ai.GeminiAiServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.ai.GeminiBriefParserServiceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "relativeDateUsesExplicitApplicationReferenceDate",
+            "class": "com.eema.backend.service.ai.GeminiBriefParserServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "mapsStructuredProductionRequirementsWithoutLiveGemini",
+            "class": "com.eema.backend.service.ai.GeminiBriefParserServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "promptDefinesRequirementStrengthEnumsAndStructuredTagBoundary",
+            "class": "com.eema.backend.service.ai.GeminiBriefParserServiceTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ambiguousTimingRemainsNonExactContext",
+            "class": "com.eema.backend.service.ai.GeminiBriefParserServiceTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.service.ai.GeminiVenueRankerTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "rankingPromptReceivesAuthoritativeProductionFactsAndSafetyRules",
+            "class": "com.eema.backend.service.ai.GeminiVenueRankerTest",
+            "result": "PASS"
+          }
+        ]
+      }
+    ]
+  },
+  "postgres": {
+    "tests": 40,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+        "tests": 7,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "enumerationEligibilityMatrix",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "verificationLifecycle",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "verifiedMutationBoundary",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "policyAcceptanceProjectionReturnsOnlyTheUsersVersionIds",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "resetLifecycleAndBoundaries",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "resetMustNotMakeDistinctUnicodePasswordsEquivalent",
+            "class": "com.eema.backend.integration.AuthRecoveryIntegrationTest",
+            "result": "FAIL"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.integration.AuthSessionIntegrationTest",
+        "tests": 8,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "jwtValidationAndDatabaseAuthority",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "independentSessionsAndRotation",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "loginMatrixAndAnonymousMe",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "registrationBoundaryMatrix",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "FAIL"
+          },
+          {
+            "name": "concurrentHttpRefreshHasOneWinner",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "refreshFailureMatrix",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "inactiveDuplicateStillConflicts",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "ownerRegistrationCreatesNoTrustOrMarketplaceAggregates",
+            "class": "com.eema.backend.integration.AuthSessionIntegrationTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "policyAcceptanceBookingSnapshotStaysHistoricalAndIncidentHasNoFinancialSideEffects",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "halfOpenBackToBackReservationsBothPersist",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "readyPayoutDestinationSnapshotDoesNotFollowReplacement",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "overlappingRequestedRowsCoexistButConcurrentAcceptanceCannotDoubleReserve",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "refreshTokenRotationLockAllowsOnlyOneWinner",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "exclusionRejectsOneOverlappingBlockingInsert",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "inquiryAndPayoutSkipLockedQueriesAreActuallyDisjoint",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "emailIndexRejectsConcurrentCaseVariedLogicalDuplicates",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "policyPublishRaceLeavesExactlyOneCurrentVersion",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "payoutAndDocumentUniqueConstraintsHaveSingleAuthorities",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "twoSkipLockedWorkersReceiveDisjointBoundedBookingBatches",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "commonFlywayChainAndHibernateValidationStartFromEmptyDatabase",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "verifiedDestinationPartialIndexAndReplacementSemanticsHold",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate",
+            "class": "com.eema.backend.integration.PostgresCriticalPathIntegrationTest",
+            "result": "PASS"
+          }
+        ]
+      },
+      {
+        "name": "com.eema.backend.integration.RegistrationIntegrationTest",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [
+          {
+            "name": "duplicateCaseVariantIs409WithoutAdditionalTokensOrEvents",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "otherAuthEndpointsRejectUnknownFieldsWithSafeErrors",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "directRegistrationAlsoCanonicalizesAndAllowsOwner",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "verificationPersistenceFailureRollsBackUserAndTokens",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "recoveryUsesCanonicalEmailAndKeepsGenericResponses",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "deliveryFailureAfterCommitDoesNotRollbackRegistration",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "anonymousScoutPersistsOnlyHashesAndReturnsExactPublicContract",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "rejectedRolesValidationAndMalformedJsonHaveNoSideEffects",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "authenticatedScoutDoesNotOwnOrOverrideNewRegistration",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "unknownRegistrationFieldsAreRejectedBeforeAnySideEffect",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          },
+          {
+            "name": "normalizedLoginPreservesPasswordSpacesExactly",
+            "class": "com.eema.backend.integration.RegistrationIntegrationTest",
+            "result": "PASS"
+          }
+        ]
+      }
+    ]
+  }
+}

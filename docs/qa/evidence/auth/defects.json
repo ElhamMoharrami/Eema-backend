@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-10T19:22:47.129Z",
+  "checks": [
+    {
+      "id": "AUTH-D01",
+      "scenario": "AUTH-004",
+      "expectedDifferentPasswordLogin": 401,
+      "actualDifferentPasswordLogin": 401,
+      "registerStatus": 201,
+      "characterLength": 72,
+      "registeredUtf8Bytes": 144,
+      "alternateUtf8Bytes": 108,
+      "sharedPrefixBytes": 72,
+      "fixtureEmail": "auth-defect+e73413eb-7614-411e-a794-0cfb7f6d3d1e@example.test",
+      "result": "PASS"
+    },
+    {
+      "id": "AUTH-D02",
+      "scenario": "Admin booking search; discovered during AUTH-006",
+      "expected": 200,
+      "actual": 200,
+      "temporaryAdminDemotedAndDeactivated": true,
+      "result": "PASS"
+    }
+  ],
+  "rawSecretsFoundInLogs": false
+}

@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-10",
+  "counts": {
+    "localPass": 13,
+    "fail": 2,
+    "blocked": 0,
+    "stagingOnlyGroupsNotRun": 5
+  },
+  "scenarios": [
+    {
+      "id": "AUTH-001",
+      "result": "LOCAL PASS",
+      "evidence": "RegistrationIntegrationTest (11 methods); browser SCOUT registration + /me + reload",
+      "scope": "One canonical active/unverified SCOUT; BCrypt/refresh/verification hash correspondence and atomicity proved."
+    },
+    {
+      "id": "AUTH-002",
+      "result": "LOCAL PASS",
+      "evidence": "AuthSessionIntegrationTest.ownerRegistrationCreatesNoTrustOrMarketplaceAggregates; browser OWNER journey",
+      "scope": "OWNER active/unverified; synthetic UNVERIFIED DTO with null id; zero trust, venue, payout-destination and acceptance rows."
+    },
+    {
+      "id": "AUTH-003",
+      "result": "LOCAL PASS",
+      "evidence": "RegistrationIntegrationTest duplicate test; AuthSessionIntegrationTest.inactiveDuplicateStillConflicts; PostgreSQL email index race",
+      "scope": "Canonical duplicates, including inactive original, conflict; no extra token/event."
+    },
+    {
+      "id": "AUTH-004",
+      "result": "FAIL",
+      "evidence": "AuthSessionIntegrationTest.registrationBoundaryMatrix; AuthInputContractTest; live defects.json AUTH-D01",
+      "scope": "ASCII/email/name/role/strict JSON boundaries pass; accepted Unicode password has a colliding different password."
+    },
+    {
+      "id": "AUTH-005",
+      "result": "LOCAL PASS",
+      "evidence": "AuthSessionIntegrationTest.loginMatrixAndAnonymousMe; normalizedLoginPreservesPasswordSpacesExactly; browser SCOUT/OWNER login",
+      "scope": "SCOUT/OWNER/isolated ADMIN login; wrong/unknown/inactive/blank/malformed; canonical email and exact ASCII spaces."
+    },
+    {
+      "id": "AUTH-006",
+      "result": "LOCAL PASS",
+      "evidence": "AuthSessionIntegrationTest.jwtValidationAndDatabaseAuthority; browser expired-access check",
+      "scope": "Bad JWT variants401; role claim cannot override DB; promotion /me ADMIN, protected missing detail404; demotion403/inactive401. Separate admin list defect recorded below."
+    },
+    {
+      "id": "AUTH-007",
+      "result": "LOCAL PASS",
+      "evidence": "Browser SCOUT/OWNER registration/login/reload/logout/cross-tab checks",
+      "scope": "Reload + /me agreement; sign-out clears both tabs; captured refresh still works because logout is local only."
+    },
+    {
+      "id": "AUTH-008",
+      "result": "LOCAL PASS",
+      "evidence": "AuthSessionIntegrationTest.independentSessionsAndRotation / refreshFailureMatrix / concurrentHttpRefreshHasOneWinner; existing SQL race",
+      "scope": "Independent sessions, one token rotation winner, revoked/expired/reused/unknown/inactive failures; real rows inspected."
+    },
+    {
+      "id": "AUTH-009",
+      "result": "LOCAL PASS",
+      "evidence": "client.json seven refresh outcome variants; browser actual expired-access refresh",
+      "scope": "One refresh/one retry; failed/malformed refresh clears session; second401 retains new session as current behavior."
+    },
+    {
+      "id": "AUTH-010",
+      "result": "LOCAL PASS \u2014 characterization",
+      "evidence": "client.json same-tab five requests / two contexts; browser actual two-tab paused refresh",
+      "scope": "One refresh per tab; real race200/401 and shared session cleared by loser. Known gap, not an approval of cross-tab UX."
+    },
+    {
+      "id": "AUTH-011",
+      "result": "LOCAL PASS",
+      "evidence": "AuthRecoveryIntegrationTest.enumerationEligibilityMatrix; normalized recovery test; browser forgot and owner resend",
+      "scope": "Generic known/unknown/inactive/verified responses; only eligible tokens/events. Hash correspondence inspected."
+    },
+    {
+      "id": "AUTH-012",
+      "result": "LOCAL PASS",
+      "evidence": "AuthRecoveryIntegrationTest.verificationLifecycle; AccountRecoveryServiceTest.recoveryTokensRejectExactExpiryEquality; browser valid/missing/invalid/expired",
+      "scope": "Verification persists; replacement/inactive/expiry failures; used verified token idempotent, including after expiry."
+    },
+    {
+      "id": "AUTH-013",
+      "result": "LOCAL PASS",
+      "evidence": "AuthRecoveryIntegrationTest.verifiedMutationBoundary / policyAcceptanceProjectionReturnsOnlyTheUsersVersionIds; browser verification",
+      "scope": "Unverified writes403; verified owner submits; verified scout without policies403 after the projection fix. UI /me refresh agrees."
+    },
+    {
+      "id": "AUTH-014",
+      "result": "FAIL",
+      "evidence": "AuthRecoveryIntegrationTest.resetLifecycleAndBoundaries / resetRejectsExpiredInactiveReplacedAndUnknownTokensWithoutMutation / resetMustNotMakeDistinctUnicodePasswordsEquivalent; browser reset matrix",
+      "scope": "ASCII lifecycle/UI/expiry/revocation pass; Unicode reset hits same AUTH-D01 collision."
+    },
+    {
+      "id": "AUTH-015",
+      "result": "LOCAL PASS \u2014 characterization",
+      "evidence": "resetLifecycleAndBoundaries; jwtValidationAndDatabaseAuthority; browser retained-JWT check",
+      "scope": "Reset deletes refresh rows; previously issued unexpired access JWT200, expired/inactive401. No immediate access revocation claim."
+    }
+  ]
+}

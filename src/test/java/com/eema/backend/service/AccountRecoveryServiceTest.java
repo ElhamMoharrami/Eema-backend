@@ -110,4 +110,15 @@ class AccountRecoveryServiceTest {
                 .isInstanceOf(BadRequestException.class);
         verifyNoInteractions(refresh);
     }
+    @Test void recoveryTokensRejectExactExpiryEquality() {
+        OffsetDateTime boundary = OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC);
+        when(verification.findByTokenHashForUpdate("hashed-token")).thenReturn(Optional.of(
+                EmailVerificationToken.builder().user(user).expiresAt(boundary).build()));
+        when(resets.findByTokenHashForUpdate("hashed-token")).thenReturn(Optional.of(
+                PasswordResetToken.builder().user(user).expiresAt(boundary).build()));
+        assertThatThrownBy(() -> service.verifyEmail("raw-secret-token")).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> service.resetPassword("raw-secret-token", "new-password")).isInstanceOf(BadRequestException.class);
+        verifyNoInteractions(passwords, refresh);
+    }
+
 }

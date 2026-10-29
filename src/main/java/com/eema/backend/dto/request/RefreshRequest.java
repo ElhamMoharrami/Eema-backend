@@ -10,5 +10,5 @@ public record RefreshRequest(
         @NotBlank
         String refreshToken
 
-) {
+) implements StrictAuthRequest {
 }

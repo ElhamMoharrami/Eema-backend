@@ -17,5 +17,9 @@ public record LoginRequest(
         @Size(min = 8, max = 72)
         String password
 
-) {
+) implements StrictAuthRequest {
+
+    public LoginRequest {
+        email = EmailNormalizer.normalize(email);
+    }
 }

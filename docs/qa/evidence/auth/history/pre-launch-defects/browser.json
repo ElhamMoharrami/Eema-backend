@@ -1,0 +1,98 @@
+{
+  "result": "PASS",
+  "date": "2026-09-10T18:26:45.294Z",
+  "source": "Real local frontend production build + API + PostgreSQL; synthetic token hashes inserted only for generated QA users",
+  "checks": [
+    {
+      "name": "SCOUT registration/login/reload/logout and cross-tab sync",
+      "result": "PASS",
+      "email": "auth-browser-scout+1789064790361@example.test",
+      "role": "SCOUT",
+      "unverified": true,
+      "meAgrees": true,
+      "capturedRefreshStillValidAfterLogout": true
+    },
+    {
+      "name": "OWNER no implicit trust/venue/bank; resend UI",
+      "result": "PASS",
+      "ownerVerification": "UNVERIFIED",
+      "persistedTrustRows": 0
+    },
+    {
+      "name": "OWNER registration/login/reload/logout and cross-tab sync",
+      "result": "PASS",
+      "email": "auth-browser-owner+1789064793162@example.test",
+      "role": "OWNER",
+      "unverified": true,
+      "meAgrees": true,
+      "capturedRefreshStillValidAfterLogout": true
+    },
+    {
+      "name": "Forgot known/unknown browser response and hashed token",
+      "result": "PASS",
+      "genericResponse": true,
+      "resetRows": 1
+    },
+    {
+      "name": "Verification success refreshes cached user",
+      "result": "PASS",
+      "emailVerified": true,
+      "tokenNotInStorage": true
+    },
+    {
+      "name": "Verification missing browser state",
+      "result": "PASS"
+    },
+    {
+      "name": "Verification invalid browser state",
+      "result": "PASS"
+    },
+    {
+      "name": "Verification expired browser state",
+      "result": "PASS"
+    },
+    {
+      "name": "Reset missing-link browser state",
+      "result": "PASS"
+    },
+    {
+      "name": "Reset invalid browser state",
+      "result": "PASS"
+    },
+    {
+      "name": "Reset expired browser state",
+      "result": "PASS"
+    },
+    {
+      "name": "Reset form validation/success and PostgreSQL revocation",
+      "result": "PASS",
+      "passwordSpacesPreserved": true,
+      "oldPasswordStatus": 401,
+      "oldRefreshStatus": 401,
+      "refreshRowsImmediatelyAfterReset": 0,
+      "priorAccessJwtStatus": 200,
+      "expiredAccessStatus": 401,
+      "sessionCleared": true
+    },
+    {
+      "name": "Actual expired-access application refresh",
+      "result": "PASS",
+      "refreshCalls": 1
+    },
+    {
+      "name": "Actual two-tab refresh race",
+      "result": "PASS",
+      "statuses": [
+        200,
+        401
+      ],
+      "sharedSessionCleared": true,
+      "knownGap": true
+    },
+    {
+      "name": "Runtime secret scan",
+      "result": "PASS",
+      "rawSecretsFound": false
+    }
+  ]
+}

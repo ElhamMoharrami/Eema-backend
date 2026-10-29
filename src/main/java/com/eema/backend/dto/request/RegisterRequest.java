@@ -27,5 +27,10 @@ public record RegisterRequest(
         @NotNull
         UserRole role
 
-) {
+) implements StrictAuthRequest {
+
+    public RegisterRequest {
+        email = EmailNormalizer.normalize(email);
+        fullName = fullName == null ? null : fullName.trim();
+    }
 }

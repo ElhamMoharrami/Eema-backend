@@ -1,0 +1,71 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "during-refresh",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "ownerAttempts": 2
+    },
+    {
+      "name": "after-refresh",
+      "result": "PASS",
+      "refreshCalls": 1,
+      "ownerAttempts": 2
+    },
+    {
+      "name": "403-before-refresh-coalesces-session-check",
+      "result": "PASS",
+      "resourceAttempts": 4,
+      "meAttempts": 2,
+      "refreshCalls": 1
+    },
+    {
+      "name": "real-owner-forbidden-and-copy",
+      "result": "PASS",
+      "resourceAttempts": 1,
+      "validSessionChecks": 1
+    },
+    {
+      "name": "retry-forbidden",
+      "result": "PASS",
+      "attempts": 2,
+      "refreshCalls": 0
+    },
+    {
+      "name": "retry-unauthorized",
+      "result": "PASS",
+      "attempts": 2,
+      "refreshCalls": 0
+    },
+    {
+      "name": "write-forbidden",
+      "result": "PASS",
+      "attempts": 1,
+      "refreshCalls": 0
+    },
+    {
+      "name": "logout-pending-success",
+      "result": "PASS",
+      "attempts": 1,
+      "refreshCalls": 0
+    },
+    {
+      "name": "account-switch",
+      "result": "PASS",
+      "attempts": 1,
+      "refreshCalls": 0
+    },
+    {
+      "name": "context-aware-401-403-copy",
+      "result": "PASS"
+    },
+    {
+      "name": "actual-owner-admin-load-state-and-role-guards",
+      "result": "PASS"
+    }
+  ],
+  "repeatedRuns": 20,
+  "command": "node scripts/qa/owner-auth-recovery.cjs",
+  "beforeFix": "Original frontend deterministically rejected a stale403 during refresh. Added early-order403 coverage from source audit. Browser harness CSS-case and CORS-mock assertions were corrected separately; final denial uses real backend ownership."
+}

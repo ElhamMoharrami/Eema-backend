@@ -1,5 +1,7 @@
 package com.eema.backend.service;
 
+import com.eema.backend.dto.request.EmailNormalizer;
+
 import com.eema.backend.config.AuthRecoveryProperties;
 import com.eema.backend.dto.response.MessageResponse;
 import com.eema.backend.entity.*;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +67,7 @@ public class AccountRecoveryService {
 
     @Transactional
     public MessageResponse resendVerification(String email) {
-        users.findByEmailIgnoreCase(normalize(email))
+        users.findByEmailIgnoreCase(EmailNormalizer.normalize(email))
                 .filter(User::isActive).filter(user -> !user.isEmailVerified())
                 .ifPresent(this::issueVerification);
         return new MessageResponse(RESEND_MESSAGE);
@@ -74,7 +75,7 @@ public class AccountRecoveryService {
 
     @Transactional
     public MessageResponse forgotPassword(String email) {
-        users.findByEmailIgnoreCase(normalize(email)).filter(User::isActive).ifPresent(user -> {
+        users.findByEmailIgnoreCase(EmailNormalizer.normalize(email)).filter(User::isActive).ifPresent(user -> {
             OffsetDateTime now = now();
             resetTokens.invalidateOutstanding(user.getId(), now);
             String raw = tokens.generate();
@@ -107,5 +108,4 @@ public class AccountRecoveryService {
     private BadRequestException invalidVerification() { return new BadRequestException("Invalid or expired verification token"); }
     private BadRequestException invalidReset() { return new BadRequestException("Invalid or expired password-reset token"); }
     private OffsetDateTime now() { return OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC); }
-    private String normalize(String email) { return email == null ? "" : email.trim().toLowerCase(Locale.ROOT); }
 }

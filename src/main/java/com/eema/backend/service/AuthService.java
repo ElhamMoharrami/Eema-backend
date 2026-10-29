@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.Locale;
+import com.eema.backend.dto.request.EmailNormalizer;
 
 /**
  * Service for authentication operations.
@@ -54,12 +54,12 @@ public class AuthService {
      */
     public AuthResponse register(RegisterRequest request) {
         // Validate role - only SCOUT or OWNER allowed
-        if (request.role() == UserRole.ADMIN) {
-            throw new BadRequestException("ADMIN role cannot be registered through this endpoint");
+        if (request.role() != UserRole.SCOUT && request.role() != UserRole.OWNER) {
+            throw new BadRequestException("Only SCOUT and OWNER roles can be registered through this endpoint");
         }
 
         // Normalize email
-        String normalizedEmail = normalizeEmail(request.email());
+        String normalizedEmail = request.email();
 
         // Check email uniqueness (case-insensitive)
         if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {
@@ -96,7 +96,7 @@ public class AuthService {
      */
     public AuthResponse login(LoginRequest request) {
         // Normalize email
-        String normalizedEmail = normalizeEmail(request.email());
+        String normalizedEmail = request.email();
 
         // Find user by email (case-insensitive)
         User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
@@ -196,22 +196,11 @@ public class AuthService {
      */
     public UserDto getCurrentUser(Authentication authentication) {
         String email = authentication.getName();
-        String normalizedEmail = normalizeEmail(email);
+        String normalizedEmail = EmailNormalizer.normalize(email);
         User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
                 .orElseThrow(() -> new IllegalStateException("User not found: " + email));
         return userMapper.toDto(user);
     }
 
-    /**
-     * Normalize email address by trimming and converting to lowercase.
-     *
-     * @param email the email to normalize
-     * @return normalized email
-     */
-    private String normalizeEmail(String email) {
-        if (email == null) {
-            return null;
-        }
-        return email.trim().toLowerCase(Locale.ROOT);
-    }
+
 }

@@ -1,0 +1,105 @@
+{
+  "date": "2026-09-10",
+  "contract": "Auth-input hardening: canonical email before validation, strict auth bodies",
+  "liveApi": {
+    "result": "PASS",
+    "http": 201,
+    "email": "scout-a+20260910-164232-6ca8b350@example.test",
+    "user": {
+      "id": "6ad9b3ad-eb3f-460f-8f0d-acdf3c6133f7",
+      "email": "scout-a+20260910-164232-6ca8b350@example.test",
+      "role": "SCOUT",
+      "fullName": "QA Scout A",
+      "phone": null,
+      "active": true,
+      "emailVerified": false
+    },
+    "responseFields": [
+      "accessToken",
+      "expiresIn",
+      "refreshToken",
+      "tokenType",
+      "user"
+    ],
+    "meAgreement": true,
+    "safeDatabase": [
+      {
+        "users": 1,
+        "bcrypt_shape": true,
+        "role": true,
+        "active": true,
+        "unverified": true
+      },
+      {
+        "refresh_records": 1,
+        "active": true,
+        "hash_matches": true
+      },
+      {
+        "verification_records": 1,
+        "active": true,
+        "hash_shape": true
+      }
+    ],
+    "paddedEmailAndName": true,
+    "normalizedDuplicateStatus": 409,
+    "unknownFieldStatus": 400,
+    "unknownFieldUserCount": 0
+  },
+  "browser": {
+    "result": "PASS",
+    "email": "scout-a+ui-1789058601455@example.test",
+    "registrationStatuses": [
+      201
+    ],
+    "beforeReload": {
+      "path": "/",
+      "identity": true,
+      "scoutLinks": true,
+      "unverifiedNotice": true,
+      "user": {
+        "id": "ce7c259d-f4d4-47e7-8db1-fec18926be28",
+        "email": "scout-a+ui-1789058601455@example.test",
+        "role": "SCOUT",
+        "fullName": "QA Scout A",
+        "phone": null,
+        "active": true,
+        "emailVerified": false
+      }
+    },
+    "afterReload": {
+      "path": "/",
+      "identity": true,
+      "scoutLinks": true,
+      "unverifiedNotice": true,
+      "user": {
+        "id": "ce7c259d-f4d4-47e7-8db1-fec18926be28",
+        "email": "scout-a+ui-1789058601455@example.test",
+        "role": "SCOUT",
+        "fullName": "QA Scout A",
+        "phone": null,
+        "active": true,
+        "emailVerified": false
+      }
+    },
+    "authoritative": {
+      "status": 200,
+      "agrees": true
+    },
+    "sessionCleared": true
+  },
+  "checks": {
+    "unit": "PASS: 225",
+    "postgres": "PASS: 25 (14 critical-path + 11 registration)",
+    "cleanPackage": "PASS",
+    "frontendTypecheckLintBuild": "PASS; source unchanged",
+    "bothDiffChecks": "PASS",
+    "stagingEmail": "NOT RUN"
+  },
+  "databaseAudit": {
+    "noncanonicalUsers": 0,
+    "canonicalCollisions": 0,
+    "migration": "none; existing LOWER(email) unique index retained"
+  },
+  "cleanup": "Browser signed out; isolated profile removed; unique fixture rows retained; no volume reset."
+}

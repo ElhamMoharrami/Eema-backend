@@ -45,6 +45,20 @@ class PostgresCriticalPathIntegrationTest {
         assertEquals("bookings_no_overlapping_reservations", jdbc.queryForObject("select conname from pg_constraint where conname='bookings_no_overlapping_reservations'",String.class));
     }
 
+    @Test void emailIndexRejectsConcurrentCaseVariedLogicalDuplicates() throws Exception {
+        String address = UUID.randomUUID() + "@example.test";
+        SqlAction lower = c -> { try (PreparedStatement p = c.prepareStatement("insert into users(email,password_hash,role) values(?,'fixture','SCOUT')")) {
+            p.setString(1, address); p.executeUpdate();
+        }};
+        SqlAction upper = c -> { try (PreparedStatement p = c.prepareStatement("insert into users(email,password_hash,role) values(?,'fixture','SCOUT')")) {
+            p.setString(1, address.toUpperCase(Locale.ROOT)); p.executeUpdate();
+        }};
+        RaceResult result = race(lower, upper);
+        assertEquals(1, result.successes(), result::diagnostic);
+        assertEquals(1, result.failures(), result::diagnostic);
+        assertEquals(1, jdbc.queryForObject("select count(*) from users where lower(email)=?", Integer.class, address));
+    }
+
     @Test void nativeEnumsAndProductionActivityArraysRoundTripThroughHibernate() {
         Fixture f=fixture();
         jdbc.update("update venues set status='PENDING'::venue_status, permitted_activities=array['FILM','PHOTO']::production_activity[] where id=?",f.venue);

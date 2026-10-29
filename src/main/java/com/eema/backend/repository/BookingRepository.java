@@ -22,23 +22,24 @@ import com.eema.backend.entity.enums.RefundStatus;
 import java.time.OffsetDateTime;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, UUID> {
+public interface BookingRepository extends JpaRepository<Booking, UUID>, org.springframework.data.jpa.repository.JpaSpecificationExecutor<Booking> {
 
-    @Query("""
-            select b from Booking b
-            where (:bookingId is null or b.id = :bookingId)
-              and (:venueId is null or b.venueId = :venueId)
-              and (:scoutId is null or b.scoutId = :scoutId)
-              and (:status is null or b.status = :status)
-              and (:molliePaymentId is null or b.molliePaymentId = :molliePaymentId)
-              and (:refundStatus is null or b.refundStatus = :refundStatus)
-              and (:paymentCreationStatus is null or b.paymentCreationStatus = :paymentCreationStatus)
-            order by b.createdAt desc
-            """)
-    Page<Booking> adminSearch(@Param("bookingId") UUID bookingId, @Param("venueId") UUID venueId,
-            @Param("scoutId") UUID scoutId, @Param("status") BookingStatus status,
-            @Param("molliePaymentId") String molliePaymentId, @Param("refundStatus") RefundStatus refundStatus,
-            @Param("paymentCreationStatus") PaymentCreationStatus paymentCreationStatus, Pageable pageable);
+    default Page<Booking> adminSearch(UUID bookingId, UUID venueId, UUID scoutId,
+            BookingStatus status, String molliePaymentId, RefundStatus refundStatus,
+            PaymentCreationStatus paymentCreationStatus, Pageable pageable) {
+        return findAll((root, query, cb) -> {
+            var predicates = new java.util.ArrayList<jakarta.persistence.criteria.Predicate>();
+            if (bookingId != null) predicates.add(cb.equal(root.get("id"), bookingId));
+            if (venueId != null) predicates.add(cb.equal(root.get("venueId"), venueId));
+            if (scoutId != null) predicates.add(cb.equal(root.get("scoutId"), scoutId));
+            if (status != null) predicates.add(cb.equal(root.get("status"), status));
+            if (molliePaymentId != null) predicates.add(cb.equal(root.get("molliePaymentId"), molliePaymentId));
+            if (refundStatus != null) predicates.add(cb.equal(root.get("refundStatus"), refundStatus));
+            if (paymentCreationStatus != null) predicates.add(cb.equal(root.get("paymentCreationStatus"), paymentCreationStatus));
+            return cb.and(predicates.toArray(jakarta.persistence.criteria.Predicate[]::new));
+        }, org.springframework.data.domain.PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "createdAt")));
+    }
 
     @Query("select b from Booking b where b.paymentCreationStatus = :status and b.paymentCreationStartedAt < :cutoff order by b.paymentCreationStartedAt")
     List<Booking> findStuckPaymentCreations(@Param("status") PaymentCreationStatus status,
