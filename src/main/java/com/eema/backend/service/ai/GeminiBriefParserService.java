@@ -169,14 +169,11 @@ public class GeminiBriefParserService implements BriefParser {
 
     private String buildPrompt(String brief) {
 
-        return """
+            return """
             You are an expert film and photography location scout.
 
-            Convert the user's venue brief into structured requirements
-            that will be used in two stages:
-
-            1. Hard requirements are used to filter venues from the database.
-            2. Soft preferences are used later by an AI ranker.
+            Convert the brief into structured requirements. Spring will enforce hard
+            requirements against authoritative venue data; a later ranker will use preferences.
 
             USER BRIEF:
             %s
@@ -202,169 +199,71 @@ public class GeminiBriefParserService implements BriefParser {
               "mustHaveTags": [],
               "niceToHaveTags": [],
 
-              "shootType": null,
+              "productionActivity": null,
               "numPeople": null,
-
-              "accessibility": null,
+              "requiresNaturalLight": null,
+              "prefersNaturalLight": null,
+              "requiresBlackout": null,
+              "prefersBlackout": null,
+              "minimumCeilingHeightM": null,
+              "requiresLoadingAccess": null,
+              "prefersLoadingAccess": null,
+              "requiresParking": null,
+              "prefersParking": null,
+              "minimumParkingSpaces": null,
+              "requiresWheelchairAccessibility": null,
+              "requiresLift": null,
+              "prefersLift": null,
+              "requiresBathrooms": null,
+              "requiresSoundRecordingSuitable": null,
               "timingDatePreferences": null,
 
               "briefSummary": null,
               "confidenceScore": 0.0
             }
 
-            General rules:
-
             - Return ONE complete valid JSON object.
             - Return JSON only.
-            - Do not return markdown.
-            - Do not return explanations outside the JSON.
             - Never invent requirements.
             - Unknown scalar fields must be null.
             - Unknown list fields must be [].
             - confidenceScore must be between 0.0 and 1.0.
 
-            Budget rules:
+            Requirement strength:
+            - "need", "must", "required", and "important" normally set requires... = true.
+            - "prefer", "would be nice", and "would be useful" set prefers... = true only.
+            - Do not set a required field merely because a feature is mentioned.
+            - If strength is unclear, use a preference rather than a requirement.
 
-            - All budget values must be numeric EUR values.
-            - If the user provides a maximum budget only,
-              put it in budgetMaxEur.
-            - If the user provides a minimum budget only,
-              put it in budgetMinEur.
-            - If the user provides a range,
-              populate both budgetMinEur and budgetMaxEur.
-            - Never invent a missing budget boundary.
+            Production activity must be exactly one of PHOTO, FILM, VIDEO, INTERVIEW,
+            COMMERCIAL, MUSIC_VIDEO, CONTENT_CREATION, or null. Map conservatively:
+            fashion/product/portrait shoot -> PHOTO; brand commercial -> COMMERCIAL;
+            interview -> INTERVIEW; music video -> MUSIC_VIDEO; social media content ->
+            CONTENT_CREATION. If ambiguous, return null. Never return EVENTS.
 
-            Size rules:
+            Structured facts must use typed fields, not tags. Never put natural light,
+            blackout, parking, loading access, accessibility, lift, bathrooms, sound
+            recording, crew capacity, or ceiling height in mustHaveTags/niceToHaveTags.
+            Tags are only for concrete unstructured venue concepts such as warehouse,
+            studio, gallery, rooftop, loft, kitchen, garden, industrial, or canal-view.
 
-            - All sizes must be represented in square metres.
-            - If only a minimum size is requested,
-              put it in sizeM2Min.
-            - If only a maximum size is requested,
-              put it in sizeM2Max.
-            - If a range is given, populate both.
-            - Never invent a missing size boundary.
+            Examples:
+            - "I need a daylight studio for 20 people with loading access":
+              numPeople=20, requiresNaturalLight=true, requiresLoadingAccess=true,
+              mustHaveTags=["studio"]. Set productionActivity only if production intent is clear.
+            - "Industrial warehouse, parking would be nice":
+              mustHaveTags=["warehouse"], aesthetic="industrial", prefersParking=true.
+            - "Interview for 6 people, needs clean audio":
+              productionActivity="INTERVIEW", numPeople=6,
+              requiresSoundRecordingSuitable=true.
 
-            Location rules:
+            Use metres for minimumCeilingHeightM, square metres for size, whole numbers
+            for people/parking, and numeric EUR for budgets. Never invent boundaries,
+            neighbourhood alternatives, amenities, or a production activity.
 
-            - Put one explicitly requested neighbourhood
-              in neighbourhood.
-            - If the user gives multiple acceptable neighbourhoods,
-              put them in neighbourhoodOptions.
-            - Do not invent alternative neighbourhoods.
-
-            Hard requirement rules:
-
-            - mustHaveTags are database filtering constraints.
-            - Only put a tag in mustHaveTags when it represents
-              a concrete venue type or physical feature that should
-              eliminate venues that do not have it.
-
-            Good mustHaveTags examples:
-
-            - warehouse
-            - studio
-            - gallery
-            - rooftop
-            - loft
-            - kitchen
-            - parking
-            - loading-dock
-            - high-ceiling
-            - garden
-            - canal-view
-
-            - If the user says "I need a warehouse",
-              "warehouse" belongs in mustHaveTags.
-
-            - If the user says "must have parking",
-              "parking" belongs in mustHaveTags.
-
-            - If the user says "must have high ceilings",
-              "high-ceiling" belongs in mustHaveTags.
-
-            Soft preference rules:
-
-            - Do NOT put aesthetic, mood, atmosphere,
-              visual style, or subjective descriptors
-              into mustHaveTags.
-
-            These should normally go into aesthetic:
-
-            - moody
-            - industrial-looking
-            - cinematic
-            - luxury
-            - elegant
-            - minimalist
-            - dramatic
-            - warm
-            - bright
-            - raw
-            - premium
-            - rustic
-            - modern
-
-            - Example:
-              "I need a moody industrial warehouse"
-
-              should normally become:
-
-              aesthetic = "moody industrial"
-              mustHaveTags = ["warehouse"]
-
-              Do NOT automatically put "moody"
-              or "industrial" into mustHaveTags.
-
-            - niceToHaveTags are optional concrete features
-              that should improve ranking but should NOT
-              eliminate venues during database filtering.
-
-            - Example:
-              "A warehouse, preferably with daylight"
-
-              should normally become:
-
-              mustHaveTags = ["warehouse"]
-              niceToHaveTags = ["daylight"]
-
-            Lighting rules:
-
-            - Put lighting style or preference in lighting.
-            - If lighting is merely preferred, do not make it
-              a hard tag.
-            - Only make a lighting-related feature a mustHaveTag
-              if the user explicitly states it is mandatory.
-
-            Amenities rules:
-
-            - Put explicitly required practical amenities
-              in requiredAmenities.
-            - Do not invent amenities.
-
-            Shoot type rules:
-
-            - Extract the production purpose into shootType.
-            - Examples include:
-              fashion shoot,
-              product photography,
-              portrait shoot,
-              commercial,
-              film production,
-              interview,
-              event.
-
-            Summary rules:
-
-            - briefSummary should be one concise sentence
-              summarizing the user's actual request.
-            - Do not add requirements that were not present.
-
-            Final decision rule:
-
-            When uncertain whether something is a hard database filter
-            or a soft preference, prefer treating it as a soft preference.
-            It is better to return several plausible venue candidates
-            for ranking than to eliminate good venues too early.
+            lighting may retain subjective lighting style; requiredAmenities may contain
+            only requirements that have no dedicated typed field. briefSummary must be one
+            concise factual sentence. Parser confidence is interpretation confidence only.
 
             Return the complete JSON object only.
             """.formatted(brief);

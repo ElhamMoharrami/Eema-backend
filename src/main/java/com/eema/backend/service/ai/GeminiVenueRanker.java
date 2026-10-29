@@ -5,6 +5,7 @@ import com.eema.backend.dto.response.MatchedVenueDto;
 import com.eema.backend.dto.response.VenueDto;
 import com.eema.backend.dto.response.VenueListDto;
 import com.eema.backend.entity.Venue;
+import com.eema.backend.entity.enums.ProductionActivity;
 import com.eema.backend.mapper.VenueMapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -166,16 +167,27 @@ public class GeminiVenueRanker implements VenueRanker {
                     AVAILABLE VENUES:
                     %s
 
-                    Rank these venues according to suitability.
+                    Every venue below has already passed all deterministic hard requirements.
+                    Rank only these eligible venues by soft preferences, aesthetic fit, and
+                    comparative production suitability.
 
                     Important:
                     - Only use facts provided in AVAILABLE VENUES.
-                    - Never invent venue features.
-                    - Treat must-have requirements as strict requirements.
-                    - Do not judge budget because no booking duration is known.
-                    - Consider size, location, aesthetic,
-                      lighting, amenities and nice-to-have features.
-                    - Explain important strengths and mismatches.
+                    - Never invent, embellish, or infer a capability from missing data.
+                    - A null field means unknown, never false and never present.
+                    - Hard eligibility has already been decided by Spring; do not re-approve or
+                      introduce venues outside AVAILABLE VENUES.
+                    - Compare known preference matches above unknown values, and unknown values
+                      above known preference mismatches.
+                    - productionRules and powerDetails are authoritative owner-provided text;
+                      do not reinterpret them as structured guarantees.
+                    - soundRecordingSuitable=true may only be described as "suitable for sound
+                      recording". Do not claim excellent acoustics, silence, or soundproofing.
+                    - Do not claim current availability; availability is not supplied here.
+                    - Do not judge or claim a total budget fit because no duration or booking
+                      quote is known. You may state the exact hourly rate, minimum booking, and
+                      full-day rate supplied for a venue.
+                    - Explain strengths and preference trade-offs using supplied facts only.
                     - Rank only venues provided in AVAILABLE VENUES.
                     - Use exactly the venue ID provided.
 
@@ -294,6 +306,22 @@ public class GeminiVenueRanker implements VenueRanker {
             BigDecimal hourlyRateEur,
             Integer minimumBookingMinutes,
             BigDecimal fullDayRateEur,
+            Integer maxCrewSize,
+            List<ProductionActivity> permittedActivities,
+            List<ProductionActivity> prohibitedActivities,
+            Boolean naturalLight,
+            Boolean blackoutPossible,
+            BigDecimal ceilingHeightM,
+            Boolean loadingAccess,
+            Boolean parkingAvailable,
+            Integer parkingSpaces,
+            Integer floorNumber,
+            Boolean liftAvailable,
+            Boolean wheelchairAccessible,
+            Boolean bathroomsAvailable,
+            Boolean soundRecordingSuitable,
+            String productionRules,
+            String powerDetails,
             List<String> tags,
             String description
     ) {
@@ -309,6 +337,22 @@ public class GeminiVenueRanker implements VenueRanker {
                     venue.getHourlyRateEur(),
                     venue.getMinimumBookingMinutes(),
                     venue.getFullDayRateEur(),
+                    venue.getMaxCrewSize(),
+                    venue.getPermittedActivities(),
+                    venue.getProhibitedActivities(),
+                    venue.getNaturalLight(),
+                    venue.getBlackoutPossible(),
+                    venue.getCeilingHeightM(),
+                    venue.getLoadingAccess(),
+                    venue.getParkingAvailable(),
+                    venue.getParkingSpaces(),
+                    venue.getFloorNumber(),
+                    venue.getLiftAvailable(),
+                    venue.getWheelchairAccessible(),
+                    venue.getBathroomsAvailable(),
+                    venue.getSoundRecordingSuitable(),
+                    venue.getProductionRules(),
+                    venue.getPowerDetails(),
                     venue.getTags(),
                     venue.getDescription()
             );

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -27,8 +28,14 @@ import java.util.Locale;
 public class VenueFilterBuilder {
 
     private static final int MAX_CANDIDATES = 30;
+    private static final Set<String> STRUCTURED_FEATURE_TAGS = Set.of(
+            "natural-light", "daylight", "blackout", "loading", "loading-access",
+            "parking", "accessible", "accessibility", "wheelchair-accessible",
+            "lift", "elevator", "bathrooms", "sound-recording", "soundproof"
+    );
 
     private final EntityManager entityManager;
+    private final VenueHardRequirementEvaluator hardRequirementEvaluator;
 
     public List<Venue> findCandidateVenues(ParsedBrief brief) {
         if (brief == null) {
@@ -76,6 +83,17 @@ public class VenueFilterBuilder {
                 predicates
         );
 
+        addCrewCapacityFilter(brief, cb, venue, predicates);
+        addProductionActivityFilter(brief, cb, venue, predicates);
+        addNaturalLightFilter(brief, cb, venue, predicates);
+        addBlackoutFilter(brief, cb, venue, predicates);
+        addCeilingHeightFilter(brief, cb, venue, predicates);
+        addLoadingFilter(brief, cb, venue, predicates);
+        addParkingFilter(brief, cb, venue, predicates);
+        addAccessibilityFilter(brief, cb, venue, predicates);
+        addBathroomsFilter(brief, cb, venue, predicates);
+        addSoundSuitabilityFilter(brief, cb, venue, predicates);
+
         cq.where(
                 predicates.toArray(
                         new Predicate[0]
@@ -89,12 +107,10 @@ public class VenueFilterBuilder {
         TypedQuery<Venue> query =
                 entityManager.createQuery(cq);
 
-        query.setMaxResults(
-                MAX_CANDIDATES
-        );
-
-        List<Venue> candidates =
-                query.getResultList();
+        List<Venue> candidates = query.getResultList().stream()
+                .filter(candidate -> hardRequirementEvaluator.isEligible(candidate, brief))
+                .limit(MAX_CANDIDATES)
+                .toList();
 
         log.info(
                 "Venue filtering completed: candidates={}",
@@ -217,6 +233,12 @@ public class VenueFilterBuilder {
                 continue;
             }
 
+            String normalizedTag = normalize(tag);
+            if (STRUCTURED_FEATURE_TAGS.contains(normalizedTag)) {
+                log.debug("Ignoring structured feature supplied as a must-have tag: {}", normalizedTag);
+                continue;
+            }
+
             predicates.add(
                     cb.isTrue(
                             cb.function(
@@ -224,12 +246,85 @@ public class VenueFilterBuilder {
                                     Boolean.class,
                                     venue.get("tags"),
                                     cb.literal(
-                                            normalize(tag)
+                                            normalizedTag
                                     )
                             )
                     )
             );
         }
+    }
+
+    private void addCrewCapacityFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                       List<Predicate> predicates) {
+        addMinimum(cb, venue, predicates, "maxCrewSize", brief.numPeople());
+    }
+
+    private void addProductionActivityFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                             List<Predicate> predicates) {
+        if (brief.productionActivity() == null) return;
+        Predicate permitted = cb.isTrue(cb.function("array_contains", Boolean.class,
+                venue.get("permittedActivities"), cb.literal(brief.productionActivity())));
+        Predicate notProhibited = cb.or(
+                cb.isNull(venue.get("prohibitedActivities")),
+                cb.isFalse(cb.function("array_contains", Boolean.class,
+                        venue.get("prohibitedActivities"), cb.literal(brief.productionActivity())))
+        );
+        predicates.add(cb.and(cb.isNotNull(venue.get("permittedActivities")), permitted, notProhibited));
+    }
+
+    private void addNaturalLightFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                       List<Predicate> predicates) {
+        addRequiredTrue(brief.requiresNaturalLight(), cb, venue, predicates, "naturalLight");
+    }
+
+    private void addBlackoutFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                   List<Predicate> predicates) {
+        addRequiredTrue(brief.requiresBlackout(), cb, venue, predicates, "blackoutPossible");
+    }
+
+    private void addCeilingHeightFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                        List<Predicate> predicates) {
+        addMinimum(cb, venue, predicates, "ceilingHeightM", brief.minimumCeilingHeightM());
+    }
+
+    private void addLoadingFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                  List<Predicate> predicates) {
+        addRequiredTrue(brief.requiresLoadingAccess(), cb, venue, predicates, "loadingAccess");
+    }
+
+    private void addParkingFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                  List<Predicate> predicates) {
+        if (Boolean.TRUE.equals(brief.requiresParking()) || brief.minimumParkingSpaces() != null) {
+            addRequiredTrue(true, cb, venue, predicates, "parkingAvailable");
+        }
+        addMinimum(cb, venue, predicates, "parkingSpaces", brief.minimumParkingSpaces());
+    }
+
+    private void addAccessibilityFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                        List<Predicate> predicates) {
+        addRequiredTrue(brief.requiresWheelchairAccessibility(), cb, venue, predicates, "wheelchairAccessible");
+        addRequiredTrue(brief.requiresLift(), cb, venue, predicates, "liftAvailable");
+    }
+
+    private void addBathroomsFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                    List<Predicate> predicates) {
+        addRequiredTrue(brief.requiresBathrooms(), cb, venue, predicates, "bathroomsAvailable");
+    }
+
+    private void addSoundSuitabilityFilter(ParsedBrief brief, CriteriaBuilder cb, Root<Venue> venue,
+                                           List<Predicate> predicates) {
+        addRequiredTrue(brief.requiresSoundRecordingSuitable(), cb, venue, predicates,
+                "soundRecordingSuitable");
+    }
+
+    private void addRequiredTrue(Boolean required, CriteriaBuilder cb, Root<Venue> venue,
+                                 List<Predicate> predicates, String field) {
+        if (Boolean.TRUE.equals(required)) predicates.add(cb.isTrue(venue.get(field)));
+    }
+
+    private <T extends Comparable<? super T>> void addMinimum(CriteriaBuilder cb, Root<Venue> venue,
+                                                               List<Predicate> predicates, String field, T minimum) {
+        if (minimum != null) predicates.add(cb.greaterThanOrEqualTo(venue.get(field), minimum));
     }
 
     private List<Order> buildOrdering(

@@ -2,6 +2,7 @@ package com.eema.backend.service.ai;
 
 import java.math.BigDecimal;
 import java.util.List;
+import com.eema.backend.entity.enums.ProductionActivity;
 
 public record ParsedBrief(
         String aesthetic,
@@ -22,10 +23,25 @@ public record ParsedBrief(
         List<String> mustHaveTags,
         List<String> niceToHaveTags,
 
-        String shootType,
+        ProductionActivity productionActivity,
         Integer numPeople,
 
-        String accessibility,
+        Boolean requiresNaturalLight,
+        Boolean prefersNaturalLight,
+        Boolean requiresBlackout,
+        Boolean prefersBlackout,
+        BigDecimal minimumCeilingHeightM,
+        Boolean requiresLoadingAccess,
+        Boolean prefersLoadingAccess,
+        Boolean requiresParking,
+        Boolean prefersParking,
+        Integer minimumParkingSpaces,
+        Boolean requiresWheelchairAccessibility,
+        Boolean requiresLift,
+        Boolean prefersLift,
+        Boolean requiresBathrooms,
+        Boolean requiresSoundRecordingSuitable,
+
         String timingDatePreferences,
 
         String briefSummary,
@@ -80,10 +96,18 @@ public record ParsedBrief(
             );
         }
 
-        if (numPeople != null && numPeople < 0) {
+        if (numPeople != null && numPeople <= 0) {
             throw new IllegalArgumentException(
-                    "numPeople must be non-negative"
+                    "numPeople must be greater than zero"
             );
+        }
+
+        if (minimumCeilingHeightM != null && minimumCeilingHeightM.signum() <= 0) {
+            throw new IllegalArgumentException("minimumCeilingHeightM must be greater than zero");
+        }
+
+        if (minimumParkingSpaces != null && minimumParkingSpaces < 0) {
+            throw new IllegalArgumentException("minimumParkingSpaces must be non-negative");
         }
 
         if (confidenceScore != null
